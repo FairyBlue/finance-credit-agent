@@ -8,6 +8,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
+import src.evaluation as evaluation_api
+import src.evaluation.leakage_probe as probe_module
 from src.data import (
     AvailabilityPolicy,
     FullSampleFitError,
@@ -24,6 +26,11 @@ from src.evaluation import (
 )
 
 UTC = timezone.utc
+
+
+def test_legacy_configured_oos_probe_is_not_callable() -> None:
+    assert not hasattr(evaluation_api, "run_configured_temporal_leakage_probe")
+    assert not hasattr(probe_module, "run_configured_temporal_leakage_probe")
 
 
 def _observation(

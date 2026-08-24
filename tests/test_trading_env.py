@@ -290,6 +290,45 @@ def test_finance_trajectory_mode_emits_a_fin_only_on_the_final_step() -> None:
     asyncio.run(episode())
 
 
+def test_finance_risk_uses_maximum_daily_bilateral_turnover_not_episode_sum() -> None:
+    dates = [datetime(2025, 1, day, 21, 0, tzinfo=UTC) for day in (2, 3, 6, 7)]
+    opens = [datetime(2025, 1, day, 14, 30, tzinfo=UTC) for day in (2, 3, 6, 7)]
+    adapter = StockBenchAdapter(
+        [
+            _bar(day, open_price=100.0, close_price=100.0)
+            for day in (2, 3, 6, 7)
+        ],
+        data_version="daily-turnover-fixture-v1",
+    )
+    env = TradingEnv(
+        adapter=adapter,
+        episode_dates=dates,
+        episode_open_times=opens,
+        symbols=["AAA"],
+        initial_cash=1000.0,
+        commission_bps=0.0,
+        slippage_bps=0.0,
+        drawdown_coefficient=0.0,
+        turnover_coefficient=0.0,
+        benchmark_closes=[100.0] * 4,
+        reward_mode="finance_trajectory",
+        finance_epsilon=0.01,
+        risk_lambda=1.0,
+        turnover_limit=0.8,
+        position_limit=1.0,
+    )
+
+    async def episode() -> None:
+        env.reset()
+        await env.step(_call("buy", '{"symbol":"AAA","target_weight":0.6}'))
+        await env.step(_call("sell", '{"symbol":"AAA","target_weight":0.0}'))
+        _, final_reward, done, _ = await env.step(_call("hold"))
+        assert done
+        assert final_reward == pytest.approx(0.0)
+
+    asyncio.run(episode())
+
+
 def test_missing_current_session_bar_cannot_reuse_a_stale_price() -> None:
     dates = [datetime(2025, 1, day, 21, 0, tzinfo=UTC) for day in (2, 3)]
     opens = [datetime(2025, 1, day, 14, 30, tzinfo=UTC) for day in (2, 3)]

@@ -543,7 +543,7 @@ class TradingEnv(ToolEnv):
             maximum_drawdown = max(maximum_drawdown, (running_peak - equity) / running_peak)
         risk = RiskComponents(
             max_drawdown=maximum_drawdown,
-            turnover_excess=max(0.0, sum(self._turnovers) - self._turnover_limit),
+            turnover_excess=max(0.0, max(self._turnovers, default=0.0) - self._turnover_limit),
             position_excess=max(0.0, self._maximum_position_weight - self._position_limit),
         )
         result = finance_advantage(

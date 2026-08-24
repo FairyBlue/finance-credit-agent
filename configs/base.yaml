@@ -114,13 +114,25 @@ execution:
   allow_leverage: false
 
 reward:
-  epsilon: "TODO(human): set before training"
-  risk_lambda: "TODO(human): set before training"
+  epsilon: 0.0006887293802216064
+  risk_lambda: 0.9016432557217152
   volatility_source: portfolio_daily_returns
-  drawdown_coefficient: "TODO(human): set before training"
-  turnover_coefficient: "TODO(human): set before training"
-  turnover_limit: "TODO(human): set before training"
-  position_limit: "TODO(human): set before training"
+  drawdown_coefficient: 0.09659355421265267
+  turnover_coefficient: 0.02095348253089393
+  turnover_limit: 1.0
+  position_limit: 0.3
+  calibration:
+    method: train_only_deterministic_proxy_v1
+    table: configs/reward_calibration.pending.yaml
+    freeze_table_hash_format: canonical_json_excluding_status_signature_and_freeze_table_sha256_v1
+    freeze_table_sha256: 1b46a81268fe4b45e065c49fde8bf9c0641131676668c8e35e4f884747464430
+    history_manifest_sha256: 2612e707446b1c8bcd73ac6583b84558d3c4eddbaa9fc20adf7023c3c8a76c90
+  threshold_semantics:
+    enforcement: soft_reward_penalty_not_hard_trade_cap
+    position_measure: maximum_single_name_close_weight
+    turnover_period: daily_session
+    turnover_accounting: double_sided
+    turnover_limit_1p00_one_way_rotation_approx: 0.50
   benchmark: buy_and_hold_equal_weight_20_tickers
   benchmark_accounting_engine: shared_portfolio_ledger
   benchmark_execution: next_open_with_configured_costs
@@ -139,15 +151,36 @@ training:
   require_clean_repo: true
 
 regimes:
-  rule: realized_volatility_x_trend
+  rule: public_event_anchored_calendar_v1
   minimum_count: 3
-  boundaries: "TODO(human): freeze dates after the test window is confirmed"
+  calendar: XNYS
+  timezone: America/New_York
+  boundary_convention: inclusive_complete_sessions
+  return_assignment: ending_session
+  no_oos_outcome_confirmation: true
+  anchors: ["2025-04-02", "2025-04-09"]
+  segments:
+    - label: pre_tariff_announcement
+      start: "2025-03-03"
+      end: "2025-04-01"
+      sessions: 22
+    - label: tariff_crash
+      start: "2025-04-02"
+      end: "2025-04-08"
+      sessions: 5
+      descriptive_only: true
+      significance_claims_allowed: false
+    - label: post_tariff_pause
+      start: "2025-04-09"
+      end: "2025-06-30"
+      sessions: 56
 
 evaluation:
   annualization_periods: 252
   baselines: [buy_and_hold_equal_weight, all_cash, frozen_llm_zero_shot, alphaquanter]
   block_bootstrap: true
   shifted_label_probe:
+    implementation_status: legacy_blocking_gate_pending_v2
     kind: supervised_direction_probe
     model: ridge_linear_direction_v1
     label_shift_sessions: 1
@@ -163,6 +196,60 @@ evaluation:
     require_unshifted_above_random: true
     require_significant_drop_from_unshifted: true
     require_shifted_ci_contains_random_baseline: true
+  shifted_label_probe_v2:
+    implementation_status: preregistered_pending_implementation
+    source_policy:
+      allowed_source: history
+      fit_split: train
+      decision_split: valid
+      stockbench_oos_access: forbidden
+    sample_policy:
+      unit: stock_session
+      pooling: pooled_across_stocks
+      bootstrap_cluster: session
+    features:
+      frozen: true
+      availability: causal_as_of_session_close
+      names:
+        - stock_return_1d
+        - stock_return_mean_20d
+        - stock_return_volatility_20d
+        - cross_sectional_dispersion_1d
+        - cross_sectional_positive_fraction_1d
+    label:
+      kind: per_stock_direction
+      aligned_horizon_sessions: 1
+      shifted_horizon_sessions: 2
+      shift_sessions: 1
+    metric: balanced_accuracy
+    random_baseline: 0.5
+    bootstrap:
+      method: session_clustered_moving_block
+      block_size_sessions: 5
+      samples: 2000
+      seed: 1729
+      alpha: 0.05
+    detection_rule: one_sided_lower_bound_above_random_baseline
+    positive_controls:
+      persistence: ephemeral_not_persisted
+      strong:
+        feature: exact_future_direction
+        flip_probability: 0.0
+      weak:
+        feature: future_direction_with_independent_deterministic_flips
+        flip_probability: 0.40
+        approximate_balanced_accuracy: 0.60
+        flip_generator:
+          kind: sha256_threshold_by_session_symbol_v1
+          seed: 1729
+          input_format: "seed<TAB>YYYY-MM-DD<TAB>SYMBOL<LF>"
+    pass_criteria:
+      strong_positive_control_detected: true
+      weak_positive_control_detected: true
+      real_pipeline_significantly_detected: false
+    weak_control_miss_policy: record_probe_power_boundary
+    real_pipeline_non_detection_semantics: no_significant_evidence_not_proof_of_absence
+    require_before_main_training: true
   fee_robustness_multiplier: 2.0
 
 model:

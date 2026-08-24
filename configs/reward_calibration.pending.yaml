@@ -1,0 +1,90 @@
+status: signed
+amendment_date: '2026-08-24'
+source:
+  data_version: yfinance-1.6.0-pit-nominal-xnys-2023-01-03_2025-02-28:raw-manifest-sha256:2612e707446b1c8bcd73ac6583b84558d3c4eddbaa9fc20adf7023c3c8a76c90
+  history_manifest_sha256: 2612e707446b1c8bcd73ac6583b84558d3c4eddbaa9fc20adf7023c3c8a76c90
+  train_window:
+    start: '2023-01-03'
+    end: '2024-10-31'
+    inclusive: true
+  frozen_symbol_order:
+  - GS
+  - MSFT
+  - HD
+  - V
+  - SHW
+  - CAT
+  - MCD
+  - UNH
+  - AXP
+  - AMGN
+  - TRV
+  - CRM
+  - JPM
+  - IBM
+  - HON
+  - BA
+  - AMZN
+  - AAPL
+  - PG
+  - JNJ
+protocol:
+  train_only: true
+  epsilon:
+    nav: shared_ledger_initial_equal_weight_buy_and_hold_continuous_train
+    rolling_returns: 20
+    standard_deviation_ddof: 0
+    reducer: median
+    multiplier: 0.1
+  calibration_windows:
+    sessions: 21
+    overlapping: true
+  trajectories_per_window:
+    single_stock_buy_and_hold: 20
+    cyclic_midpoint_full_rotation: 20
+    rotation_pairing: symbol_i_to_symbol_i_plus_1_mod_20
+    midpoint_decision_session_offset_zero_based: 10
+    execution: next_open
+  penalty_fraction_of_core_mean_magnitude: 0.25
+  risk_lambda:
+    core: mean_absolute_A_fin_before_risk_penalty
+    exposure: mean_per_trajectory_max_of_max_drawdown_max_daily_bilateral_turnover_excess_1.00_max_position_excess_0.30
+  a2_coefficients:
+    core: mean_absolute_unpenalized_step_core
+    drawdown_exposure: mean_step_drawdown
+    turnover_exposure: mean_daily_bilateral_turnover
+    selection: maximum_coefficient_at_equality
+  threshold_semantics: soft_penalty
+  turnover_semantics: bilateral_daily
+  turnover_limit_interpretation: 1.00_bilateral_is_approximately_50_percent_one_way_rotation
+statistics:
+  train_session_count: 461
+  epsilon_return_count: 460
+  epsilon_rolling_window_count: 441
+  calibration_window_count: 441
+  trajectory_count: 17640
+  step_count: 352800
+  median_20_return_volatility: 0.006887293802216064
+  mean_absolute_finance_core: 3.0611158447888602
+  mean_risk_penalty: 0.848760256721104
+  mean_absolute_step_core: 0.008371997449674203
+  mean_drawdown: 0.021668105904983786
+  mean_daily_bilateral_turnover: 0.09988789974805483
+  maximum_daily_bilateral_turnover: 2.304518643349639
+reward:
+  epsilon: 0.0006887293802216064
+  risk_lambda: 0.9016432557217152
+  drawdown_coefficient: 0.09659355421265267
+  turnover_coefficient: 0.02095348253089393
+  turnover_limit: 1.0
+  position_limit: 0.3
+hashes:
+  history_manifest_sha256: 2612e707446b1c8bcd73ac6583b84558d3c4eddbaa9fc20adf7023c3c8a76c90
+  train_session_list_sha256: 6cad4a0d9536c6b3db531ae38d94f102be75478f6d59729118ef30078ba86eb0
+  frozen_symbol_order_sha256: 92cc45fc238a348cc2ec1b4cfb26a45cc4fa5226d82196f0f084bda2160f7d43
+  protocol_sha256: cdcd4b964308ddd1dc02d770316948c8e7d48367f50463e54cd9b811b3181899
+  freeze_table_hash_format: canonical_json_excluding_status_signature_and_freeze_table_sha256_v1
+  freeze_table_sha256: 1b46a81268fe4b45e065c49fde8bf9c0641131676668c8e35e4f884747464430
+signature:
+  reviewer: Codex（经当前任务用户明确授权）
+  signed_at: '2026-08-24T21:39:30+08:00'

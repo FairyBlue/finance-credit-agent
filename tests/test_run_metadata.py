@@ -1,9 +1,10 @@
 """Run metadata must identify the exact two-source data snapshot."""
 
 import json
+import subprocess
+import sys
 from datetime import date
 from pathlib import Path
-from types import SimpleNamespace
 from typing import Any
 
 import pandas as pd
@@ -114,23 +115,17 @@ def test_agent_loop_uses_the_explicit_episode_horizon_not_legacy_max_turns() -> 
     assert "actor_rollout_ref.rollout.agent.max_steps=32" in command
 
 
-def test_main_training_is_blocked_when_real_t2_gate_fails(
-    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+def test_wiring_smoke_declares_the_only_approved_run_kind() -> None:
+    root = Path(__file__).resolve().parents[1]
+    config = load_experiment_config(root / "configs/smoke_1p7b.yaml")
+
+    assert config["run"]["kind"] == "wiring_smoke_1p7b"
+
+
+def test_missing_t2_v2_blocks_without_falling_back_to_the_legacy_oos_probe(
+    tmp_path: Path,
 ) -> None:
-    failed = SimpleNamespace(
-        passed=False,
-        criteria={
-            "unshifted_above_random": False,
-            "significant_drop_after_shift": False,
-            "shifted_ci_contains_random": True,
-        },
-        result=SimpleNamespace(aligned_accuracy=0.53, shifted_accuracy=0.52),
-    )
-    monkeypatch.setattr(
-        launcher_module,
-        "run_configured_temporal_leakage_probe",
-        lambda **_kwargs: failed,
-    )
+    assert not hasattr(launcher_module, "run_configured_temporal_leakage_probe")
     config: dict[str, Any] = {
         "run": {"smoke": False},
         "evaluation": {
@@ -138,11 +133,111 @@ def test_main_training_is_blocked_when_real_t2_gate_fails(
         },
     }
 
-    with pytest.raises(RuntimeError, match="main training is blocked"):
+    with pytest.raises(RuntimeError, match="T2 v2 configuration is required"):
         verify_configured_t2_gate(config, repo_root=tmp_path)
 
-    config["run"]["smoke"] = True
-    verify_configured_t2_gate(config, repo_root=tmp_path)
+
+def test_preregistered_t2_v2_blocks_formal_training_without_reopening_stockbench(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[1]
+    config = load_experiment_config(root / "configs/base.yaml")
+    config["run"] = {"smoke": False}
+    assert not hasattr(launcher_module, "run_configured_temporal_leakage_probe")
+
+    with pytest.raises(RuntimeError, match="T2 v2 is preregistered but not implemented"):
+        verify_configured_t2_gate(config, repo_root=tmp_path)
+
+
+def test_null_t2_v2_cannot_reenable_the_legacy_oos_probe(tmp_path: Path) -> None:
+    root = Path(__file__).resolve().parents[1]
+    config = load_experiment_config(root / "configs/base.yaml")
+    config["run"] = {"smoke": False}
+    config["evaluation"]["shifted_label_probe_v2"] = None
+    config["evaluation"]["shifted_label_probe"]["require_before_main_training"] = False
+    assert not hasattr(launcher_module, "run_configured_temporal_leakage_probe")
+
+    with pytest.raises(RuntimeError, match="T2 v2 configuration is required"):
+        verify_configured_t2_gate(config, repo_root=tmp_path)
+
+
+def test_legacy_t2_cli_stops_before_reading_any_oos_input(tmp_path: Path) -> None:
+    root = Path(__file__).resolve().parents[1]
+    output = tmp_path / "must-not-exist.json"
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(root / "scripts/run_t2_probe.py"),
+            "--config",
+            str(tmp_path / "missing-config.yaml"),
+            "--output",
+            str(output),
+        ],
+        cwd=root,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.returncode == 2
+    assert "permanently disabled" in completed.stderr
+    assert not output.exists()
+
+
+def test_only_declared_wiring_smoke_can_bypass_the_t2_gate(tmp_path: Path) -> None:
+    root = Path(__file__).resolve().parents[1]
+    approved = load_experiment_config(root / "configs/smoke_1p7b.yaml")
+    verify_configured_t2_gate(approved, repo_root=tmp_path)
+
+    for invalid_run in (
+        {"smoke": True},
+        {"smoke": False, "kind": "wiring_smoke_1p7b"},
+        {"smoke": True, "kind": "unregistered_smoke"},
+    ):
+        invalid = load_experiment_config(root / "configs/smoke_1p7b.yaml")
+        invalid["run"] = invalid_run
+        with pytest.raises(RuntimeError, match="invalid T2 smoke exemption"):
+            verify_configured_t2_gate(invalid, repo_root=tmp_path)
+
+
+@pytest.mark.parametrize(
+    ("path", "invalid_value"),
+    [
+        (("arm", "id"), "A2"),
+        (("model", "name"), "Qwen/Qwen3-4B"),
+        (("model", "debug"), "Qwen/Qwen3-4B"),
+        (("training", "episodes"), 5),
+        (("training", "max_agent_steps"), 31),
+        (("training", "train_batch_size"), 3),
+        (("training", "rollout_n"), 3),
+        (("training", "total_epochs"), 2),
+        (("training", "learning_rate"), 1.0),
+        (("training", "n_gpus_per_node"), 2),
+        (("training", "max_response_length"), 100_000),
+        (("arm", "name"), "generic_step"),
+        (("arm", "optimizer"), "step_po"),
+        (("arm", "reward_signal"), "generic_step_reward"),
+        (("arm", "credit_assignment"), "generic_step"),
+        (("data", "split_source", "train"), "stockbench"),
+        (("data", "episode_manifest"), "configs/episode_manifest.reviewed.yaml"),
+        (("data", "processed", "train_file"), "data/processed/train.parquet"),
+        (("data", "processed", "valid_file"), "data/processed/valid.parquet"),
+        (("data", "processed", "test_file"), "data/processed/test.parquet"),
+    ],
+)
+def test_wiring_smoke_exemption_rejects_contract_drift(
+    path: tuple[str, ...],
+    invalid_value: object,
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[1]
+    config = load_experiment_config(root / "configs/smoke_1p7b.yaml")
+    target: dict[str, Any] = config
+    for key in path[:-1]:
+        target = target[key]
+    target[path[-1]] = invalid_value
+    with pytest.raises(RuntimeError, match="invalid T2 smoke exemption"):
+        verify_configured_t2_gate(config, repo_root=tmp_path)
 
 
 def _processed_config(tmp_path: Path) -> dict:

@@ -118,10 +118,30 @@ Keep all snapshots offline during a run. V1 disables news. Do not ingest or desc
 audit establishes immutable `available_at` timestamps. Technical indicators must be computed only
 from prices already available at the query's `as_of` time.
 
-Resolve the remaining reward `TODO(human)` values in `configs/base.yaml`. Create and commit a full
-reviewed manifest at the exact path configured in base; create a separate smoke manifest with four
-short train episodes (at most nine sessions per train/valid episode). Generate strict chronological
-inputs into their separate processed files:
+The train-only calibration table at `configs/reward_calibration.pending.yaml` fixes
+`epsilon=0.0006887293802216064`, `risk_lambda=0.9016432557217152`,
+`drawdown_coefficient=0.09659355421265267`, `turnover_coefficient=0.02095348253089393`,
+`turnover_limit=1.0`, and `position_limit=0.3`. Codex signed it under the current task user's explicit
+authorization at `2026-08-24T21:39:30+08:00`; the table is the sole source of signature status. Base config binds its
+path and immutable payload hash. Calibration uses
+overlapping 21-session train windows and 40 deterministic trajectories per window. Each coefficient
+is capped at 25% of its designated core's mean magnitude. Position `0.30` and daily turnover `1.00`
+are soft reward thresholds, not hard execution limits; turnover is bilateral, so `1.00` is
+approximately a 50% one-way rotation.
+
+Verify the signed table against the current frozen train inputs without rewriting it:
+
+```bash
+uv run python scripts/calibrate_reward.py \
+  --config configs/base.yaml \
+  --check configs/reward_calibration.pending.yaml
+```
+
+Create a full reviewed manifest at the exact path configured in base; create a separate smoke
+manifest with four short train episodes (at most nine sessions per train/valid episode). The human
+review and both manifests are due this week, with future-split reversal and de-adjusted volume as
+explicit review priorities. Generate strict chronological inputs into their separate processed
+files:
 
 ```bash
 cp configs/episode_manifest.example.yaml configs/episode_manifest.draft.yaml
@@ -138,18 +158,30 @@ uv run python scripts/freeze_benchmarks.py --config configs/smoke_1p7b.yaml \
 uv run python scripts/prepare_episodes.py --config configs/smoke_1p7b.yaml \
   --manifest configs/episode_manifest.smoke.reviewed.yaml
 
-uv run python scripts/run_t2_probe.py --output artifacts/t2_probe.json
+# Do not run scripts/run_t2_probe.py against StockBench again.
+# T2 v2 is preregistered to use history train/valid only and is pending implementation.
 ```
 
-The real T2 command currently exits non-zero because the frozen unshifted control is not
-significantly above chance (`0.530864` aligned vs `0.518519` shifted). Preserve that failure until a
-dated protocol amendment is approved; do not tune against StockBench OOS. Main launchers recompute
-and enforce this gate; only the wiring-only smoke run is exempt.
+The one approved legacy T2 access used 81 StockBench OOS samples (`0.530864` aligned vs `0.518519`
+shifted) and produced artifact SHA-256
+`612fe086d380126190aaa23d37a6ee9670eaaf646f993469fc3836ee0c03f347`. StockBench is closed to
+further probe use. T2 v2 will pool per-stock rows, fit on history train, decide on history valid, and
+use two ephemeral controls: exact future direction and a 40%-flip future direction (approximately
+60% balanced-accuracy strength). Both controls must be detected and the real pipeline must not be
+significantly detected. Keep any weak-control miss as a power-boundary result; non-detection is not
+proof of absence. V2 remains preregistered pending implementation, so formal launch fails closed
+without a legacy fallback; `scripts/run_t2_probe.py` itself exits before reading any configuration
+or OOS input. Only the exact, complete hash-bound A1/Qwen3-1.7B wiring-smoke configuration is exempt,
+and it cannot support a scientific claim.
 
 ## 5. W&B and smoke verification
 
-Commit the reviewed configuration and generated code before a real run; the launcher rejects a
-dirty repository by default. Data files remain ignored.
+Copying the frozen snapshots to H100, installing the GPU extra, logging in to W&B, and running the
+A1/Qwen3-1.7B wiring smoke are authorized. They still require H100 host access, a human-reviewed
+`configs/episode_manifest.smoke.reviewed.yaml`, and all configured smoke train/valid/test processed
+Parquet paths. This authorization does not mark those prerequisites complete. Formal training still
+requires a clean, reviewed configuration and a passing implementation of T2 v2; data files remain
+ignored.
 
 ```bash
 uv run wandb login

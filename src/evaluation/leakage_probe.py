@@ -5,15 +5,12 @@ from __future__ import annotations
 import math
 from collections.abc import Sequence
 from dataclasses import dataclass
-from datetime import date, datetime, time
+from datetime import date, datetime
 from numbers import Integral
-from pathlib import Path
-from typing import Any
 
-import exchange_calendars as xcals
 import numpy as np
 
-from src.data import AvailabilityPolicy, StockBenchAdapter
+from src.data import StockBenchAdapter
 
 DEFAULT_BOOTSTRAP_SEED = 1729
 
@@ -191,19 +188,6 @@ class TemporalLeakageProbeResult:
         return self.aligned_minus_shifted_interval.lower > 0.0
 
 
-@dataclass(frozen=True, slots=True)
-class ConfiguredTemporalLeakageProbe:
-    """Frozen-data T2 inputs, result, and pre-registered pass criteria."""
-
-    dataset: DirectionProbeDataset
-    result: TemporalLeakageProbeResult
-    criteria: dict[str, bool]
-
-    @property
-    def passed(self) -> bool:
-        return all(self.criteria.values())
-
-
 def _as_feature_matrix(features: Sequence[Sequence[float]] | np.ndarray) -> np.ndarray:
     matrix = np.asarray(features, dtype=np.float64)
     if matrix.ndim == 1:
@@ -338,83 +322,3 @@ def run_temporal_leakage_probe(
         alpha=float(alpha),
         seed=int(seed),
     )
-
-
-def run_configured_temporal_leakage_probe(
-    *, config: dict[str, Any], repo_root: str | Path
-) -> ConfiguredTemporalLeakageProbe:
-    """Run T2 on the two immutable source windows without bypassing ``as_of``."""
-
-    root = Path(repo_root).expanduser().resolve()
-    data = config["data"]
-    evaluation = config["evaluation"]["shifted_label_probe"]
-    if evaluation["label_shift_sessions"] != 1:
-        raise ValueError("T2 is frozen to exactly one shifted XNYS session")
-    if evaluation["random_baseline_accuracy"] != 0.5:
-        raise ValueError("binary T2 is frozen to a 0.5 random baseline")
-    bootstrap = evaluation["bootstrap"]
-    if bootstrap["method"] != "time_block":
-        raise ValueError("T2 requires the frozen time-block bootstrap")
-
-    availability = data["availability"]
-    policy = AvailabilityPolicy(
-        str(availability["timezone"]),
-        time.fromisoformat(str(availability["market_close_time"])),
-        str(availability["exchange_calendar"]),
-    )
-    symbols = data["universe"]["symbols"]
-    sources = data["sources"]
-
-    def adapter(source_name: str) -> StockBenchAdapter:
-        source = sources[source_name]
-        window = source["input_window"]
-        storage_root = Path(str(source["storage_root"]))
-        if not storage_root.is_absolute():
-            storage_root = root / storage_root
-        return StockBenchAdapter.from_storage(
-            storage_root,
-            symbols=symbols,
-            data_version=str(source["version"]),
-            availability_policy=policy,
-            start_date=date.fromisoformat(str(window["start"])),
-            end_date=date.fromisoformat(str(window["end"])),
-        )
-
-    calendar = xcals.get_calendar(str(availability["exchange_calendar"]))
-
-    def closes(source_name: str) -> list[datetime]:
-        window = sources[source_name]["input_window"]
-        return [
-            calendar.session_close(session).to_pydatetime()
-            for session in calendar.sessions_in_range(
-                str(window["start"]), str(window["end"])
-            )
-        ]
-
-    dataset = build_equal_weight_direction_probe_dataset(
-        history_adapter=adapter("history"),
-        oos_adapter=adapter("stockbench"),
-        history_session_closes=closes("history"),
-        oos_session_closes=closes("stockbench"),
-        symbols=symbols,
-        train_end=date.fromisoformat(str(data["windows"]["train"]["end"])),
-        test_start=date.fromisoformat(str(data["windows"]["test"]["start"])),
-        rolling_window=int(evaluation["rolling_window_sessions"]),
-    )
-    result = run_temporal_leakage_probe(
-        sessions=dataset.sessions,
-        features=dataset.features,
-        next_session_directions=dataset.next_session_directions,
-        train_end=dataset.train_end,
-        test_start=dataset.test_start,
-        block_size=int(bootstrap["block_size_sessions"]),
-        alpha=float(bootstrap["alpha"]),
-        seed=int(evaluation["seed"]),
-        bootstrap_samples=int(evaluation["bootstrap_samples"]),
-    )
-    criteria = {
-        "unshifted_above_random": result.aligned_significantly_above_chance,
-        "significant_drop_after_shift": result.aligned_significantly_above_shifted,
-        "shifted_ci_contains_random": result.shifted_consistent_with_chance,
-    }
-    return ConfiguredTemporalLeakageProbe(dataset, result, criteria)

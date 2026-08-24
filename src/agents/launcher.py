@@ -8,6 +8,7 @@ import os
 import subprocess
 import sys
 from datetime import date, datetime, time
+from hashlib import sha256
 from pathlib import Path
 from typing import Any
 
@@ -20,7 +21,6 @@ from src.data.integrity import (
     verify_overlap_reconciliation,
     verify_raw_daily_manifest,
 )
-from src.evaluation import run_configured_temporal_leakage_probe
 
 from .config import load_experiment_config
 from .metadata import RunHashes, collect_run_hashes, validate_composite_data_version
@@ -31,6 +31,8 @@ FLOW_CONFIGS = {
     "A2": REPO_ROOT / "configs" / "agent_flow_a2.yaml",
     "A3": REPO_ROOT / "configs" / "agent_flow_a3.yaml",
 }
+WIRING_SMOKE_KIND = "wiring_smoke_1p7b"
+WIRING_SMOKE_CONFIG_SHA256 = "9ad12d73e0db7b6213c602b1fe04ec7841e97e0fab11fda0652594551da02c9d"
 
 
 def _required(config: dict[str, Any], *path: str) -> Any:
@@ -343,26 +345,135 @@ def verify_processed_dataset_bindings(
                 raise RuntimeError(f"{split} row {index} extra_info mismatch")
 
 
-def verify_configured_t2_gate(config: dict[str, Any], *, repo_root: str | Path) -> None:
-    """Block scientific training when the real-data shifted-label gate fails."""
-
-    if bool(config.get("run", {}).get("smoke")):
-        return
-    gate = _required(config, "evaluation", "shifted_label_probe")
-    if not bool(_required(gate, "require_before_main_training")):
-        return
-    configured = run_configured_temporal_leakage_probe(
-        config=config,
-        repo_root=repo_root,
-    )
-    if not configured.passed:
-        result = configured.result
+def _is_declared_wiring_smoke(config: dict[str, Any]) -> bool:
+    run = config.get("run", {})
+    if not isinstance(run, dict):
+        raise RuntimeError("invalid T2 smoke exemption: run must be a mapping")
+    smoke = run.get("smoke", False)
+    kind = run.get("kind")
+    if smoke is False and kind is None:
+        return False
+    if smoke is not True or kind != WIRING_SMOKE_KIND:
         raise RuntimeError(
-            "T2 shifted-label gate failed; main training is blocked: "
-            f"aligned={result.aligned_accuracy:.6f}, "
-            f"shifted={result.shifted_accuracy:.6f}, "
-            f"criteria={configured.criteria}"
+            "invalid T2 smoke exemption: expected "
+            f"run.smoke=true and run.kind={WIRING_SMOKE_KIND}"
         )
+
+    try:
+        model = _required(config, "model")
+        if not isinstance(model, dict):
+            raise ValueError("model must be a mapping")
+        selected_model = model.get("name") or model.get("train")
+        contract = (
+            ("run.name", _required(config, "run", "name"), "smoke-a1-qwen3-1p7b"),
+            ("run.seed", _required(config, "run", "seed"), 42),
+            ("arm.id", _required(config, "arm", "id"), "A1"),
+            ("arm.name", _required(config, "arm", "name"), "outcome_only"),
+            ("arm.optimizer", _required(config, "arm", "optimizer"), "grpo"),
+            (
+                "arm.reward_signal",
+                _required(config, "arm", "reward_signal"),
+                "episode_return",
+            ),
+            (
+                "arm.credit_assignment",
+                _required(config, "arm", "credit_assignment"),
+                "outcome_only",
+            ),
+            ("model.name/train", selected_model, "Qwen/Qwen3-1.7B"),
+            ("model.debug", model.get("debug"), "Qwen/Qwen3-1.7B"),
+            ("training.episodes", _required(config, "training", "episodes"), 4),
+            (
+                "training.max_agent_steps",
+                _required(config, "training", "max_agent_steps"),
+                32,
+            ),
+            (
+                "training.train_batch_size",
+                _required(config, "training", "train_batch_size"),
+                2,
+            ),
+            ("training.rollout_n", _required(config, "training", "rollout_n"), 2),
+            ("training.total_epochs", _required(config, "training", "total_epochs"), 1),
+            (
+                "training.learning_rate",
+                _required(config, "training", "learning_rate"),
+                1.0e-6,
+            ),
+            (
+                "training.n_gpus_per_node",
+                _required(config, "training", "n_gpus_per_node"),
+                1,
+            ),
+            (
+                "data.episode_manifest",
+                _required(config, "data", "episode_manifest"),
+                "configs/episode_manifest.smoke.reviewed.yaml",
+            ),
+            (
+                "data.processed.train_file",
+                _required(config, "data", "processed", "train_file"),
+                "data/processed/smoke_train.parquet",
+            ),
+            (
+                "data.processed.valid_file",
+                _required(config, "data", "processed", "valid_file"),
+                "data/processed/smoke_valid.parquet",
+            ),
+            (
+                "data.processed.test_file",
+                _required(config, "data", "processed", "test_file"),
+                "data/processed/smoke_test.parquet",
+            ),
+        )
+    except ValueError as error:
+        raise RuntimeError(f"invalid T2 smoke exemption: {error}") from error
+
+    for label, actual, expected in contract:
+        if actual != expected:
+            raise RuntimeError(
+                f"invalid T2 smoke exemption: {label} must be {expected!r}, got {actual!r}"
+            )
+    canonical = json.dumps(
+        config,
+        allow_nan=False,
+        ensure_ascii=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode()
+    config_sha256 = sha256(canonical).hexdigest()
+    if config_sha256 != WIRING_SMOKE_CONFIG_SHA256:
+        raise RuntimeError(
+            "invalid T2 smoke exemption: merged config SHA-256 must be "
+            f"{WIRING_SMOKE_CONFIG_SHA256}, got {config_sha256}"
+        )
+    return True
+
+
+def verify_configured_t2_gate(config: dict[str, Any], *, repo_root: str | Path) -> None:
+    """Allow only the exact smoke while T2 v2 is preregistered but unimplemented."""
+
+    if _is_declared_wiring_smoke(config):
+        return
+    evaluation = _required(config, "evaluation")
+    if not isinstance(evaluation, dict):
+        raise RuntimeError("evaluation must be a mapping")
+    preregistered_v2 = evaluation.get("shifted_label_probe_v2")
+    if not isinstance(preregistered_v2, dict):
+        raise RuntimeError(
+            "T2 v2 configuration is required; formal training is blocked without "
+            "falling back to the legacy StockBench probe"
+        )
+    source_policy = preregistered_v2.get("source_policy")
+    if (
+        not isinstance(source_policy, dict)
+        or source_policy.get("stockbench_oos_access") != "forbidden"
+    ):
+        raise RuntimeError("T2 v2 must fail closed with StockBench OOS access forbidden")
+    raise RuntimeError(
+        "T2 v2 is preregistered but not implemented; formal training is blocked "
+        "without reopening the legacy StockBench probe"
+    )
 
 
 def build_upstream_command(config: dict[str, Any], hashes: RunHashes) -> list[str]:

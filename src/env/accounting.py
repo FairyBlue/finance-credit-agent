@@ -75,6 +75,7 @@ class PortfolioLedger:
         if not math.isfinite(initial_cash) or initial_cash <= 0.0:
             raise ValueError("initial_cash must be finite and positive")
         self._initial_cash = float(initial_cash)
+        self._cash_tolerance = max(self._TOLERANCE, 4.0 * math.ulp(self._initial_cash))
         self._cash = float(initial_cash)
         self._positions: dict[str, float] = {}
         self._pending: list[PendingTargetOrder] = []
@@ -180,7 +181,7 @@ class PortfolioLedger:
             if updated_shares < -self._TOLERANCE:
                 raise RuntimeError("accounting invariant violated: negative shares")
             self._positions[order.symbol] = max(0.0, updated_shares)
-            if self._cash < -self._TOLERANCE:
+            if self._cash < -self._cash_tolerance:
                 raise RuntimeError("accounting invariant violated: negative cash")
             self._cash = max(0.0, self._cash)
 

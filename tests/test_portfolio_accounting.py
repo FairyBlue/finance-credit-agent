@@ -87,3 +87,23 @@ def test_long_only_unlevered_policy_never_allows_negative_cash_or_short_position
     ledger.execute_next_open(datetime(2025, 1, 3, 14, 30, tzinfo=UTC), {"AAA": 100.0})
     assert ledger.cash >= 0.0
     assert all(shares >= 0.0 for shares in ledger.positions.values())
+
+
+def test_exact_full_weight_target_tolerates_only_cash_roundoff_at_large_notional() -> None:
+    ledger = PortfolioLedger(
+        initial_cash=1_000_000.0,
+        policy=ExecutionPolicy(commission_bps=10.0, slippage_bps=5.0),
+    )
+    ledger.queue_target_order(
+        "AAA",
+        target_weight=1.0,
+        decision_at=datetime(2025, 1, 2, 21, 0, tzinfo=UTC),
+    )
+
+    ledger.execute_next_open(
+        datetime(2025, 1, 3, 14, 30, tzinfo=UTC),
+        {"AAA": 98.375},
+    )
+
+    assert ledger.cash == 0.0
+    assert ledger.equity({"AAA": 98.375}) < 1_000_000.0

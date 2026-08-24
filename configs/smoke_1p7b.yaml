@@ -4,6 +4,7 @@ extends:
 
 run:
   name: smoke-a1-qwen3-1p7b
+  kind: wiring_smoke_1p7b
   seed: 42
   smoke: true
 
