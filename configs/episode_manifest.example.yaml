@@ -1,0 +1,18 @@
+# Copy outside git-ignored data/, replace every TODO, then pass it to prepare_episodes.py.
+version: 1
+splits:
+  train:
+    - episode_id: TODO-train-001
+      episode_dates: ["TODO(human): timezone-aware after-close timestamps"]
+      episode_open_times: ["TODO(human): aligned exchange-open timestamps"]
+      benchmark_closes: ["TODO(human): one positive close per episode date"]
+  valid:
+    - episode_id: TODO-valid-001
+      episode_dates: ["TODO(human): strictly after every train timestamp"]
+      episode_open_times: ["TODO(human): aligned exchange-open timestamps"]
+      benchmark_closes: ["TODO(human)"]
+  test:
+    - episode_id: TODO-test-001
+      episode_dates: ["TODO(human): strictly after every valid timestamp"]
+      episode_open_times: ["TODO(human): aligned exchange-open timestamps"]
+      benchmark_closes: ["TODO(human)"]

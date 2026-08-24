@@ -1,0 +1,513 @@
+"""Point-in-time trading environment implemented as an Agent-R1 ToolEnv plugin."""
+
+from __future__ import annotations
+
+import json
+import math
+from collections.abc import Mapping, Sequence
+from dataclasses import asdict
+from datetime import datetime, time
+from pathlib import Path
+from typing import Any, Literal
+
+import numpy as np
+from agent_r1.env import AgentEnv, Observation, ToolEnv
+from agent_r1.env.base import Action
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
+
+from src.data import AvailabilityPolicy, ObservationSnapshot, StockBenchAdapter
+from src.rewards import RiskComponents, finance_advantage
+
+from . import tools as _registered_tools  # noqa: F401  # registry side effects
+from .accounting import ExecutionPolicy, PortfolioLedger, _aware_utc
+
+
+class _StrictArgs(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+
+class RetrieveArgs(_StrictArgs):
+    query: str = Field(min_length=1)
+    symbol: str | None = None
+    limit: int = Field(default=10, ge=1, le=50)
+
+
+class ComputeArgs(_StrictArgs):
+    metric: Literal["price_change", "mean_return", "volatility"]
+    symbol: str = Field(min_length=1)
+    lookback: int = Field(ge=2, le=60)
+
+
+class TargetArgs(_StrictArgs):
+    symbol: str = Field(min_length=1)
+    target_weight: float = Field(ge=0.0, le=1.0)
+
+
+class HoldArgs(_StrictArgs):
+    pass
+
+
+class AbstainArgs(_StrictArgs):
+    reason: str | None = Field(default=None, max_length=500)
+
+
+_ARG_MODELS: dict[str, type[_StrictArgs]] = {
+    "retrieve": RetrieveArgs,
+    "compute": ComputeArgs,
+    "buy": TargetArgs,
+    "sell": TargetArgs,
+    "hold": HoldArgs,
+    "abstain": AbstainArgs,
+}
+
+
+def _parse_datetime(value: datetime | str) -> datetime:
+    parsed = (
+        value
+        if isinstance(value, datetime)
+        else datetime.fromisoformat(value.replace("Z", "+00:00"))
+    )
+    return _aware_utc(parsed, name="episode date")
+
+
+@AgentEnv.register("trading")
+class TradingEnv(ToolEnv):
+    """Long-only daily replay with retrieve/compute/buy/sell/hold/abstain tools.
+
+    Unlike upstream `ToolEnv.step`, this override validates arguments and executes
+    exactly one tool serially.  Malformed actions become error observations, so an
+    LLM mistake cannot crash a rollout or concurrently mutate the ledger.
+    """
+
+    TOOL_NAMES = ("retrieve", "compute", "buy", "sell", "hold", "abstain")
+
+    def __init__(
+        self,
+        *,
+        episode_dates: Sequence[datetime | str],
+        episode_open_times: Sequence[datetime | str],
+        symbols: Sequence[str],
+        initial_cash: float,
+        commission_bps: float,
+        slippage_bps: float,
+        drawdown_coefficient: float,
+        turnover_coefficient: float,
+        benchmark_closes: Sequence[float],
+        reward_mode: str = "generic_step",
+        finance_epsilon: float | None = None,
+        risk_lambda: float | None = None,
+        turnover_limit: float | None = None,
+        position_limit: float | None = None,
+        adapter: StockBenchAdapter | None = None,
+        storage_root: str | Path | None = None,
+        data_version: str | None = None,
+        market_timezone: str | None = None,
+        market_close_time: str | None = None,
+        tool_format: str = "hermes",
+        **kwargs: Any,
+    ) -> None:
+        super().__init__(tools=list(self.TOOL_NAMES), tool_format=tool_format)
+        self._dates = tuple(_parse_datetime(value) for value in episode_dates)
+        if len(self._dates) < 2:
+            raise ValueError("an episode needs at least two strictly ordered market dates")
+        if any(
+            current >= following
+            for current, following in zip(self._dates, self._dates[1:], strict=False)
+        ):
+            raise ValueError("episode_dates must be strictly increasing")
+        self._open_times = tuple(_parse_datetime(value) for value in episode_open_times)
+        if len(self._open_times) != len(self._dates):
+            raise ValueError("episode_open_times must align one-to-one with episode_dates")
+        if any(
+            open_time >= close_time
+            for open_time, close_time in zip(self._open_times, self._dates, strict=True)
+        ):
+            raise ValueError("every session open must be earlier than its after-close observation")
+        if any(
+            previous_close >= next_open
+            for previous_close, next_open in zip(
+                self._dates[:-1], self._open_times[1:], strict=True
+            )
+        ):
+            raise ValueError("each next open must occur strictly after the previous decision close")
+        self._symbols = tuple(dict.fromkeys(symbol.strip().upper() for symbol in symbols))
+        if not self._symbols or any(not symbol for symbol in self._symbols):
+            raise ValueError("symbols must not be empty")
+
+        if adapter is None:
+            if not all((storage_root, data_version, market_timezone, market_close_time)):
+                raise ValueError(
+                    "provide adapter, or storage_root/data_version/market_timezone/"
+                    "market_close_time"
+                )
+            close_time = time.fromisoformat(str(market_close_time))
+            adapter = StockBenchAdapter.from_storage(
+                Path(str(storage_root)),
+                symbols=self._symbols,
+                data_version=str(data_version),
+                availability_policy=AvailabilityPolicy(str(market_timezone), close_time),
+            )
+        self._adapter = adapter
+        self._initial_cash = float(initial_cash)
+        self._execution_policy = ExecutionPolicy(float(commission_bps), float(slippage_bps))
+        self._drawdown_coefficient = self._coefficient(
+            drawdown_coefficient, name="drawdown_coefficient"
+        )
+        self._turnover_coefficient = self._coefficient(
+            turnover_coefficient, name="turnover_coefficient"
+        )
+        self._benchmark_closes = tuple(float(value) for value in benchmark_closes)
+        if len(self._benchmark_closes) != len(self._dates):
+            raise ValueError("benchmark_closes must align one-to-one with episode_dates")
+        if any(not math.isfinite(value) or value <= 0.0 for value in self._benchmark_closes):
+            raise ValueError("benchmark closes must be finite and positive")
+        if reward_mode not in {"outcome_only", "generic_step", "finance_trajectory"}:
+            raise ValueError(
+                "reward_mode must be outcome_only, generic_step, or finance_trajectory"
+            )
+        self._reward_mode = reward_mode
+        finance_values = (finance_epsilon, risk_lambda, turnover_limit, position_limit)
+        if reward_mode == "finance_trajectory" and any(value is None for value in finance_values):
+            raise ValueError(
+                "finance_trajectory requires finance_epsilon, risk_lambda, turnover_limit, "
+                "and position_limit"
+            )
+        self._finance_epsilon = None if finance_epsilon is None else float(finance_epsilon)
+        self._risk_lambda = None if risk_lambda is None else float(risk_lambda)
+        self._turnover_limit = None if turnover_limit is None else float(turnover_limit)
+        self._position_limit = None if position_limit is None else float(position_limit)
+        if self._finance_epsilon is not None and self._finance_epsilon <= 0.0:
+            raise ValueError("finance_epsilon must be positive")
+        for name, value in (
+            ("risk_lambda", self._risk_lambda),
+            ("turnover_limit", self._turnover_limit),
+            ("position_limit", self._position_limit),
+        ):
+            if value is not None and (not math.isfinite(value) or value < 0.0):
+                raise ValueError(f"{name} must be finite and non-negative")
+        self._base_raw_prompt = list(kwargs.get("raw_prompt", []))
+        self.ledger = PortfolioLedger(
+            initial_cash=self._initial_cash,
+            policy=self._execution_policy,
+        )
+        self._index = 0
+        self._done = False
+        self._high_water_mark = self._initial_cash
+        self._invalid_calls = 0
+        self._tool_calls = 0
+        self._abstentions = 0
+        self._equity_curve = [self._initial_cash]
+        self._net_returns: list[float] = []
+        self._turnovers: list[float] = []
+        self._maximum_position_weight = 0.0
+
+    @staticmethod
+    def _coefficient(value: float, *, name: str) -> float:
+        result = float(value)
+        if not math.isfinite(result) or result < 0.0:
+            raise ValueError(f"{name} must be finite and non-negative")
+        return result
+
+    @property
+    def current_date(self) -> datetime:
+        return self._dates[self._index]
+
+    def reset(self, **kwargs: Any) -> Observation:
+        self.ledger = PortfolioLedger(
+            initial_cash=self._initial_cash,
+            policy=self._execution_policy,
+        )
+        self._index = 0
+        self._done = False
+        self._high_water_mark = self._initial_cash
+        self._invalid_calls = 0
+        self._tool_calls = 0
+        self._abstentions = 0
+        self._equity_curve = [self._initial_cash]
+        self._net_returns = []
+        self._turnovers = []
+        self._maximum_position_weight = 0.0
+        raw_prompt = list(kwargs.get("raw_prompt", self._base_raw_prompt))
+        if not raw_prompt:
+            raw_prompt = [
+                {
+                    "role": "system",
+                    "content": (
+                        "Use exactly one available tool per turn. Trading decisions fill at the "
+                        "next open; shorting and leverage are forbidden."
+                    ),
+                }
+            ]
+        super().reset(raw_prompt=raw_prompt)
+        self._messages.append({"role": "user", "content": self._state_text()})
+        return Observation(messages=list(self._messages))
+
+    async def step(self, action: Action) -> tuple[Observation, float, bool, dict[str, Any]]:
+        if self._done:
+            return self._invalid("episode is already complete", terminal=True)
+        if not isinstance(action, Action) or action.text is None:
+            return self._invalid("expected Agent-R1 Action with text")
+
+        self._messages.append({"role": "assistant", "content": action.text})
+        try:
+            _, calls = self.format_wrapper.parse_response(action.text)
+            if len(calls) != 1:
+                raise ValueError("exactly one tool call is required per environment step")
+            call = calls[0]
+            if call.name not in _ARG_MODELS:
+                raise ValueError(
+                    f"unknown tool {call.name!r}; available tools: {', '.join(self.TOOL_NAMES)}"
+                )
+            validated = _ARG_MODELS[call.name].model_validate(call.arguments)
+            normalized_args = validated.model_dump(exclude_none=True)
+            # Exercise Agent-R1's BaseTool plugin contract before stateful dispatch.
+            await self.tools[call.name].run(normalized_args, tools_kwargs=self.tools_kwargs)
+            self._tool_calls += 1
+
+            if call.name == "retrieve":
+                result = self._retrieve(validated)
+                return self._success(result, info={"tool": "retrieve"})
+            if call.name == "compute":
+                result = self._compute(validated)
+                return self._success(result, info={"tool": "compute"})
+            if call.name in {"buy", "sell"}:
+                assert isinstance(validated, TargetArgs)
+                self._queue_directional_target(call.name, validated)
+                return self._advance(call.name)
+            if call.name == "abstain":
+                self._abstentions += 1
+                return self._advance("abstain")
+            return self._advance("hold")
+        except (KeyError, RuntimeError, TypeError, ValidationError, ValueError) as error:
+            return self._invalid(str(error))
+
+    def _retrieve(self, args: _StrictArgs) -> str:
+        assert isinstance(args, RetrieveArgs)
+        query = args.query.casefold()
+        symbol = args.symbol.strip().upper() if args.symbol else None
+        matches: list[dict[str, object]] = []
+        for observation in self._snapshot():
+            record = observation.canonical_record()
+            if symbol is not None and observation.symbol != symbol:
+                continue
+            if query not in json.dumps(record, ensure_ascii=False, sort_keys=True).casefold():
+                continue
+            matches.append(record)
+            if len(matches) >= args.limit:
+                break
+        return json.dumps(
+            {"as_of": self.current_date.isoformat(), "results": matches}, sort_keys=True
+        )
+
+    def _compute(self, args: _StrictArgs) -> str:
+        assert isinstance(args, ComputeArgs)
+        symbol = args.symbol.strip().upper()
+        closes = [
+            float(observation.payload["close"])
+            for observation in self._snapshot()
+            if observation.kind == "market"
+            and observation.symbol == symbol
+            and "close" in observation.payload
+        ][-args.lookback :]
+        if len(closes) < 2:
+            raise ValueError(f"compute needs at least two visible close prices for {symbol}")
+        array = np.asarray(closes, dtype=np.float64)
+        returns = array[1:] / array[:-1] - 1.0
+        values = {
+            "price_change": float(array[-1] / array[0] - 1.0),
+            "mean_return": float(returns.mean()),
+            "volatility": float(returns.std(ddof=0)),
+        }
+        return json.dumps(
+            {
+                "as_of": self.current_date.isoformat(),
+                "lookback_used": len(closes),
+                "metric": args.metric,
+                "symbol": symbol,
+                "value": values[args.metric],
+            },
+            sort_keys=True,
+        )
+
+    def _queue_directional_target(self, action_name: str, args: TargetArgs) -> None:
+        symbol = args.symbol.strip().upper()
+        if symbol not in self._symbols:
+            raise ValueError(f"symbol {symbol!r} is outside the frozen episode universe")
+        current_weight = self._current_weight(symbol)
+        if action_name == "buy" and args.target_weight <= current_weight + 1e-12:
+            raise ValueError("buy target_weight must be above the current weight")
+        if action_name == "sell" and args.target_weight >= current_weight - 1e-12:
+            raise ValueError("sell target_weight must be below the current weight")
+        self.ledger.queue_target_order(
+            symbol,
+            target_weight=args.target_weight,
+            decision_at=self.current_date,
+        )
+
+    def _advance(self, action_name: str) -> tuple[Observation, float, bool, dict[str, Any]]:
+        current_closes = self._latest_market_prices(self._snapshot(), field="close")
+        equity_before = self.ledger.equity(current_closes)
+        current_benchmark = self._benchmark_closes[self._index]
+
+        self._index += 1
+        next_snapshot = self._snapshot()
+        next_opens = self._latest_market_prices(next_snapshot, field="open")
+        fills = self.ledger.execute_next_open(self._open_times[self._index], next_opens)
+        next_closes = self._latest_market_prices(next_snapshot, field="close")
+        equity_after = self.ledger.equity(next_closes)
+
+        transaction_cost = sum(fill.total_cost for fill in fills)
+        turnover = sum(fill.notional for fill in fills) / equity_before
+        gross_return = (equity_after + transaction_cost) / equity_before - 1.0
+        cost_fraction = transaction_cost / equity_before
+        benchmark_return = self._benchmark_closes[self._index] / current_benchmark - 1.0
+        self._high_water_mark = max(self._high_water_mark, equity_after)
+        drawdown = max(0.0, (self._high_water_mark - equity_after) / self._high_water_mark)
+        reward = (
+            gross_return
+            - benchmark_return
+            - cost_fraction
+            - self._drawdown_coefficient * drawdown
+            - self._turnover_coefficient * turnover
+        )
+        self._done = self._index == len(self._dates) - 1
+        portfolio_return_net = equity_after / equity_before - 1.0
+        self._equity_curve.append(equity_after)
+        self._net_returns.append(portfolio_return_net)
+        self._turnovers.append(turnover)
+        if equity_after > 0.0:
+            self._maximum_position_weight = max(
+                self._maximum_position_weight,
+                max(
+                    (
+                        shares * next_closes[symbol] / equity_after
+                        for symbol, shares in self.ledger.positions.items()
+                    ),
+                    default=0.0,
+                ),
+            )
+        emitted_reward = self._emitted_reward(generic_step_reward=reward)
+        info = {
+            "action": action_name,
+            "benchmark_return": benchmark_return,
+            "cost_fraction": cost_fraction,
+            "drawdown": drawdown,
+            "equity": equity_after,
+            "fills": [asdict(fill) for fill in fills],
+            "invalid_action": False,
+            "portfolio_return_net": portfolio_return_net,
+            "reward_mode": self._reward_mode,
+            "turnover": turnover,
+        }
+        if self._done:
+            info["episode_return"] = equity_after / self._initial_cash - 1.0
+            info["trajectory_reward"] = emitted_reward
+        return self._success(
+            self._state_text(extra={"last_action": action_name, "last_reward": emitted_reward}),
+            reward=emitted_reward,
+            done=self._done,
+            info=info,
+        )
+
+    def _emitted_reward(self, *, generic_step_reward: float) -> float:
+        if self._reward_mode == "generic_step":
+            return generic_step_reward
+        if not self._done:
+            return 0.0
+        episode_return = self._equity_curve[-1] / self._initial_cash - 1.0
+        if self._reward_mode == "outcome_only":
+            return episode_return
+
+        assert self._finance_epsilon is not None
+        assert self._risk_lambda is not None
+        assert self._turnover_limit is not None
+        assert self._position_limit is not None
+        benchmark_return = self._benchmark_closes[-1] / self._benchmark_closes[0] - 1.0
+        running_peak = self._equity_curve[0]
+        maximum_drawdown = 0.0
+        for equity in self._equity_curve:
+            running_peak = max(running_peak, equity)
+            maximum_drawdown = max(maximum_drawdown, (running_peak - equity) / running_peak)
+        risk = RiskComponents(
+            max_drawdown=maximum_drawdown,
+            turnover_excess=max(0.0, sum(self._turnovers) - self._turnover_limit),
+            position_excess=max(0.0, self._maximum_position_weight - self._position_limit),
+        )
+        result = finance_advantage(
+            episode_return=episode_return,
+            benchmark_return=benchmark_return,
+            # TODO(human): confirm that sigma is portfolio daily-return volatility.
+            volatility=float(np.std(self._net_returns, ddof=0)),
+            epsilon=self._finance_epsilon,
+            risk_lambda=self._risk_lambda,
+            risk=risk,
+        )
+        return result.advantage
+
+    def _snapshot(self) -> ObservationSnapshot:
+        return self._adapter.get_observations(self.current_date)
+
+    def _latest_market_prices(
+        self, snapshot: ObservationSnapshot, *, field: str
+    ) -> dict[str, float]:
+        prices: dict[str, float] = {}
+        for observation in snapshot:
+            if (
+                observation.kind == "market"
+                and observation.symbol in self._symbols
+                and field in observation.payload
+            ):
+                prices[observation.symbol] = float(observation.payload[field])
+        missing = [symbol for symbol in self._symbols if symbol not in prices]
+        if missing:
+            raise ValueError(f"missing visible {field} prices for: {missing}")
+        return prices
+
+    def _current_weight(self, symbol: str) -> float:
+        closes = self._latest_market_prices(self._snapshot(), field="close")
+        equity = self.ledger.equity(closes)
+        return self.ledger.positions.get(symbol, 0.0) * closes[symbol] / equity
+
+    def _state_text(self, *, extra: Mapping[str, object] | None = None) -> str:
+        snapshot = self._snapshot()
+        closes = self._latest_market_prices(snapshot, field="close")
+        recent_records = [observation.canonical_record() for observation in snapshot[-20:]]
+        state: dict[str, object] = {
+            "available_tools": list(self.TOOL_NAMES),
+            "cash": self.ledger.cash,
+            "current_date": self.current_date.isoformat(),
+            "market_information": recent_records,
+            "portfolio_equity": self.ledger.equity(closes),
+            "positions": dict(self.ledger.positions),
+        }
+        if extra:
+            state.update(extra)
+        return json.dumps(state, ensure_ascii=False, sort_keys=True)
+
+    def _success(
+        self,
+        text: str,
+        *,
+        reward: float = 0.0,
+        done: bool = False,
+        info: dict[str, Any] | None = None,
+    ) -> tuple[Observation, float, bool, dict[str, Any]]:
+        self._messages.append(
+            {"role": "user", "content": self.format_wrapper.format_observation(text)}
+        )
+        return Observation(messages=list(self._messages)), float(reward), done, dict(info or {})
+
+    def _invalid(
+        self, message: str, *, terminal: bool = False
+    ) -> tuple[Observation, float, bool, dict[str, Any]]:
+        self._invalid_calls += 1
+        error = f"Error: {message}"
+        self._messages.append(
+            {"role": "user", "content": self.format_wrapper.format_observation(error)}
+        )
+        return (
+            Observation(messages=list(self._messages)),
+            0.0,
+            terminal,
+            {"error": message, "invalid_action": True},
+        )

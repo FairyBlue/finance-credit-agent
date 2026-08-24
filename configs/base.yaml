@@ -1,0 +1,95 @@
+project:
+  name: finance-credit-agent
+  seed_set: [42, 43]
+
+framework:
+  agent_r1_path: third_party/agent-r1
+  # Latest default-branch stable point with StepPO; no GitHub release contains StepPO.
+  agent_r1_commit: b124aa46534cbf2fb8bc8af11405774984c42ac7
+  agent_r1_human_status: "TODO(human): confirm this untagged lock (2026-07-21)"
+  verl_version: "0.7.0"
+
+data:
+  source: StockBench
+  repository: https://github.com/ChenYXxxx/stockbench
+  repo_commit: ce8b2b3483590646ad3b650ac8221f43f76fd091
+  storage_tree: f9553f735d6bd2d797541bec519cbd8028adee40
+  version: "stockbench-storage-tree:f9553f735d6bd2d797541bec519cbd8028adee40"
+  version_status: "TODO(human): confirm candidate pin; repo has no tags/releases"
+  storage_root: data/stockbench/storage
+  processed:
+    train_file: data/processed/train.parquet
+    valid_file: data/processed/valid.parquet
+    test_file: data/processed/test.parquet
+  windows:
+    train: {start: "TODO(human)", end: "TODO(human)"}
+    valid: {start: "TODO(human)", end: "TODO(human)"}
+    test: {start: "TODO(human)", end: "TODO(human)"}
+  universe:
+    size: "TODO(human): choose 10-20; upstream candidate has 20"
+    candidate_symbols: [GS, MSFT, HD, V, SHW, CAT, MCD, UNH, AXP, AMGN, TRV, CRM, JPM, IBM, HON, BA, AMZN, AAPL, PG, JNJ]
+    symbols: "TODO(human): freeze a 10-20 ticker subset from candidate_symbols"
+    selection_rule: "TODO(human): pre-register a deterministic rule, e.g. liquidity top-N"
+  upstream_window_observation:
+    project_page: {start: "2025-03-03", end: "2025-06-30", claimed_sessions: 82}
+    immutable_tree_observed_sessions_per_ticker: 83
+    status: "TODO(human): resolve the 82/83-session contradiction"
+  availability:
+    field: available_at
+    predicate: "available_at <= as_of"
+    timezone: America/New_York
+    market_open_time: "09:30:00"
+    market_close_time: "16:00:00"
+    status: "TODO(human): review timezone, exchange calendar, and early-close handling"
+
+execution:
+  initial_cash: 1000000.0
+  commission_bps: 10.0  # TODO(human): confirm StockBench/FINSABER alignment.
+  slippage_bps: 5.0
+  slippage_sensitivity_bps: [0.0, 10.0, 20.0]
+  fill: next_open
+  decision_boundary: after_close
+  allow_short: false
+  allow_leverage: false
+
+reward:
+  epsilon: "TODO(human): set before training"
+  risk_lambda: "TODO(human): set before training"
+  volatility_source: "TODO(human): confirm portfolio daily-return volatility for sigma"
+  drawdown_coefficient: "TODO(human): set before training"
+  turnover_coefficient: "TODO(human): set before training"
+  turnover_limit: "TODO(human): set before training"
+  position_limit: "TODO(human): set before training"
+  benchmark: "TODO(human): freeze the series used as B in A_fin"
+
+training:
+  train_batch_size: 8
+  rollout_batch_size: 8
+  rollout_n: 4
+  max_prompt_length: 4096
+  max_response_length: 2048
+  max_turns: 12
+  learning_rate: 1.0e-6
+  total_epochs: 1
+  n_gpus_per_node: 1
+  require_clean_repo: true
+
+regimes:
+  rule: realized_volatility_x_trend
+  minimum_count: 3
+  boundaries: "TODO(human): freeze dates after the test window is confirmed"
+
+evaluation:
+  annualization_periods: 252
+  baselines: [buy_and_hold_equal_weight, all_cash, frozen_llm_zero_shot, alphaquanter]
+  block_bootstrap: true
+  fee_robustness_multiplier: 2.0
+
+model:
+  train: Qwen/Qwen3-4B
+  debug: Qwen/Qwen3-1.7B
+
+wandb:
+  project: finance-credit-agent
+  mode: online
+  required_hashes: [agent_r1_commit, repo_commit, data_version]

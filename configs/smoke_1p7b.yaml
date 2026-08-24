@@ -1,0 +1,24 @@
+extends:
+  - base.yaml
+  - arm_a1.yaml
+
+run:
+  name: smoke-a1-qwen3-1p7b
+  seed: 42
+  smoke: true
+
+model:
+  name: Qwen/Qwen3-1.7B
+
+training:
+  episodes: 4
+  trainer_steps: 2
+  max_turns: 4
+  rollout_batch_size: 2
+  train_batch_size: 2
+  rollout_n: 2
+  total_epochs: 1
+  require_clean_repo: false
+
+wandb:
+  mode: online

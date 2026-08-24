@@ -1,0 +1,17 @@
+extends: base.yaml
+
+arm:
+  id: A3
+  name: finance_native
+  optimizer: steppo
+  credit_assignment: finance_native
+  reward_signal: A_fin
+  mechanism: m1_uniform  # Smoke-only ablation; final A3 must use M2 or M3.
+
+finance_credit:
+  m1_uniform:
+    implemented: true
+  m2_state_regime_group:
+    implemented: false  # TODO: implement before the proposal's final A3 comparison.
+  m3_counterfactual_information:
+    implemented: false  # TODO: sampled counterfactual rollouts.

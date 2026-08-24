@@ -1,0 +1,5 @@
+- name: trading
+  _target_: src.agents.agent_flow.FinanceCreditAgentEnvLoop
+  env_type: trading
+  reward_mode: finance_trajectory
+  credit_strategy: m1_uniform

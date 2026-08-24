@@ -1,0 +1,117 @@
+# H100-NVL setup
+
+These steps target one Linux x86_64 H100-NVL (96 GB), Python 3.10, and CUDA 12.x. The pinned GPU set
+is PyTorch 2.7.0 from the CUDA 12.8 index, vLLM 0.9.2, flash-attn 2.8.0.post2, and verl 0.7.0.
+
+## 1. Driver, repository, and submodule
+
+Confirm that the NVIDIA driver supports the selected CUDA runtime, then clone recursively:
+
+```bash
+nvidia-smi
+git clone --recurse-submodules <finance-credit-agent-url>
+cd finance-credit-agent
+git submodule update --init --recursive
+git -C third_party/agent-r1 rev-parse HEAD
+```
+
+The last command must print:
+
+```text
+b124aa46534cbf2fb8bc8af11405774984c42ac7
+```
+
+Agent-R1 has no installable project metadata. Do not run an editable install and do not patch it;
+training launchers add the locked directory to `PYTHONPATH`.
+
+## 2. uv and CPU environment
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv python install 3.10
+uv sync --frozen
+uv run pytest
+```
+
+This path installs no torch, vLLM, flash-attn, or verl and is the supported leakage/accounting test
+environment.
+
+## 3. GPU optional extra
+
+flash-attn needs torch visible while its extension is built, so install in this order:
+
+```bash
+uv sync --frozen
+uv pip install torch==2.7.0 --index-url https://download.pytorch.org/whl/cu128
+uv sync --frozen --extra gpu --no-build-isolation-package flash-attn
+```
+
+Do not upgrade verl independently; Agent-R1 explicitly requires `verl==0.7.0`. vLLM may otherwise
+replace torch with its preferred build, so verify the resolved runtime immediately:
+
+```bash
+uv run python - <<'PY'
+import torch, verl, vllm
+import flash_attn
+print("torch", torch.__version__, "cuda", torch.version.cuda, "available", torch.cuda.is_available())
+print("verl", verl.__version__)
+print("vllm", vllm.__version__)
+print("flash_attn", flash_attn.__version__)
+assert torch.cuda.is_available()
+assert torch.cuda.get_device_properties(0).total_memory > 90 * 1024**3
+PY
+```
+
+If the optional-extra sync resolves a different torch build, stop and reconcile the vLLM/torch
+pair; do not force-install through a broken resolver state.
+
+## 4. StockBench offline snapshot
+
+StockBench is data input, not a runtime dependency or submodule:
+
+```bash
+git clone https://github.com/ChenYXxxx/stockbench.git data/stockbench
+git -C data/stockbench checkout --detach ce8b2b3483590646ad3b650ac8221f43f76fd091
+git -C data/stockbench rev-parse HEAD
+git -C data/stockbench ls-tree HEAD storage
+```
+
+The storage tree must be `f9553f735d6bd2d797541bec519cbd8028adee40`. Keep StockBench in offline
+mode; this project does not call Polygon/Finnhub and does not ingest financial/indicator caches.
+
+Resolve the `TODO(human)` values in `configs/base.yaml`, create a reviewed manifest from
+`configs/episode_manifest.example.yaml`, and generate strict chronological inputs:
+
+```bash
+uv run python scripts/prepare_episodes.py --manifest /path/to/reviewed_manifest.yaml
+```
+
+## 5. W&B and smoke verification
+
+Commit the reviewed configuration and generated code before a real run; the launcher rejects a
+dirty repository by default. Data files remain ignored.
+
+```bash
+uv run wandb login
+
+# CPU-safe command/config/hash validation.
+uv run python -m src.agents.arm_a1 --config configs/smoke_1p7b.yaml --dry-run
+
+# Verify the external plugin imports against the locked submodule.
+PYTHONPATH="$PWD:$PWD/third_party/agent-r1" uv run python - <<'PY'
+from agent_r1.env import AgentEnv, ToolEnv
+from src.env.trading import TradingEnv
+assert issubclass(TradingEnv, ToolEnv)
+assert "trading" in AgentEnv._registry
+print("TradingEnv plugin registered")
+PY
+
+# One-GPU Qwen3-1.7B outcome-only smoke.
+CUDA_VISIBLE_DEVICES=0 uv run python -m src.agents.arm_a1 \
+  --config configs/smoke_1p7b.yaml
+```
+
+The W&B run config must contain non-empty `reproducibility.agent_r1_commit`,
+`reproducibility.repo_commit`, and `reproducibility.data_version`; the first must equal the submodule
+SHA above. A reward curve appearing in W&B is the GPU smoke acceptance condition. CPU verification
+cannot certify CUDA kernels, vLLM rollout, or H100 memory headroom.

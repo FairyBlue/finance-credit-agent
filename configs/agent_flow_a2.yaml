@@ -1,0 +1,4 @@
+- name: trading
+  _target_: src.agents.agent_flow.TradingAgentEnvLoop
+  env_type: trading
+  reward_mode: generic_step

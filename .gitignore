@@ -1,0 +1,27 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.DS_Store
+
+# Local data and experiment outputs are not source artifacts.
+/data/
+artifacts/
+checkpoints/
+outputs/
+wandb/
+logs/
+
+# Local secrets.
+.env
+.env.*
+!.env.example
+
+# graft's local graph cache — regenerable, not committed (run `graft build`).
+graft/
+/.ignore

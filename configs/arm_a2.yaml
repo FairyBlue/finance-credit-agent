@@ -1,0 +1,8 @@
+extends: base.yaml
+
+arm:
+  id: A2
+  name: generic_step_credit
+  optimizer: steppo
+  credit_assignment: agent_r1_generic_step_advantage
+  reward_signal: generic_step_advantage

@@ -1,0 +1,8 @@
+extends: base.yaml
+
+arm:
+  id: A1
+  name: outcome_only
+  optimizer: grpo
+  credit_assignment: outcome_only
+  reward_signal: episode_return
