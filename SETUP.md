@@ -65,9 +65,29 @@ PY
 If the optional-extra sync resolves a different torch build, stop and reconcile the vLLM/torch
 pair; do not force-install through a broken resolver state.
 
-## 4. StockBench offline snapshot
+## 4. Frozen data snapshots
 
-StockBench is data input, not a runtime dependency or submodule:
+Train/valid use a materialized daily-history snapshot. The primary provider is yfinance 1.6.0 and
+Stooq is the allowed fallback. Never fall back silently or read live data during an experiment:
+record the provider actually used, its version, UTC retrieval time, and a checksum manifest under
+the matching `data.sources.history` fields in `configs/base.yaml` and the reviewed episode manifest.
+The inclusive full-session windows are 2023-01-03…2024-10-31 for train and
+2024-11-01…2025-02-28 for validation.
+
+```bash
+uv sync --extra data
+uv run python scripts/fetch_history.py --provider yfinance
+```
+
+Yahoo split-scales historical `Close` even with `auto_adjust=false`. The audited materializer
+downloads corporate actions through 2026-08-24, reverses every split ratio later than each bar, and
+rounds de-adjusted volume to the nearest share. This reconstructs contemporaneous nominal OHLCV
+while keeping `repair=false`. The 10,820-file raw
+manifest SHA-256 is `2612e707446b1c8bcd73ac6583b84558d3c4eddbaa9fc20adf7023c3c8a76c90`.
+A Stooq snapshot must be generated into a clean location, receive an equivalent price-basis audit,
+and be recorded as a different data version; never mix providers.
+
+StockBench is the final OOS data input, not a runtime dependency or submodule:
 
 ```bash
 git clone https://github.com/ChenYXxxx/stockbench.git data/stockbench
@@ -76,15 +96,55 @@ git -C data/stockbench rev-parse HEAD
 git -C data/stockbench ls-tree HEAD storage
 ```
 
-The storage tree must be `f9553f735d6bd2d797541bec519cbd8028adee40`. Keep StockBench in offline
-mode; this project does not call Polygon/Finnhub and does not ingest financial/indicator caches.
+The storage tree must be `f9553f735d6bd2d797541bec519cbd8028adee40`. Its 20 tickers each contain
+83 daily observations from 2025-03-03 through 2025-06-30, yielding 82 adjacent return intervals.
+The ascending `YYYY-MM-DD<LF>` XNYS session list (final LF included) is 913 bytes with SHA-256
+`d272656019d9f7a856444ac903a7a6da9d5377987214d00691600b655df56860`.
+Treat that entire window as one indivisible final OOS test: no date may be reused for validation,
+early stopping, selection, or tuning. Compute the aggregate SHA-256 over the exact frozen input
+manifest. The audited 1,660-file value is
+`8b48fc7d50f4ecdbc49e920eb83d72df02b9a56d4365bce7f0db6bb4a342bd1f`. Upstream
+`.parquet.sha256` sidecars hash canonical DataFrame contents; the aggregate manifest independently
+hashes raw Parquet bytes. The exact aggregate includes only the approved symbols and XNYS sessions:
+sort manifest-root-relative POSIX paths by their UTF-8 bytes, then append one
+`<path><TAB><lowercase raw-file sha256><LF>` line per file, including the final LF. History uses its
+storage directory as manifest root. StockBench uses the repository clone as manifest root, so each
+of its 1,660 input paths starts with `storage/`; the resulting UTF-8 manifest is 179,114 bytes.
+The launcher checks both source manifests before dispatch, and each rollout worker repeats the raw-byte
+check on first source load before it caches a read-only adapter for that process.
 
-Resolve the `TODO(human)` values in `configs/base.yaml`, create a reviewed manifest from
-`configs/episode_manifest.example.yaml`, and generate strict chronological inputs:
+Keep all snapshots offline during a run. V1 disables news. Do not ingest or describe an existing
+“current fundamentals” cache as point-in-time: fundamentals are allowed only after a field-level PIT
+audit establishes immutable `available_at` timestamps. Technical indicators must be computed only
+from prices already available at the query's `as_of` time.
+
+Resolve the remaining reward `TODO(human)` values in `configs/base.yaml`. Create and commit a full
+reviewed manifest at the exact path configured in base; create a separate smoke manifest with four
+short train episodes (at most nine sessions per train/valid episode). Generate strict chronological
+inputs into their separate processed files:
 
 ```bash
-uv run python scripts/prepare_episodes.py --manifest /path/to/reviewed_manifest.yaml
+cp configs/episode_manifest.example.yaml configs/episode_manifest.draft.yaml
+uv run python scripts/freeze_benchmarks.py \
+  --draft configs/episode_manifest.draft.yaml \
+  --output configs/episode_manifest.reviewed.yaml
+uv run python scripts/prepare_episodes.py \
+  --manifest configs/episode_manifest.reviewed.yaml
+
+cp configs/episode_manifest.example.yaml configs/episode_manifest.smoke.draft.yaml
+uv run python scripts/freeze_benchmarks.py --config configs/smoke_1p7b.yaml \
+  --draft configs/episode_manifest.smoke.draft.yaml \
+  --output configs/episode_manifest.smoke.reviewed.yaml
+uv run python scripts/prepare_episodes.py --config configs/smoke_1p7b.yaml \
+  --manifest configs/episode_manifest.smoke.reviewed.yaml
+
+uv run python scripts/run_t2_probe.py --output artifacts/t2_probe.json
 ```
+
+The real T2 command currently exits non-zero because the frozen unshifted control is not
+significantly above chance (`0.530864` aligned vs `0.518519` shifted). Preserve that failure until a
+dated protocol amendment is approved; do not tune against StockBench OOS. Main launchers recompute
+and enforce this gate; only the wiring-only smoke run is exempt.
 
 ## 5. W&B and smoke verification
 

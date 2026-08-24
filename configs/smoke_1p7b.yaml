@@ -10,11 +10,18 @@ run:
 model:
   name: Qwen/Qwen3-1.7B
 
+data:
+  # Short episodes reserve two retrieve/compute calls per session before each advance.
+  episode_manifest: configs/episode_manifest.smoke.reviewed.yaml
+  processed:
+    train_file: data/processed/smoke_train.parquet
+    valid_file: data/processed/smoke_valid.parquet
+    test_file: data/processed/smoke_test.parquet
+
 training:
   episodes: 4
-  trainer_steps: 2
-  max_turns: 4
-  rollout_batch_size: 2
+  # Up to 8 advances plus two retrieve/compute calls per session fit within 32.
+  max_agent_steps: 32
   train_batch_size: 2
   rollout_n: 2
   total_epochs: 1

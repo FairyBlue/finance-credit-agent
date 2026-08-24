@@ -2,9 +2,9 @@
 
 import json
 from datetime import date, datetime, time, timezone
-from hashlib import sha256
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import pytest
 
@@ -17,6 +17,11 @@ from src.data import (
     TrainWindowStandardizer,
     numeric_feature_bytes,
 )
+from src.data.stockbench import ObservationKind, dataframe_content_sha256
+from src.evaluation import (
+    build_equal_weight_direction_probe_dataset,
+    run_temporal_leakage_probe,
+)
 
 UTC = timezone.utc
 
@@ -24,7 +29,7 @@ UTC = timezone.utc
 def _observation(
     observation_id: str,
     *,
-    kind: str,
+    kind: ObservationKind,
     available_at: datetime,
     close: float | None = None,
     text: str | None = None,
@@ -120,32 +125,33 @@ def test_t3_full_sample_fit_is_rejected() -> None:
         )
 
 
-def test_t4_deleting_future_news_cannot_change_historical_retrieval() -> None:
+def test_t4_deleting_future_fundamental_cannot_change_historical_retrieval() -> None:
     as_of = datetime(2025, 1, 10, 23, 59, tzinfo=UTC)
-    historical_news = _observation(
-        "news-history",
-        kind="news",
+    historical_fundamental = _observation(
+        "fundamental-history",
+        kind="fundamental",
         available_at=datetime(2025, 1, 10, 12, 0, tzinfo=UTC),
         text="Known at the query time",
     )
-    future_news = _observation(
-        "news-future",
-        kind="news",
+    future_fundamental = _observation(
+        "fundamental-future",
+        kind="fundamental",
         available_at=datetime(2025, 1, 11, 12, 0, tzinfo=UTC),
         text="Not known at the query time",
     )
 
     with_future = StockBenchAdapter(
-        [historical_news, future_news], data_version="fixture-with-future"
+        [historical_fundamental, future_fundamental], data_version="fixture-with-future"
     )
-    without_future = StockBenchAdapter([historical_news], data_version="fixture-no-future")
+    without_future = StockBenchAdapter([historical_fundamental], data_version="fixture-no-future")
 
-    assert with_future.get_observations(as_of).canonical_bytes() == without_future.get_observations(
-        as_of
-    ).canonical_bytes()
+    assert (
+        with_future.get_observations(as_of).canonical_bytes()
+        == without_future.get_observations(as_of).canonical_bytes()
+    )
 
 
-def test_stockbench_offline_layout_assigns_news_epoch_and_after_close_availability(
+def test_stockbench_v1_ignores_news_and_assigns_calendar_close_availability(
     tmp_path: Path,
 ) -> None:
     market_dir = tmp_path / "parquet" / "AAA" / "day"
@@ -153,7 +159,7 @@ def test_stockbench_offline_layout_assigns_news_epoch_and_after_close_availabili
     market_dir.mkdir(parents=True)
     news_dir.mkdir(parents=True)
     parquet_path = market_dir / "2025-01-02.parquet"
-    pd.DataFrame(
+    market_frame = pd.DataFrame(
         {
             "date": [date(2025, 1, 2)],
             "open": [100.0],
@@ -163,9 +169,14 @@ def test_stockbench_offline_layout_assigns_news_epoch_and_after_close_availabili
             "volume": [1000.0],
             "vwap": [100.5],
         }
-    ).to_parquet(parquet_path, index=False)
+    )
+    market_frame.to_parquet(parquet_path, index=False)
     parquet_path.with_suffix(".parquet.sha256").write_text(
-        sha256(parquet_path.read_bytes()).hexdigest(), encoding="utf-8"
+        dataframe_content_sha256(
+            market_frame,
+            sort_by=[column for column in market_frame.columns if column != "date"],
+        ),
+        encoding="utf-8",
     )
     publication = datetime(2025, 1, 2, 15, 0, tzinfo=UTC)
     (news_dir / "2025-01-02.json").write_text(
@@ -193,16 +204,154 @@ def test_stockbench_offline_layout_assigns_news_epoch_and_after_close_availabili
 
     before_close = adapter.get_observations(datetime(2025, 1, 2, 20, 0, tzinfo=UTC))
     at_close = adapter.get_observations(datetime(2025, 1, 2, 21, 0, tzinfo=UTC))
-    assert [item.kind for item in before_close] == ["news"]
-    assert [item.kind for item in at_close] == ["news", "market"]
-    assert before_close[0].available_at == publication
+    assert list(before_close) == []
+    assert [item.kind for item in at_close] == ["market"]
 
 
-@pytest.mark.integration
-@pytest.mark.xfail(
-    strict=True,
-    reason="T2 needs the frozen training pipeline, OOS metric, and significance threshold",
-)
 def test_t2_shifted_labels_significantly_reduce_oos_performance() -> None:
-    """T2 skeleton: shifting labels by one period must significantly hurt OOS performance."""
-    pytest.fail("TODO(human): freeze the OOS metric and significance threshold before enabling T2")
+    """A one-session label shift must destroy a real OOS directional signal."""
+
+    rng = np.random.default_rng(20250824)
+    sample_count = 360
+    directions = rng.integers(0, 2, size=sample_count)
+    signed_direction = directions * 2.0 - 1.0
+    features = np.column_stack(
+        (
+            signed_direction + rng.normal(0.0, 0.08, size=sample_count),
+            rng.normal(0.0, 1.0, size=sample_count),
+        )
+    )
+    sessions = np.datetime64("2024-01-01") + np.arange(sample_count)
+
+    result = run_temporal_leakage_probe(
+        sessions=sessions,
+        features=features,
+        next_session_directions=directions,
+        train_end=180,
+        test_start=240,
+    )
+
+    assert result.aligned_accuracy > 0.95
+    assert 0.4 <= result.shifted_accuracy <= 0.6
+    assert result.aligned_significantly_above_chance
+    assert result.aligned_significantly_above_shifted
+    assert result.shifted_consistent_with_chance
+    assert result == run_temporal_leakage_probe(
+        sessions=sessions,
+        features=features,
+        next_session_directions=directions,
+        train_end=180,
+        test_start=240,
+    )
+
+
+def test_t2_probe_rejects_misaligned_input_lengths() -> None:
+    with pytest.raises(ValueError, match="must have equal length"):
+        run_temporal_leakage_probe(
+            sessions=np.arange(12),
+            features=np.ones((12, 1)),
+            next_session_directions=np.zeros(11, dtype=int),
+            train_end=6,
+            test_start=9,
+        )
+
+
+@pytest.mark.parametrize(
+    ("train_end", "test_start"),
+    [(2, 8), (6, 6), (8, 7), (6, 11)],
+)
+def test_t2_probe_rejects_invalid_temporal_boundaries(train_end: int, test_start: int) -> None:
+    with pytest.raises(ValueError, match="boundaries must define"):
+        run_temporal_leakage_probe(
+            sessions=np.arange(12),
+            features=np.arange(12, dtype=float),
+            next_session_directions=np.arange(12) % 2,
+            train_end=train_end,
+            test_start=test_start,
+        )
+
+
+def test_t2_probe_rejects_non_chronological_sessions() -> None:
+    sessions = np.arange(12)
+    sessions[5], sessions[6] = sessions[6], sessions[5]
+
+    with pytest.raises(ValueError, match="sessions must be strictly increasing"):
+        run_temporal_leakage_probe(
+            sessions=sessions,
+            features=np.arange(12, dtype=float),
+            next_session_directions=np.arange(12) % 2,
+            train_end=6,
+            test_start=9,
+        )
+
+
+def test_t2_shift_never_uses_a_label_at_or_beyond_the_train_boundary(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Both fits use common X rows whose targets remain strictly in train."""
+
+    import src.evaluation.leakage_probe as probe_module
+
+    captured_labels: list[np.ndarray] = []
+
+    def capture_fit(features: np.ndarray, labels: np.ndarray) -> np.ndarray:
+        captured_labels.append(labels.copy())
+        return np.zeros(features.shape[1] + 1)
+
+    monkeypatch.setattr(probe_module, "_fit_direction_probe", capture_fit)
+    labels = np.asarray([0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0])
+    probe_module.run_temporal_leakage_probe(
+        sessions=np.arange(12),
+        features=np.arange(12, dtype=float),
+        next_session_directions=labels,
+        train_end=8,
+        test_start=9,
+        block_size=1,
+        bootstrap_samples=10,
+    )
+
+    assert np.array_equal(captured_labels[0], labels[:6])
+    assert np.array_equal(captured_labels[1], labels[1:7])
+
+
+def test_t2_dataset_uses_only_asof_closes_and_frozen_temporal_boundaries() -> None:
+    sessions = [datetime(2025, 1, 1 + offset, 21, 0, tzinfo=UTC) for offset in range(30)]
+    bars = []
+    close = 100.0
+    for index, session in enumerate(sessions):
+        close *= 1.01 if index % 3 else 0.995
+        bars.append(
+            MarketObservation(
+                observation_id=f"bar-{index}",
+                kind="market",
+                symbol="AAA",
+                event_at=session,
+                available_at=session,
+                payload={"date": session.date().isoformat(), "close": close},
+            )
+        )
+    history = StockBenchAdapter(bars[:20], data_version="history-fixture")
+    oos = StockBenchAdapter(bars[20:], data_version="oos-fixture")
+
+    dataset = build_equal_weight_direction_probe_dataset(
+        history_adapter=history,
+        oos_adapter=oos,
+        history_session_closes=sessions[:20],
+        oos_session_closes=sessions[20:],
+        symbols=["AAA"],
+        train_end=sessions[11].date(),
+        test_start=sessions[20].date(),
+        rolling_window=5,
+    )
+
+    assert dataset.feature_names == (
+        "portfolio_return_1d",
+        "portfolio_return_mean_5d",
+        "portfolio_return_volatility_5d",
+        "cross_sectional_dispersion_1d",
+        "cross_sectional_positive_fraction_1d",
+    )
+    assert np.all(np.isfinite(dataset.features))
+    assert dataset.train_end > 2
+    assert dataset.test_start > dataset.train_end
+    assert dataset.sessions[dataset.test_start] == np.datetime64("2025-01-21")

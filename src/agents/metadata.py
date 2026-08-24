@@ -4,7 +4,43 @@ from __future__ import annotations
 
 import subprocess
 from dataclasses import asdict, dataclass
+from hashlib import sha256
 from pathlib import Path
+
+
+def composite_data_version(*, history_manifest_sha256: str, stockbench_manifest_sha256: str) -> str:
+    """Name the exact ordered pair of train/valid and final-OOS snapshots."""
+
+    for name, value in (
+        ("history", history_manifest_sha256),
+        ("stockbench", stockbench_manifest_sha256),
+    ):
+        if len(value) != 64 or any(character not in "0123456789abcdef" for character in value):
+            raise ValueError(f"{name} manifest SHA-256 must be 64 lowercase hex characters")
+    payload = (
+        f"history\t{history_manifest_sha256}\nstockbench\t{stockbench_manifest_sha256}\n"
+    ).encode()
+    return f"composite-raw-manifest-sha256:{sha256(payload).hexdigest()}"
+
+
+def validate_composite_data_version(
+    *,
+    configured: str,
+    history_manifest_sha256: str,
+    stockbench_manifest_sha256: str,
+) -> str:
+    """Reject stale run metadata after either frozen source manifest changes."""
+
+    expected = composite_data_version(
+        history_manifest_sha256=history_manifest_sha256,
+        stockbench_manifest_sha256=stockbench_manifest_sha256,
+    )
+    if configured != expected:
+        raise RuntimeError(
+            f"data.version does not match its source manifests: expected {expected}, "
+            f"got {configured}"
+        )
+    return configured
 
 
 def _git(repo: Path, *args: str) -> str:

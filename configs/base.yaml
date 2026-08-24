@@ -4,47 +4,108 @@ project:
 
 framework:
   agent_r1_path: third_party/agent-r1
-  # Latest default-branch stable point with StepPO; no GitHub release contains StepPO.
+  # User-approved default-branch stable point with StepPO; no GitHub release contains StepPO.
   agent_r1_commit: b124aa46534cbf2fb8bc8af11405774984c42ac7
-  agent_r1_human_status: "TODO(human): confirm this untagged lock (2026-07-21)"
+  agent_r1_human_status: "approved: 2026-08-24 protocol amendment"
   verl_version: "0.7.0"
 
 data:
-  source: StockBench
-  repository: https://github.com/ChenYXxxx/stockbench
-  repo_commit: ce8b2b3483590646ad3b650ac8221f43f76fd091
-  storage_tree: f9553f735d6bd2d797541bec519cbd8028adee40
-  version: "stockbench-storage-tree:f9553f735d6bd2d797541bec519cbd8028adee40"
-  version_status: "TODO(human): confirm candidate pin; repo has no tags/releases"
-  storage_root: data/stockbench/storage
+  source: audited_history_plus_stockbench_oos
+  # sha256("history<TAB><history-sha><LF>stockbench<TAB><stockbench-sha><LF>")
+  version: "composite-raw-manifest-sha256:fb674aacaa8c7f6b6992994688733da28cb9e665209af70b778da0ce5688bbb1"
+  sources:
+    history:
+      provider: yfinance
+      provider_version: "1.6.0"
+      allowed_alternative: stooq  # Never mix providers inside one snapshot.
+      # Yahoo retroactively split-scales Close even with auto_adjust=false; reverse it.
+      auto_adjust: false
+      corporate_actions_through: "2026-08-24"
+      repair: false
+      split_deadjustment: reverse_all_later_split_ratios
+      volume_rounding: nearest_share
+      price_basis: contemporaneous_nominal_ohlcv
+      manifest_root: data/history/storage
+      storage_root: data/history/storage
+      input_window: {start: "2023-01-03", end: "2025-02-28"}
+      version: "yfinance-1.6.0-pit-nominal-xnys-2023-01-03_2025-02-28:raw-manifest-sha256:2612e707446b1c8bcd73ac6583b84558d3c4eddbaa9fc20adf7023c3c8a76c90"
+      retrieved_at_utc: "2026-08-24T08:38:18+00:00"
+      input_manifest_sha256: 2612e707446b1c8bcd73ac6583b84558d3c4eddbaa9fc20adf7023c3c8a76c90
+      files: 10820
+      sessions_per_symbol: 541
+    stockbench:
+      repository: https://github.com/ChenYXxxx/stockbench
+      repo_commit: ce8b2b3483590646ad3b650ac8221f43f76fd091
+      storage_tree: f9553f735d6bd2d797541bec519cbd8028adee40
+      manifest_root: data/stockbench
+      storage_root: data/stockbench/storage
+      input_window: {start: "2025-03-03", end: "2025-06-30"}
+      version: "stockbench-oos-20x83:raw-manifest-sha256:8b48fc7d50f4ecdbc49e920eb83d72df02b9a56d4365bce7f0db6bb4a342bd1f"
+      input_manifest_sha256: 8b48fc7d50f4ecdbc49e920eb83d72df02b9a56d4365bce7f0db6bb4a342bd1f
+      files: 1660
+      sessions_per_symbol: 83
+  split_source:
+    train: history
+    valid: history
+    test: stockbench
+  # Must be a committed, human-reviewed copy of episode_manifest.example.yaml.
+  episode_manifest: configs/episode_manifest.reviewed.yaml
   processed:
     train_file: data/processed/train.parquet
     valid_file: data/processed/valid.parquet
     test_file: data/processed/test.parquet
   windows:
-    train: {start: "TODO(human)", end: "TODO(human)"}
-    valid: {start: "TODO(human)", end: "TODO(human)"}
-    test: {start: "TODO(human)", end: "TODO(human)"}
+    # Inclusive boundaries; every value is a complete NYSE session.
+    train: {start: "2023-01-03", end: "2024-10-31"}
+    valid: {start: "2024-11-01", end: "2025-02-28"}
+    test: {start: "2025-03-03", end: "2025-06-30", indivisible_oos: true}
   universe:
-    size: "TODO(human): choose 10-20; upstream candidate has 20"
+    size: 20
     candidate_symbols: [GS, MSFT, HD, V, SHW, CAT, MCD, UNH, AXP, AMGN, TRV, CRM, JPM, IBM, HON, BA, AMZN, AAPL, PG, JNJ]
-    symbols: "TODO(human): freeze a 10-20 ticker subset from candidate_symbols"
-    selection_rule: "TODO(human): pre-register a deterministic rule, e.g. liquidity top-N"
+    symbols: [GS, MSFT, HD, V, SHW, CAT, MCD, UNH, AXP, AMGN, TRV, CRM, JPM, IBM, HON, BA, AMZN, AAPL, PG, JNJ]
+    selection_rule: all_stockbench_20_no_post_hoc_selection
   upstream_window_observation:
-    project_page: {start: "2025-03-03", end: "2025-06-30", claimed_sessions: 82}
+    project_page: {start: "2025-03-03", end: "2025-06-30", claimed_trading_days: 82}
+    calendar: XNYS
+    calendar_version: exchange-calendars-4.13.2
+    calendar_session_list_format: "ascending YYYY-MM-DD<LF>, including final LF"
+    calendar_session_count: 83
+    calendar_session_list_bytes: 913
+    calendar_session_list_sha256: d272656019d9f7a856444ac903a7a6da9d5377987214d00691600b655df56860
     immutable_tree_observed_sessions_per_ticker: 83
-    status: "TODO(human): resolve the 82/83-session contradiction"
+    actual_first_session: "2025-03-03"
+    actual_last_session: "2025-06-30"
+    status: "resolved: 83 observations produce 82 adjacent return intervals"
+  cross_source_overlap_audit:
+    session: "2025-02-28"
+    purpose: verify_contemporaneous_nominal_price_basis_before_oos
+    tolerance_bps: {open: 1.0, high: 1.0, low: 1.0, close: 1.0, volume: 50.0}
+    observed_max_bps: {open: 0.199343, high: 0.003859, low: 0.196244, close: 0.000436, volume: 31.286441}
+    status: passed_on_frozen_snapshots_todo_human_line_review
   availability:
     field: available_at
     predicate: "available_at <= as_of"
     timezone: America/New_York
+    exchange_calendar: XNYS
     market_open_time: "09:30:00"
     market_close_time: "16:00:00"
-    status: "TODO(human): review timezone, exchange calendar, and early-close handling"
+    status: "implemented with exchange-calendars 4.13.2; TODO(human): line review"
+  retrieval:
+    news_enabled: false
+    news_phase: 2
+    allowed_modalities: [market_data, pit_fundamentals, causal_technical_indicators]
+    require_available_at_gate: true
+    current_fundamentals_cache_is_pit: false
+    fundamentals_policy: "disabled unless each field has an audited point-in-time available_at"
+    indicator_policy: "compute only from market observations with available_at <= as_of"
+  contamination:
+    train_valid_may_overlap_model_pretraining: true
+    train_valid_claim: domain_standard_non_oos_development
+    final_oos_source: stockbench
 
 execution:
   initial_cash: 1000000.0
-  commission_bps: 10.0  # TODO(human): confirm StockBench/FINSABER alignment.
+  commission_bps: 10.0
   slippage_bps: 5.0
   slippage_sensitivity_bps: [0.0, 10.0, 20.0]
   fill: next_open
@@ -55,20 +116,23 @@ execution:
 reward:
   epsilon: "TODO(human): set before training"
   risk_lambda: "TODO(human): set before training"
-  volatility_source: "TODO(human): confirm portfolio daily-return volatility for sigma"
+  volatility_source: portfolio_daily_returns
   drawdown_coefficient: "TODO(human): set before training"
   turnover_coefficient: "TODO(human): set before training"
   turnover_limit: "TODO(human): set before training"
   position_limit: "TODO(human): set before training"
-  benchmark: "TODO(human): freeze the series used as B in A_fin"
+  benchmark: buy_and_hold_equal_weight_20_tickers
+  benchmark_accounting_engine: shared_portfolio_ledger
+  benchmark_execution: next_open_with_configured_costs
 
 training:
   train_batch_size: 8
-  rollout_batch_size: 8
   rollout_n: 4
   max_prompt_length: 4096
   max_response_length: 2048
-  max_turns: 12
+  # 83-session OOS needs 82 advancing actions; 256 permits about 3 calls/session.
+  max_agent_steps: 256
+  reserved_information_steps_per_session: 2
   learning_rate: 1.0e-6
   total_epochs: 1
   n_gpus_per_node: 1
@@ -83,6 +147,22 @@ evaluation:
   annualization_periods: 252
   baselines: [buy_and_hold_equal_weight, all_cash, frozen_llm_zero_shot, alphaquanter]
   block_bootstrap: true
+  shifted_label_probe:
+    kind: supervised_direction_probe
+    model: ridge_linear_direction_v1
+    label_shift_sessions: 1
+    label: next_session_equal_weight_direction
+    metric: oos_direction_accuracy
+    random_baseline_accuracy: 0.5
+    rolling_window_sessions: 20
+    features: [portfolio_return_1d, portfolio_return_mean_20d, portfolio_return_volatility_20d, cross_sectional_dispersion_1d, cross_sectional_positive_fraction_1d]
+    seed: 1729
+    bootstrap_samples: 2000
+    bootstrap: {method: time_block, block_size_sessions: 5, alpha: 0.05}
+    require_before_main_training: true
+    require_unshifted_above_random: true
+    require_significant_drop_from_unshifted: true
+    require_shifted_ci_contains_random_baseline: true
   fee_robustness_multiplier: 2.0
 
 model:

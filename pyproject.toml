@@ -5,6 +5,7 @@ description = "Finance-native step-level credit assignment for tool-using tradin
 readme = "README.md"
 requires-python = ">=3.10,<3.13"
 dependencies = [
+  "exchange-calendars==4.13.2",
   "matplotlib>=3.8,<4",
   "numpy>=1.26,<3",
   "pandas>=2.1,<4",
@@ -15,6 +16,10 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+data = [
+  "scipy>=1.13,<2",
+  "yfinance==1.6.0",
+]
 # Linux/x86_64 markers keep the default development environment CPU-only.
 # Exact versions mirror the locked Agent-R1 revision; see SETUP.md.
 gpu = [
@@ -58,3 +63,11 @@ target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.10"
+check_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = ["agent_r1.*", "exchange_calendars.*", "pandas.*", "yfinance.*"]
+ignore_missing_imports = true

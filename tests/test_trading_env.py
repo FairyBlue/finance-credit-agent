@@ -1,14 +1,18 @@
 """Agent-R1 plugin integration exercised with deterministic mock actions."""
 
 import asyncio
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
+from pathlib import Path
 
+import pandas as pd
 import pytest
 from agent_r1.env import ToolEnv
 from agent_r1.env.base import Action
 
-from src.data import MarketObservation, StockBenchAdapter
-from src.env.trading import TradingEnv
+import src.env.trading as trading_module
+from src.data import MarketObservation, StockBenchAdapter, audit_raw_daily_manifest
+from src.data.stockbench import dataframe_content_sha256
+from src.env.trading import TradingEnv, _cached_storage_adapter
 
 UTC = timezone.utc
 
@@ -33,12 +37,149 @@ def _call(name: str, arguments: str = "{}") -> Action:
     return Action(text=f'<tool_call>{{"name":"{name}","arguments":{arguments}}}</tool_call>')
 
 
+def _write_daily_bar(root: Path, session: date, close: float) -> None:
+    day_root = root / "parquet" / "AAA" / "day"
+    day_root.mkdir(parents=True, exist_ok=True)
+    frame = pd.DataFrame(
+        {
+            "date": [session],
+            "open": [close],
+            "high": [close],
+            "low": [close],
+            "close": [close],
+            "volume": [1000.0],
+        }
+    )
+    path = day_root / f"{session.isoformat()}.parquet"
+    frame.to_parquet(path, index=False)
+    path.with_suffix(".parquet.sha256").write_text(
+        dataframe_content_sha256(
+            frame,
+            sort_by=[column for column in frame.columns if column != "date"],
+        ),
+        encoding="utf-8",
+    )
+
+
+def test_rollout_envs_share_one_immutable_storage_adapter(tmp_path: Path) -> None:
+    _write_daily_bar(tmp_path, date(2025, 1, 2), 101.0)
+    audit = audit_raw_daily_manifest(
+        manifest_root=tmp_path,
+        storage_root=tmp_path,
+        symbols=["AAA"],
+        start=date(2025, 1, 2),
+        end=date(2025, 1, 2),
+    )
+    _cached_storage_adapter.cache_clear()
+    kwargs = {
+        "manifest_root": str(tmp_path),
+        "storage_root": str(tmp_path),
+        "symbols": ("AAA",),
+        "data_version": "fixture-cache",
+        "data_start": "2025-01-02",
+        "data_end": "2025-01-02",
+        "input_manifest_sha256": audit.manifest_sha256,
+        "input_file_count": audit.file_count,
+        "input_sessions_per_symbol": 1,
+        "exchange_calendar": "XNYS",
+        "market_timezone": "America/New_York",
+        "market_close_time": "16:00:00",
+    }
+
+    first = _cached_storage_adapter(**kwargs)
+    second = _cached_storage_adapter(**kwargs)
+
+    assert first is second
+    _cached_storage_adapter.cache_clear()
+
+
+def test_worker_binds_ingestion_to_bytes_verified_by_raw_manifest(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    _write_daily_bar(tmp_path, date(2025, 1, 2), 101.0)
+    frozen = audit_raw_daily_manifest(
+        manifest_root=tmp_path,
+        storage_root=tmp_path,
+        symbols=["AAA"],
+        start=date(2025, 1, 2),
+        end=date(2025, 1, 2),
+    )
+
+    real_verify = trading_module.verify_raw_daily_manifest
+
+    def verify_then_replace(**kwargs: object) -> object:
+        audit = real_verify(**kwargs)  # type: ignore[arg-type]
+        # Simulate replacement after the worker aggregate audit but before
+        # dataframe ingestion, including a matching replacement sidecar.
+        _write_daily_bar(tmp_path, date(2025, 1, 2), 999.0)
+        return audit
+
+    monkeypatch.setattr(trading_module, "verify_raw_daily_manifest", verify_then_replace)
+    _cached_storage_adapter.cache_clear()
+    with pytest.raises(RuntimeError, match="raw daily-bar SHA-256 mismatch"):
+        _cached_storage_adapter(
+            manifest_root=str(tmp_path),
+            storage_root=str(tmp_path),
+            symbols=("AAA",),
+            data_version="fixture-toctou",
+            data_start="2025-01-02",
+            data_end="2025-01-02",
+            input_manifest_sha256=frozen.manifest_sha256,
+            input_file_count=frozen.file_count,
+            input_sessions_per_symbol=1,
+            exchange_calendar="XNYS",
+            market_timezone="America/New_York",
+            market_close_time="16:00:00",
+        )
+    _cached_storage_adapter.cache_clear()
+
+
+def test_trading_env_passes_the_frozen_source_window_to_storage_ingestion(
+    tmp_path: Path,
+) -> None:
+    _write_daily_bar(tmp_path, date(2025, 1, 2), 100.0)
+    _write_daily_bar(tmp_path, date(2025, 1, 3), 101.0)
+    _write_daily_bar(tmp_path, date(2025, 1, 4), 999.0)  # Saturday, outside the frozen input.
+    audit = audit_raw_daily_manifest(
+        manifest_root=tmp_path,
+        storage_root=tmp_path,
+        symbols=["AAA"],
+        start=date(2025, 1, 2),
+        end=date(2025, 1, 3),
+    )
+
+    env = TradingEnv(
+        episode_dates=["2025-01-02T21:00:00+00:00", "2025-01-03T21:00:00+00:00"],
+        episode_open_times=["2025-01-02T14:30:00+00:00", "2025-01-03T14:30:00+00:00"],
+        symbols=["AAA"],
+        initial_cash=1000.0,
+        commission_bps=10.0,
+        slippage_bps=5.0,
+        drawdown_coefficient=0.0,
+        turnover_coefficient=0.0,
+        benchmark_closes=[100.0, 101.0],
+        manifest_root=tmp_path,
+        storage_root=tmp_path,
+        data_version="windowed-fixture",
+        data_start="2025-01-02",
+        data_end="2025-01-03",
+        input_manifest_sha256=audit.manifest_sha256,
+        input_file_count=audit.file_count,
+        input_sessions_per_symbol=2,
+        market_timezone="America/New_York",
+        market_close_time="16:00:00",
+    )
+
+    assert "2025-01-02" in env.reset().messages[-1]["content"]
+
+
 def test_mock_agent_runs_multiple_episodes_with_next_open_fills_and_safe_errors() -> None:
     dates = [datetime(2025, 1, day, 21, 0, tzinfo=UTC) for day in (2, 3, 6)]
     open_times = [datetime(2025, 1, day, 14, 30, tzinfo=UTC) for day in (2, 3, 6)]
-    future_news = MarketObservation(
-        observation_id="future-news",
-        kind="news",
+    future_fundamental = MarketObservation(
+        observation_id="future-fundamental",
+        kind="fundamental",
         symbol="AAA",
         event_at=dates[2],
         available_at=dates[2],
@@ -49,7 +190,7 @@ def test_mock_agent_runs_multiple_episodes_with_next_open_fills_and_safe_errors(
             _bar(2, open_price=100.0, close_price=105.0),
             _bar(3, open_price=110.0, close_price=112.0),
             _bar(6, open_price=115.0, close_price=114.0),
-            future_news,
+            future_fundamental,
         ],
         data_version="fixture-v1",
     )
@@ -77,9 +218,7 @@ def test_mock_agent_runs_multiple_episodes_with_next_open_fills_and_safe_errors(
         assert not done
         assert "future surprise" not in retrieved.messages[-1]["content"]
 
-        _, _, done, info = await env.step(
-            _call("buy", '{"symbol":"AAA","target_weight":0.5}')
-        )
+        _, _, done, info = await env.step(_call("buy", '{"symbol":"AAA","target_weight":0.5}'))
         assert not done
         assert info["fills"][0]["raw_open_price"] == 110.0
         assert info["fills"][0]["executed_at"] == open_times[1]
@@ -149,3 +288,59 @@ def test_finance_trajectory_mode_emits_a_fin_only_on_the_final_step() -> None:
         assert info["trajectory_reward"] == pytest.approx(-2.0)
 
     asyncio.run(episode())
+
+
+def test_missing_current_session_bar_cannot_reuse_a_stale_price() -> None:
+    dates = [datetime(2025, 1, day, 21, 0, tzinfo=UTC) for day in (2, 3)]
+    opens = [datetime(2025, 1, day, 14, 30, tzinfo=UTC) for day in (2, 3)]
+    env = TradingEnv(
+        adapter=StockBenchAdapter(
+            [_bar(2, open_price=100.0, close_price=101.0)],
+            data_version="missing-current-session-fixture",
+        ),
+        episode_dates=dates,
+        episode_open_times=opens,
+        symbols=["AAA"],
+        initial_cash=1000.0,
+        commission_bps=10.0,
+        slippage_bps=5.0,
+        drawdown_coefficient=0.0,
+        turnover_coefficient=0.0,
+        benchmark_closes=[100.0, 101.0],
+    )
+
+    async def episode() -> None:
+        env.reset()
+        with pytest.raises(RuntimeError, match="current-session .* prices"):
+            await env.step(_call("hold"))
+        assert env.current_date == dates[0]
+
+    asyncio.run(episode())
+
+
+def test_episode_timestamps_must_equal_the_exchange_session_boundaries() -> None:
+    with pytest.raises(ValueError, match="must equal XNYS session close"):
+        TradingEnv(
+            adapter=StockBenchAdapter(
+                [
+                    _bar(2, open_price=100.0, close_price=101.0),
+                    _bar(3, open_price=101.0, close_price=102.0),
+                ],
+                data_version="wrong-boundary-fixture",
+            ),
+            episode_dates=[
+                "2025-01-02T20:59:00+00:00",
+                "2025-01-03T20:59:00+00:00",
+            ],
+            episode_open_times=[
+                "2025-01-02T14:30:00+00:00",
+                "2025-01-03T14:30:00+00:00",
+            ],
+            symbols=["AAA"],
+            initial_cash=1000.0,
+            commission_bps=10.0,
+            slippage_bps=5.0,
+            drawdown_coefficient=0.0,
+            turnover_coefficient=0.0,
+            benchmark_closes=[100.0, 101.0],
+        )

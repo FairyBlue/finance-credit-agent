@@ -1,18 +1,49 @@
-# Copy outside git-ignored data/, replace every TODO, then pass it to prepare_episodes.py.
+# Copy to a draft, freeze benchmark NAV with freeze_benchmarks.py, then review the output.
 version: 1
+data_snapshot:
+  history:
+    provider: yfinance  # Allowed fallback: stooq; record the provider actually used.
+    provider_version: "1.6.0"
+    retrieved_at_utc: "2026-08-24T08:38:18+00:00"
+    auto_adjust: false
+    corporate_actions_through: "2026-08-24"
+    repair: false
+    split_deadjustment: reverse_all_later_split_ratios
+    volume_rounding: nearest_share
+    price_basis: contemporaneous_nominal_ohlcv
+    input_manifest_sha256: 2612e707446b1c8bcd73ac6583b84558d3c4eddbaa9fc20adf7023c3c8a76c90
+    files: 10820
+  stockbench:
+    repo_commit: ce8b2b3483590646ad3b650ac8221f43f76fd091
+    storage_tree: f9553f735d6bd2d797541bec519cbd8028adee40
+    input_manifest_sha256: 8b48fc7d50f4ecdbc49e920eb83d72df02b9a56d4365bce7f0db6bb4a342bd1f
+    files: 1660
+split_windows:
+  train: {source: history, first_session: "2023-01-03", last_session: "2024-10-31"}
+  valid: {source: history, first_session: "2024-11-01", last_session: "2025-02-28"}
+  test: {source: stockbench, first_session: "2025-03-03", last_session: "2025-06-30", indivisible_oos: true}
+universe: [GS, MSFT, HD, V, SHW, CAT, MCD, UNH, AXP, AMGN, TRV, CRM, JPM, IBM, HON, BA, AMZN, AAPL, PG, JNJ]
+benchmark:
+  definition: buy_and_hold_equal_weight_20_tickers
+  accounting_engine: shared_portfolio_ledger
+  execution: next_open_with_configured_costs
+  series_sha256: "TODO(audit): checksum of the aligned benchmark NAV series"
+modalities:
+  news_enabled: false
+  allowed_retrieval: [market_data, pit_fundamentals, causal_technical_indicators]
 splits:
   train:
     - episode_id: TODO-train-001
       episode_dates: ["TODO(human): timezone-aware after-close timestamps"]
       episode_open_times: ["TODO(human): aligned exchange-open timestamps"]
-      benchmark_closes: ["TODO(human): one positive close per episode date"]
+      benchmark_closes: ["TODO(audit): aligned equal-weight 20-ticker buy-and-hold NAV"]
   valid:
     - episode_id: TODO-valid-001
       episode_dates: ["TODO(human): strictly after every train timestamp"]
       episode_open_times: ["TODO(human): aligned exchange-open timestamps"]
-      benchmark_closes: ["TODO(human)"]
+      benchmark_closes: ["TODO(audit): aligned equal-weight 20-ticker buy-and-hold NAV"]
   test:
     - episode_id: TODO-test-001
       episode_dates: ["TODO(human): strictly after every valid timestamp"]
       episode_open_times: ["TODO(human): aligned exchange-open timestamps"]
-      benchmark_closes: ["TODO(human)"]
+      benchmark_closes: ["TODO(audit): aligned equal-weight 20-ticker buy-and-hold NAV"]

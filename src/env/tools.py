@@ -19,7 +19,10 @@ class _IntentTool(BaseTool):
 @BaseTool.register("retrieve")
 class RetrieveTool(_IntentTool):
     name = "retrieve"
-    description = "Retrieve only market/news observations available at the current replay time."
+    description = (
+        "Retrieve only market, audited PIT fundamental, or causal technical observations "
+        "available at the current replay time. News is disabled in v1."
+    )
     parameters = {
         "type": "object",
         "properties": {

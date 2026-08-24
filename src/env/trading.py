@@ -6,7 +6,8 @@ import json
 import math
 from collections.abc import Mapping, Sequence
 from dataclasses import asdict
-from datetime import datetime, time
+from datetime import date, datetime, time
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Literal
 
@@ -15,7 +16,13 @@ from agent_r1.env import AgentEnv, Observation, ToolEnv
 from agent_r1.env.base import Action
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
-from src.data import AvailabilityPolicy, ObservationSnapshot, StockBenchAdapter
+from src.data import (
+    AvailabilityPolicy,
+    ObservationSnapshot,
+    StockBenchAdapter,
+    validate_episode_session_boundaries,
+    verify_raw_daily_manifest,
+)
 from src.rewards import RiskComponents, finance_advantage
 
 from . import tools as _registered_tools  # noqa: F401  # registry side effects
@@ -24,6 +31,10 @@ from .accounting import ExecutionPolicy, PortfolioLedger, _aware_utc
 
 class _StrictArgs(BaseModel):
     model_config = ConfigDict(extra="forbid")
+
+
+class TradingDataIntegrityError(RuntimeError):
+    """A required bar is absent or ambiguous for the exact replay session."""
 
 
 class RetrieveArgs(_StrictArgs):
@@ -70,6 +81,59 @@ def _parse_datetime(value: datetime | str) -> datetime:
     return _aware_utc(parsed, name="episode date")
 
 
+@lru_cache(maxsize=8)
+def _cached_storage_adapter(
+    *,
+    manifest_root: str,
+    storage_root: str,
+    symbols: tuple[str, ...],
+    data_version: str,
+    data_start: str,
+    data_end: str,
+    input_manifest_sha256: str,
+    input_file_count: int,
+    input_sessions_per_symbol: int,
+    exchange_calendar: str,
+    market_timezone: str,
+    market_close_time: str,
+) -> StockBenchAdapter:
+    """Verify and share one immutable raw snapshot per rollout worker process."""
+
+    start = date.fromisoformat(data_start)
+    end = date.fromisoformat(data_end)
+    manifest_root_path = Path(manifest_root).expanduser().resolve()
+    audit = verify_raw_daily_manifest(
+        manifest_root=manifest_root,
+        storage_root=storage_root,
+        symbols=symbols,
+        start=start,
+        end=end,
+        expected_sha256=input_manifest_sha256,
+        expected_file_count=input_file_count,
+        expected_sessions_per_symbol=input_sessions_per_symbol,
+        exchange_calendar=exchange_calendar,
+    )
+    expected_raw_sha256_by_path: dict[str, str] = {}
+    for raw_line in audit.manifest_bytes.splitlines():
+        relative_path, raw_sha256 = raw_line.decode("utf-8").split("\t", maxsplit=1)
+        absolute_path = str((manifest_root_path / relative_path).resolve())
+        expected_raw_sha256_by_path[absolute_path] = raw_sha256
+
+    return StockBenchAdapter.from_storage(
+        Path(storage_root).expanduser().resolve(),
+        symbols=symbols,
+        data_version=data_version,
+        availability_policy=AvailabilityPolicy(
+            market_timezone,
+            time.fromisoformat(market_close_time),
+            exchange_calendar,
+        ),
+        expected_raw_sha256_by_path=expected_raw_sha256_by_path,
+        start_date=start,
+        end_date=end,
+    )
+
+
 @AgentEnv.register("trading")
 class TradingEnv(ToolEnv):
     """Long-only daily replay with retrieve/compute/buy/sell/hold/abstain tools.
@@ -99,8 +163,15 @@ class TradingEnv(ToolEnv):
         turnover_limit: float | None = None,
         position_limit: float | None = None,
         adapter: StockBenchAdapter | None = None,
+        manifest_root: str | Path | None = None,
         storage_root: str | Path | None = None,
         data_version: str | None = None,
+        data_start: date | str | None = None,
+        data_end: date | str | None = None,
+        input_manifest_sha256: str | None = None,
+        input_file_count: int | None = None,
+        input_sessions_per_symbol: int | None = None,
+        exchange_calendar: str = "XNYS",
         market_timezone: str | None = None,
         market_close_time: str | None = None,
         tool_format: str = "hermes",
@@ -130,22 +201,58 @@ class TradingEnv(ToolEnv):
             )
         ):
             raise ValueError("each next open must occur strictly after the previous decision close")
+        validate_episode_session_boundaries(
+            session_closes=self._dates,
+            session_opens=self._open_times,
+            exchange_calendar=exchange_calendar,
+        )
         self._symbols = tuple(dict.fromkeys(symbol.strip().upper() for symbol in symbols))
         if not self._symbols or any(not symbol for symbol in self._symbols):
             raise ValueError("symbols must not be empty")
 
         if adapter is None:
-            if not all((storage_root, data_version, market_timezone, market_close_time)):
-                raise ValueError(
-                    "provide adapter, or storage_root/data_version/market_timezone/"
-                    "market_close_time"
+            if not all(
+                (
+                    manifest_root,
+                    storage_root,
+                    data_version,
+                    data_start,
+                    data_end,
+                    input_manifest_sha256,
+                    input_file_count,
+                    input_sessions_per_symbol,
+                    market_timezone,
+                    market_close_time,
                 )
-            close_time = time.fromisoformat(str(market_close_time))
-            adapter = StockBenchAdapter.from_storage(
-                Path(str(storage_root)),
+            ):
+                raise ValueError(
+                    "provide adapter, or manifest_root/storage_root/data_version/data_start/"
+                    "data_end/input_manifest_sha256/input_file_count/"
+                    "input_sessions_per_symbol/market_timezone/market_close_time"
+                )
+            assert manifest_root is not None
+            assert data_start is not None
+            assert data_end is not None
+            assert input_manifest_sha256 is not None
+            assert input_file_count is not None
+            assert input_sessions_per_symbol is not None
+            adapter = _cached_storage_adapter(
+                manifest_root=str(Path(str(manifest_root)).expanduser().resolve()),
+                storage_root=str(Path(str(storage_root)).expanduser().resolve()),
                 symbols=self._symbols,
                 data_version=str(data_version),
-                availability_policy=AvailabilityPolicy(str(market_timezone), close_time),
+                data_start=(
+                    data_start
+                    if isinstance(data_start, str)
+                    else data_start.isoformat()
+                ),
+                data_end=(data_end if isinstance(data_end, str) else data_end.isoformat()),
+                input_manifest_sha256=input_manifest_sha256,
+                input_file_count=input_file_count,
+                input_sessions_per_symbol=input_sessions_per_symbol,
+                exchange_calendar=exchange_calendar,
+                market_timezone=str(market_timezone),
+                market_close_time=str(market_close_time),
             )
         self._adapter = adapter
         self._initial_cash = float(initial_cash)
@@ -278,7 +385,7 @@ class TradingEnv(ToolEnv):
                 self._abstentions += 1
                 return self._advance("abstain")
             return self._advance("hold")
-        except (KeyError, RuntimeError, TypeError, ValidationError, ValueError) as error:
+        except (KeyError, TypeError, ValidationError, ValueError) as error:
             return self._invalid(str(error))
 
     def _retrieve(self, args: _StrictArgs) -> str:
@@ -349,11 +456,17 @@ class TradingEnv(ToolEnv):
         equity_before = self.ledger.equity(current_closes)
         current_benchmark = self._benchmark_closes[self._index]
 
-        self._index += 1
-        next_snapshot = self._snapshot()
-        next_opens = self._latest_market_prices(next_snapshot, field="open")
+        next_index = self._index + 1
+        next_session = self._dates[next_index]
+        next_snapshot = self._adapter.get_observations(next_session)
+        next_opens = self._latest_market_prices(
+            next_snapshot, field="open", session_at=next_session
+        )
+        next_closes = self._latest_market_prices(
+            next_snapshot, field="close", session_at=next_session
+        )
+        self._index = next_index
         fills = self.ledger.execute_next_open(self._open_times[self._index], next_opens)
-        next_closes = self._latest_market_prices(next_snapshot, field="close")
         equity_after = self.ledger.equity(next_closes)
 
         transaction_cost = sum(fill.total_cost for fill in fills)
@@ -436,7 +549,6 @@ class TradingEnv(ToolEnv):
         result = finance_advantage(
             episode_return=episode_return,
             benchmark_return=benchmark_return,
-            # TODO(human): confirm that sigma is portfolio daily-return volatility.
             volatility=float(np.std(self._net_returns, ddof=0)),
             epsilon=self._finance_epsilon,
             risk_lambda=self._risk_lambda,
@@ -448,19 +560,32 @@ class TradingEnv(ToolEnv):
         return self._adapter.get_observations(self.current_date)
 
     def _latest_market_prices(
-        self, snapshot: ObservationSnapshot, *, field: str
+        self,
+        snapshot: ObservationSnapshot,
+        *,
+        field: str,
+        session_at: datetime | None = None,
     ) -> dict[str, float]:
+        expected_date = (session_at or self.current_date).date().isoformat()
         prices: dict[str, float] = {}
         for observation in snapshot:
             if (
                 observation.kind == "market"
                 and observation.symbol in self._symbols
                 and field in observation.payload
+                and observation.payload.get("date") == expected_date
             ):
+                if observation.symbol in prices:
+                    raise TradingDataIntegrityError(
+                        f"duplicate current-session {field} price for {observation.symbol} "
+                        f"on {expected_date}"
+                    )
                 prices[observation.symbol] = float(observation.payload[field])
         missing = [symbol for symbol in self._symbols if symbol not in prices]
         if missing:
-            raise ValueError(f"missing visible {field} prices for: {missing}")
+            raise TradingDataIntegrityError(
+                f"missing current-session {field} prices on {expected_date} for: {missing}"
+            )
         return prices
 
     def _current_weight(self, symbol: str) -> float:

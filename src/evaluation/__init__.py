@@ -6,6 +6,15 @@ from .baselines import (
     buy_and_hold_equal_weight_targets,
     replay_target_weights,
 )
+from .leakage_probe import (
+    BootstrapInterval,
+    ConfiguredTemporalLeakageProbe,
+    DirectionProbeDataset,
+    TemporalLeakageProbeResult,
+    build_equal_weight_direction_probe_dataset,
+    run_configured_temporal_leakage_probe,
+    run_temporal_leakage_probe,
+)
 from .metrics import (
     AgentMetrics,
     FinancialMetrics,
@@ -18,8 +27,13 @@ from .plots import plot_equity_vs_buy_and_hold, plot_reward_vs_step, plot_tool_c
 
 __all__ = [
     "AgentMetrics",
+    "BootstrapInterval",
+    "ConfiguredTemporalLeakageProbe",
+    "DirectionProbeDataset",
     "FinancialMetrics",
     "ReplayResult",
+    "TemporalLeakageProbeResult",
+    "build_equal_weight_direction_probe_dataset",
     "agent_metrics_by_regime",
     "all_cash_targets",
     "buy_and_hold_equal_weight_targets",
@@ -30,4 +44,6 @@ __all__ = [
     "plot_reward_vs_step",
     "plot_tool_call_success",
     "replay_target_weights",
+    "run_temporal_leakage_probe",
+    "run_configured_temporal_leakage_probe",
 ]

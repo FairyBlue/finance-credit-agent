@@ -6,16 +6,19 @@ import json
 from collections.abc import Iterator, Mapping, Sequence
 from copy import deepcopy
 from dataclasses import dataclass
-from datetime import date, datetime, time, timedelta, timezone
+from datetime import date, datetime, time, timezone
 from hashlib import sha256
+from io import BytesIO
 from pathlib import Path
 from types import MappingProxyType
 from typing import Any, Literal, TypeAlias, overload
 from zoneinfo import ZoneInfo
 
+import exchange_calendars as xcals
+
 JsonScalar: TypeAlias = str | int | float | bool | None
 JsonValue: TypeAlias = JsonScalar | tuple["JsonValue", ...] | Mapping[str, "JsonValue"]
-ObservationKind: TypeAlias = Literal["market", "news", "fundamental"]
+ObservationKind: TypeAlias = Literal["market", "fundamental", "technical"]
 
 
 def _require_aware(value: datetime, *, name: str) -> datetime:
@@ -42,6 +45,28 @@ def _thaw_json(value: JsonValue) -> Any:
     return value
 
 
+def dataframe_content_sha256(frame: Any, *, sort_by: Sequence[str] = ()) -> str:
+    """Reproduce StockBench's logical DataFrame sidecar checksum exactly."""
+
+    columns = list(frame.columns)
+    canonical_frame = frame.sort_values(list(sort_by)) if sort_by else frame
+
+    def json_default(value: object) -> str:
+        if isinstance(value, (date, datetime)):
+            return value.isoformat()
+        return str(value)
+
+    records = canonical_frame[columns].to_dict(orient="records")
+    canonical = json.dumps(
+        records,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+        default=json_default,
+    )
+    return sha256(canonical.encode("utf-8")).hexdigest()
+
+
 @dataclass(frozen=True, slots=True)
 class AvailabilityPolicy:
     """Explicit policy for mapping source timestamps to point-in-time availability.
@@ -52,27 +77,34 @@ class AvailabilityPolicy:
 
     market_timezone: str
     market_close_time: time
-    news_delay: timedelta = timedelta(0)
+    exchange_calendar: str = "XNYS"
 
     def __post_init__(self) -> None:
         ZoneInfo(self.market_timezone)
         if self.market_close_time.tzinfo is not None:
             raise ValueError("market_close_time must be naive; market_timezone supplies the zone")
-        if self.news_delay < timedelta(0):
-            raise ValueError("news_delay cannot be negative")
+        calendar = xcals.get_calendar(self.exchange_calendar)
+        if str(calendar.tz) != self.market_timezone:
+            raise ValueError(
+                f"{self.exchange_calendar} timezone is {calendar.tz}, not {self.market_timezone}"
+            )
+        regular_close = calendar.close_times[-1][1]
+        if regular_close != self.market_close_time:
+            raise ValueError(
+                f"{self.exchange_calendar} regular close is {regular_close.isoformat()}, "
+                f"not {self.market_close_time.isoformat()}"
+            )
 
     def market_available_at(self, trading_date: date) -> datetime:
-        # TODO(human): line-review exchange calendar, early closes, timezone, and bar boundary.
-        local_close = datetime.combine(
-            trading_date,
-            self.market_close_time,
-            tzinfo=ZoneInfo(self.market_timezone),
-        )
-        return local_close.astimezone(timezone.utc)
+        """Return the actual exchange close, including holidays and early closes."""
 
-    def news_available_at(self, epoch_seconds: int | float) -> datetime:
-        # TODO(human): line-review whether publication latency needs a conservative delay.
-        return datetime.fromtimestamp(float(epoch_seconds), tz=timezone.utc) + self.news_delay
+        # TODO(human): line-review exchange calendar, early closes, timezone, and bar boundary.
+        calendar = xcals.get_calendar(self.exchange_calendar)
+        session = trading_date.isoformat()
+        if not calendar.is_session(session):
+            raise ValueError(f"{session} is not an {self.exchange_calendar} session")
+        close = calendar.session_close(session).to_pydatetime()
+        return _require_aware(close, name="market close").astimezone(timezone.utc)
 
 
 @dataclass(frozen=True, slots=True)
@@ -93,7 +125,7 @@ class MarketObservation:
     def __post_init__(self) -> None:
         if not self.observation_id:
             raise ValueError("observation_id must not be empty")
-        if self.kind not in {"market", "news", "fundamental"}:
+        if self.kind not in {"market", "fundamental", "technical"}:
             raise ValueError(f"unsupported observation kind: {self.kind}")
         object.__setattr__(self, "event_at", _require_aware(self.event_at, name="event_at"))
         object.__setattr__(
@@ -188,10 +220,13 @@ class StockBenchAdapter:
         data_version: str,
         availability_policy: AvailabilityPolicy,
         verify_market_checksums: bool = True,
+        expected_raw_sha256_by_path: Mapping[str, str] | None = None,
+        start_date: date | None = None,
+        end_date: date | None = None,
     ) -> StockBenchAdapter:
-        """Ingest StockBench's immutable offline market/news storage layout.
+        """Ingest StockBench's immutable offline market storage layout.
 
-        Only `parquet/{symbol}/day` and `cache/news_by_day/{symbol}` are read.
+        V1 reads only `parquet/{symbol}/day`; news is a Phase 2 protocol item.
         In particular, this method never invokes StockBench's network-backed
         `DataHub`, and it deliberately excludes indicators/fundamentals pending a
         human point-in-time audit.
@@ -203,20 +238,39 @@ class StockBenchAdapter:
         normalized_symbols = tuple(dict.fromkeys(symbol.strip().upper() for symbol in symbols))
         if not normalized_symbols or any(not symbol for symbol in normalized_symbols):
             raise ValueError("symbols must contain at least one non-empty ticker")
+        if (start_date is None) != (end_date is None):
+            raise ValueError("start_date and end_date must be provided together")
+        if start_date is not None and end_date is not None and start_date > end_date:
+            raise ValueError("start_date must not follow end_date")
 
         observations: list[MarketObservation] = []
         for symbol in normalized_symbols:
-            observations.extend(
-                cls._load_market_files(
-                    root,
-                    symbol=symbol,
-                    policy=availability_policy,
-                    verify_checksums=verify_market_checksums,
+            market_rows = cls._load_market_files(
+                root,
+                symbol=symbol,
+                policy=availability_policy,
+                verify_checksums=verify_market_checksums,
+                expected_raw_sha256_by_path=expected_raw_sha256_by_path,
+                start_date=start_date,
+                end_date=end_date,
+            )
+            previous_close: float | None = None
+            for observation in market_rows:
+                payload = dict(observation.payload)
+                close = float(payload["close"])
+                if previous_close is not None:
+                    payload["technical_return_1d"] = close / previous_close - 1.0
+                previous_close = close
+                observations.append(
+                    MarketObservation(
+                        observation_id=observation.observation_id,
+                        kind=observation.kind,
+                        symbol=observation.symbol,
+                        event_at=observation.event_at,
+                        available_at=observation.available_at,
+                        payload=payload,
+                    )
                 )
-            )
-            observations.extend(
-                cls._load_news_files(root, symbol=symbol, policy=availability_policy)
-            )
         return cls(observations, data_version=data_version)
 
     @staticmethod
@@ -226,6 +280,9 @@ class StockBenchAdapter:
         symbol: str,
         policy: AvailabilityPolicy,
         verify_checksums: bool,
+        expected_raw_sha256_by_path: Mapping[str, str] | None,
+        start_date: date | None,
+        end_date: date | None,
     ) -> list[MarketObservation]:
         import pandas as pd
 
@@ -233,23 +290,63 @@ class StockBenchAdapter:
         if not day_dir.is_dir():
             raise FileNotFoundError(f"missing StockBench day bars for {symbol}: {day_dir}")
         output: list[MarketObservation] = []
-        required = {"date", "open", "high", "low", "close", "volume", "vwap"}
+        required = {"date", "open", "high", "low", "close", "volume"}
         for parquet_path in sorted(day_dir.glob("*.parquet")):
+            path_date = date.fromisoformat(parquet_path.stem)
+            if (
+                start_date is not None
+                and end_date is not None
+                and not start_date <= path_date <= end_date
+            ):
+                continue
+            if expected_raw_sha256_by_path is None:
+                frame = pd.read_parquet(parquet_path)
+            else:
+                resolved_path = str(parquet_path.resolve())
+                expected_raw_sha256 = expected_raw_sha256_by_path.get(resolved_path)
+                if expected_raw_sha256 is None:
+                    raise RuntimeError(
+                        f"daily bar is absent from the frozen raw manifest: {parquet_path}"
+                    )
+                raw_bytes = parquet_path.read_bytes()
+                actual_raw_sha256 = sha256(raw_bytes).hexdigest()
+                if actual_raw_sha256 != expected_raw_sha256:
+                    raise RuntimeError(
+                        "raw daily-bar SHA-256 mismatch: "
+                        f"expected {expected_raw_sha256}, got {actual_raw_sha256}: "
+                        f"{parquet_path}"
+                    )
+                # Parse exactly the bytes just verified, rather than reopening a
+                # path that could have changed between verification and ingestion.
+                frame = pd.read_parquet(BytesIO(raw_bytes))
             if verify_checksums:
                 checksum_path = parquet_path.with_suffix(parquet_path.suffix + ".sha256")
                 if not checksum_path.is_file():
                     raise FileNotFoundError(f"missing StockBench checksum: {checksum_path}")
                 expected = checksum_path.read_text(encoding="utf-8").strip().split()[0]
-                actual = sha256(parquet_path.read_bytes()).hexdigest()
+                actual = dataframe_content_sha256(
+                    frame,
+                    sort_by=[column for column in frame.columns if column != "date"],
+                )
                 if expected != actual:
                     raise ValueError(f"StockBench checksum mismatch: {parquet_path}")
-            frame = pd.read_parquet(parquet_path)
             missing = required.difference(frame.columns)
             if missing:
                 raise ValueError(f"{parquet_path} is missing columns: {sorted(missing)}")
             for row_number, row in frame.iterrows():
                 trading_date = pd.Timestamp(row["date"]).date()
+                if trading_date != path_date:
+                    raise ValueError(
+                        f"partition date mismatch in {parquet_path}: "
+                        f"path={path_date.isoformat()} row={trading_date.isoformat()}"
+                    )
                 available_at = policy.market_available_at(trading_date)
+                payload = {field: float(row[field]) for field in required if field != "date"}
+                if "vwap" in frame.columns:
+                    payload["vwap"] = float(row["vwap"])
+                # Source technical_* columns are never trusted. V1 derives its
+                # indicators only after chronological OHLCV ingestion.
+                payload["date"] = trading_date.isoformat()
                 output.append(
                     MarketObservation(
                         observation_id=f"market:{symbol}:{trading_date.isoformat()}:{row_number}",
@@ -257,42 +354,7 @@ class StockBenchAdapter:
                         symbol=symbol,
                         event_at=available_at,
                         available_at=available_at,
-                        payload={field: float(row[field]) for field in required if field != "date"}
-                        | {"date": trading_date.isoformat()},
-                    )
-                )
-        return output
-
-    @staticmethod
-    def _load_news_files(
-        root: Path,
-        *,
-        symbol: str,
-        policy: AvailabilityPolicy,
-    ) -> list[MarketObservation]:
-        news_dir = root / "cache" / "news_by_day" / symbol
-        if not news_dir.exists():
-            return []
-        output: list[MarketObservation] = []
-        for json_path in sorted(news_dir.glob("*.json")):
-            document = json.loads(json_path.read_text(encoding="utf-8"))
-            items = document.get("items")
-            if not isinstance(items, list):
-                raise ValueError(f"{json_path} must contain an items list")
-            for index, item in enumerate(items):
-                if not isinstance(item, dict) or not isinstance(item.get("datetime"), (int, float)):
-                    raise ValueError(f"{json_path} item {index} lacks numeric datetime epoch")
-                event_at = datetime.fromtimestamp(float(item["datetime"]), tz=timezone.utc)
-                available_at = policy.news_available_at(item["datetime"])
-                source_id = str(item.get("id", index))
-                output.append(
-                    MarketObservation(
-                        observation_id=f"news:{symbol}:{source_id}",
-                        kind="news",
-                        symbol=symbol,
-                        event_at=event_at,
-                        available_at=available_at,
-                        payload=item,
+                        payload=payload,
                     )
                 )
         return output
