@@ -1,152 +1,423 @@
-# Finance Credit Agent experiment handoff
+# Finance Credit Agent：实验接手与运行手册
 
-Updated: `2026-08-25`
+更新日期：`2026-08-25`
 
-This is the operational source of truth for handing the repository to a new operator. It explains
-what may run now, what is blocked, what files must be supplied, and what evidence makes the G1 smoke
-valid. Repository configuration, code, Git state, and test output take precedence if this document
-ever drifts.
+这是一份面向新合作者的单一入口文档。即使没有读过历史对话，只要拥有本仓库、冻结历史数据和
+一台 Linux x86_64 H100，就应当能够通过本文理解研究动机、判断当前进度、完成 G1 smoke，并知道
+哪些正式实验现在仍然禁止运行。
 
-## 1. Purpose
+仓库代码、配置、Git 状态和实际运行结果高于本文。如果出现冲突，立即停止实验，按第 16 节处理，
+不要自行放宽门禁。
 
-The project asks whether assigning credit to individual decisions improves a tool-using trading
-agent over rewarding only the final portfolio outcome. It compares three arms:
+## 0. 接手后先看这里
 
-- A1: outcome-only GRPO;
-- A2: generic step-level credit;
-- A3: finance-specific step-level credit.
+当前结论只有四条：
 
-The immediate task is narrower: prove that the A1/Qwen3-1.7B training chain is wired correctly on
-one H100. This G1 wiring smoke is not formal training and cannot support a return, Sharpe, model
-selection, or arm-comparison claim.
+1. 本地实验脚手架和协议门禁已经完成，状态为 `G0 PASSED`。
+2. 下一项工作不是正式 A1/A2/A3 对比，而是只在一张 H100 上运行一次
+   `A1 + Qwen3-1.7B` wiring smoke。
+3. G1 目前仍是 `BLOCKED`：仓库已提供待人工审核的 smoke candidate，但 GitHub 不包含冻结
+   历史数据、reviewed manifest、三个 processed Parquet 或模型缓存；H100 preflight 和真实
+   smoke 也尚未运行。
+4. 正式训练继续由 T2 v2 阻断；不要运行无参数的 A1/A2/A3 队列，也不要读取 StockBench Final
+   OOS 来调试 smoke。
 
-## 2. Authoritative frozen decisions
+接手后的推荐顺序：
 
-- Official Train: `2023-01-03` through `2024-10-31`.
-- Official Valid: `2024-11-01` through `2025-02-28`.
-- Final OOS: StockBench `2025-03-03` through `2025-06-30`, 83 XNYS sessions, reserved for final
-  scientific evaluation.
-- G1 Smoke Train: first 36 Train sessions, four contiguous non-overlapping episodes of nine
-  sessions each.
-- G1 Smoke Valid: `valid_dates[0:9]`, `2024-11-01` through `2024-11-13`.
-- G1 Smoke Shadow Test: `valid_dates[9:18]`, exactly nine sessions from `2024-11-14` through
-  `2024-11-26`.
-- The shadow test is history-backed and wiring-only. Its frozen provenance is
-  `split_role=smoke_shadow`, `source_split=valid`, `purpose=wiring_only`,
-  `scientific_use_allowed=false`, `checkpoint_selection_allowed=false`, and `final_oos=false`.
-- W&B is disabled. Every run writes structured evidence under `runs/<run_id>/` and is synchronized
-  with rsync.
-- T2 v2 remains preregistered but unimplemented. It blocks every formal run. Only the exact
-  hash-bound A1/Qwen3-1.7B wiring smoke is exempt.
+```text
+从 GitHub 干净克隆
+  → 同步冻结 history 数据
+  → 验证仓库内的 smoke manifest candidate
+  → 完成人工审核并生成 processed 文件
+  → 安装 H100 GPU 环境并缓存 Qwen3-1.7B
+  → 运行 --preflight-only
+  → 运行唯一一次批准的 G1 smoke
+  → 检查 runs/<run_id>/summary.json 和 optimizer 证据
+```
 
-The approved merged smoke configuration SHA-256 is
-`6c58a822d3a6ff2751fbbfcda9451c9ad3eae9ffe81acb24d3417c3de40fe0ed`.
+## 1. 这个项目为什么存在
 
-## 3. Gate status
+交易 Agent 通常要经过很多次检索、计算和下单，最后才得到一个组合收益。只奖励最终结果时，模型
+很难判断究竟是哪一步做对了；但如果随意给中间步骤奖励，又可能让模型优化错误的代理指标。
 
-| Gate | Status | Meaning |
+本项目研究的问题是：**金融领域原生的逐步 credit assignment，能否比只看最终收益或通用逐步
+奖励更可靠地训练工具型交易 Agent？**
+
+三条实验臂是：
+
+| Arm | 方法 | 回答的问题 |
 |---|---|---|
-| G0 protocol and local scaffold | `PASSED` | Protocol, shadow isolation, local recorder, preflight, optimizer probe, 126 tests, Ruff, mypy, lock, and whitespace validation pass locally. |
-| G1 A1/Qwen3-1.7B wiring smoke | `BLOCKED` | No real H100 smoke has been run from this worktree. Required reviewed manifest, processed files, GPU/model availability, and clean committed Git state are not all verified here. |
-| T2 v2 formal-training gate | `BLOCKED` | Implementation and passing train/valid result are intentionally outside this task. |
+| A1 | Outcome-only GRPO | 只给最终组合结果时，基准表现如何？ |
+| A2 | 通用 StepPO | 通用逐步奖励是否比最终奖励更好？ |
+| A3 | Finance-native credit | 按金融轨迹结构分配 credit 是否进一步改善训练？ |
 
-G1 becomes `IN_PROGRESS` only after all inputs exist and `--preflight-only` passes on the H100.
-G1 becomes `PASSED` only after a real smoke records a successful rollout, reward, at least one
-backward pass, at least one optimizer step, and a finite non-zero parameter delta. Dry-run,
-preflight, model loading, or rollout without an update is not enough.
+这里最重要的不是先跑出一个高收益数字，而是保证结论没有被未来数据、错误成交边界、不同账务
+引擎或不可复现的数据版本污染。金融回测中的这些错误往往不会让程序报错，反而会让结果看起来
+更好，所以项目采用“先证明实验有效，再扩大训练”的顺序。
 
-## 4. Final OOS fail-closed boundary
+## 2. 为什么现在只跑 G1 smoke
 
-Smoke startup fails if any resolved source, path, manifest, processed row, provenance field, or date
-points to StockBench/Final OOS. The launcher does not verify the StockBench source or run the
-history/StockBench overlap audit during smoke, because touching that source is unnecessary. The
-guard checks content provenance as well as names, so renaming an OOS file to `smoke_test.parquet`
-does not make it acceptable.
+G1 smoke 只证明训练链路接通：数据能加载、环境能推进、模型能 rollout、reward 能产生、反向传播
+和 optimizer 能真实更新参数、运行证据能完整保存。
 
-The Final OOS remains available to the formal evaluation pipeline only. Do not use it for the smoke,
-T2 v2, feature selection, hyperparameters, checkpoints, or power analysis.
+它不属于正式训练，不能用于：
 
-## 5. Inputs that must exist on H100
+- 收益、Sharpe、显著性或论文结论；
+- A1/A2/A3 优劣比较；
+- 超参数、模型或 checkpoint 选择；
+- 调整 reward、Regime 或 T2 规则。
 
-The repository expects the following external or reviewed inputs:
+正式训练暂时不能开始，原因有两个：
 
-- `data/history/storage/`: the frozen 20-stock history snapshot whose raw manifest SHA-256 is
-  `2612e707446b1c8bcd73ac6583b84558d3c4eddbaa9fc20adf7023c3c8a76c90`;
-- `configs/episode_manifest.smoke.reviewed.yaml`: a human-reviewed history-only smoke manifest;
-- `data/processed/smoke_train.parquet`;
-- `data/processed/smoke_valid.parquet`;
-- `data/processed/smoke_test.parquet`, whose embedded provenance says Valid shadow/wiring only;
-- locally cached `Qwen/Qwen3-1.7B` model files;
-- the Linux/x86_64 GPU extra, CUDA, and one visible H100-class GPU.
+- T2 v2 泄漏探针已经预注册，但尚未实现和通过；正式 launcher 会 fail closed。
+- A3 当前只有 M1 uniform broadcast 作为 smoke/ablation，支持科学主结论的 M2 或 M3 尚未实现。
 
-Raw data, processed data, models, runs, checkpoints, and artifacts remain ignored and must not be
-committed.
+因此，完成 G1 后的正确动作是记录结果并返回开发，不是顺手启动正式三臂实验。
 
-## 6. Build and review the smoke manifest
+## 3. 当前进度与真实阻塞
 
-Generate a deterministic draft from the frozen exchange calendar. This does not read StockBench or
-Final OOS:
+状态截至 `2026-08-25`：
 
-```bash
-uv run python scripts/build_smoke_manifest.py \
-  --config configs/smoke_1p7b.yaml \
-  --output configs/episode_manifest.smoke.draft.yaml
+| 项目 | 状态 | 证据或说明 |
+|---|---|---|
+| G0 协议与本地脚手架 | `PASSED` | 126 tests、Ruff、mypy、lock 与 whitespace checks 通过 |
+| G1 A1/Qwen3-1.7B smoke | `BLOCKED` | 未完成 H100 preflight，未运行真实 smoke |
+| T1 未来价格扰动 | 已实现 | 历史读取与数值特征保持不变 |
+| T2 v2 train/valid 探针 | `BLOCKED` | 已预注册，未实现；禁止回退旧 StockBench 探针 |
+| T3 train-only 标准化 | 已实现 | 全样本 fit 会失败 |
+| T4 未来文档删除不变性 | 已实现 | 历史检索结果保持不变 |
+| Reward 标定 | 已冻结 | 只使用 Train；表和哈希已绑定 |
+| Smoke Final OOS 隔离 | 已实现 | 配置、manifest、processed provenance 三层 fail closed |
+| 本地结构化运行记录 | 已实现 | 非 dry-run 均写入 `runs/<run_id>/` |
+| H100 GPU/model 实测 | 未完成 | 当前 Mac CPU 只能验证失败路径 |
+| Smoke manifest candidate | 已生成 | 状态为 `pending_human_review`，文件和 benchmark 哈希已冻结 |
+| Reviewed smoke manifest | 缺失 | 不在 GitHub；必须先审核 candidate，再按第 8 节复制产生 |
+| Smoke processed Parquet | 缺失 | 不在 GitHub，必须由 reviewed manifest 生成 |
+
+最后一个已推送的实现基线是：
+
+```text
+33a4d83dd5f4c5d44eeda53636b53cd652ec2aef
+feat: harden G1 smoke handoff
 ```
 
-Review every episode date/open time and the history snapshot identity. The review must explicitly
-cover later-split reversal and restored volume logic. Then freeze benchmark NAV using the same
-next-open ledger as the agent:
+使用本文时不要盲目 checkout 这个旧值；先拉取当时的最新 `origin/main`，并确认本地 HEAD 与远端
+一致。上面的 SHA 用于理解实现历史，不替代当前远端分支。
 
-```bash
-uv run python scripts/freeze_benchmarks.py \
-  --config configs/smoke_1p7b.yaml \
-  --draft configs/episode_manifest.smoke.draft.yaml \
-  --output configs/episode_manifest.smoke.reviewed.yaml
+## 4. 冻结的实验边界
 
-uv run python scripts/prepare_episodes.py \
-  --config configs/smoke_1p7b.yaml \
-  --manifest configs/episode_manifest.smoke.reviewed.yaml
+正式边界保持不变：
+
+| Split | 日期 | 用途 |
+|---|---|---|
+| Train | `2023-01-03`～`2024-10-31` | 训练和 train-only 标定 |
+| Valid | `2024-11-01`～`2025-02-28` | 验证与正式选择流程 |
+| Final OOS | `2025-03-03`～`2025-06-30` | 最终科学评测，83 个 XNYS session |
+
+G1 只使用 history 中的短切片：
+
+- Smoke Train：Train 最前 36 个交易日，拆成 4 个连续、无重叠的 9-session episode；
+- Smoke Valid：`valid_dates[0:9]`，即 `2024-11-01`～`2024-11-13`；
+- Smoke Shadow Test：`valid_dates[9:18]`，即 `2024-11-14`～`2024-11-26`。
+
+Shadow Test 必须包含以下 9 个 session，日历结果不同就停止：
+
+```text
+2024-11-14  2024-11-15  2024-11-18
+2024-11-19  2024-11-20  2024-11-21
+2024-11-22  2024-11-25  2024-11-26
 ```
 
-The reviewed manifest is a normal repository artifact only after human review. Do not relabel a
-generated draft as reviewed automatically.
+其 provenance 必须始终是：
 
-## 7. Sync without cloud experiment tracking
+```yaml
+split_role: smoke_shadow
+source_split: valid
+purpose: wiring_only
+scientific_use_allowed: false
+checkpoint_selection_allowed: false
+final_oos: false
+```
 
-Use placeholders rather than machine-specific usernames or directories:
+Smoke 配置会显式禁用 StockBench。路径、manifest、processed row 或日期只要指向 StockBench/
+Final OOS，preflight 与 launcher 都会失败。把 OOS 文件改名成 `smoke_test.parquet` 也不会通过。
+
+## 5. 复现身份与不可变规则
+
+必须保持：
+
+- Agent-R1 submodule：`b124aa46534cbf2fb8bc8af11405774984c42ac7`；
+- Smoke merged-config SHA-256：
+  `6c58a822d3a6ff2751fbbfcda9451c9ad3eae9ffe81acb24d3417c3de40fe0ed`；
+- History raw-manifest SHA-256：
+  `2612e707446b1c8bcd73ac6583b84558d3c4eddbaa9fc20adf7023c3c8a76c90`；
+- 模型名称：`Qwen/Qwen3-1.7B`；实际缓存 revision 由 preflight 和运行记录保存；
+- seed：`42`；训练 episode：`4`；rollout n：`2`；epoch：`1`；
+- W&B 禁用，运行证据只保存在本地文件中。
+
+禁止：
+
+- 编辑 `third_party/agent-r1`；
+- 为了通过 smoke 修改配置哈希、日期、provenance 或门禁；
+- 从 Yahoo 重新抓一份“看起来相同”的数据来替代冻结快照；
+- 在 smoke 主机上放入或读取 StockBench Final OOS；
+- 重跑旧 `scripts/run_t2_probe.py`；
+- 把 preflight、模型加载或只有 rollout 的结果写成 G1 passed。
+
+## 6. 从 GitHub 干净接手
+
+在 H100 主机上执行：
 
 ```bash
-export H100_HOST=<ssh-host-alias>
-export H100_PROJECT_DIR=<absolute-project-directory-on-h100>
+git clone --recurse-submodules \
+  https://github.com/HaoPan036/finance-credit-agent.git
+cd finance-credit-agent
+git checkout main
+git pull --ff-only origin main
+git submodule update --init --recursive
+
+git status --short
+git rev-parse HEAD
+git rev-parse origin/main
+git -C third_party/agent-r1 rev-parse HEAD
+```
+
+验收：
+
+- `git status --short` 没有输出；
+- 本地 HEAD 与 `origin/main` 完全一致；
+- submodule 输出
+  `b124aa46534cbf2fb8bc8af11405774984c42ac7`。
+
+安装 uv 和 CPU 依赖：
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv python install 3.10
+uv sync --frozen
+uv run pytest -q
+uv run ruff check src tests scripts runtime_hooks
+uv run mypy src tests
+uv lock --check
+git diff --check
+```
+
+最后应看到 126 个 pytest 用例通过，其他检查均为成功。若最新 `main` 合理增加或合并了测试，数量
+可能变化；此时以该提交的 CI/文档为准，不要仅为了恢复 126 而修改测试。
+
+## 7. 获取冻结 history 数据
+
+GitHub 不包含原始数据。G1 不能仅靠 clone 启动，必须从项目维护者持有的冻结快照同步：
+
+```bash
+export DATA_SOURCE_HOST=<保存冻结数据的-ssh-host>
+export DATA_SOURCE_PROJECT_DIR=<该主机上的绝对项目目录>
+
+mkdir -p data/history/storage
+rsync -a --partial --info=progress2 \
+  "$DATA_SOURCE_HOST:$DATA_SOURCE_PROJECT_DIR/data/history/storage/" \
+  data/history/storage/
+```
+
+如果由数据持有者从工作站主动推到 H100，则使用：
+
+```bash
+export H100_HOST=<h100-ssh-host>
+export H100_PROJECT_DIR=<h100上的绝对项目目录>
 
 rsync -a --partial --info=progress2 data/history/storage/ \
   "$H100_HOST:$H100_PROJECT_DIR/data/history/storage/"
-
-rsync -a --partial --info=progress2 \
-  "$H100_HOST:$H100_PROJECT_DIR/runs/" runs/
 ```
 
-No W&B login, API key, cloud logger, digital signature, or extra cryptographic signing ceremony is
-required. Existing snapshot and Git hashes are experiment identity checks, not a user-signature
-scheme.
+不要为 G1 同步 `data/stockbench/`。同步后先做 history-only 原始字节核验：
 
-## 8. Commands to run
+```bash
+uv run python - <<'PY'
+from src.agents.config import load_experiment_config
+from src.agents.launcher import verify_configured_source_manifests
 
-CPU-safe command construction:
+config = load_experiment_config("configs/smoke_1p7b.yaml")
+audits = verify_configured_source_manifests(config, repo_root=".")
+assert set(audits) == {"history"}
+audit = audits["history"]
+print("manifest_sha256", audit.manifest_sha256)
+print("file_count", audit.file_count)
+print("sessions_per_symbol", sorted(set(audit.sessions_per_symbol.values())))
+PY
+```
+
+若 SHA-256、文件数 `10,820` 或每票 session 数 `541` 不一致，停止并重新同步原冻结快照。不要
+联网重抓后改配置来迁就新数据。
+
+## 8. 验证并人工审核 smoke 输入
+
+以下命令全部在仓库根目录执行。
+
+### 8.1 先验证仓库内已冻结的 candidate
+
+仓库已提供 `configs/episode_manifest.smoke.candidate.yaml`，不需要每次重新生成。它必须满足：
+
+```text
+file SHA-256:             68c0687f7b917415def083194233b7893a2938cac0364cae0510415412adcd7a
+benchmark series SHA-256: eb3a6583e2f35b7b26e5f0a0d862134cddf2b5fc71febf8e9742eee6a7c14988
+status:                   pending_human_review
+episodes:                 train=4, valid=1, test=1
+```
+
+验证文件哈希：
+
+```bash
+python - <<'PY'
+from hashlib import sha256
+from pathlib import Path
+
+path = Path("configs/episode_manifest.smoke.candidate.yaml")
+expected = "68c0687f7b917415def083194233b7893a2938cac0364cae0510415412adcd7a"
+actual = sha256(path.read_bytes()).hexdigest()
+assert actual == expected, (actual, expected)
+print(actual)
+PY
+```
+
+如果哈希不符，先确认 checkout 的是否为最新 `origin/main`；不要直接修改 candidate。
+
+### 8.2 可选：独立重现 candidate
+
+这一步只用于审计或仓库文件缺失时重现。生成器只读配置、XNYS 日历和冻结 history，
+不读取 StockBench 或 Final OOS。输出写入临时目录，不覆盖仓库候选文件。
+
+```bash
+audit_dir="$(mktemp -d)"
+uv run python scripts/build_smoke_manifest.py \
+  --config configs/smoke_1p7b.yaml \
+  --output "$audit_dir/draft.yaml"
+uv run python scripts/freeze_benchmarks.py \
+  --config configs/smoke_1p7b.yaml \
+  --draft "$audit_dir/draft.yaml" \
+  --output "$audit_dir/candidate.yaml"
+cmp "$audit_dir/candidate.yaml" \
+  configs/episode_manifest.smoke.candidate.yaml
+```
+
+`cmp` 必须没有输出且退出码为 0。比对完成后可删除该临时目录。
+
+### 8.3 完成人工审核
+
+不需要数字签名或额外加密签名。由合作者线下确认以下内容，并在团队记录中留痕即可：
+
+- data snapshot 只有 `history`，没有 `stockbench`；
+- Train 为 4×9 session，Valid 和 Shadow Test 各 9 session；
+- Shadow Test 日期和第 4 节列出的 9 日完全一致；
+- 所有 open/close 时间符合 `America/New_York` 的 XNYS session；
+- Shadow Test 的六个 provenance 字段完全一致；
+- benchmark NAV 来自共享 next-open ledger；
+- `src/data/history.py` 的后续拆股反向还原与 volume 最近整数还原符合冻结规则；
+- 没有启用 news 或未经逐字段 PIT 审计的 current fundamentals。
+
+审核完成后，复制 candidate；不要手工改写其内容：
+
+```bash
+cp configs/episode_manifest.smoke.candidate.yaml \
+  configs/episode_manifest.smoke.reviewed.yaml
+cmp configs/episode_manifest.smoke.candidate.yaml \
+  configs/episode_manifest.smoke.reviewed.yaml
+```
+
+`cmp` 必须没有输出且退出码为 0。
+
+### 8.4 生成三个 processed 文件
+
+```bash
+uv run python scripts/prepare_episodes.py \
+  --config configs/smoke_1p7b.yaml \
+  --manifest configs/episode_manifest.smoke.reviewed.yaml
+
+test -f data/processed/smoke_train.parquet
+test -f data/processed/smoke_valid.parquet
+test -f data/processed/smoke_test.parquet
+```
+
+这些文件都来自 history；`smoke_test.parquet` 只是保留的文件名，其内部 provenance 明确是 Valid
+shadow，不是 Final OOS。
+
+## 9. 安装 H100 GPU 环境并缓存模型
+
+目标环境是一张 Linux x86_64 H100-NVL 96 GB、Python 3.10、CUDA 12.x。先检查驱动：
+
+```bash
+nvidia-smi
+```
+
+flash-attn 构建时必须先看见 torch，按此顺序安装：
+
+```bash
+uv sync --frozen
+uv pip install torch==2.7.0 \
+  --index-url https://download.pytorch.org/whl/cu128
+uv sync --frozen --extra gpu --no-build-isolation-package flash-attn
+```
+
+核验版本和显存：
+
+```bash
+uv run python - <<'PY'
+import flash_attn
+import torch
+import verl
+import vllm
+
+print("torch", torch.__version__, "cuda", torch.version.cuda)
+print("verl", verl.__version__)
+print("vllm", vllm.__version__)
+print("flash_attn", flash_attn.__version__)
+print("gpu", torch.cuda.get_device_name(0))
+assert torch.cuda.is_available()
+assert torch.cuda.get_device_properties(0).total_memory > 90 * 1024**3
+PY
+```
+
+缓存模型并打印实际 revision 路径：
+
+```bash
+uv run python - <<'PY'
+from huggingface_hub import snapshot_download
+
+path = snapshot_download(repo_id="Qwen/Qwen3-1.7B", revision="main")
+print(path)
+PY
+```
+
+训练 launcher 会设置 `HF_HUB_OFFLINE=1`，不会在训练过程中临时下载新模型；preflight 会把本地
+resolved revision 写入运行记录。
+
+## 10. 先 dry-run，再运行 H100 preflight
+
+CPU-safe dry-run 只检查配置合并、命令构造和 Git/submodule/data version 身份：
 
 ```bash
 uv run python -m src.agents.arm_a1 \
   --config configs/smoke_1p7b.yaml --dry-run
 ```
 
-H100 preflight, which performs no training:
+确认输出只有 console logger，没有 W&B，并包含：
+
+```text
+model.path=Qwen/Qwen3-1.7B
+trainer.n_gpus_per_node=1
+reproducibility.agent_r1_commit=b124aa46534cbf2fb8bc8af11405774984c42ac7
+```
+
+然后执行不会启动训练的完整 H100 preflight：
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 uv run python -m src.agents.arm_a1 \
   --config configs/smoke_1p7b.yaml --preflight-only
 ```
 
-Successful preflight prints all three lines:
+它会检查配置与唯一 smoke 豁免、Git/submodule、reward freeze、GPU/CUDA、模型缓存、history 原始
+manifest、reviewed manifest、benchmark 重算、三个 processed 文件及 Final OOS 隔离。
+
+只有同时看到以下三行才算通过：
 
 ```text
 PREFLIGHT_PASSED
@@ -154,24 +425,26 @@ No training was started.
 Final OOS not accessed.
 ```
 
-Real approved smoke:
+通过后可把 G1 从 `BLOCKED` 记为 `IN_PROGRESS`。preflight 本身绝不能记为 `PASSED`。
+
+## 11. 运行唯一批准的 G1 smoke
+
+推荐直接运行：
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 uv run python -m src.agents.arm_a1 \
   --config configs/smoke_1p7b.yaml
 ```
 
-The queue wrapper may be used for the same one config:
+也可使用只传入 smoke 配置的队列 wrapper：
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 scripts/run_queue.sh configs/smoke_1p7b.yaml
 ```
 
-Do not run the no-argument A1/A2/A3 formal queue while T2 v2 is blocked.
+不要执行无参数的 `scripts/run_queue.sh`；它会尝试正式 A1/A2/A3，而 T2 v2 仍然阻断正式训练。
 
-## 9. Run evidence and acceptance
-
-Every attempted non-dry run creates:
+每次非 dry-run 都会创建：
 
 ```text
 runs/<run_id>/
@@ -187,51 +460,158 @@ runs/<run_id>/
   artifacts/
 ```
 
-Failures retain `summary.json` with the error. Real training installs an opt-in runtime probe in the
-launcher and Ray workers. It samples a trainable parameter with finite non-zero gradient before the
-optimizer step and records before/after hashes, gradient norm, parameter delta L2/max, backward
-count, optimizer-step count, and global-update count. A zero or missing finite delta fails G1.
+即使 preflight 或训练失败，也必须保留该目录，不要删除失败证据。
 
-For acceptance, inspect `summary.json` and require:
+## 12. 如何判断 G1 是否真正通过
 
-- `status` is `PASSED` and return code is zero;
-- `final_oos_accessed` is false;
-- optimizer evidence has `detected=true`;
-- backward, optimizer-step, and global-update counts are positive;
-- the recorded Git/submodule/config/data identities match the frozen values;
-- rollout and reward events contain no collapse/watchdog failure.
-
-Full checkpoints are optional for G1; direct update evidence is mandatory.
-
-## 10. Validation before handoff
-
-Run from repository root:
+找到最近一次 smoke 记录：
 
 ```bash
-uv run pytest -q
-uv run ruff check src tests scripts runtime_hooks
-uv run mypy src tests
-uv lock --check
-git diff --check
-uv run python -m src.agents.arm_a1 --help
-uv run python -m src.agents.arm_a1 --config configs/smoke_1p7b.yaml --dry-run
+RUN_DIR=$(find runs -mindepth 1 -maxdepth 1 -type d \
+  -name '*smoke-a1-qwen3-1p7b*' | sort | tail -1)
+test -n "$RUN_DIR"
+echo "$RUN_DIR"
+uv run python -m json.tool "$RUN_DIR/summary.json"
 ```
 
-On a CPU-only Mac, `--preflight-only` is expected to stop at the GPU-extra/CUDA check and write a
-failed local summary. That is a valid CPU-path exercise, not G1 progress. The complete preflight and
-real optimizer probe remain H100-only checks.
+只有以下条件全部满足，G1 才能标为 `PASSED`：
 
-## 11. Remaining work after this scaffold
+- `summary.json.status == "PASSED"`；
+- `exit_code == 0`；
+- `final_oos_accessed == false`；
+- `backward_count > 0`；
+- `optimizer_step_count > 0`；
+- `global_step > 0`；
+- `optimizer_update_evidence.detected == true`；
+- representative parameter 的 `parameter_delta_l2` 和 `parameter_delta_max` 有限且非零；
+- Git、Agent-R1、config、data 和 model revision 已记录；
+- `events.log` 中没有 reward collapse、重复输出或 watchdog failure；
+- rollout 与 reward 确实出现，而不只是模型加载成功。
 
-1. Finish human review of the smoke manifest and split-restoration logic.
-2. Sync the history snapshot and repository to the H100 host.
-3. Install the locked GPU extra and cache Qwen3-1.7B locally.
-4. Commit the repository only when explicitly authorized; preflight may intentionally require a
-   committed clean state according to the final run policy.
-5. Run H100 preflight. If it passes, mark G1 `IN_PROGRESS`.
-6. Run the one approved smoke and inspect its structured evidence. Mark G1 `PASSED` only if every
-   acceptance condition above holds.
-7. Separately implement and pass T2 v2 before any formal A1/A2/A3 training.
+可以运行以下最低限度的机器检查：
 
-Current overall readiness is `PARTIALLY_READY`: the local scaffold is implemented, but the worktree
-is uncommitted and H100-only evidence does not exist.
+```bash
+RUN_DIR="$RUN_DIR" uv run python - <<'PY'
+import json
+import math
+import os
+from pathlib import Path
+
+run_dir = Path(os.environ["RUN_DIR"])
+summary = json.loads((run_dir / "summary.json").read_text())
+evidence = summary["optimizer_update_evidence"]
+update = evidence["representative_update"]
+
+assert summary["status"] == "PASSED"
+assert summary["exit_code"] == 0
+assert summary["final_oos_accessed"] is False
+assert summary["backward_count"] > 0
+assert summary["optimizer_step_count"] > 0
+assert summary["global_step"] > 0
+assert evidence["detected"] is True
+assert math.isfinite(update["parameter_delta_l2"])
+assert math.isfinite(update["parameter_delta_max"])
+assert update["parameter_delta_l2"] > 0
+assert update["parameter_delta_max"] > 0
+print("G1 machine acceptance checks passed; inspect rollout/reward events manually.")
+PY
+```
+
+完整 1.7B checkpoint 对 G1 不是必需；真实参数更新证据是必需。
+
+## 13. 常见阻塞与处理办法
+
+| 报错或现象 | 含义 | 正确处理 |
+|---|---|---|
+| 缺少 `torch/verl/vllm/flash_attn` | GPU extra 未正确安装 | 按第 9 节顺序重装，不要随意升级 verl |
+| `CUDA GPU is unavailable` | 驱动、CUDA visibility 或资源分配错误 | 检查 `nvidia-smi`、调度器和 `CUDA_VISIBLE_DEVICES` |
+| model revision not cached | 本地没有 Qwen3-1.7B snapshot/ref | 按第 9 节预下载，训练中不要联网补下载 |
+| missing reviewed manifest | 尚未完成 candidate 审核 | 回到第 8 节，不要把 draft 直接冒充 reviewed |
+| missing processed dataset | 三个 Parquet 尚未生成 | 从 reviewed manifest 重新运行 `prepare_episodes.py` |
+| raw manifest SHA mismatch | 数据不是冻结快照或同步损坏 | 停止，重新 rsync 原快照；不要修改冻结 SHA |
+| invalid T2 smoke exemption | smoke 配置漂移或启动了非批准配置 | 拉取干净 `main`，只使用 `configs/smoke_1p7b.yaml` |
+| Final OOS/StockBench rejection | smoke 输入污染了最终评测边界 | 删除错误输入并重新生成 history-only smoke 数据 |
+| 进程退出 0 但 update 未检出 | 没有证明发生真实训练 | G1 失败；保留 artifacts，检查梯度/optimizer/Ray hook |
+| reward collapse 或重复输出 | rollout 已失效 | G1 失败；保留 run 记录，不得挑选性删除失败 run |
+
+任何失败都不得通过降低门禁、改 provenance 或删除失败记录来“修复”。
+
+## 14. 同步运行证据
+
+H100 完成后，把完整 `runs/` 同步回协作目录：
+
+```bash
+export H100_HOST=<h100-ssh-host>
+export H100_PROJECT_DIR=<h100上的绝对项目目录>
+
+rsync -a --partial --info=progress2 \
+  "$H100_HOST:$H100_PROJECT_DIR/runs/" runs/
+```
+
+W&B、API key、云端 logger、数字签名或加密签字流程都不需要。Git/data/config/model 哈希用于实验
+身份核验，不是人员签名系统。
+
+## 15. G1 之后该做什么
+
+G1 通过后：
+
+1. 保存并共享 `runs/<run_id>/`；
+2. 在团队进度记录中把 G1 改为 `PASSED`；
+3. 不打开 Final OOS，不启动正式三臂训练；
+4. 实现 T2 v2：只允许 history Train/Valid，pooled per-stock，强弱两档正控制均只在内存；
+5. T2 v2 必须同时满足强档检出、40% flip 弱档检出、真实管道未显著检出；
+6. 弱档未检出必须如实保留为功效边界；
+7. 正式 A3 主结论前，实现并预注册 M2 或 M3，不能用 M1 冒充。
+
+只有 T2 v2 通过、正式 manifests 完成审核、代码和数据身份冻结后，才进入正式实验设计与执行。
+Final OOS 只在最终科学评测时开启。
+
+## 16. 信息冲突时如何处理
+
+优先级从高到低：
+
+1. 当前 Git checkout、配置、代码和实际测试/运行结果；
+2. `EVAL_PROTOCOL.md` 最新追加修订；
+3. 本文；
+4. `README.md` 与 `SETUP.md`；
+5. 历史 handoff、聊天记录或口头说明。
+
+若本文的测试数、commit SHA、文件状态或命令与当前 `main` 不一致：
+
+- 不要猜；
+- 记录 `git status --short --branch`、`git rev-parse HEAD`、失败命令和 run 目录；
+- 在不触碰 Final OOS 的前提下复核代码和配置；
+- 让仓库维护者更新本文后再继续。
+
+## 17. 文件导航
+
+只跑 G1 时，最重要的文件是：
+
+| 文件 | 作用 |
+|---|---|
+| `docs/EXPERIMENT_HANDOFF.md` | 本接手与运行手册 |
+| `EVAL_PROTOCOL.md` | 冻结协议与历次追加修订 |
+| `configs/smoke_1p7b.yaml` | 唯一批准的 G1 配置 |
+| `configs/base.yaml` | 数据、reward、交易、Regime 与门禁基础配置 |
+| `configs/episode_manifest.smoke.candidate.yaml` | 已冻结、待线下人工审核的 G1 候选清单 |
+| `scripts/build_smoke_manifest.py` | 生成确定性 history-only smoke 草稿 |
+| `scripts/freeze_benchmarks.py` | 用共享账务引擎生成 benchmark NAV |
+| `scripts/prepare_episodes.py` | 生成 Agent-R1 processed Parquet |
+| `src/data/episodes.py` | sampling、manifest 和 Final OOS 隔离 |
+| `src/agents/launcher.py` | preflight、门禁与真实启动 |
+| `src/agents/local_runs.py` | `runs/<run_id>/` 结构化记录 |
+| `src/agents/update_probe.py` | 真实参数更新证据 |
+| `SETUP.md` | 更完整的环境与数据背景说明，本文未覆盖时再读 |
+
+## 18. 最终交接定义
+
+对新合作者而言，“可以直接接手”不等于 GitHub clone 后立刻能训练，因为冻结数据和模型因
+体量和复现边界不放在 Git 仓库中。它的准确含义是：
+
+- GitHub 提供完整代码、冻结规则、命令和验收标准；
+- 维护者只需另行提供冻结 history 快照和 H100 访问；
+- 合作者无需依赖历史聊天、W&B、个人电脑路径或数字签名流程；
+- 合作者能够独立判断当前为何阻塞、下一步做什么、何时必须停止，以及什么证据才算实验通过。
+
+当前 readiness：`PARTIALLY_READY`。代码与 G0 已就绪；外部输入、H100 preflight 和真实 G1 smoke
+尚未完成。

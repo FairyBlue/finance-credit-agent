@@ -137,11 +137,10 @@ uv run python scripts/calibrate_reward.py \
   --check configs/reward_calibration.pending.yaml
 ```
 
-Create a full reviewed manifest at the exact path configured in base; create a separate smoke
-manifest with four short train episodes (at most nine sessions per train/valid episode). The human
-review and both manifests are due this week, with future-split reversal and de-adjusted volume as
-explicit review priorities. Generate strict chronological inputs into their separate processed
-files:
+Create a full reviewed manifest at the exact path configured in base. The repository already
+contains the separate smoke candidate with four short train episodes. Both manifests still require
+offline human review, with future-split reversal and de-adjusted volume as explicit review
+priorities. Generate strict chronological inputs into their separate processed files:
 
 ```bash
 cp configs/episode_manifest.example.yaml configs/episode_manifest.draft.yaml
@@ -151,12 +150,11 @@ uv run python scripts/freeze_benchmarks.py \
 uv run python scripts/prepare_episodes.py \
   --manifest configs/episode_manifest.reviewed.yaml
 
-uv run python scripts/build_smoke_manifest.py \
-  --config configs/smoke_1p7b.yaml \
-  --output configs/episode_manifest.smoke.draft.yaml
-uv run python scripts/freeze_benchmarks.py --config configs/smoke_1p7b.yaml \
-  --draft configs/episode_manifest.smoke.draft.yaml \
-  --output configs/episode_manifest.smoke.reviewed.yaml
+# After offline review, copy the frozen candidate byte-for-byte; do not edit its NAV values.
+cp configs/episode_manifest.smoke.candidate.yaml \
+  configs/episode_manifest.smoke.reviewed.yaml
+cmp configs/episode_manifest.smoke.candidate.yaml \
+  configs/episode_manifest.smoke.reviewed.yaml
 uv run python scripts/prepare_episodes.py --config configs/smoke_1p7b.yaml \
   --manifest configs/episode_manifest.smoke.reviewed.yaml
 
