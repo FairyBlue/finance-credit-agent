@@ -16,6 +16,7 @@ checkpoints/
 outputs/
 wandb/
 logs/
+runs/
 
 # Local secrets.
 .env

@@ -1,5 +1,8 @@
 # finance-credit-agent
 
+Current experiment status, exact G1 commands, inputs, and acceptance evidence:
+[`docs/EXPERIMENT_HANDOFF.md`](docs/EXPERIMENT_HANDOFF.md).
+
 Research scaffold for testing whether finance-native **step-level credit assignment** improves a
 tool-using trading agent over outcome-only GRPO and generic StepPO. The project composes with
 [Agent-R1](https://github.com/AgentR1/Agent-R1) as a locked submodule, keeps every local change under
@@ -31,7 +34,8 @@ M3 sampled counterfactual information contribution have explicit interfaces and 
   `d272656019d9f7a856444ac903a7a6da9d5377987214d00691600b655df56860`.
 
 Every training command injects `agent_r1_commit`, `repo_commit`, and `data_version` into the Hydra
-configuration recorded by W&B. Non-dry training refuses a dirty/uncommitted repository by default.
+configuration recorded in the local console log. Non-dry training refuses a dirty/uncommitted
+repository by default.
 
 ## Project map
 
@@ -148,8 +152,9 @@ uv run python scripts/freeze_benchmarks.py \
 uv run python scripts/prepare_episodes.py \
   --manifest configs/episode_manifest.reviewed.yaml
 
-# Smoke uses four separate train episodes of at most nine sessions each.
-cp configs/episode_manifest.example.yaml configs/episode_manifest.smoke.draft.yaml
+# Smoke draft is generated from the frozen XNYS Valid shadow; it never reads Final OOS.
+uv run python scripts/build_smoke_manifest.py \
+  --output configs/episode_manifest.smoke.draft.yaml
 uv run python scripts/freeze_benchmarks.py --config configs/smoke_1p7b.yaml \
   --draft configs/episode_manifest.smoke.draft.yaml \
   --output configs/episode_manifest.smoke.reviewed.yaml
@@ -160,7 +165,9 @@ uv run python scripts/prepare_episodes.py --config configs/smoke_1p7b.yaml \
 ```
 
 The builder rejects random/overlapping splits and writes the Agent-R1 parquet inputs under ignored
-`data/processed/`. At launch, every train/valid row must exactly match the committed manifest,
+`data/processed/`. The smoke shadow is the nine Valid sessions from `2024-11-14` through
+`2024-11-26`, carries wiring-only provenance, and cannot access Final OOS. At launch, every
+train/valid row—and every smoke shadow test row—must exactly match the committed manifest,
 including dates, opens, benchmark NAV, horizon, and the complete allowed `env_kwargs` key set. The
 launcher also recomputes every reviewed benchmark NAV from the frozen raw bars before training. The
 same `PortfolioLedger` powers trained arms, equal-weight buy-and-hold, all cash, frozen zero-shot
@@ -193,15 +200,19 @@ worker independently recomputes its source manifest on first load before caching
 # Inspect exact upstream command and the three recorded hashes without a GPU.
 uv run python -m src.agents.arm_a1 --config configs/smoke_1p7b.yaml --dry-run
 
-# H100 smoke run after data/TODO review and W&B login.
-uv run python -m src.agents.arm_a1 --config configs/smoke_1p7b.yaml
+# H100-only preflight; performs no training and never accesses Final OOS.
+CUDA_VISIBLE_DEVICES=0 uv run python -m src.agents.arm_a1 \
+  --config configs/smoke_1p7b.yaml --preflight-only
+
+# H100 smoke run with structured local evidence under runs/<run_id>/.
+scripts/run_queue.sh configs/smoke_1p7b.yaml
 
 # Serial A1 → A2 → A3 queue on CUDA device 0.
 CUDA_VISIBLE_DEVICES=0 scripts/run_queue.sh
 ```
 
 The watchdog terminates only the active queued PID after eight logged zero-reward updates or eight
-identical model-output records, writes the reason to `logs/run_queue/watchdog_events.jsonl`, and lets
+identical model-output records, writes the reason to `runs/queue_logs/watchdog_events.jsonl`, and lets
 the queue continue.
 
 `src/evaluation/` computes cumulative/annualized return, Sharpe, Sortino, maximum drawdown, turnover,
@@ -227,6 +238,7 @@ The five-session tariff-crash metrics are descriptive only and must carry no sig
    `src/data/history.py`, data time alignment and `available_at` assignment in
    `src/data/stockbench.py`, the fit window in `src/data/transforms.py`, and next-open execution in
    `src/env/accounting.py`. Also sign the cross-source 2025-02-28 overlap audit in `base.yaml`.
-5. **Authorized smoke preparation:** archive/copy the ignored snapshots immutably on the H100 host,
-   install the GPU extra, log in to W&B, and run only the A1/Qwen3-1.7B wiring smoke after the
-   reviewed smoke manifest, processed paths, and host access are ready.
+5. **Authorized smoke preparation:** copy the ignored history snapshot to the H100 host with rsync/scp,
+   install the GPU extra, and run only the A1/Qwen3-1.7B wiring smoke after the reviewed smoke
+   manifest, processed paths, and host access are ready. Keep timestamped local logs and sync the
+   `runs/` directory back with rsync; W&B is disabled. Do not copy or expose StockBench to the smoke.

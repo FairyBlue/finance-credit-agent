@@ -1,4 +1,4 @@
-"""Reproducibility hashes injected into every upstream/W&B run config."""
+"""Reproducibility hashes injected into every upstream run config and local log."""
 
 from __future__ import annotations
 

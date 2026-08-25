@@ -1,11 +1,14 @@
 """Frozen human protocol choices must survive the public config loader."""
 
+from copy import deepcopy
 from pathlib import Path
 
 import exchange_calendars as xcals
+import pytest
 import yaml
 
 from src.agents.config import load_experiment_config
+from src.data.episodes import resolve_smoke_episode_sessions, verify_smoke_final_oos_isolation
 from src.rewards import verify_calibration_document
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -156,6 +159,135 @@ def test_reward_limits_use_the_approved_soft_threshold_semantics() -> None:
         "turnover_accounting": "double_sided",
         "turnover_limit_1p00_one_way_rotation_approx": 0.5,
     }
+
+
+def test_tracking_is_local_and_declares_the_file_sync_plan() -> None:
+    config = _base_config()
+
+    assert "wandb" not in config
+    assert config["tracking"] == {
+        "backend": "local_files",
+        "project": "finance-credit-agent",
+        "log_root": "runs",
+        "sync": {
+            "transport": "rsync",
+            "push_paths": ["data/history/storage", "data/stockbench"],
+            "pull_paths": ["runs", "outputs", "artifacts"],
+        },
+        "required_hashes": ["agent_r1_commit", "repo_commit", "data_version"],
+    }
+
+
+def test_g1_smoke_uses_exact_valid_shadow_and_no_final_oos() -> None:
+    config = load_experiment_config(ROOT / "configs/smoke_1p7b.yaml")
+
+    assert config["data"]["sources"]["stockbench"] is None
+    assert config["data"]["split_source"] == {
+        "train": "history",
+        "valid": "history",
+        "test": "history",
+    }
+    assert config["data"]["episode_sampling"] == {
+        "calendar": "XNYS",
+        "train": {
+            "selection": "leading_sessions",
+            "session_count": 36,
+            "episodes": 4,
+            "sessions_per_episode": 9,
+            "contiguous": True,
+            "non_overlapping": True,
+        },
+        "valid": {
+            "selection": "leading_sessions",
+            "session_count": 9,
+            "episodes": 1,
+        },
+        "test": {
+            "selection": "valid_session_slice",
+            "start_index": 9,
+            "stop_index": 18,
+            "expected_start": "2024-11-14",
+            "expected_end": "2024-11-26",
+            "session_count": 9,
+            "episodes": 1,
+            "split_role": "smoke_shadow",
+            "source_split": "valid",
+            "purpose": "wiring_only",
+            "scientific_use_allowed": False,
+            "checkpoint_selection_allowed": False,
+            "final_oos": False,
+        },
+    }
+    assert config["data"]["windows"]["test"] == {
+        "start": "2024-11-14",
+        "end": "2024-11-26",
+        "indivisible_oos": False,
+        "split_role": "smoke_shadow",
+        "source_split": "valid",
+        "purpose": "wiring_only",
+        "scientific_use_allowed": False,
+        "checkpoint_selection_allowed": False,
+        "final_oos": False,
+    }
+
+    sessions = resolve_smoke_episode_sessions(config)
+
+    assert [(block[0], block[-1]) for block in sessions["train"]] == [
+        ("2023-01-03", "2023-01-13"),
+        ("2023-01-17", "2023-01-27"),
+        ("2023-01-30", "2023-02-09"),
+        ("2023-02-10", "2023-02-23"),
+    ]
+    assert (sessions["valid"][0][0], sessions["valid"][0][-1]) == (
+        "2024-11-01",
+        "2024-11-13",
+    )
+    assert sessions["test"][0] == (
+        "2024-11-14",
+        "2024-11-15",
+        "2024-11-18",
+        "2024-11-19",
+        "2024-11-20",
+        "2024-11-21",
+        "2024-11-22",
+        "2024-11-25",
+        "2024-11-26",
+    )
+
+    evidence = verify_smoke_final_oos_isolation(config)
+
+    assert evidence == {
+        "final_oos_accessed": False,
+        "shadow_start": "2024-11-14",
+        "shadow_end": "2024-11-26",
+        "shadow_sessions": 9,
+        "source": "history",
+    }
+
+
+@pytest.mark.parametrize("violation", ["source", "processed_path", "final_oos_dates"])
+def test_g1_smoke_oos_guard_rejects_all_final_oos_entry_paths(violation: str) -> None:
+    approved = load_experiment_config(ROOT / "configs/smoke_1p7b.yaml")
+    config = deepcopy(approved)
+    if violation == "source":
+        config["data"]["sources"]["stockbench"] = {"storage_root": "data/stockbench/storage"}
+        message = "disable the StockBench Final OOS source"
+    elif violation == "processed_path":
+        config["data"]["processed"]["test_file"] = "data/stockbench/smoke_test.parquet"
+        message = "processed path test_file references Final OOS"
+    else:
+        config["data"]["windows"]["valid"] = {
+            "start": "2025-03-03",
+            "end": "2025-06-30",
+        }
+        config["data"]["windows"]["test"].update({"start": "2025-03-14", "end": "2025-03-26"})
+        config["data"]["episode_sampling"]["test"].update(
+            {"expected_start": "2025-03-14", "expected_end": "2025-03-26"}
+        )
+        message = "smoke date enters Final OOS"
+
+    with pytest.raises(ValueError, match=message):
+        verify_smoke_final_oos_isolation(config)
 
 
 def test_base_reward_values_are_bound_to_the_pending_train_only_freeze_table() -> None:

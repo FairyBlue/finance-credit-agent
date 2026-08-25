@@ -18,10 +18,142 @@ from src.agents.launcher import (
     verify_configured_source_manifests,
     verify_configured_t2_gate,
     verify_processed_dataset_bindings,
+    verify_smoke_processed_row_provenance,
 )
+from src.agents.local_runs import LocalRunRecorder
 from src.agents.metadata import RunHashes, composite_data_version, validate_composite_data_version
+from src.agents.update_probe import summarize_update_evidence
 from src.data.episodes import benchmark_series_sha256
 from src.data.integrity import audit_raw_daily_manifest
+
+
+def test_failed_local_run_preserves_complete_reproducibility_record(
+    tmp_path: Path,
+) -> None:
+    recorder = LocalRunRecorder.create(
+        run_root=tmp_path / "runs",
+        config={
+            "run": {"name": "fixture"},
+            "data": {
+                "version": "history-only-fixture",
+                "episode_manifest": "reviewed.yaml",
+                "processed": {"train_file": "train.parquet"},
+                "split_source": {"train": "history"},
+                "sources": {"history": {"input_manifest_sha256": "a" * 64}},
+            },
+        },
+        command=[sys.executable, "-m", "fixture"],
+        hashes=RunHashes(
+            agent_r1_commit="a" * 40,
+            repo_commit="b" * 40,
+            data_version="history-only-fixture",
+            repo_dirty=True,
+        ),
+        run_id="fixture-run",
+    )
+    recorder.finish(returncode=None, error=RuntimeError("preflight blocked"))
+
+    assert {path.name for path in recorder.path.iterdir()} == {
+        "artifacts",
+        "checkpoints",
+        "command.txt",
+        "data_manifest.json",
+        "environment.json",
+        "events.log",
+        "git_state.json",
+        "metrics.jsonl",
+        "resolved_config.yaml",
+        "summary.json",
+    }
+    summary = json.loads((recorder.path / "summary.json").read_text())
+    assert summary["status"] == "FAILED"
+    assert summary["error"] == {
+        "message": "preflight blocked",
+        "type": "RuntimeError",
+    }
+    assert json.loads((recorder.path / "git_state.json").read_text())["repo_dirty"] is True
+
+
+def test_optimizer_evidence_gate_requires_a_real_finite_parameter_change(
+    tmp_path: Path,
+) -> None:
+    probe_root = tmp_path / "probe"
+    probe_root.mkdir()
+    records = [
+        {
+            "pid": 7,
+            "backward_count": 1,
+            "optimizer_step_count": 1,
+            "global_update_count": 1,
+            "grad_norm": 0.5,
+            "parameter_delta_l2": 0.0,
+            "parameter_delta_max": 0.0,
+            "detected": False,
+        },
+        {
+            "pid": 7,
+            "backward_count": 2,
+            "optimizer_step_count": 2,
+            "global_update_count": 2,
+            "grad_norm": 0.4,
+            "parameter_delta_l2": 0.01,
+            "parameter_delta_max": 0.004,
+            "detected": True,
+        },
+    ]
+    (probe_root / "optimizer-update-7.jsonl").write_text(
+        "".join(json.dumps(record) + "\n" for record in records), encoding="utf-8"
+    )
+
+    evidence = summarize_update_evidence(probe_root)
+
+    assert evidence["detected"] is True
+    assert evidence["backward_count"] == 2
+    assert evidence["optimizer_step_count"] == 2
+    assert evidence["global_update_count"] == 2
+    representative = evidence["representative_update"]
+    assert isinstance(representative, dict)
+    assert representative["parameter_delta_max"] == 0.004
+
+
+@pytest.mark.parametrize("violation", ["stockbench_source", "false_provenance", "final_oos_date"])
+def test_smoke_processed_provenance_rejects_disguised_final_oos(
+    violation: str,
+) -> None:
+    provenance = {
+        "split_role": "smoke_shadow",
+        "source_split": "valid",
+        "purpose": "wiring_only",
+        "scientific_use_allowed": False,
+        "checkpoint_selection_allowed": False,
+        "final_oos": False,
+    }
+    env_kwargs: dict[str, Any] = {
+        "provenance": dict(provenance),
+        "episode_dates": ["2024-11-14T21:00:00+00:00"],
+    }
+    extra_info = {"episode_id": "smoke-test-001", "split": "test", "index": 0}
+    extra_info.update(provenance)
+    verify_smoke_processed_row_provenance(
+        data_source="history/test",
+        env_kwargs=env_kwargs,
+        extra_info=extra_info,
+    )
+
+    data_source = "history/test"
+    if violation == "stockbench_source":
+        data_source = "stockbench/test"
+    elif violation == "false_provenance":
+        env_kwargs["provenance"]["purpose"] = "final_evaluation"
+    else:
+        env_kwargs["episode_dates"] = ["2025-03-03T21:00:00+00:00"]
+
+    with pytest.raises(RuntimeError):
+        verify_smoke_processed_row_provenance(
+            data_source=data_source,
+            env_kwargs=env_kwargs,
+            extra_info=extra_info,
+        )
 
 
 def test_composite_data_version_is_deterministic_and_source_named() -> None:
@@ -91,9 +223,7 @@ def test_launcher_preflight_recomputes_each_configured_source_manifest(tmp_path:
 
 def test_launcher_preflight_rejects_data_changed_after_configuration(tmp_path: Path) -> None:
     config = _source_config(tmp_path)
-    (tmp_path / "stockbench/storage/parquet/AAA/day/2025-01-02.parquet").write_bytes(
-        b"tampered"
-    )
+    (tmp_path / "stockbench/storage/parquet/AAA/day/2025-01-02.parquet").write_bytes(b"tampered")
 
     with pytest.raises(RuntimeError, match="raw manifest SHA-256 mismatch"):
         verify_configured_source_manifests(config, repo_root=tmp_path)
@@ -115,6 +245,25 @@ def test_agent_loop_uses_the_explicit_episode_horizon_not_legacy_max_turns() -> 
     assert "actor_rollout_ref.rollout.agent.max_steps=32" in command
 
 
+def test_smoke_uses_console_only_local_tracking() -> None:
+    root = Path(__file__).resolve().parents[1]
+    config = load_experiment_config(root / "configs/smoke_1p7b.yaml")
+    command = build_upstream_command(
+        config,
+        RunHashes(
+            agent_r1_commit="a" * 40,
+            repo_commit="b" * 40,
+            data_version="fixture",
+            repo_dirty=False,
+        ),
+    )
+
+    assert "wandb" not in config
+    assert config["tracking"]["backend"] == "local_files"
+    assert 'trainer.logger=["console"]' in command
+    assert all("wandb" not in argument.casefold() for argument in command)
+
+
 def test_wiring_smoke_declares_the_only_approved_run_kind() -> None:
     root = Path(__file__).resolve().parents[1]
     config = load_experiment_config(root / "configs/smoke_1p7b.yaml")
@@ -128,9 +277,7 @@ def test_missing_t2_v2_blocks_without_falling_back_to_the_legacy_oos_probe(
     assert not hasattr(launcher_module, "run_configured_temporal_leakage_probe")
     config: dict[str, Any] = {
         "run": {"smoke": False},
-        "evaluation": {
-            "shifted_label_probe": {"require_before_main_training": True}
-        },
+        "evaluation": {"shifted_label_probe": {"require_before_main_training": True}},
     }
 
     with pytest.raises(RuntimeError, match="T2 v2 configuration is required"):

@@ -13,7 +13,52 @@ model:
 
 data:
   # Short episodes reserve two retrieve/compute calls per session before each advance.
+  version: smoke-history-only:raw-manifest-sha256:2612e707446b1c8bcd73ac6583b84558d3c4eddbaa9fc20adf7023c3c8a76c90
+  sources:
+    stockbench: null
+  split_source:
+    train: history
+    valid: history
+    test: history
+  windows:
+    test:
+      start: "2024-11-14"
+      end: "2024-11-26"
+      indivisible_oos: false
+      split_role: smoke_shadow
+      source_split: valid
+      purpose: wiring_only
+      scientific_use_allowed: false
+      checkpoint_selection_allowed: false
+      final_oos: false
   episode_manifest: configs/episode_manifest.smoke.reviewed.yaml
+  episode_sampling:
+    calendar: XNYS
+    train:
+      selection: leading_sessions
+      session_count: 36
+      episodes: 4
+      sessions_per_episode: 9
+      contiguous: true
+      non_overlapping: true
+    valid:
+      selection: leading_sessions
+      session_count: 9
+      episodes: 1
+    test:
+      selection: valid_session_slice
+      start_index: 9
+      stop_index: 18
+      expected_start: "2024-11-14"
+      expected_end: "2024-11-26"
+      session_count: 9
+      episodes: 1
+      split_role: smoke_shadow
+      source_split: valid
+      purpose: wiring_only
+      scientific_use_allowed: false
+      checkpoint_selection_allowed: false
+      final_oos: false
   processed:
     train_file: data/processed/smoke_train.parquet
     valid_file: data/processed/smoke_valid.parquet
@@ -27,6 +72,3 @@ training:
   rollout_n: 2
   total_epochs: 1
   require_clean_repo: false
-
-wandb:
-  mode: online

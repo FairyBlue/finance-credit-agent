@@ -62,6 +62,7 @@
 | 2026-08-24 | v0.2 amendment：冻结数据源/窗口、20 股池、成本、benchmark、sigma、v1 工具边界与 T2 统计口径 | Codex 经当前任务用户明确授权，于 `2026-08-24T21:39:30+08:00` 归档确认 |
 | 2026-08-24 | v0.3 amendment：冻结 train-only 奖励标定、软阈值、事件 Regime、T2 v2 与唯一 smoke 豁免 | Codex 经当前任务用户明确授权，于 `2026-08-24T21:39:30+08:00` 归档确认 |
 | 2026-08-24 | v0.4 amendment：以用户授权的 Codex 归档确认替代另行双人签字 | Codex 经当前任务用户明确授权，于 `2026-08-24T21:39:30+08:00` 归档确认 |
+| 2026-08-25 | v0.6 amendment：G1 改用 Valid shadow test、Final OOS fail-closed、本地结构化运行证据 | 用户明确批准，按本节归档 |
 
 ## 8. v0.2 修订（2026-08-24，用户明确批准）
 
@@ -232,3 +233,73 @@ T2 v2 当前状态是 **preregistered pending implementation**。在其实现、
 - 归档签字身份统一记录为“Codex（经当前任务用户明确授权）”，确认时间为
   `2026-08-24T21:39:30+08:00`。
 - 本修订只改变归档确认流程，不改变任何数据、奖励数值、Regime、T2 条件、smoke 豁免或冻结哈希。
+
+## 11. v0.5 Smoke 采样与本地文件同步修订（2026-08-25，用户明确批准）
+
+- Smoke 采样不再是待确认项：Train 窗最前 36 个 XNYS session 连续、无重叠地拆成 4 个
+  9-session episode；Valid 窗最前 9 个 session 组成 1 个 episode；Test 保留完整 83 个
+  session，作为 1 个不可拆分 episode。该规则同时写入 `configs/smoke_1p7b.yaml`。
+- 取消 W&B 登录、在线记录和验收要求。Agent-R1 logger 固定为 console-only；运行哈希、rollout、
+  reward、optimizer update 和退出状态保存在 `logs/run_queue` 的时间戳日志中。
+- 数据快照使用 rsync 从 Mac 同步到 H100；运行后将 `logs/run_queue`、`outputs` 和 `artifacts`
+  用 rsync 同步回本地，scp 仅作为 rsync 不可用时的备用方式。传输不引入新的人工签字环节。
+- 由于明确加入完整采样规则并将 tracking 改为 local files，v0.3 的 merged-config SHA-256
+  `9ad12d73e0db7b6213c602b1fe04ec7841e97e0fab11fda0652594551da02c9d` 被替代。新的唯一
+  A1/Qwen3-1.7B wiring-smoke merged-config SHA-256 为
+  `211a7189e746415be34f82e8ee8dab067b3bc8f6e33b243ad98595e8dfa6c411`。
+- 本修订不改变奖励参数、Regime、T2 v2 条件、最终 OOS 边界或“smoke 不产生科学结论”的限制。
+
+## 12. v0.6 G1 Shadow Test 与直接更新证据修订（2026-08-25，用户明确批准）
+
+> 本节替代 v0.5 中“Smoke Test 使用完整 83-session Final OOS”及纯文本日志条款。官方
+> Train、Valid、Final OOS 定义不变；这里只改变不产生科学结论的 G1 接线 smoke。
+
+### 12.1 G1 专用采样
+
+- Smoke Train 仍为官方 Train 的前 36 个 XNYS session，连续、无重叠地拆成 4 个
+  9-session episode。
+- Smoke Valid 为官方 Valid 的 `valid_dates[0:9]`，即 `2024-11-01`～`2024-11-13`。
+- Smoke Shadow Test 改为同一官方 Valid 的 `valid_dates[9:18]`，必须精确对应以下 9 个 session：
+  `2024-11-14, 2024-11-15, 2024-11-18, 2024-11-19, 2024-11-20, 2024-11-21,
+  2024-11-22, 2024-11-25, 2024-11-26`。日历结果漂移时立即失败，不得换日。
+- Shadow Test 仅检查数据加载、split、评估、本地日志和正常退出接线。不得用于研究结论、模型或
+  checkpoint 选择、超参数选择、arm 比较、收益/Sharpe 结论或论文结果表。
+- Manifest、processed rows 和运行记录必须同时冻结：
+  `split_role=smoke_shadow`、`source_split=valid`、`purpose=wiring_only`、
+  `scientific_use_allowed=false`、`checkpoint_selection_allowed=false`、`final_oos=false`。
+
+### 12.2 Final OOS fail-closed
+
+- Smoke resolved config 必须把 StockBench source 设为禁用，Train/Valid/Shadow Test 全部绑定
+  history。启动时不读取、不核验、不做 StockBench overlap audit。
+- 任一 source/path/provenance 指向 StockBench 或 Final OOS，任一日期进入
+  `2025-03-03`～`2025-06-30`，或生成后的 Parquet 与 reviewed manifest provenance 不一致，
+  preflight 和 launcher 都必须失败。不得只按 `smoke_test.parquet` 文件名判断来源。
+- 官方 83-session StockBench Final OOS 继续作为不可拆分的最终科学评测窗口；其边界、Regime 和
+  报告规则不因本次 smoke 修订改变。
+
+### 12.3 本地运行记录与 G1 验收
+
+- W&B 继续禁用。每次非 dry-run 启动创建 `runs/<run_id>/`，至少含命令、resolved config、Git
+  状态、环境、数据清单、events、metrics、summary、checkpoints 和 artifacts。失败也必须保留
+  `summary.json`。
+- G1 不要求保存完整 1.7B checkpoint，但必须找到具有有限非零梯度的 trainable parameter，记录
+  optimizer step 前后样本、gradient norm、delta L2/max，以及 backward、optimizer step、global
+  update 计数。进程返回 0 但未检测到有限非零参数变化，仍判为失败。
+- `--preflight-only` 只执行配置、Git/submodule、依赖/GPU/model、数据/manifest/provenance/hash、
+  reward、输出、logger 和 OOS 隔离检查，不启动训练。成功时输出 `PREFLIGHT_PASSED`、
+  `No training was started.` 和 `Final OOS not accessed.`。
+- G0 在本节、配置/schema、旧 hash 废止、新 hash、OOS 隔离测试及全量本地验证完成后可为
+  `PASSED`。G1 在 H100 inputs 与 preflight 完成但尚未真实 smoke 时为 `IN_PROGRESS`；只有真实
+  smoke 同时满足 rollout、reward、optimizer 更新、干净退出与可复现记录后才为 `PASSED`。
+- dry-run、preflight、模型加载、仅 rollout、本地 Mac 测试或外部历史报告均不能写成 G1 passed。
+
+v0.5 的 merged-config SHA-256
+`211a7189e746415be34f82e8ee8dab067b3bc8f6e33b243ad98595e8dfa6c411` 已废止。新的唯一
+A1/Qwen3-1.7B wiring-smoke merged-config SHA-256 为
+`6c58a822d3a6ff2751fbbfcda9451c9ad3eae9ffe81acb24d3417c3de40fe0ed`。
+
+本次本地全量验证完成后，G0 状态为 `PASSED`。当前 G1 仍为 `BLOCKED`：本工作区未具备并验证
+H100 GPU extra、本地模型 revision、reviewed smoke manifest 和三个 processed 文件，也未运行真实
+smoke。CPU-only `--preflight-only` 已按预期在 GPU 依赖检查处失败并保留结构化失败 summary；该结果
+不构成 G1 进展。

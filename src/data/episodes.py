@@ -27,6 +27,235 @@ from .calendar import validate_episode_session_boundaries
 from .stockbench import AvailabilityPolicy, StockBenchAdapter
 
 SPLITS = ("train", "valid", "test")
+FINAL_OOS_START = date(2025, 3, 3)
+FINAL_OOS_END = date(2025, 6, 30)
+SMOKE_SHADOW_PROVENANCE: dict[str, object] = {
+    "split_role": "smoke_shadow",
+    "source_split": "valid",
+    "purpose": "wiring_only",
+    "scientific_use_allowed": False,
+    "checkpoint_selection_allowed": False,
+    "final_oos": False,
+}
+
+
+def resolve_smoke_episode_sessions(
+    config: dict[str, Any],
+) -> dict[str, tuple[tuple[str, ...], ...]]:
+    """Resolve the approved G1 session slices and fail on calendar drift."""
+
+    data = config.get("data")
+    if not isinstance(data, dict):
+        raise ValueError("smoke config data must be a mapping")
+    sampling = data.get("episode_sampling")
+    windows = data.get("windows")
+    if not isinstance(sampling, dict) or not isinstance(windows, dict):
+        raise ValueError("smoke episode_sampling and windows must be frozen mappings")
+    calendar_name = str(sampling.get("calendar", ""))
+    calendar = xcals.get_calendar(calendar_name)
+
+    def sessions(window_name: str) -> tuple[str, ...]:
+        window = windows.get(window_name)
+        if not isinstance(window, dict):
+            raise ValueError(f"data.windows.{window_name} must be a mapping")
+        return tuple(
+            value.strftime("%Y-%m-%d")
+            for value in calendar.sessions_in_range(str(window["start"]), str(window["end"]))
+        )
+
+    train_policy = sampling.get("train")
+    valid_policy = sampling.get("valid")
+    test_policy = sampling.get("test")
+    if not all(isinstance(policy, dict) for policy in (train_policy, valid_policy, test_policy)):
+        raise ValueError("smoke train/valid/test sampling policies must be mappings")
+    assert isinstance(train_policy, dict)
+    assert isinstance(valid_policy, dict)
+    assert isinstance(test_policy, dict)
+
+    train_count = int(train_policy["session_count"])
+    episode_count = int(train_policy["episodes"])
+    sessions_per_episode = int(train_policy["sessions_per_episode"])
+    if train_count != episode_count * sessions_per_episode:
+        raise ValueError("smoke train session count must equal episodes * sessions_per_episode")
+    train_dates = sessions("train")[:train_count]
+    if len(train_dates) != train_count:
+        raise ValueError("smoke train window does not contain the approved session count")
+    train_episodes = tuple(
+        tuple(train_dates[index : index + sessions_per_episode])
+        for index in range(0, train_count, sessions_per_episode)
+    )
+
+    valid_dates = sessions("valid")
+    valid_count = int(valid_policy["session_count"])
+    valid_episode = tuple(valid_dates[:valid_count])
+    if len(valid_episode) != valid_count:
+        raise ValueError("smoke valid window does not contain the approved session count")
+
+    start_index = int(test_policy["start_index"])
+    stop_index = int(test_policy["stop_index"])
+    shadow = tuple(valid_dates[start_index:stop_index])
+    if len(shadow) != int(test_policy["session_count"]):
+        raise ValueError("smoke shadow window does not contain the approved session count")
+    expected_bounds = (str(test_policy["expected_start"]), str(test_policy["expected_end"]))
+    actual_bounds = (shadow[0], shadow[-1])
+    if actual_bounds != expected_bounds:
+        raise ValueError(
+            "smoke shadow calendar drift: "
+            f"expected {expected_bounds[0]}..{expected_bounds[1]}, "
+            f"got {actual_bounds[0]}..{actual_bounds[1]}"
+        )
+    test_window = windows.get("test")
+    if (
+        not isinstance(test_window, dict)
+        or (str(test_window.get("start")), str(test_window.get("end"))) != expected_bounds
+    ):
+        raise ValueError("data.windows.test must equal the approved Valid shadow bounds")
+
+    return {
+        "train": train_episodes,
+        "valid": (valid_episode,),
+        "test": (shadow,),
+    }
+
+
+def build_smoke_episode_manifest_draft(*, config_path: str | Path, output_path: str | Path) -> Path:
+    """Create the deterministic, history-only G1 manifest awaiting human review."""
+
+    config = load_experiment_config(config_path)
+    verify_smoke_final_oos_isolation(config)
+    output = Path(output_path).expanduser().resolve()
+    if output.exists():
+        raise FileExistsError(f"refusing to overwrite smoke manifest draft: {output}")
+
+    data = config["data"]
+    history = data["sources"]["history"]
+    sampling = data["episode_sampling"]
+    calendar = xcals.get_calendar(str(sampling["calendar"]))
+    resolved = resolve_smoke_episode_sessions(config)
+
+    def episode(split: str, index: int, session_days: tuple[str, ...]) -> dict[str, object]:
+        labels = [pd.Timestamp(day) for day in session_days]
+        document: dict[str, object] = {
+            "episode_id": f"smoke-{split}-{index + 1:03d}",
+            "episode_dates": [calendar.session_close(label).isoformat() for label in labels],
+            "episode_open_times": [calendar.session_open(label).isoformat() for label in labels],
+        }
+        if split == "test":
+            document.update(SMOKE_SHADOW_PROVENANCE)
+        return document
+
+    split_windows: dict[str, dict[str, object]] = {}
+    for split in SPLITS:
+        window = data["windows"][split]
+        recorded: dict[str, object] = {
+            "source": "history",
+            "first_session": str(window["start"]),
+            "last_session": str(window["end"]),
+        }
+        if split == "test":
+            recorded["indivisible_oos"] = False
+            recorded.update(SMOKE_SHADOW_PROVENANCE)
+        split_windows[split] = recorded
+
+    manifest: dict[str, object] = {
+        "version": 1,
+        "status": "pending_human_review",
+        "review_focus": [
+            "episode_sessions_match_the_frozen_XNYS_calendar",
+            "split_adjustment_restoration_is_correct",
+            "no_StockBench_or_Final_OOS_source_is_present",
+        ],
+        "data_snapshot": {
+            "history": {
+                key: history[key]
+                for key in (
+                    "provider",
+                    "provider_version",
+                    "retrieved_at_utc",
+                    "input_manifest_sha256",
+                    "files",
+                )
+            }
+        },
+        "split_windows": split_windows,
+        "universe": data["universe"]["symbols"],
+        "benchmark": {
+            "definition": config["reward"]["benchmark"],
+            "accounting_engine": config["reward"]["benchmark_accounting_engine"],
+            "execution": config["reward"]["benchmark_execution"],
+        },
+        "modalities": {
+            "news_enabled": data["retrieval"]["news_enabled"],
+            "allowed_retrieval": data["retrieval"]["allowed_modalities"],
+        },
+        "splits": {
+            split: [
+                episode(split, index, session_days)
+                for index, session_days in enumerate(resolved[split])
+            ]
+            for split in SPLITS
+        },
+    }
+    validate_episode_manifest_metadata(config, manifest, verify_benchmark_series=False)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(yaml.safe_dump(manifest, sort_keys=False), encoding="utf-8")
+    return output
+
+
+def verify_smoke_final_oos_isolation(config: dict[str, Any]) -> dict[str, object]:
+    """Fail closed unless the G1 test split is the approved history-backed shadow."""
+
+    run = config.get("run")
+    if not isinstance(run, dict) or run.get("smoke") is not True:
+        raise ValueError("Final OOS isolation check requires a declared smoke run")
+    data = config.get("data")
+    if not isinstance(data, dict):
+        raise ValueError("smoke config data must be a mapping")
+    sources = data.get("sources")
+    split_source = data.get("split_source")
+    if not isinstance(sources, dict) or sources.get("stockbench") is not None:
+        raise ValueError("smoke resolved config must disable the StockBench Final OOS source")
+    expected_sources = {"train": "history", "valid": "history", "test": "history"}
+    if (
+        not isinstance(split_source, dict)
+        or {split: split_source.get(split) for split in SPLITS} != expected_sources
+    ):
+        raise ValueError("smoke train, valid, and shadow test must all use history")
+
+    windows = data.get("windows")
+    sampling = data.get("episode_sampling")
+    if not isinstance(windows, dict) or not isinstance(sampling, dict):
+        raise ValueError("smoke windows and episode_sampling must be frozen mappings")
+    test_window = windows.get("test")
+    test_policy = sampling.get("test")
+    if not isinstance(test_window, dict) or not isinstance(test_policy, dict):
+        raise ValueError("smoke shadow test window and policy must be mappings")
+    for key, expected in SMOKE_SHADOW_PROVENANCE.items():
+        if test_window.get(key) != expected or test_policy.get(key) != expected:
+            raise ValueError(f"smoke shadow provenance {key} must be {expected!r}")
+
+    sessions = resolve_smoke_episode_sessions(config)
+    shadow = sessions["test"][0]
+    for rendered in shadow:
+        session = date.fromisoformat(rendered)
+        if FINAL_OOS_START <= session <= FINAL_OOS_END:
+            raise ValueError(f"smoke date enters Final OOS: {rendered}")
+
+    processed = data.get("processed")
+    if not isinstance(processed, dict):
+        raise ValueError("smoke processed paths must be a mapping")
+    for label, raw_path in processed.items():
+        rendered = str(raw_path).casefold()
+        if "stockbench" in rendered or "final_oos" in rendered:
+            raise ValueError(f"smoke processed path {label} references Final OOS")
+
+    return {
+        "final_oos_accessed": False,
+        "shadow_start": shadow[0],
+        "shadow_end": shadow[-1],
+        "shadow_sessions": len(shadow),
+        "source": "history",
+    }
 
 
 def benchmark_series_sha256(split_documents: object) -> str:
@@ -49,9 +278,7 @@ def benchmark_series_sha256(split_documents: object) -> str:
             numeric = [float(value) for value in values]
             if any(not math.isfinite(value) or value <= 0.0 for value in numeric):
                 raise ValueError("benchmark NAV values must be finite and positive")
-            records.append(
-                {"benchmark_nav": numeric, "episode_id": episode_id, "split": split}
-            )
+            records.append({"benchmark_nav": numeric, "episode_id": episode_id, "split": split})
     canonical = json.dumps(
         records,
         allow_nan=False,
@@ -71,6 +298,9 @@ def validate_episode_manifest_metadata(
     """Bind a reviewed episode manifest to the immutable experiment config."""
 
     data = config["data"]
+    is_smoke = bool(config.get("run", {}).get("smoke"))
+    if is_smoke:
+        verify_smoke_final_oos_isolation(config)
     snapshots = manifest.get("data_snapshot")
     if not isinstance(snapshots, dict):
         raise ValueError("manifest data_snapshot must be a frozen mapping")
@@ -89,16 +319,20 @@ def validate_episode_manifest_metadata(
             "files",
         ),
     }
-    for source_name, keys in source_keys.items():
+    active_sources = {str(data["split_source"][split]) for split in SPLITS}
+    if is_smoke and "stockbench" in snapshots:
+        raise ValueError("smoke manifest must not contain a StockBench snapshot")
+    for source_name in sorted(active_sources):
+        keys = source_keys.get(source_name)
+        if keys is None:
+            raise ValueError(f"unsupported manifest source: {source_name}")
         recorded = snapshots.get(source_name)
         configured = data["sources"][source_name]
         if not isinstance(recorded, dict):
             raise ValueError(f"manifest data_snapshot.{source_name} must be frozen")
         for key in keys:
             if recorded.get(key) != configured.get(key):
-                raise ValueError(
-                    f"manifest {source_name}.{key} does not match the frozen config"
-                )
+                raise ValueError(f"manifest {source_name}.{key} does not match the frozen config")
 
     windows = manifest.get("split_windows")
     if not isinstance(windows, dict):
@@ -115,8 +349,34 @@ def validate_episode_manifest_metadata(
         }
         if split == "test":
             expected["indivisible_oos"] = configured.get("indivisible_oos")
+            if is_smoke:
+                expected.update(SMOKE_SHADOW_PROVENANCE)
         if any(recorded.get(key) != value for key, value in expected.items()):
             raise ValueError(f"manifest split_windows.{split} does not match the frozen config")
+
+    if is_smoke:
+        split_documents = manifest.get("splits")
+        if not isinstance(split_documents, dict):
+            raise ValueError("smoke manifest splits must be a frozen mapping")
+        for split in SPLITS:
+            episodes = split_documents.get(split)
+            if not isinstance(episodes, list) or not episodes:
+                raise ValueError(f"smoke manifest split {split} must contain episodes")
+            for episode in episodes:
+                if not isinstance(episode, dict):
+                    raise ValueError(f"smoke manifest split {split} episode must be a mapping")
+                if split == "test" and any(
+                    episode.get(key) != expected
+                    for key, expected in SMOKE_SHADOW_PROVENANCE.items()
+                ):
+                    raise ValueError("smoke test episode provenance is not frozen")
+                raw_dates = episode.get("episode_dates")
+                if not isinstance(raw_dates, list):
+                    raise ValueError(f"smoke manifest split {split} dates must be frozen")
+                for raw_date in raw_dates:
+                    session = _timestamp(raw_date, field=f"smoke {split} episode_dates").date()
+                    if FINAL_OOS_START <= session <= FINAL_OOS_END:
+                        raise ValueError(f"smoke manifest enters Final OOS: {session.isoformat()}")
 
     if manifest.get("universe") != data["universe"]["symbols"]:
         raise ValueError("manifest universe does not match the frozen config")
@@ -174,9 +434,7 @@ def _timestamp(value: object, *, field: str) -> datetime:
     return parsed
 
 
-def load_episode_manifest(
-    *, config: dict[str, Any], manifest_path: str | Path
-) -> dict[str, Any]:
+def load_episode_manifest(*, config: dict[str, Any], manifest_path: str | Path) -> dict[str, Any]:
     """Load a versioned manifest and verify all frozen metadata and NAV bytes."""
 
     manifest_file = Path(manifest_path).expanduser().resolve()
@@ -206,9 +464,7 @@ def _exact_session_prices(
         if observation.payload.get("date") != expected_date:
             continue
         if observation.symbol in opens:
-            raise ValueError(
-                f"duplicate benchmark bar for {observation.symbol} on {expected_date}"
-            )
+            raise ValueError(f"duplicate benchmark bar for {observation.symbol} on {expected_date}")
         opens[observation.symbol] = float(observation.payload["open"])
         closes[observation.symbol] = float(observation.payload["close"])
     missing = [symbol for symbol in symbols if symbol not in opens]
@@ -273,8 +529,7 @@ def _populate_episode_benchmarks(
             if not isinstance(raw_dates, list) or not isinstance(raw_opens, list):
                 raise ValueError(f"{split}[{index}] must freeze episode dates and opens")
             dates = [
-                _timestamp(value, field=f"{split}[{index}].episode_dates")
-                for value in raw_dates
+                _timestamp(value, field=f"{split}[{index}].episode_dates") for value in raw_dates
             ]
             open_times = [
                 _timestamp(value, field=f"{split}[{index}].episode_open_times")
@@ -384,8 +639,17 @@ def prepare_episode_datasets(
     split_source = data.get("split_source")
     if not isinstance(sources, dict) or not isinstance(split_source, dict):
         raise ValueError("data.sources and data.split_source must be frozen mappings")
-    expected_split_source = {"train": "history", "valid": "history", "test": "stockbench"}
+    is_smoke = bool(config.get("run", {}).get("smoke"))
+    expected_split_source = {
+        "train": "history",
+        "valid": "history",
+        "test": "history" if is_smoke else "stockbench",
+    }
     if {split: split_source.get(split) for split in SPLITS} != expected_split_source:
+        if is_smoke:
+            raise ValueError(
+                "smoke split sources are frozen as train=history, valid=history, test=history"
+            )
         raise ValueError(
             "split sources are frozen as train=history, valid=history, test=stockbench"
         )
@@ -394,9 +658,7 @@ def prepare_episode_datasets(
     assert isinstance(split_documents, dict)  # Guaranteed by load_episode_manifest.
     execution = config["execution"]
     max_agent_steps = int(config["training"]["max_agent_steps"])
-    reserved_information_steps = int(
-        config["training"]["reserved_information_steps_per_session"]
-    )
+    reserved_information_steps = int(config["training"]["reserved_information_steps_per_session"])
     if reserved_information_steps < 0:
         raise ValueError("training.reserved_information_steps_per_session must be non-negative")
     environment_common = {
@@ -475,9 +737,7 @@ def prepare_episode_datasets(
             raise ValueError(f"manifest split {split!r} must contain episodes")
         configured_episodes = config["training"].get("episodes")
         if split == "train" and configured_episodes is not None:
-            if isinstance(configured_episodes, bool) or not isinstance(
-                configured_episodes, int
-            ):
+            if isinstance(configured_episodes, bool) or not isinstance(configured_episodes, int):
                 raise ValueError("training.episodes must be a positive integer")
             if configured_episodes < 1 or len(episodes) != configured_episodes:
                 raise ValueError(
@@ -558,6 +818,14 @@ def prepare_episode_datasets(
                 "episode_open_times": [value.isoformat() for value in open_times],
                 "benchmark_closes": benchmark_values,
             }
+            extra_info: dict[str, object] = {
+                "episode_id": episode_id,
+                "split": split,
+                "index": index,
+            }
+            if is_smoke and split == "test":
+                env_kwargs["provenance"] = dict(SMOKE_SHADOW_PROVENANCE)
+                extra_info.update(SMOKE_SHADOW_PROVENANCE)
             rows.append(
                 {
                     "data_source": f"{source_name}/{split}",
@@ -569,7 +837,7 @@ def prepare_episode_datasets(
                         }
                     ],
                     "reward_model": {"style": "rule", "ground_truth": 0.0},
-                    "extra_info": {"episode_id": episode_id, "split": split, "index": index},
+                    "extra_info": extra_info,
                     "env_kwargs": json.dumps(env_kwargs, sort_keys=True),
                 }
             )

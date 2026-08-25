@@ -2,7 +2,7 @@
 set -uo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-LOG_ROOT="${FINANCE_AGENT_LOG_ROOT:-$PROJECT_ROOT/logs/run_queue}"
+LOG_ROOT="${FINANCE_AGENT_LOG_ROOT:-$PROJECT_ROOT/runs/queue_logs}"
 CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0}"
 export CUDA_VISIBLE_DEVICES
 

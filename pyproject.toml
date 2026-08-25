@@ -12,7 +12,6 @@ dependencies = [
   "pyarrow>=15,<24",
   "pydantic>=2.8,<3",
   "pyyaml>=6.0.2,<7",
-  "wandb>=0.19,<1",
 ]
 
 [project.optional-dependencies]
@@ -69,5 +68,18 @@ python_version = "3.10"
 check_untyped_defs = true
 
 [[tool.mypy.overrides]]
-module = ["agent_r1.*", "exchange_calendars.*", "pandas.*", "yfinance.*"]
+module = [
+  "agent_r1.*",
+  "exchange_calendars.*",
+  "flash_attn",
+  "flash_attn.*",
+  "pandas.*",
+  "torch",
+  "torch.*",
+  "verl",
+  "verl.*",
+  "vllm",
+  "vllm.*",
+  "yfinance.*",
+]
 ignore_missing_imports = true

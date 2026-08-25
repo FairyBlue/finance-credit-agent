@@ -1,6 +1,7 @@
 """Audited episode manifest conversion into Agent-R1 parquet rows."""
 
 import json
+from copy import deepcopy
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -9,15 +10,42 @@ import pandas as pd
 import pytest
 import yaml
 
+from src.agents.config import load_experiment_config
 from src.data.episodes import (
     benchmark_series_sha256,
+    build_smoke_episode_manifest_draft,
     freeze_episode_benchmarks,
     prepare_episode_datasets,
+    validate_episode_manifest_metadata,
     verify_episode_benchmarks,
 )
 from src.data.stockbench import dataframe_content_sha256
 from src.env import ExecutionPolicy
 from src.evaluation import buy_and_hold_equal_weight_targets, replay_target_weights
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_smoke_manifest_draft_is_history_only_and_provenance_tampering_fails(
+    tmp_path: Path,
+) -> None:
+    output = build_smoke_episode_manifest_draft(
+        config_path=ROOT / "configs/smoke_1p7b.yaml",
+        output_path=tmp_path / "smoke-draft.yaml",
+    )
+    manifest = yaml.safe_load(output.read_text(encoding="utf-8"))
+    config = load_experiment_config(ROOT / "configs/smoke_1p7b.yaml")
+
+    assert set(manifest["data_snapshot"]) == {"history"}
+    assert manifest["split_windows"]["test"]["final_oos"] is False
+    assert len(manifest["splits"]["train"]) == 4
+    assert len(manifest["splits"]["valid"]) == len(manifest["splits"]["test"]) == 1
+    validate_episode_manifest_metadata(config, manifest, verify_benchmark_series=False)
+
+    tampered = deepcopy(manifest)
+    tampered["splits"]["test"][0]["scientific_use_allowed"] = True
+    with pytest.raises(ValueError, match="test episode provenance"):
+        validate_episode_manifest_metadata(config, tampered, verify_benchmark_series=False)
 
 
 def _config() -> dict:
@@ -313,9 +341,7 @@ def test_episode_builder_rejects_an_episode_longer_than_the_agent_loop(tmp_path:
 
 def test_episode_builder_rejects_non_calendar_open_or_close(tmp_path: Path) -> None:
     manifest = _manifest()
-    manifest["splits"]["train"][0]["episode_open_times"][0] = (
-        "2025-01-02T14:31:00+00:00"
-    )
+    manifest["splits"]["train"][0]["episode_open_times"][0] = "2025-01-02T14:31:00+00:00"
     config_path, manifest_path = _write_inputs(
         tmp_path,
         config=_config(),
@@ -444,12 +470,8 @@ def test_benchmark_freezer_uses_shared_equal_weight_next_open_ledger(tmp_path: P
         execution_policy=ExecutionPolicy(commission_bps=10.0, slippage_bps=5.0),
     )
 
-    assert frozen["splits"]["train"][0]["benchmark_closes"] == pytest.approx(
-        expected.equity_curve
-    )
-    assert frozen["benchmark"]["series_sha256"] == benchmark_series_sha256(
-        frozen["splits"]
-    )
+    assert frozen["splits"]["train"][0]["benchmark_closes"] == pytest.approx(expected.equity_curve)
+    assert frozen["benchmark"]["series_sha256"] == benchmark_series_sha256(frozen["splits"])
     assert verify_episode_benchmarks(
         config=config,
         manifest_path=output,

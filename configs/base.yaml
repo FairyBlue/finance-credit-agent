@@ -256,7 +256,12 @@ model:
   train: Qwen/Qwen3-4B
   debug: Qwen/Qwen3-1.7B
 
-wandb:
+tracking:
+  backend: local_files
   project: finance-credit-agent
-  mode: online
+  log_root: runs
+  sync:
+    transport: rsync
+    push_paths: [data/history/storage, data/stockbench]
+    pull_paths: [runs, outputs, artifacts]
   required_hashes: [agent_r1_commit, repo_commit, data_version]

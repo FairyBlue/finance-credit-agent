@@ -151,7 +151,9 @@ uv run python scripts/freeze_benchmarks.py \
 uv run python scripts/prepare_episodes.py \
   --manifest configs/episode_manifest.reviewed.yaml
 
-cp configs/episode_manifest.example.yaml configs/episode_manifest.smoke.draft.yaml
+uv run python scripts/build_smoke_manifest.py \
+  --config configs/smoke_1p7b.yaml \
+  --output configs/episode_manifest.smoke.draft.yaml
 uv run python scripts/freeze_benchmarks.py --config configs/smoke_1p7b.yaml \
   --draft configs/episode_manifest.smoke.draft.yaml \
   --output configs/episode_manifest.smoke.reviewed.yaml
@@ -174,20 +176,23 @@ without a legacy fallback; `scripts/run_t2_probe.py` itself exits before reading
 or OOS input. Only the exact, complete hash-bound A1/Qwen3-1.7B wiring-smoke configuration is exempt,
 and it cannot support a scientific claim.
 
-## 5. W&B and smoke verification
+## 5. Local-file tracking, rsync, and smoke verification
 
-Copying the frozen snapshots to H100, installing the GPU extra, logging in to W&B, and running the
-A1/Qwen3-1.7B wiring smoke are authorized. They still require H100 host access, a human-reviewed
+Copying the frozen history snapshot to H100, installing the GPU extra, and running the
+A1/Qwen3-1.7B wiring smoke are authorized. W&B is disabled; structured local evidence is written
+under `runs/<run_id>/`. The run still requires H100 host access, a human-reviewed
 `configs/episode_manifest.smoke.reviewed.yaml`, and all configured smoke train/valid/test processed
 Parquet paths. This authorization does not mark those prerequisites complete. Formal training still
 requires a clean, reviewed configuration and a passing implementation of T2 v2; data files remain
 ignored.
 
 ```bash
-uv run wandb login
-
 # CPU-safe command/config/hash validation.
 uv run python -m src.agents.arm_a1 --config configs/smoke_1p7b.yaml --dry-run
+
+# H100 preflight only: no training and no Final OOS access.
+CUDA_VISIBLE_DEVICES=0 uv run python -m src.agents.arm_a1 \
+  --config configs/smoke_1p7b.yaml --preflight-only
 
 # Verify the external plugin imports against the locked submodule.
 PYTHONPATH="$PWD:$PWD/third_party/agent-r1" uv run python - <<'PY'
@@ -198,12 +203,32 @@ assert "trading" in AgentEnv._registry
 print("TradingEnv plugin registered")
 PY
 
-# One-GPU Qwen3-1.7B outcome-only smoke.
-CUDA_VISIBLE_DEVICES=0 uv run python -m src.agents.arm_a1 \
-  --config configs/smoke_1p7b.yaml
+# One-GPU Qwen3-1.7B outcome-only smoke with structured local evidence.
+CUDA_VISIBLE_DEVICES=0 scripts/run_queue.sh configs/smoke_1p7b.yaml
 ```
 
-The W&B run config must contain non-empty `reproducibility.agent_r1_commit`,
+The run record must contain non-empty `reproducibility.agent_r1_commit`,
 `reproducibility.repo_commit`, and `reproducibility.data_version`; the first must equal the submodule
-SHA above. A reward curve appearing in W&B is the GPU smoke acceptance condition. CPU verification
-cannot certify CUDA kernels, vLLM rollout, or H100 memory headroom.
+SHA above. Logged rollout, reward, positive backward/optimizer/global-update counts, and a finite
+non-zero sampled parameter delta are the GPU smoke acceptance condition. CPU verification cannot
+certify CUDA kernels, vLLM rollout, or H100 memory headroom.
+
+Use rsync as the primary file transport; set placeholders for the SSH alias and remote project path.
+These commands do not delete the destination and can be resumed:
+
+```bash
+export H100_HOST=<ssh-host-alias>
+export H100_PROJECT_DIR=<absolute-project-directory-on-h100>
+
+# Mac -> H100: history-only smoke input. Do not expose StockBench to G1.
+rsync -a --partial --info=progress2 data/history/storage/ \
+  "$H100_HOST:$H100_PROJECT_DIR/data/history/storage/"
+
+# H100 -> Mac: local run evidence after smoke.
+rsync -a --partial --info=progress2 \
+  "$H100_HOST:$H100_PROJECT_DIR/runs/" runs/
+```
+
+If rsync is unavailable, copy the same configured paths with scp. After copying inputs, the existing
+raw manifests remain the scientific identity check; no W&B account or manual cryptographic signature
+is required.
