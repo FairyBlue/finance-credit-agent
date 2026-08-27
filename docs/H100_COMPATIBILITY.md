@@ -12,7 +12,7 @@
 | 旧 H100 验证日期 | `2026-08-26` |
 | 旧 H100 验证基线 | `6ba699acce32feca8ae2c84152200b3153e3fabd` 加未提交兼容补丁 |
 | 本次实际移植基线 | `9e4bfe3c2d9d6ef36fbd684efcc78c2b1c600cfd` |
-| 本次移植提交 | `MIGRATION_COMMIT_PENDING` |
+| 本次移植提交 | `bcb28e890c0a6cde48f1d5ea2366798a9ff3590e` |
 | Agent-R1 gitlink | `b124aa46534cbf2fb8bc8af11405774984c42ac7` |
 
 旧环境已经证明指定软件组合可以在一张 H100 NVL 上运行真实 FlashAttention CUDA kernel。
