@@ -1,6 +1,6 @@
 # Finance Credit Agent：实验接手与运行手册
 
-更新日期：`2026-08-25`
+更新日期：`2026-08-27`
 
 这是一份面向新合作者的单一入口文档。即使没有读过历史对话，只要拥有本仓库、冻结历史数据和
 一台 Linux x86_64 H100，就应当能够通过本文理解研究动机、判断当前进度、完成 G1 smoke，并知道
@@ -76,11 +76,11 @@ G1 smoke 只证明训练链路接通：数据能加载、环境能推进、模�
 
 ## 3. 当前进度与真实阻塞
 
-状态截至 `2026-08-25`：
+状态截至 `2026-08-27`：
 
 | 项目 | 状态 | 证据或说明 |
 |---|---|---|
-| G0 协议与本地脚手架 | `PASSED` | 126 tests、Ruff、mypy、lock 与 whitespace checks 通过 |
+| G0 协议与本地脚手架 | `PASSED` | 136 tests、Ruff、mypy、lock 与 whitespace checks 通过 |
 | G1 A1/Qwen3-1.7B smoke | `BLOCKED` | 未完成 H100 preflight，未运行真实 smoke |
 | T1 未来价格扰动 | 已实现 | 历史读取与数值特征保持不变 |
 | T2 v2 train/valid 探针 | `BLOCKED` | 已预注册，未实现；禁止回退旧 StockBench 探针 |
@@ -89,20 +89,14 @@ G1 smoke 只证明训练链路接通：数据能加载、环境能推进、模�
 | Reward 标定 | 已冻结 | 只使用 Train；表和哈希已绑定 |
 | Smoke Final OOS 隔离 | 已实现 | 配置、manifest、processed provenance 三层 fail closed |
 | 本地结构化运行记录 | 已实现 | 非 dry-run 均写入 `runs/<run_id>/` |
-| H100 GPU/model 实测 | 未完成 | 当前 Mac CPU 只能验证失败路径 |
+| H100 GPU/model 实测 | 未完成 | 旧基线只验证过 kernel；本次移植提交尚未在 H100 验收 |
 | Smoke manifest candidate | 已生成 | 状态为 `pending_human_review`，文件和 benchmark 哈希已冻结 |
 | Reviewed smoke manifest | 缺失 | 不在 GitHub；必须先审核 candidate，再按第 8 节复制产生 |
 | Smoke processed Parquet | 缺失 | 不在 GitHub，必须由 reviewed manifest 生成 |
 
-最后一个已推送的实现基线是：
-
-```text
-33a4d83dd5f4c5d44eeda53636b53cd652ec2aef
-feat: harden G1 smoke handoff
-```
-
-使用本文时不要盲目 checkout 这个旧值；先拉取当时的最新 `origin/main`，并确认本地 HEAD 与远端
-一致。上面的 SHA 用于理解实现历史，不替代当前远端分支。
+本次 H100 移植以 `9e4bfe3c2d9d6ef36fbd684efcc78c2b1c600cfd` 为实际起点；精确移植
+commit 记录在 `docs/H100_COMPATIBILITY.md`。接手时仍必须拉取最新 `origin/main`，不要
+把历史 SHA 当作 checkout 指令。
 
 ## 4. 冻结的实验边界
 
@@ -193,7 +187,8 @@ git -C third_party/agent-r1 rev-parse HEAD
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
-uv python install 3.10
+uv python install 3.10.20
+uv venv --python 3.10.20
 uv sync --frozen
 uv run pytest -q
 uv run ruff check src tests scripts runtime_hooks
@@ -202,8 +197,8 @@ uv lock --check
 git diff --check
 ```
 
-最后应看到 126 个 pytest 用例通过，其他检查均为成功。若最新 `main` 合理增加或合并了测试，数量
-可能变化；此时以该提交的 CI/文档为准，不要仅为了恢复 126 而修改测试。
+最后应看到 136 个 pytest 用例通过，其他检查均为成功。若最新 `main` 合理增加或合并了测试，数量
+可能变化；此时以该提交的 CI/文档为准，不要仅为了恢复旧数字而修改测试。
 
 ## 7. 获取冻结 history 数据
 
@@ -342,44 +337,23 @@ shadow，不是 Final OOS。
 
 ## 9. 安装 H100 GPU 环境并缓存模型
 
-目标环境是一张 Linux x86_64 H100-NVL 96 GB、Python 3.10、CUDA 12.x。先检查驱动：
+当前 lock 已移植旧 H100 验证过的 Python 3.10.20 / torch 2.7.0+cu128 / flash-attn
+2.8.0.post2 / vLLM 0.9.2 / verl 0.7.0 / Transformers 4.53.2 / PyArrow 20.0.0 组合，
+但本次移植提交仍是 `UNVERIFIED ON THIS MACHINE`。完整 wheel 哈希、证据边界、禁止升级
+事项和 nvcc 政策见 [`docs/H100_COMPATIBILITY.md`](H100_COMPATIBILITY.md)。
 
 ```bash
 nvidia-smi
+uv sync --frozen --extra gpu --extra data
+uv pip check --python .venv/bin/python
+uv run --no-sync python scripts/verify_h100_stack.py
 ```
 
-flash-attn 构建时必须先看见 torch，按此顺序安装：
-
-```bash
-uv sync --frozen
-uv pip install torch==2.7.0 \
-  --index-url https://download.pytorch.org/whl/cu128
-uv sync --frozen --extra gpu --no-build-isolation-package flash-attn
-```
-
-核验版本和显存：
-
-```bash
-uv run python - <<'PY'
-import flash_attn
-import torch
-import verl
-import vllm
-
-print("torch", torch.__version__, "cuda", torch.version.cuda)
-print("verl", verl.__version__)
-print("vllm", vllm.__version__)
-print("flash_attn", flash_attn.__version__)
-print("gpu", torch.cuda.get_device_name(0))
-assert torch.cuda.is_available()
-assert torch.cuda.get_device_properties(0).total_memory > 90 * 1024**3
-PY
-```
-
+使用预编译 FlashAttention wheel，不安装 CUDA Toolkit，不要求系统 `nvcc`。
 缓存模型并打印实际 revision 路径：
 
 ```bash
-uv run python - <<'PY'
+uv run --no-sync python - <<'PY'
 from huggingface_hub import snapshot_download
 
 path = snapshot_download(repo_id="Qwen/Qwen3-1.7B", revision="main")
@@ -388,14 +362,15 @@ PY
 ```
 
 训练 launcher 会设置 `HF_HUB_OFFLINE=1`，不会在训练过程中临时下载新模型；preflight 会把本地
-resolved revision 写入运行记录。
+resolved revision 写入运行记录。`run.seed` 控制主要数据、actor、critic 和 vLLM 随机源，
+但分布式 GPU 训练不承诺 bitwise deterministic。
 
 ## 10. 先 dry-run，再运行 H100 preflight
 
 CPU-safe dry-run 只检查配置合并、命令构造和 Git/submodule/data version 身份：
 
 ```bash
-uv run python -m src.agents.arm_a1 \
+uv run --no-sync python -m src.agents.arm_a1 \
   --config configs/smoke_1p7b.yaml --dry-run
 ```
 
@@ -410,7 +385,7 @@ reproducibility.agent_r1_commit=b124aa46534cbf2fb8bc8af11405774984c42ac7
 然后执行不会启动训练的完整 H100 preflight：
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 uv run python -m src.agents.arm_a1 \
+CUDA_VISIBLE_DEVICES=0 uv run --no-sync python -m src.agents.arm_a1 \
   --config configs/smoke_1p7b.yaml --preflight-only
 ```
 
@@ -432,7 +407,7 @@ Final OOS not accessed.
 推荐直接运行：
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 uv run python -m src.agents.arm_a1 \
+CUDA_VISIBLE_DEVICES=0 uv run --no-sync python -m src.agents.arm_a1 \
   --config configs/smoke_1p7b.yaml
 ```
 
@@ -442,7 +417,8 @@ CUDA_VISIBLE_DEVICES=0 uv run python -m src.agents.arm_a1 \
 CUDA_VISIBLE_DEVICES=0 scripts/run_queue.sh configs/smoke_1p7b.yaml
 ```
 
-不要执行无参数的 `scripts/run_queue.sh`；它会尝试正式 A1/A2/A3，而 T2 v2 仍然阻断正式训练。
+无参数的 `scripts/run_queue.sh` 现在会在启动 uv 前退出非零。正式队列必须显式传入
+`--formal`，并在第一项训练前通过全部 preflight；T2 v2 仍然会阻断这些正式 preflight。
 
 每次非 dry-run 都会创建：
 
@@ -471,7 +447,7 @@ RUN_DIR=$(find runs -mindepth 1 -maxdepth 1 -type d \
   -name '*smoke-a1-qwen3-1p7b*' | sort | tail -1)
 test -n "$RUN_DIR"
 echo "$RUN_DIR"
-uv run python -m json.tool "$RUN_DIR/summary.json"
+uv run --no-sync python -m json.tool "$RUN_DIR/summary.json"
 ```
 
 只有以下条件全部满足，G1 才能标为 `PASSED`：
@@ -483,6 +459,7 @@ uv run python -m json.tool "$RUN_DIR/summary.json"
 - `optimizer_step_count > 0`；
 - `global_step > 0`；
 - `optimizer_update_evidence.detected == true`；
+- representative update 的 `grad_norm` 有限；
 - representative parameter 的 `parameter_delta_l2` 和 `parameter_delta_max` 有限且非零；
 - Git、Agent-R1、config、data 和 model revision 已记录；
 - `events.log` 中没有 reward collapse、重复输出或 watchdog failure；
@@ -491,7 +468,7 @@ uv run python -m json.tool "$RUN_DIR/summary.json"
 可以运行以下最低限度的机器检查：
 
 ```bash
-RUN_DIR="$RUN_DIR" uv run python - <<'PY'
+RUN_DIR="$RUN_DIR" uv run --no-sync python - <<'PY'
 import json
 import math
 import os
@@ -509,6 +486,7 @@ assert summary["backward_count"] > 0
 assert summary["optimizer_step_count"] > 0
 assert summary["global_step"] > 0
 assert evidence["detected"] is True
+assert math.isfinite(update["grad_norm"])
 assert math.isfinite(update["parameter_delta_l2"])
 assert math.isfinite(update["parameter_delta_max"])
 assert update["parameter_delta_l2"] > 0
@@ -590,6 +568,7 @@ Final OOS 只在最终科学评测时开启。
 | 文件 | 作用 |
 |---|---|
 | `docs/EXPERIMENT_HANDOFF.md` | 本接手与运行手册 |
+| `docs/H100_COMPATIBILITY.md` | H100 frozen stack、wheel 哈希、clean-clone 和证据边界 |
 | `EVAL_PROTOCOL.md` | 冻结协议与历次追加修订 |
 | `configs/smoke_1p7b.yaml` | 唯一批准的 G1 配置 |
 | `configs/base.yaml` | 数据、reward、交易、Regime 与门禁基础配置 |
@@ -597,6 +576,7 @@ Final OOS 只在最终科学评测时开启。
 | `scripts/build_smoke_manifest.py` | 生成确定性 history-only smoke 草稿 |
 | `scripts/freeze_benchmarks.py` | 用共享账务引擎生成 benchmark NAV |
 | `scripts/prepare_episodes.py` | 生成 Agent-R1 processed Parquet |
+| `scripts/verify_h100_stack.py` | 验证版本、CUDA 与真实 FlashAttention kernel |
 | `src/data/episodes.py` | sampling、manifest 和 Final OOS 隔离 |
 | `src/agents/launcher.py` | preflight、门禁与真实启动 |
 | `src/agents/local_runs.py` | `runs/<run_id>/` 结构化记录 |

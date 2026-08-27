@@ -245,6 +245,42 @@ def test_agent_loop_uses_the_explicit_episode_horizon_not_legacy_max_turns() -> 
     assert "actor_rollout_ref.rollout.agent.max_steps=32" in command
 
 
+@pytest.mark.parametrize(
+    ("arm_id", "expects_critic_seed"),
+    [("A1", False), ("A2", True), ("A3", True)],
+)
+def test_nondefault_yaml_seed_reaches_every_upstream_rng(
+    arm_id: str, expects_critic_seed: bool
+) -> None:
+    root = Path(__file__).resolve().parents[1]
+    config = load_experiment_config(root / "configs/smoke_1p7b.yaml")
+    config["run"]["seed"] = 123
+    config["arm"]["id"] = arm_id
+
+    command = build_upstream_command(
+        config,
+        RunHashes(
+            agent_r1_commit="a" * 40,
+            repo_commit="b" * 40,
+            data_version="fixture",
+            repo_dirty=False,
+        ),
+    )
+
+    expected = {
+        "data.seed=123",
+        "actor_rollout_ref.actor.data_loader_seed=123",
+        "actor_rollout_ref.actor.fsdp_config.seed=123",
+        "+actor_rollout_ref.rollout.engine_kwargs.vllm.seed=123",
+    }
+    assert expected <= set(command)
+    critic_seeds = {
+        "critic.data_loader_seed=123",
+        "critic.model.fsdp_config.seed=123",
+    }
+    assert critic_seeds.issubset(command) is expects_critic_seed
+
+
 def test_smoke_uses_console_only_local_tracking() -> None:
     root = Path(__file__).resolve().parents[1]
     config = load_experiment_config(root / "configs/smoke_1p7b.yaml")

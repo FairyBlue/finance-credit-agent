@@ -57,6 +57,7 @@ scripts/build_smoke_manifest.py generate the deterministic history-only G1 manif
 scripts/freeze_benchmarks.py generate shared-ledger benchmark NAV + checksum
 configs/episode_manifest.smoke.candidate.yaml frozen, pending-human-review G1 candidate
 scripts/run_t2_probe.py   disabled legacy OOS entrypoint retained for audit history
+scripts/verify_h100_stack.py pinned-version and real FlashAttention CUDA acceptance
 runs/                     ignored local preflight/training evidence, one directory per run
 third_party/agent-r1/     read-only locked submodule
 ```
@@ -78,7 +79,9 @@ uv run python -m src.agents.arm_a1 --config configs/smoke_1p7b.yaml --dry-run
 ```
 
 The default `uv sync` is CPU-only. GPU libraries live exclusively in the `gpu` optional extra; see
-[`SETUP.md`](SETUP.md) for the H100 installation order.
+[`SETUP.md`](SETUP.md) for clean-clone commands and
+[`docs/H100_COMPATIBILITY.md`](docs/H100_COMPATIBILITY.md) for the pinned wheel/hash contract and
+H100 evidence boundary.
 
 ## Data safety model
 
@@ -204,22 +207,25 @@ worker independently recomputes its source manifest on first load before caching
 
 ```bash
 # Inspect exact upstream command and the three recorded hashes without a GPU.
-uv run python -m src.agents.arm_a1 --config configs/smoke_1p7b.yaml --dry-run
+uv run --no-sync python -m src.agents.arm_a1 --config configs/smoke_1p7b.yaml --dry-run
 
 # H100-only preflight; performs no training and never accesses Final OOS.
-CUDA_VISIBLE_DEVICES=0 uv run python -m src.agents.arm_a1 \
+CUDA_VISIBLE_DEVICES=0 uv run --no-sync python -m src.agents.arm_a1 \
   --config configs/smoke_1p7b.yaml --preflight-only
 
 # H100 smoke run with structured local evidence under runs/<run_id>/.
 scripts/run_queue.sh configs/smoke_1p7b.yaml
 
-# Serial A1 → A2 → A3 queue on CUDA device 0.
-CUDA_VISIBLE_DEVICES=0 scripts/run_queue.sh
+# Formal queues require explicit authorization and all-config preflight.
+# T2 v2 currently blocks this command before training starts.
+CUDA_VISIBLE_DEVICES=0 scripts/run_queue.sh --formal \
+  configs/arm_a1.yaml configs/arm_a2.yaml configs/arm_a3.yaml
 ```
 
-The watchdog terminates only the active queued PID after eight logged zero-reward updates or eight
-identical model-output records, writes the reason to `runs/queue_logs/watchdog_events.jsonl`, and lets
-the queue continue.
+With no arguments the queue exits non-zero before invoking uv. The watchdog terminates only the
+active queued PID after eight logged zero-reward updates or eight identical model-output records,
+writes the reason to `runs/queue_logs/watchdog_events.jsonl`, and the queue stops with a non-zero
+status instead of continuing to later experiments.
 
 `src/evaluation/` computes cumulative/annualized return, Sharpe, Sortino, maximum drawdown, turnover,
 cost ratio, benchmark-adjusted return, tool-call count/success, invalid-call and abstain rates, token

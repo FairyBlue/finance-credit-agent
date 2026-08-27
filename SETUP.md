@@ -1,7 +1,9 @@
 # H100-NVL setup
 
-These steps target one Linux x86_64 H100-NVL (96 GB), Python 3.10, and CUDA 12.x. The pinned GPU set
-is PyTorch 2.7.0 from the CUDA 12.8 index, vLLM 0.9.2, flash-attn 2.8.0.post2, and verl 0.7.0.
+These steps target one Linux x86_64 H100-NVL (96 GB) and CPython 3.10.20. The pinned GPU set is
+PyTorch 2.7.0+cu128, vLLM 0.9.2, flash-attn 2.8.0.post2, verl 0.7.0, Transformers
+4.53.2, and PyArrow 20.0.0. See [`docs/H100_COMPATIBILITY.md`](docs/H100_COMPATIBILITY.md) for the
+wheel hash, evidence boundary, and upgrade policy.
 
 ## 1. Driver, repository, and submodule
 
@@ -9,7 +11,8 @@ Confirm that the NVIDIA driver supports the selected CUDA runtime, then clone re
 
 ```bash
 nvidia-smi
-git clone --recurse-submodules <finance-credit-agent-url>
+git clone --recurse-submodules \
+  https://github.com/HaoPan036/finance-credit-agent.git
 cd finance-credit-agent
 git submodule update --init --recursive
 git -C third_party/agent-r1 rev-parse HEAD
@@ -28,9 +31,10 @@ training launchers add the locked directory to `PYTHONPATH`.
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
-uv python install 3.10
+uv python install 3.10.20
+uv venv --python 3.10.20
 uv sync --frozen
-uv run pytest
+uv run --no-sync pytest
 ```
 
 This path installs no torch, vLLM, flash-attn, or verl and is the supported leakage/accounting test
@@ -38,32 +42,18 @@ environment.
 
 ## 3. GPU optional extra
 
-flash-attn needs torch visible while its extension is built, so install in this order:
+The lock encodes torch's CUDA 12.8 index and the CPython 3.10/Linux x86_64 prebuilt flash-attn
+wheel. Install the complete frozen environment in one sync:
 
 ```bash
-uv sync --frozen
-uv pip install torch==2.7.0 --index-url https://download.pytorch.org/whl/cu128
-uv sync --frozen --extra gpu --no-build-isolation-package flash-attn
+uv sync --frozen --extra gpu --extra data
+uv pip check --python .venv/bin/python
+uv run --no-sync python scripts/verify_h100_stack.py
 ```
 
-Do not upgrade verl independently; Agent-R1 explicitly requires `verl==0.7.0`. vLLM may otherwise
-replace torch with its preferred build, so verify the resolved runtime immediately:
-
-```bash
-uv run python - <<'PY'
-import torch, verl, vllm
-import flash_attn
-print("torch", torch.__version__, "cuda", torch.version.cuda, "available", torch.cuda.is_available())
-print("verl", verl.__version__)
-print("vllm", vllm.__version__)
-print("flash_attn", flash_attn.__version__)
-assert torch.cuda.is_available()
-assert torch.cuda.get_device_properties(0).total_memory > 90 * 1024**3
-PY
-```
-
-If the optional-extra sync resolves a different torch build, stop and reconcile the vLLM/torch
-pair; do not force-install through a broken resolver state.
+No CUDA Toolkit or system `nvcc` is required because flash-attn is not built from source. Do not
+independently upgrade any GPU component or use `uv run` without `--no-sync` after stack acceptance.
+The verifier runs a real FlashAttention CUDA kernel; passing it is not evidence that G1 passed.
 
 ## 4. Frozen data snapshots
 
@@ -75,8 +65,8 @@ The inclusive full-session windows are 2023-01-03…2024-10-31 for train and
 2024-11-01…2025-02-28 for validation.
 
 ```bash
-uv sync --extra data
-uv run python scripts/fetch_history.py --provider yfinance
+uv sync --frozen --extra data
+uv run --no-sync python scripts/fetch_history.py --provider yfinance
 ```
 
 Yahoo split-scales historical `Close` even with `auto_adjust=false`. The audited materializer
@@ -186,14 +176,14 @@ ignored.
 
 ```bash
 # CPU-safe command/config/hash validation.
-uv run python -m src.agents.arm_a1 --config configs/smoke_1p7b.yaml --dry-run
+uv run --no-sync python -m src.agents.arm_a1 --config configs/smoke_1p7b.yaml --dry-run
 
 # H100 preflight only: no training and no Final OOS access.
-CUDA_VISIBLE_DEVICES=0 uv run python -m src.agents.arm_a1 \
+CUDA_VISIBLE_DEVICES=0 uv run --no-sync python -m src.agents.arm_a1 \
   --config configs/smoke_1p7b.yaml --preflight-only
 
 # Verify the external plugin imports against the locked submodule.
-PYTHONPATH="$PWD:$PWD/third_party/agent-r1" uv run python - <<'PY'
+PYTHONPATH="$PWD:$PWD/third_party/agent-r1" uv run --no-sync python - <<'PY'
 from agent_r1.env import AgentEnv, ToolEnv
 from src.env.trading import TradingEnv
 assert issubclass(TradingEnv, ToolEnv)
@@ -204,6 +194,11 @@ PY
 # One-GPU Qwen3-1.7B outcome-only smoke with structured local evidence.
 CUDA_VISIBLE_DEVICES=0 scripts/run_queue.sh configs/smoke_1p7b.yaml
 ```
+
+The queue has no implicit default. A formal queue requires `--formal` and preflights every config
+before the first training process; T2 v2 currently blocks those formal preflights. `run.seed` is
+propagated to the main data/actor/critic/vLLM random sources, but distributed GPU execution is not
+promised to be bitwise deterministic.
 
 The run record must contain non-empty `reproducibility.agent_r1_commit`,
 `reproducibility.repo_commit`, and `reproducibility.data_version`; the first must equal the submodule

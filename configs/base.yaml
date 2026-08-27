@@ -2,6 +2,10 @@ project:
   name: finance-credit-agent
   seed_set: [42, 43]
 
+run:
+  # Per-run overrides must change this value; launcher propagates it to every major RNG.
+  seed: 42
+
 framework:
   agent_r1_path: third_party/agent-r1
   # User-approved default-branch stable point with StepPO; no GitHub release contains StepPO.

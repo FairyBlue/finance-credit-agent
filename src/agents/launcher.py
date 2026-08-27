@@ -545,6 +545,9 @@ def build_upstream_command(config: dict[str, Any], hashes: RunHashes) -> list[st
     if not model_name:
         raise ValueError("model.name or model.train is required")
     is_step_po = arm_id in {"A2", "A3"}
+    seed = _required(config, "run", "seed")
+    if isinstance(seed, bool) or not isinstance(seed, int) or seed < 0:
+        raise ValueError("run.seed must be a non-negative integer")
     run_name = config.get("run", {}).get("name", f"{arm_id.lower()}-training")
     logger = ["console"]
 
@@ -561,8 +564,10 @@ def build_upstream_command(config: dict[str, Any], hashes: RunHashes) -> list[st
         _hydra("data.filter_overlong_prompts", True),
         _hydra("data.truncation", "error"),
         _hydra("data.return_raw_chat", True),
+        _hydra("data.seed", seed),
         _hydra("actor_rollout_ref.model.path", model_name),
         _hydra("actor_rollout_ref.actor.optim.lr", training["learning_rate"]),
+        _hydra("actor_rollout_ref.actor.data_loader_seed", seed),
         _hydra("actor_rollout_ref.model.use_remove_padding", True),
         _hydra("actor_rollout_ref.model.enable_gradient_checkpointing", True),
         _hydra("actor_rollout_ref.actor.ppo_mini_batch_size", training["train_batch_size"]),
@@ -573,11 +578,13 @@ def build_upstream_command(config: dict[str, Any], hashes: RunHashes) -> list[st
         _hydra("actor_rollout_ref.actor.entropy_coeff", 0),
         _hydra("actor_rollout_ref.actor.fsdp_config.param_offload", True),
         _hydra("actor_rollout_ref.actor.fsdp_config.optimizer_offload", True),
+        _hydra("actor_rollout_ref.actor.fsdp_config.seed", seed),
         _hydra("actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu", 1),
         _hydra("actor_rollout_ref.rollout.tensor_model_parallel_size", 1),
         _hydra("actor_rollout_ref.rollout.name", "vllm"),
         _hydra("actor_rollout_ref.rollout.gpu_memory_utilization", 0.55),
         _hydra("actor_rollout_ref.rollout.n", 1 if is_step_po else training["rollout_n"]),
+        _hydra("actor_rollout_ref.rollout.engine_kwargs.vllm.seed", seed, add=True),
         _hydra(
             "actor_rollout_ref.rollout.agent.agent_flow_config_path",
             str(FLOW_CONFIGS[arm_id]),
@@ -611,9 +618,11 @@ def build_upstream_command(config: dict[str, Any], hashes: RunHashes) -> list[st
                 _hydra("critic.optim.lr", 1e-5),
                 _hydra("critic.model.use_remove_padding", True),
                 _hydra("critic.model.enable_gradient_checkpointing", True),
+                _hydra("critic.data_loader_seed", seed),
                 _hydra("critic.ppo_micro_batch_size_per_gpu", 1),
                 _hydra("critic.model.fsdp_config.param_offload", True),
                 _hydra("critic.model.fsdp_config.optimizer_offload", True),
+                _hydra("critic.model.fsdp_config.seed", seed),
             ]
         )
     else:

@@ -12,10 +12,39 @@ from src.data.episodes import resolve_smoke_episode_sessions, verify_smoke_final
 from src.rewards import verify_calibration_document
 
 ROOT = Path(__file__).resolve().parents[1]
+FLASH_ATTN_WHEEL = (
+    "https://github.com/Dao-AILab/flash-attention/releases/download/v2.8.0.post2/"
+    "flash_attn-2.8.0.post2%2Bcu12torch2.7cxx11abiTRUE-cp310-cp310-linux_x86_64.whl"
+)
 
 
 def _base_config() -> dict:
     return load_experiment_config(ROOT / "configs/base.yaml")
+
+
+def test_h100_dependency_lock_preserves_the_verified_runtime_contract() -> None:
+    project = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    lock = (ROOT / "uv.lock").read_text(encoding="utf-8")
+    packages = lock.split("[[package]]")
+
+    assert '"pyarrow==20.0.0"' in project
+    assert '"transformers==4.53.2;' in project
+    assert FLASH_ATTN_WHEEL in project
+
+    flash_attn = next(block for block in packages if '\nname = "flash-attn"\n' in block)
+    assert f'source = {{ url = "{FLASH_ATTN_WHEEL}" }}' in flash_attn
+    assert "sdist =" not in flash_attn
+    assert "sha256:8d7502817aacefb906a06d991b5c5777ecbc541aeefd76fb46466aaa787f0034" in (
+        flash_attn
+    )
+
+    pyarrow = next(block for block in packages if '\nname = "pyarrow"\n' in block)
+    transformers = next(block for block in packages if '\nname = "transformers"\n' in block)
+    torch = next(block for block in packages if '\nname = "torch"\n' in block)
+    assert '\nversion = "20.0.0"\n' in pyarrow
+    assert '\nversion = "4.53.2"\n' in transformers
+    assert '\nversion = "2.7.0+cu128"\n' in torch
+    assert 'source = { registry = "https://download.pytorch.org/whl/cu128" }' in torch
 
 
 def test_public_event_regimes_cover_every_oos_session_exactly_once() -> None:
