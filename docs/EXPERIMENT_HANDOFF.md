@@ -1,6 +1,6 @@
 # Finance Credit Agent：实验接手与运行手册
 
-更新日期：`2026-08-27`
+更新日期：`2026-08-28`
 
 这是一份面向新合作者的单一入口文档。即使没有读过历史对话，只要拥有本仓库、冻结历史数据和
 一台 Linux x86_64 H100，就应当能够通过本文理解研究动机、判断当前进度、完成 G1 smoke，并知道
@@ -13,12 +13,12 @@
 
 当前结论只有四条：
 
-1. 本地实验脚手架和协议门禁已经完成，状态为 `G0 PASSED`。
+1. 本地实验脚手架和协议门禁已经完成，状态为 `G0 PASSED`（146 tests）。
 2. 下一项工作不是正式 A1/A2/A3 对比，而是只在一张 H100 上运行一次
    `A1 + Qwen3-1.7B` wiring smoke。
-3. G1 目前仍是 `BLOCKED`：仓库已提供待人工审核的 smoke candidate，但 GitHub 不包含冻结
-   历史数据、reviewed manifest、三个 processed Parquet 或模型缓存；H100 preflight 和真实
-   smoke 也尚未运行。
+3. G1 目前仍是 `BLOCKED`：修复 commit `e42fdda` 已在 H100 通过完整 preflight，但 v0.7
+   observation/retrieve 协议变更仍待合作者线下审核，真实 smoke 尚未运行。GitHub 也不包含冻结
+   history、reviewed manifest、processed Parquet 或模型缓存，这些仍通过本地拷贝交接。
 4. 正式训练继续由 T2 v2 阻断；不要运行无参数的 A1/A2/A3 队列，也不要读取 StockBench Final
    OOS 来调试 smoke。
 
@@ -76,12 +76,12 @@ G1 smoke 只证明训练链路接通：数据能加载、环境能推进、模�
 
 ## 3. 当前进度与真实阻塞
 
-状态截至 `2026-08-27`：
+状态截至 `2026-08-28`：
 
 | 项目 | 状态 | 证据或说明 |
 |---|---|---|
-| G0 协议与本地脚手架 | `PASSED` | 136 tests、Ruff、mypy、lock 与 whitespace checks 通过 |
-| G1 A1/Qwen3-1.7B smoke | `BLOCKED` | 未完成 H100 preflight，未运行真实 smoke |
+| G0 协议与本地脚手架 | `PASSED` | 146 tests、Ruff、mypy、lock 与 whitespace checks 通过 |
+| G1 A1/Qwen3-1.7B smoke | `BLOCKED` | `e42fdda` H100 preflight 通过；待线下协议审核，真实 smoke 未运行 |
 | T1 未来价格扰动 | 已实现 | 历史读取与数值特征保持不变 |
 | T2 v2 train/valid 探针 | `BLOCKED` | 已预注册，未实现；禁止回退旧 StockBench 探针 |
 | T3 train-only 标准化 | 已实现 | 全样本 fit 会失败 |
@@ -89,14 +89,17 @@ G1 smoke 只证明训练链路接通：数据能加载、环境能推进、模�
 | Reward 标定 | 已冻结 | 只使用 Train；表和哈希已绑定 |
 | Smoke Final OOS 隔离 | 已实现 | 配置、manifest、processed provenance 三层 fail closed |
 | 本地结构化运行记录 | 已实现 | 非 dry-run 均写入 `runs/<run_id>/` |
-| H100 GPU/model 实测 | 未完成 | 旧基线只验证过 kernel；本次移植提交尚未在 H100 验收 |
+| H100 GPU/model 实测 | `PASSED` | H100 NVL、exact Qwen revision 与 FlashAttention 已验证；clean-clone 重装未测 |
 | Smoke manifest candidate | 已生成 | 状态为 `pending_human_review`，文件和 benchmark 哈希已冻结 |
-| Reviewed smoke manifest | 缺失 | 不在 GitHub；必须先审核 candidate，再按第 8 节复制产生 |
-| Smoke processed Parquet | 缺失 | 不在 GitHub，必须由 reviewed manifest 生成 |
+| Reviewed smoke manifest | H100 本地存在 | SHA `68c0687…`；不进 Git，其他主机仍需线下拷贝/审核 |
+| Smoke processed Parquet | H100 本地存在 | train/valid/test 行数 4/1/1；不进 Git |
 
 本次 H100 移植以 `9e4bfe3c2d9d6ef36fbd684efcc78c2b1c600cfd` 为实际起点；精确移植
 commit 记录在 `docs/H100_COMPATIBILITY.md`。接手时仍必须拉取最新 `origin/main`，不要
 把历史 SHA 当作 checkout 指令。
+
+`e42fdda` 的修复清单、数据哈希和 exact-commit preflight 证据见
+[`2026-08-28_H100_G1_FIX_TEST.md`](2026-08-28_H100_G1_FIX_TEST.md)。
 
 ## 4. 冻结的实验边界
 
@@ -340,8 +343,9 @@ shadow，不是 Final OOS。
 
 当前 lock 已移植旧 H100 验证过的 Python 3.10.20 / torch 2.7.0+cu128 / flash-attn
 2.8.0.post2 / vLLM 0.9.2 / verl 0.7.0 / Transformers 4.53.2 / PyArrow 20.0.0 组合，
-但本次移植提交仍是 `UNVERIFIED ON THIS MACHINE`。完整 wheel 哈希、证据边界、禁止升级
-事项和 nvcc 政策见 [`docs/H100_COMPATIBILITY.md`](H100_COMPATIBILITY.md)。
+并已在 H100 NVL 验证软件栈、真实 kernel 和 `e42fdda` preflight。尚未验证的是从空 `.venv`
+完整 clean-clone 重装和真实 G1。完整 wheel 哈希、证据边界、禁止升级事项和 nvcc 政策见
+[`docs/H100_COMPATIBILITY.md`](H100_COMPATIBILITY.md)。
 
 ```bash
 nvidia-smi
@@ -512,7 +516,7 @@ PY
 | missing reviewed manifest | 尚未完成 candidate 审核 | 回到第 8 节，不要把 draft 直接冒充 reviewed |
 | missing processed dataset | 三个 Parquet 尚未生成 | 从 reviewed manifest 重新运行 `prepare_episodes.py` |
 | raw manifest SHA mismatch | 数据不是冻结快照或同步损坏 | 停止，重新 rsync 原快照；不要修改冻结 SHA |
-| invalid T2 smoke exemption | smoke 配置漂移或启动了非批准配置 | 拉取干净 `main`，只使用 `configs/smoke_1p7b.yaml` |
+| invalid T2 smoke exemption | smoke 配置漂移或启动了非审核配置 | checkout 合作者审核的 exact commit，只使用其 hash-bound smoke 配置 |
 | Final OOS/StockBench rejection | smoke 输入污染了最终评测边界 | 删除错误输入并重新生成 history-only smoke 数据 |
 | 进程退出 0 但 update 未检出 | 没有证明发生真实训练 | G1 失败；保留 artifacts，检查梯度/optimizer/Ray hook |
 | reward collapse 或重复输出 | rollout 已失效 | G1 失败；保留 run 记录，不得挑选性删除失败 run |
@@ -598,5 +602,5 @@ Final OOS 只在最终科学评测时开启。
 - 合作者无需依赖历史聊天、W&B、个人电脑路径或数字签名流程；
 - 合作者能够独立判断当前为何阻塞、下一步做什么、何时必须停止，以及什么证据才算实验通过。
 
-当前 readiness：`PARTIALLY_READY`。代码与 G0 已就绪；外部输入、H100 preflight 和真实 G1 smoke
-尚未完成。
+当前 readiness：`PARTIALLY_READY`。代码、G0 与 `e42fdda` H100 preflight 已就绪；v0.7 线下协议
+审核和真实 G1 smoke 尚未完成，formal training 仍由 T2 v2 阻断。

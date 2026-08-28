@@ -2,8 +2,10 @@
 
 更新日期：`2026-08-27`
 
-当前状态：`PARTIALLY_READY`。依赖、launcher、queue 和本机测试已迁移到当前架构；本文所在的
-提交尚未在 H100 上执行验收，因此不得写成当前 `main` 已通过 GPU 或 G1 smoke。
+当前状态：`PARTIALLY_READY`。本文记录的兼容性移植后来已在 H100 NVL 通过软件栈、真实
+FlashAttention kernel 与 preflight。最新 prompt-budget 修复 commit `e42fdda` 也通过完整 H100
+preflight；真实 rollout/optimizer/G1 仍未运行。详见
+[`2026-08-28_H100_G1_FIX_TEST.md`](2026-08-28_H100_G1_FIX_TEST.md)。
 
 ## 1. 身份与证据边界
 
@@ -185,11 +187,12 @@ torch 2.9/vLLM 0.12 环境产出本项目结果。
 
 | 检查 | 旧基线 + 本地补丁 | 本次移植提交 |
 |---|---|---|
-| FlashAttention H100 kernel | `PASSED`，2026-08-26 | `UNVERIFIED ON THIS MACHINE` |
+| FlashAttention H100 kernel | `PASSED`，2026-08-26 | `PASSED`，2026-08-27 实机复核 |
 | 端到端 rollout / optimizer update | 未执行 | 未执行 |
+| G1 preflight-only | 未执行 | `PASSED`，`e42fdda` exact commit，未启动训练 |
 | G1 smoke | 未执行 | 未执行 |
-| 当前 pytest | 旧结果仅供历史参考 | `136 passed`（当前 Mac） |
-| Ruff / mypy | 旧结果仅供历史参考 | 通过；mypy 检查 52 个 source files |
-| lock / local sync / pip check | 旧结果仅供历史参考 | 通过；236 packages resolved，57 packages compatible |
+| 当前 pytest | 旧结果仅供历史参考 | `146 passed`（H100） |
+| Ruff / mypy | 旧结果仅供历史参考 | 通过；mypy 检查 45 个 source files |
+| lock / local sync / pip check | 旧结果仅供历史参考 | lock 通过，236 packages；clean-clone 重装仍未测 |
 
-在 H100 对本文所在提交重新执行第 5 节前，项目状态保持 `PARTIALLY_READY`。
+项目状态仍为 `PARTIALLY_READY`：preflight 通过不等于 G1 通过，且 v0.7 协议变更仍待线下审核。

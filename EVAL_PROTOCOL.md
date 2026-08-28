@@ -299,7 +299,8 @@ v0.5 的 merged-config SHA-256
 A1/Qwen3-1.7B wiring-smoke merged-config SHA-256 为
 `6c58a822d3a6ff2751fbbfcda9451c9ad3eae9ffe81acb24d3417c3de40fe0ed`。
 
-本次本地全量验证完成后，G0 状态为 `PASSED`。当前 G1 仍为 `BLOCKED`：本工作区未具备并验证
+以下是 v0.6 冻结时的历史状态：本地全量验证完成后，G0 为 `PASSED`；当时 G1 仍为 `BLOCKED`，
+因为该工作区未具备并验证
 H100 GPU extra、本地模型 revision、reviewed smoke manifest 和三个 processed 文件，也未运行真实
 smoke。CPU-only `--preflight-only` 已按预期在 GPU 依赖检查处失败并保留结构化失败 summary；该结果
 不构成 G1 进展。
@@ -328,5 +329,6 @@ smoke。CPU-only `--preflight-only` 已按预期在 GPU 依赖检查处失败并
 本提案对应的 A1/Qwen3-1.7B wiring-smoke canonical merged-config SHA-256 为
 `dd06b1b52f1541ae89d00ba49549562d6819f2dc197a4fd4399e7c48d944b4f8`。
 
-当前证据边界：`8a090b8` 的 H100 stack 与 preflight 已通过，但真实 G1 从未启动；v0.7 修复分支
-仍须完成 exact-commit H100 preflight 与合作者线下审核。T2 v2 对正式训练的阻断完全不变。
+当前证据边界：`8a090b8` 的 H100 stack 与旧 preflight 已通过；v0.7 实现 commit
+`e42fddad21ca92e52c8adc808673b5c7baaaf118` 的 exact-commit H100 preflight 也已退出 0，但真实
+G1 从未启动，且本节仍待合作者线下审核。T2 v2 对正式训练的阻断完全不变。
