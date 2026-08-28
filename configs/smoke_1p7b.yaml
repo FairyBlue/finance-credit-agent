@@ -10,6 +10,7 @@ run:
 
 model:
   name: Qwen/Qwen3-1.7B
+  revision: 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e
 
 data:
   # Short episodes reserve two retrieve/compute calls per session before each advance.

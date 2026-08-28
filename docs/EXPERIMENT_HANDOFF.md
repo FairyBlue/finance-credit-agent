@@ -142,10 +142,11 @@ Final OOS，preflight 与 launcher 都会失败。把 OOS 文件改名成 `smoke
 
 - Agent-R1 submodule：`b124aa46534cbf2fb8bc8af11405774984c42ac7`；
 - Smoke merged-config SHA-256：
-  `6c58a822d3a6ff2751fbbfcda9451c9ad3eae9ffe81acb24d3417c3de40fe0ed`；
+  `dd06b1b52f1541ae89d00ba49549562d6819f2dc197a4fd4399e7c48d944b4f8`；
 - History raw-manifest SHA-256：
   `2612e707446b1c8bcd73ac6583b84558d3c4eddbaa9fc20adf7023c3c8a76c90`；
-- 模型名称：`Qwen/Qwen3-1.7B`；实际缓存 revision 由 preflight 和运行记录保存；
+- 模型名称：`Qwen/Qwen3-1.7B`；固定 revision：
+  `70d244cc86ccca08cf5af4e1e306ecf908b1ad5e`；
 - seed：`42`；训练 episode：`4`；rollout n：`2`；epoch：`1`；
 - W&B 禁用，运行证据只保存在本地文件中。
 
@@ -356,13 +357,17 @@ uv run --no-sync python scripts/verify_h100_stack.py
 uv run --no-sync python - <<'PY'
 from huggingface_hub import snapshot_download
 
-path = snapshot_download(repo_id="Qwen/Qwen3-1.7B", revision="main")
+path = snapshot_download(
+    repo_id="Qwen/Qwen3-1.7B",
+    revision="70d244cc86ccca08cf5af4e1e306ecf908b1ad5e",
+)
 print(path)
 PY
 ```
 
-训练 launcher 会设置 `HF_HUB_OFFLINE=1`，不会在训练过程中临时下载新模型；preflight 会把本地
-resolved revision 写入运行记录。`run.seed` 控制主要数据、actor、critic 和 vLLM 随机源，
+训练 launcher 会强制设置 `HF_HUB_OFFLINE=1` 与 `TRANSFORMERS_OFFLINE=1`，不会在训练过程中
+临时下载新模型；preflight 会校验固定 revision，并把实际训练命令绑定到 exact local snapshot。
+`run.seed` 控制主要数据、actor、critic 和 vLLM 随机源，
 但分布式 GPU 训练不承诺 bitwise deterministic。
 
 ## 10. 先 dry-run，再运行 H100 preflight

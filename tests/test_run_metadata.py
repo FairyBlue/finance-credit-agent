@@ -51,6 +51,7 @@ def test_failed_local_run_preserves_complete_reproducibility_record(
         ),
         run_id="fixture-run",
     )
+    recorder.record_command([sys.executable, "-m", "resolved-fixture"])
     recorder.finish(returncode=None, error=RuntimeError("preflight blocked"))
 
     assert {path.name for path in recorder.path.iterdir()} == {
@@ -71,7 +72,48 @@ def test_failed_local_run_preserves_complete_reproducibility_record(
         "message": "preflight blocked",
         "type": "RuntimeError",
     }
+    assert "resolved-fixture" in (recorder.path / "command.txt").read_text()
     assert json.loads((recorder.path / "git_state.json").read_text())["repo_dirty"] is True
+
+
+def test_training_environment_forces_model_loading_offline(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    monkeypatch.setenv("HF_HUB_OFFLINE", "0")
+    monkeypatch.setenv("TRANSFORMERS_OFFLINE", "0")
+
+    environment = launcher_module._training_environment(
+        agent_path=tmp_path / "agent-r1",
+        probe_root=tmp_path / "probe",
+    )
+
+    assert environment["HF_HUB_OFFLINE"] == "1"
+    assert environment["TRANSFORMERS_OFFLINE"] == "1"
+
+
+def test_resolved_model_snapshot_replaces_the_provisional_repo_id() -> None:
+    command = [
+        "python",
+        "actor_rollout_ref.model.path=Qwen/Qwen3-1.7B",
+        "critic.model.path=Qwen/Qwen3-1.7B",
+    ]
+
+    launcher_module._replace_hydra_override(
+        command,
+        "actor_rollout_ref.model.path",
+        "/verified/snapshots/70d244",
+    )
+    launcher_module._replace_hydra_override(
+        command,
+        "critic.model.path",
+        "/verified/snapshots/70d244",
+    )
+
+    assert command[1:] == [
+        "actor_rollout_ref.model.path=/verified/snapshots/70d244",
+        "critic.model.path=/verified/snapshots/70d244",
+    ]
 
 
 def test_optimizer_evidence_gate_requires_a_real_finite_parameter_change(
@@ -243,6 +285,25 @@ def test_agent_loop_uses_the_explicit_episode_horizon_not_legacy_max_turns() -> 
     )
 
     assert "actor_rollout_ref.rollout.agent.max_steps=32" in command
+    assert "data.train_max_samples=4" in command
+
+
+@pytest.mark.parametrize("episodes", [True, 0, -1, 1.5, "4"])
+def test_launcher_rejects_invalid_training_episode_caps(episodes: object) -> None:
+    root = Path(__file__).resolve().parents[1]
+    config = load_experiment_config(root / "configs/smoke_1p7b.yaml")
+    config["training"]["episodes"] = episodes
+
+    with pytest.raises(ValueError, match="training.episodes must be a positive integer"):
+        build_upstream_command(
+            config,
+            RunHashes(
+                agent_r1_commit="a" * 40,
+                repo_commit="b" * 40,
+                data_version="fixture",
+                repo_dirty=False,
+            ),
+        )
 
 
 @pytest.mark.parametrize(
@@ -607,6 +668,19 @@ def test_launcher_binds_processed_rows_to_the_verified_source_config(tmp_path: P
     valid.loc[0, "env_kwargs"] = json.dumps(env_kwargs)
     valid.to_parquet(valid_path, index=False)
     with pytest.raises(RuntimeError, match="valid row 0 data_version mismatch"):
+        verify_processed_dataset_bindings(config, repo_root=tmp_path)
+
+
+def test_launcher_binds_training_episodes_to_processed_train_rows(
+    tmp_path: Path,
+) -> None:
+    config = _processed_config(tmp_path)
+    config["training"]["episodes"] = 2
+
+    with pytest.raises(
+        RuntimeError,
+        match="train processed row count does not match training.episodes",
+    ):
         verify_processed_dataset_bindings(config, repo_root=tmp_path)
 
 

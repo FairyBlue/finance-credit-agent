@@ -18,6 +18,7 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from src.data import (
     AvailabilityPolicy,
+    MarketObservation,
     ObservationSnapshot,
     StockBenchAdapter,
     validate_episode_session_boundaries,
@@ -40,7 +41,7 @@ class TradingDataIntegrityError(RuntimeError):
 class RetrieveArgs(_StrictArgs):
     query: str = Field(min_length=1)
     symbol: str | None = None
-    limit: int = Field(default=10, ge=1, le=50)
+    limit: int = Field(default=10, ge=1, le=10)
 
 
 class ComputeArgs(_StrictArgs):
@@ -70,6 +71,28 @@ _ARG_MODELS: dict[str, type[_StrictArgs]] = {
     "hold": HoldArgs,
     "abstain": AbstainArgs,
 }
+
+_MAX_STATE_SIGNALS = 10
+_MAX_PAYLOAD_KEYS = 12
+_MAX_SEQUENCE_ITEMS = 20
+_MAX_TEXT_CHARS = 256
+
+
+def _compact_json(value: object) -> object:
+    """Return a deterministic, size-bounded JSON value for an LLM observation."""
+
+    if value is None or isinstance(value, (bool, int)):
+        return value
+    if isinstance(value, float):
+        return round(value, 8)
+    if isinstance(value, str):
+        return value[:_MAX_TEXT_CHARS]
+    if isinstance(value, Mapping):
+        items = sorted(value.items(), key=lambda item: str(item[0]))[:_MAX_PAYLOAD_KEYS]
+        return {str(key): _compact_json(item) for key, item in items}
+    if isinstance(value, Sequence) and not isinstance(value, (str, bytes, bytearray)):
+        return [_compact_json(item) for item in value[:_MAX_SEQUENCE_ITEMS]]
+    return str(value)[:_MAX_TEXT_CHARS]
 
 
 def _parse_datetime(value: datetime | str) -> datetime:
@@ -293,6 +316,7 @@ class TradingEnv(ToolEnv):
             if value is not None and (not math.isfinite(value) or value < 0.0):
                 raise ValueError(f"{name} must be finite and non-negative")
         self._base_raw_prompt = list(kwargs.get("raw_prompt", []))
+        self._episode_prompt: list[dict[str, Any]] = []
         self.ledger = PortfolioLedger(
             initial_cash=self._initial_cash,
             policy=self._execution_policy,
@@ -318,6 +342,12 @@ class TradingEnv(ToolEnv):
     @property
     def current_date(self) -> datetime:
         return self._dates[self._index]
+
+    @property
+    def symbols(self) -> tuple[str, ...]:
+        """Return the immutable frozen universe used by prompt-budget preflight."""
+
+        return self._symbols
 
     def reset(self, **kwargs: Any) -> Observation:
         self.ledger = PortfolioLedger(
@@ -345,9 +375,9 @@ class TradingEnv(ToolEnv):
                     ),
                 }
             ]
+        self._episode_prompt = [dict(message) for message in raw_prompt]
         super().reset(raw_prompt=raw_prompt)
-        self._messages.append({"role": "user", "content": self._state_text()})
-        return Observation(messages=list(self._messages))
+        return self._replace_visible_observation(self._state_text())
 
     async def step(self, action: Action) -> tuple[Observation, float, bool, dict[str, Any]]:
         if self._done:
@@ -355,7 +385,6 @@ class TradingEnv(ToolEnv):
         if not isinstance(action, Action) or action.text is None:
             return self._invalid("expected Agent-R1 Action with text")
 
-        self._messages.append({"role": "assistant", "content": action.text})
         try:
             _, calls = self.format_wrapper.parse_response(action.text)
             if len(calls) != 1:
@@ -373,10 +402,20 @@ class TradingEnv(ToolEnv):
 
             if call.name == "retrieve":
                 result = self._retrieve(validated)
-                return self._success(result, info={"tool": "retrieve"})
+                return self._success(
+                    self._state_text(
+                        extra={"last_tool": {"name": "retrieve", "result": result}}
+                    ),
+                    info={"tool": "retrieve"},
+                )
             if call.name == "compute":
                 result = self._compute(validated)
-                return self._success(result, info={"tool": "compute"})
+                return self._success(
+                    self._state_text(
+                        extra={"last_tool": {"name": "compute", "result": result}}
+                    ),
+                    info={"tool": "compute"},
+                )
             if call.name in {"buy", "sell"}:
                 assert isinstance(validated, TargetArgs)
                 self._queue_directional_target(call.name, validated)
@@ -388,25 +427,26 @@ class TradingEnv(ToolEnv):
         except (KeyError, TypeError, ValidationError, ValueError) as error:
             return self._invalid(str(error))
 
-    def _retrieve(self, args: _StrictArgs) -> str:
+    def _retrieve(self, args: _StrictArgs) -> dict[str, object]:
         assert isinstance(args, RetrieveArgs)
         query = args.query.casefold()
         symbol = args.symbol.strip().upper() if args.symbol else None
         matches: list[dict[str, object]] = []
         for observation in self._snapshot():
-            record = observation.canonical_record()
             if symbol is not None and observation.symbol != symbol:
                 continue
+            record = self._compact_observation(observation)
+            # Search exactly what is returned.  A match in a discarded payload
+            # field would otherwise produce a result that contains no evidence
+            # for the match and silently change retrieve semantics.
             if query not in json.dumps(record, ensure_ascii=False, sort_keys=True).casefold():
                 continue
             matches.append(record)
             if len(matches) >= args.limit:
                 break
-        return json.dumps(
-            {"as_of": self.current_date.isoformat(), "results": matches}, sort_keys=True
-        )
+        return {"as_of": self.current_date.isoformat(), "results": matches}
 
-    def _compute(self, args: _StrictArgs) -> str:
+    def _compute(self, args: _StrictArgs) -> dict[str, object]:
         assert isinstance(args, ComputeArgs)
         symbol = args.symbol.strip().upper()
         closes = [
@@ -425,16 +465,13 @@ class TradingEnv(ToolEnv):
             "mean_return": float(returns.mean()),
             "volatility": float(returns.std(ddof=0)),
         }
-        return json.dumps(
-            {
-                "as_of": self.current_date.isoformat(),
-                "lookback_used": len(closes),
-                "metric": args.metric,
-                "symbol": symbol,
-                "value": values[args.metric],
-            },
-            sort_keys=True,
-        )
+        return {
+            "as_of": self.current_date.isoformat(),
+            "lookback_used": len(closes),
+            "metric": args.metric,
+            "symbol": symbol,
+            "value": values[args.metric],
+        }
 
     def _queue_directional_target(self, action_name: str, args: TargetArgs) -> None:
         symbol = args.symbol.strip().upper()
@@ -593,21 +630,92 @@ class TradingEnv(ToolEnv):
         equity = self.ledger.equity(closes)
         return self.ledger.positions.get(symbol, 0.0) * closes[symbol] / equity
 
+    @staticmethod
+    def _compact_observation(observation: MarketObservation) -> dict[str, object]:
+        if observation.kind == "market":
+            record: dict[str, object] = {"symbol": observation.symbol}
+            for key in ("date", "open", "high", "low", "close", "volume"):
+                if key in observation.payload:
+                    record[key] = _compact_json(observation.payload[key])
+            return record
+        payload = _compact_json(observation.payload)
+        assert isinstance(payload, dict)
+        return {
+            "available_at": observation.available_at.isoformat(),
+            "event_at": observation.event_at.isoformat(),
+            "kind": observation.kind,
+            "payload": payload,
+            "symbol": observation.symbol,
+        }
+
     def _state_text(self, *, extra: Mapping[str, object] | None = None) -> str:
         snapshot = self._snapshot()
         closes = self._latest_market_prices(snapshot, field="close")
-        recent_records = [observation.canonical_record() for observation in snapshot[-20:]]
+        expected_date = self.current_date.date().isoformat()
+        market_by_symbol: dict[str, dict[str, object]] = {}
+        signal_observations: list[MarketObservation] = []
+        for observation in snapshot:
+            if (
+                observation.kind == "market"
+                and observation.symbol in self._symbols
+                and observation.payload.get("date") == expected_date
+            ):
+                if observation.symbol in market_by_symbol:
+                    raise TradingDataIntegrityError(
+                        "duplicate current-session market observation for "
+                        f"{observation.symbol} on {expected_date}"
+                    )
+                market_by_symbol[observation.symbol] = self._compact_observation(observation)
+            elif observation.kind != "market":
+                signal_observations.append(observation)
+        missing_market = [symbol for symbol in self._symbols if symbol not in market_by_symbol]
+        if missing_market:
+            raise TradingDataIntegrityError(
+                "missing current-session market observation on "
+                f"{expected_date} for: {missing_market}"
+            )
+        market = [market_by_symbol[symbol] for symbol in self._symbols]
+        signals = [
+            self._compact_observation(observation)
+            for observation in signal_observations[-_MAX_STATE_SIGNALS:]
+        ]
         state: dict[str, object] = {
-            "available_tools": list(self.TOOL_NAMES),
-            "cash": self.ledger.cash,
-            "current_date": self.current_date.isoformat(),
-            "market_information": recent_records,
-            "portfolio_equity": self.ledger.equity(closes),
-            "positions": dict(self.ledger.positions),
+            "as_of": self.current_date.isoformat(),
+            "cash": round(self.ledger.cash, 8),
+            "equity": round(self.ledger.equity(closes), 8),
+            "market": market,
+            "positions": {
+                symbol: round(shares, 8)
+                for symbol, shares in sorted(self.ledger.positions.items())
+            },
         }
+        if signals:
+            state["signals"] = signals
         if extra:
-            state.update(extra)
-        return json.dumps(state, ensure_ascii=False, sort_keys=True)
+            compact_extra = _compact_json(extra)
+            assert isinstance(compact_extra, dict)
+            state.update(compact_extra)
+        return json.dumps(
+            state,
+            ensure_ascii=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        )
+
+    def _replace_visible_observation(self, text: str) -> Observation:
+        """Expose the task plus only the current bounded state, never full history."""
+
+        messages = [dict(message) for message in self._episode_prompt]
+        if messages and messages[-1].get("role") == "user":
+            current = str(messages[-1].get("content", ""))
+            messages[-1] = {
+                **messages[-1],
+                "content": f"{current}\n\nCurrent observation:\n{text}",
+            }
+        else:
+            messages.append({"role": "user", "content": text})
+        self._messages = messages
+        return Observation(messages=list(messages))
 
     def _success(
         self,
@@ -617,21 +725,19 @@ class TradingEnv(ToolEnv):
         done: bool = False,
         info: dict[str, Any] | None = None,
     ) -> tuple[Observation, float, bool, dict[str, Any]]:
-        self._messages.append(
-            {"role": "user", "content": self.format_wrapper.format_observation(text)}
-        )
-        return Observation(messages=list(self._messages)), float(reward), done, dict(info or {})
+        observation = self._replace_visible_observation(text)
+        return observation, float(reward), done, dict(info or {})
 
     def _invalid(
         self, message: str, *, terminal: bool = False
     ) -> tuple[Observation, float, bool, dict[str, Any]]:
         self._invalid_calls += 1
         error = f"Error: {message}"
-        self._messages.append(
-            {"role": "user", "content": self.format_wrapper.format_observation(error)}
+        observation = self._replace_visible_observation(
+            self._state_text(extra={"error": error})
         )
         return (
-            Observation(messages=list(self._messages)),
+            observation,
             0.0,
             terminal,
             {"error": message, "invalid_action": True},

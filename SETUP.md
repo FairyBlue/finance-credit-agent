@@ -65,7 +65,7 @@ The inclusive full-session windows are 2023-01-03…2024-10-31 for train and
 2024-11-01…2025-02-28 for validation.
 
 ```bash
-uv sync --frozen --extra data
+uv sync --frozen --extra gpu --extra data
 uv run --no-sync python scripts/fetch_history.py --provider yfinance
 ```
 
@@ -77,7 +77,9 @@ manifest SHA-256 is `2612e707446b1c8bcd73ac6583b84558d3c4eddbaa9fc20adf7023c3c8a
 A Stooq snapshot must be generated into a clean location, receive an equivalent price-basis audit,
 and be recorded as a different data version; never mix providers.
 
-StockBench is the final OOS data input, not a runtime dependency or submodule:
+StockBench is the final OOS data input, not a runtime dependency or submodule. It is formal-only:
+skip the following clone in a dedicated G1 history-only workspace, and keep any existing StockBench
+checkout outside that workspace so the wiring smoke cannot access Final OOS bytes.
 
 ```bash
 git clone https://github.com/ChenYXxxx/stockbench.git data/stockbench
@@ -111,18 +113,19 @@ from prices already available at the query's `as_of` time.
 The train-only calibration table at `configs/reward_calibration.pending.yaml` fixes
 `epsilon=0.0006887293802216064`, `risk_lambda=0.9016432557217152`,
 `drawdown_coefficient=0.09659355421265267`, `turnover_coefficient=0.02095348253089393`,
-`turnover_limit=1.0`, and `position_limit=0.3`. Codex signed it under the current task user's explicit
-authorization at `2026-08-24T21:39:30+08:00`; the table is the sole source of signature status. Base config binds its
-path and immutable payload hash. Calibration uses
-overlapping 21-session train windows and 40 deterministic trajectories per window. Each coefficient
-is capped at 25% of its designated core's mean magnitude. Position `0.30` and daily turnover `1.00`
-are soft reward thresholds, not hard execution limits; turnover is bilateral, so `1.00` is
-approximately a 50% one-way rotation.
+`turnover_limit=1.0`, and `position_limit=0.3`. Base config binds the table path and immutable payload
+hash. The frozen table records the existing approval metadata. Under the current handoff policy,
+all new review and signature decisions are confirmed offline by the human collaborators; code and
+cloud services must not create or infer a signature. The table remains the sole machine-readable
+source of the existing signature status. Calibration uses overlapping 21-session train windows and
+40 deterministic trajectories per window. Each coefficient is capped at 25% of its designated
+core's mean magnitude. Position `0.30` and daily turnover `1.00` are soft reward thresholds, not
+hard execution limits; turnover is bilateral, so `1.00` is approximately a 50% one-way rotation.
 
-Verify the signed table against the current frozen train inputs without rewriting it:
+Verify the frozen table against the current frozen train inputs without rewriting it:
 
 ```bash
-uv run python scripts/calibrate_reward.py \
+uv run --no-sync python scripts/calibrate_reward.py \
   --config configs/base.yaml \
   --check configs/reward_calibration.pending.yaml
 ```
@@ -134,10 +137,10 @@ priorities. Generate strict chronological inputs into their separate processed f
 
 ```bash
 cp configs/episode_manifest.example.yaml configs/episode_manifest.draft.yaml
-uv run python scripts/freeze_benchmarks.py \
+uv run --no-sync python scripts/freeze_benchmarks.py \
   --draft configs/episode_manifest.draft.yaml \
   --output configs/episode_manifest.reviewed.yaml
-uv run python scripts/prepare_episodes.py \
+uv run --no-sync python scripts/prepare_episodes.py \
   --manifest configs/episode_manifest.reviewed.yaml
 
 # After offline review, copy the frozen candidate byte-for-byte; do not edit its NAV values.
@@ -145,7 +148,7 @@ cp configs/episode_manifest.smoke.candidate.yaml \
   configs/episode_manifest.smoke.reviewed.yaml
 cmp configs/episode_manifest.smoke.candidate.yaml \
   configs/episode_manifest.smoke.reviewed.yaml
-uv run python scripts/prepare_episodes.py --config configs/smoke_1p7b.yaml \
+uv run --no-sync python scripts/prepare_episodes.py --config configs/smoke_1p7b.yaml \
   --manifest configs/episode_manifest.smoke.reviewed.yaml
 
 # Do not run scripts/run_t2_probe.py against StockBench again.
@@ -172,13 +175,15 @@ under `runs/<run_id>/`. The run still requires H100 host access, a human-reviewe
 `configs/episode_manifest.smoke.reviewed.yaml`, and all configured smoke train/valid/test processed
 Parquet paths. This authorization does not mark those prerequisites complete. Formal training still
 requires a clean, reviewed configuration and a passing implementation of T2 v2; data files remain
-ignored.
+ignored. A dedicated G1 workspace must contain history only: do not place `data/stockbench` or any
+other Final OOS copy under that workspace.
 
 ```bash
 # CPU-safe command/config/hash validation.
 uv run --no-sync python -m src.agents.arm_a1 --config configs/smoke_1p7b.yaml --dry-run
 
 # H100 preflight only: no training and no Final OOS access.
+test ! -e data/stockbench
 CUDA_VISIBLE_DEVICES=0 uv run --no-sync python -m src.agents.arm_a1 \
   --config configs/smoke_1p7b.yaml --preflight-only
 

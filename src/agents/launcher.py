@@ -34,6 +34,7 @@ from src.rewards import verify_calibration_document
 from .config import load_experiment_config
 from .local_runs import LocalRunRecorder
 from .metadata import RunHashes, collect_run_hashes, validate_composite_data_version
+from .prompt_budget import verify_smoke_prompt_budget
 from .update_probe import summarize_update_evidence
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -43,7 +44,7 @@ FLOW_CONFIGS = {
     "A3": REPO_ROOT / "configs" / "agent_flow_a3.yaml",
 }
 WIRING_SMOKE_KIND = "wiring_smoke_1p7b"
-WIRING_SMOKE_CONFIG_SHA256 = "6c58a822d3a6ff2751fbbfcda9451c9ad3eae9ffe81acb24d3417c3de40fe0ed"
+WIRING_SMOKE_CONFIG_SHA256 = "dd06b1b52f1541ae89d00ba49549562d6819f2dc197a4fd4399e7c48d944b4f8"
 
 
 def _required(config: dict[str, Any], *path: str) -> Any:
@@ -52,6 +53,15 @@ def _required(config: dict[str, Any], *path: str) -> Any:
         if not isinstance(value, dict) or key not in value:
             raise ValueError(f"missing config value: {'.'.join(path)}")
         value = value[key]
+    return value
+
+
+def _optional_positive_integer(mapping: dict[str, Any], key: str, *, path: str) -> int | None:
+    value = mapping.get(key)
+    if value is None:
+        return None
+    if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+        raise ValueError(f"{path} must be a positive integer")
     return value
 
 
@@ -64,6 +74,15 @@ def _hydra(key: str, value: object, *, add: bool = False) -> str:
     else:
         rendered = str(value)
     return f"{prefix}{key}={rendered}"
+
+
+def _replace_hydra_override(command: list[str], key: str, value: object) -> None:
+    prefix = f"{key}="
+    for index, argument in enumerate(command):
+        if argument.startswith(prefix):
+            command[index] = _hydra(key, value)
+            return
+    raise RuntimeError(f"upstream command lacks required override: {key}")
 
 
 def _canonical_timestamps(values: list[object], *, context: str) -> list[str]:
@@ -209,7 +228,9 @@ def verify_configured_overlap(
     )
 
 
-def verify_processed_dataset_bindings(config: dict[str, Any], *, repo_root: str | Path) -> None:
+def verify_processed_dataset_bindings(
+    config: dict[str, Any], *, repo_root: str | Path
+) -> dict[str, dict[str, object]]:
     """Reject ignored processed rows that were built from stale assumptions."""
 
     import pandas as pd
@@ -227,12 +248,19 @@ def verify_processed_dataset_bindings(config: dict[str, Any], *, repo_root: str 
     reward = _required(config, "reward")
     availability = _required(data, "availability")
     symbols = _required(data, "universe", "symbols")
-    max_agent_steps = int(_required(config, "training", "max_agent_steps"))
+    training = _required(config, "training")
+    if not isinstance(training, dict):
+        raise ValueError("training must be a mapping")
+    configured_train_episodes = _optional_positive_integer(
+        training, "episodes", path="training.episodes"
+    )
+    max_agent_steps = int(_required(training, "max_agent_steps"))
     reserved_information_steps = int(
-        _required(config, "training", "reserved_information_steps_per_session")
+        _required(training, "reserved_information_steps_per_session")
     )
     is_smoke = bool(config.get("run", {}).get("smoke"))
     checked_splits = ("train", "valid", "test") if is_smoke else ("train", "valid")
+    evidence: dict[str, dict[str, object]] = {}
     for split in checked_splits:
         source_name = str(_required(data, "split_source", split))
         source = _required(sources, source_name)
@@ -285,6 +313,14 @@ def verify_processed_dataset_bindings(config: dict[str, Any], *, repo_root: str 
             )
         if frame.empty:
             raise RuntimeError(f"{split} processed dataset must not be empty")
+        if (
+            split == "train"
+            and configured_train_episodes is not None
+            and len(frame) != configured_train_episodes
+        ):
+            raise RuntimeError(
+                "train processed row count does not match training.episodes"
+            )
         episodes = _required(split_documents, split)
         if not isinstance(episodes, list):
             raise RuntimeError(f"reviewed manifest split {split} must be a list")
@@ -366,6 +402,12 @@ def verify_processed_dataset_bindings(config: dict[str, Any], *, repo_root: str 
                 expected_info.update(SMOKE_SHADOW_PROVENANCE)
             if extra_info != expected_info:
                 raise RuntimeError(f"{split} row {index} extra_info mismatch")
+        evidence[split] = {
+            "path": str(path.resolve()),
+            "sha256": sha256(path.read_bytes()).hexdigest(),
+            "row_count": len(frame),
+        }
+    return evidence
 
 
 def verify_smoke_processed_row_provenance(
@@ -439,6 +481,11 @@ def _is_declared_wiring_smoke(config: dict[str, Any]) -> bool:
             ),
             ("model.name/train", selected_model, "Qwen/Qwen3-1.7B"),
             ("model.debug", model.get("debug"), "Qwen/Qwen3-1.7B"),
+            (
+                "model.revision",
+                model.get("revision"),
+                "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e",
+            ),
             ("training.episodes", _required(config, "training", "episodes"), 4),
             (
                 "training.max_agent_steps",
@@ -538,6 +585,11 @@ def build_upstream_command(config: dict[str, Any], hashes: RunHashes) -> list[st
     if arm_id not in FLOW_CONFIGS:
         raise ValueError(f"unsupported arm id: {arm_id}")
     training = _required(config, "training")
+    if not isinstance(training, dict):
+        raise ValueError("training must be a mapping")
+    episodes = _optional_positive_integer(
+        training, "episodes", path="training.episodes"
+    )
     data = _required(config, "data")
     processed = _required(data, "processed")
     model_config = _required(config, "model")
@@ -610,6 +662,8 @@ def build_upstream_command(config: dict[str, Any], hashes: RunHashes) -> list[st
         _hydra("reproducibility.data_version", hashes.data_version, add=True),
         _hydra("reproducibility.repo_dirty", hashes.repo_dirty, add=True),
     ]
+    if episodes is not None:
+        command.append(_hydra("data.train_max_samples", episodes))
     if is_step_po:
         command.extend(
             [
@@ -649,6 +703,24 @@ def _run_with_local_capture(
     return process.wait()
 
 
+def _training_environment(*, agent_path: Path, probe_root: Path) -> dict[str, str]:
+    environment = os.environ.copy()
+    environment["PYTHONPATH"] = os.pathsep.join(
+        [
+            str(REPO_ROOT / "runtime_hooks"),
+            str(REPO_ROOT),
+            str(agent_path),
+            environment.get("PYTHONPATH", ""),
+        ]
+    ).rstrip(os.pathsep)
+    environment["FINANCE_UPDATE_PROBE_DIR"] = str(probe_root)
+    environment.setdefault("VLLM_USE_V1", "1")
+    environment.setdefault("HYDRA_FULL_ERROR", "1")
+    environment["HF_HUB_OFFLINE"] = "1"
+    environment["TRANSFORMERS_OFFLINE"] = "1"
+    return environment
+
+
 def verify_gpu_runtime_and_model(config: dict[str, Any]) -> dict[str, object]:
     """Fail closed unless the GPU stack and selected model are locally available."""
 
@@ -683,23 +755,54 @@ def verify_gpu_runtime_and_model(config: dict[str, Any]) -> dict[str, object]:
         cached_model = cache_root / ("models--" + selected_model.replace("/", "--"))
         snapshots = cached_model / "snapshots"
         configured_revision = _required(config, "model").get("revision")
-        ref_path = cached_model / "refs" / str(configured_revision or "main")
-        if not ref_path.is_file():
+        direct_snapshot = snapshots / str(configured_revision or "")
+        if configured_revision and direct_snapshot.is_dir():
+            model_revision = str(configured_revision)
+        else:
+            ref_path = cached_model / "refs" / str(configured_revision or "main")
+            if not ref_path.is_file():
+                raise RuntimeError(
+                    f"model revision is not cached locally: {selected_model}; "
+                    "pre-download it before smoke"
+                )
+            model_revision = ref_path.read_text(encoding="utf-8").strip()
+        if (
+            isinstance(configured_revision, str)
+            and len(configured_revision) == 40
+            and all(character in "0123456789abcdef" for character in configured_revision)
+            and model_revision != configured_revision
+        ):
             raise RuntimeError(
-                f"model revision is not cached locally: {selected_model}; "
-                "pre-download it before smoke"
+                "cached model ref does not resolve to the configured immutable revision"
             )
-        model_revision = ref_path.read_text(encoding="utf-8").strip()
-        if not model_revision or not (snapshots / model_revision).is_dir():
+        model_snapshot_path = snapshots / model_revision
+        if not model_revision or not model_snapshot_path.is_dir():
             raise RuntimeError("cached model revision does not resolve to a local snapshot")
     else:
         model_revision = str(_required(config, "model").get("revision") or model_path.name)
+        model_snapshot_path = model_path.resolve()
+    from transformers import AutoConfig
+
+    model_config = AutoConfig.from_pretrained(
+        model_snapshot_path,
+        local_files_only=True,
+        trust_remote_code=False,
+    )
+    model_context_tokens = getattr(model_config, "max_position_embeddings", None)
+    if (
+        isinstance(model_context_tokens, bool)
+        or not isinstance(model_context_tokens, int)
+        or model_context_tokens < 1
+    ):
+        raise RuntimeError("local model config lacks a positive max_position_embeddings")
     return {
         "cuda_available": True,
         "cuda_device_count": int(torch.cuda.device_count()),
         "gpu_model": device_name,
         "model": selected_model,
         "model_revision": model_revision,
+        "model_context_tokens": model_context_tokens,
+        "model_snapshot_path": str(model_snapshot_path),
     }
 
 
@@ -743,19 +846,61 @@ def _verify_all_preflight_inputs(
         path = REPO_ROOT / str(_required(config, "data", "processed", path_key))
         if not path.is_file():
             raise FileNotFoundError(f"missing processed Agent-R1 dataset: {path}")
-    verify_configured_source_manifests(config, repo_root=REPO_ROOT)
+    source_audits = verify_configured_source_manifests(config, repo_root=REPO_ROOT)
     if not is_smoke:
         verify_configured_overlap(config, repo_root=REPO_ROOT)
     manifest_path = Path(str(_required(config, "data", "episode_manifest")))
     if not manifest_path.is_absolute():
         manifest_path = REPO_ROOT / manifest_path
-    verify_episode_benchmarks(
+    benchmark_sha256 = verify_episode_benchmarks(
         config=config,
         manifest_path=manifest_path,
         repo_root=REPO_ROOT,
     )
-    verify_processed_dataset_bindings(config, repo_root=REPO_ROOT)
-    return {"runtime": runtime, "oos": oos_evidence}
+    processed_evidence = verify_processed_dataset_bindings(config, repo_root=REPO_ROOT)
+    model_snapshot_path = runtime.get("model_snapshot_path")
+    prompt_budget: dict[str, object] | None = None
+    if is_smoke:
+        if not isinstance(model_snapshot_path, str) or not model_snapshot_path:
+            raise RuntimeError("preflight did not resolve a local model snapshot")
+        from transformers import AutoTokenizer
+
+        tokenizer = AutoTokenizer.from_pretrained(
+            model_snapshot_path,
+            local_files_only=True,
+            trust_remote_code=False,
+        )
+        prompt_budget = {
+            split: verify_smoke_prompt_budget(
+                train_file=str(_required(config, "data", "processed", f"{split}_file")),
+                repo_root=REPO_ROOT,
+                tokenizer=tokenizer,
+                max_prompt_tokens=int(_required(config, "training", "max_prompt_length")),
+                max_response_tokens=int(_required(config, "training", "max_response_length")),
+                model_context_tokens=int(_required(runtime, "model_context_tokens")),
+            )
+            for split in ("train", "valid")
+        }
+    source_evidence = {
+        name: {
+            "manifest_sha256": audit.manifest_sha256,
+            "file_count": audit.file_count,
+            "sessions_per_symbol": audit.sessions_per_symbol,
+        }
+        for name, audit in source_audits.items()
+    }
+    return {
+        "runtime": runtime,
+        "oos": oos_evidence,
+        "source_manifests": source_evidence,
+        "reviewed_manifest": {
+            "path": str(manifest_path.resolve()),
+            "sha256": sha256(manifest_path.read_bytes()).hexdigest(),
+            "benchmark_series_sha256": benchmark_sha256,
+        },
+        "processed_datasets": processed_evidence,
+        "prompt_budget": prompt_budget,
+    }
 
 
 def launch(
@@ -813,6 +958,7 @@ def launch(
     )
     print(f"local run record: {recorder.path}")
     update_evidence: dict[str, object] | None = None
+    evidence: dict[str, object] | None = None
     try:
         recorder.append_event("preflight_started")
         evidence = _verify_all_preflight_inputs(config, command=command, is_smoke=is_smoke)
@@ -822,6 +968,17 @@ def launch(
         model_revision = runtime_evidence.get("model_revision")
         if not isinstance(model_revision, str) or not model_revision:
             raise RuntimeError("preflight model revision is invalid")
+        model_snapshot_path = runtime_evidence.get("model_snapshot_path")
+        if not isinstance(model_snapshot_path, str) or not model_snapshot_path:
+            raise RuntimeError("preflight model snapshot path is invalid")
+        _replace_hydra_override(
+            command,
+            "actor_rollout_ref.model.path",
+            model_snapshot_path,
+        )
+        if any(argument.startswith("critic.model.path=") for argument in command):
+            _replace_hydra_override(command, "critic.model.path", model_snapshot_path)
+        recorder.record_command(command)
         recorder.append_event("preflight_passed", final_oos_accessed=False if is_smoke else None)
         if preflight_only:
             print("PREFLIGHT_PASSED")
@@ -837,20 +994,11 @@ def launch(
                 },
             )
             return 0
-        environment = os.environ.copy()
-        environment["PYTHONPATH"] = os.pathsep.join(
-            [
-                str(REPO_ROOT / "runtime_hooks"),
-                str(REPO_ROOT),
-                str(agent_path),
-                environment.get("PYTHONPATH", ""),
-            ]
-        ).rstrip(os.pathsep)
         probe_root = recorder.path / "artifacts" / "update_probe"
-        environment["FINANCE_UPDATE_PROBE_DIR"] = str(probe_root)
-        environment.setdefault("VLLM_USE_V1", "1")
-        environment.setdefault("HYDRA_FULL_ERROR", "1")
-        environment.setdefault("HF_HUB_OFFLINE", "1")
+        environment = _training_environment(
+            agent_path=agent_path,
+            probe_root=probe_root,
+        )
         returncode = _run_with_local_capture(command, environment=environment, recorder=recorder)
         update_evidence = summarize_update_evidence(probe_root)
         representative = update_evidence.get("representative_update")
@@ -875,6 +1023,7 @@ def launch(
                 "final_oos_accessed": False if is_smoke else None,
                 "optimizer_update_evidence": update_evidence,
                 "model_revision": model_revision,
+                "preflight_evidence": evidence,
             },
         )
         return returncode
@@ -885,6 +1034,7 @@ def launch(
             extra={
                 "final_oos_accessed": False if is_smoke else None,
                 "optimizer_update_evidence": update_evidence,
+                "preflight_evidence": evidence,
             },
         )
         raise

@@ -202,6 +202,16 @@ class LocalRunRecorder:
         if event != "subprocess_output":
             self.last_completed_stage = event
 
+    def record_command(self, command: list[str]) -> None:
+        """Replace the provisional command after preflight resolves immutable inputs."""
+
+        rendered = shlex.join(command) + "\n"
+        (self.path / "command.txt").write_text(rendered, encoding="utf-8")
+        self.append_event(
+            "command_resolved",
+            command_sha256=sha256(rendered.encode()).hexdigest(),
+        )
+
     def append_metric(self, step: int, **metrics: float | int | bool) -> None:
         self.metrics.write(
             json.dumps({"at_utc": _utc_now(), "step": step, **metrics}, sort_keys=True) + "\n"

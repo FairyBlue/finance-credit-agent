@@ -303,3 +303,30 @@ A1/Qwen3-1.7B wiring-smoke merged-config SHA-256 为
 H100 GPU extra、本地模型 revision、reviewed smoke manifest 和三个 processed 文件，也未运行真实
 smoke。CPU-only `--preflight-only` 已按预期在 GPU 依赖检查处失败并保留结构化失败 summary；该结果
 不构成 G1 进展。
+
+## 13. v0.7 G1 Prompt Budget 修复提案（2026-08-28，待线下人工审核）
+
+> 本节是供合作者线下审核的协议级变更提案。代码或云服务不得把它记为人工签字，也不得在审核
+> 完成前据此宣称 G1 已获准点火。v0.6 的哈希保留为 `8a090b8` 实机审计的历史身份。
+
+`8a090b8` 在 H100 上通过软件栈和完整 preflight 后，使用真实 Qwen tokenizer 发现首个 raw prompt
+为 5,141 tokens，超过 4,096 上限；原消息历史还会随 tool call 线性增长。因此 v0.7 提议冻结：
+
+- 模型 revision 为 `70d244cc86ccca08cf5af4e1e306ecf908b1ad5e`，训练命令必须改写为该
+  revision 的 exact local snapshot，并强制 Hugging Face / Transformers offline；
+- 每轮只向模型提供冻结任务、当前状态和最近一次工具结果，不累积之前的 assistant/tool 文本；
+- 当前 session 的 20 个冻结 ticker 各保留一条 OHLCV，signal 另取最近 10 条，不能互相挤占；
+- `retrieve` 上限从 50 收紧为 10，并只在实际可返回的紧凑记录中匹配，禁止“命中不可见字段”；
+- preflight 使用 exact tokenizer 对 smoke train 和 valid 的每个 episode 走两条真实可达轨迹：
+  每个 session 最大检索后 hold，以及逐步建立最大不同持仓后最大检索；任一 prompt 超过 4,096，
+  或 prompt 加 response 超过模型 context，均在启动 GPU 训练前失败；
+- source manifest、reviewed manifest、processed Parquet 的实际 SHA/row count、prompt 测量以及
+  exact model snapshot 都写入本地运行证据；`training.episodes` 同时约束 processed train rows 和
+  上游 `data.train_max_samples`。
+
+上述 observation/retrieve 变化会改变旧实验语义；旧 rollout 不得与 v0.7 结果混为同一冻结协议。
+本提案对应的 A1/Qwen3-1.7B wiring-smoke canonical merged-config SHA-256 为
+`dd06b1b52f1541ae89d00ba49549562d6819f2dc197a4fd4399e7c48d944b4f8`。
+
+当前证据边界：`8a090b8` 的 H100 stack 与 preflight 已通过，但真实 G1 从未启动；v0.7 修复分支
+仍须完成 exact-commit H100 preflight 与合作者线下审核。T2 v2 对正式训练的阻断完全不变。

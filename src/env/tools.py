@@ -28,7 +28,7 @@ class RetrieveTool(_IntentTool):
         "properties": {
             "query": {"type": "string", "description": "Case-insensitive text query."},
             "symbol": {"type": "string", "description": "Optional ticker filter."},
-            "limit": {"type": "integer", "description": "Maximum results (1-50)."},
+            "limit": {"type": "integer", "description": "Maximum results (1-10)."},
         },
         "required": ["query"],
     }

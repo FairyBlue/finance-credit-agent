@@ -1,6 +1,7 @@
 """Agent-R1 plugin integration exercised with deterministic mock actions."""
 
 import asyncio
+import json
 from datetime import date, datetime, timezone
 from pathlib import Path
 
@@ -10,6 +11,7 @@ from agent_r1.env import ToolEnv
 from agent_r1.env.base import Action
 
 import src.env.trading as trading_module
+from src.agents.prompt_budget import _measure_episode
 from src.data import MarketObservation, StockBenchAdapter, audit_raw_daily_manifest
 from src.data.stockbench import dataframe_content_sha256
 from src.env.trading import TradingEnv, _cached_storage_adapter
@@ -246,6 +248,165 @@ def test_mock_agent_runs_multiple_episodes_with_next_open_fills_and_safe_errors(
 
     asyncio.run(first_episode())
     asyncio.run(second_episode())
+
+
+def test_smoke_prompt_history_is_bounded_across_retrieve_and_full_episode() -> None:
+    # 2025-01-09 was an XNYS closure for the national day of mourning.
+    days = (2, 3, 6, 7, 8, 10, 13, 14, 15)
+    dates = [datetime(2025, 1, day, 21, 0, tzinfo=UTC) for day in days]
+    opens = [datetime(2025, 1, day, 14, 30, tzinfo=UTC) for day in days]
+    symbols = [f"S{index:02d}" for index in range(20)]
+    observations = [
+        MarketObservation(
+            observation_id=f"{symbol}-{day}",
+            kind="market",
+            symbol=symbol,
+            event_at=session,
+            available_at=session,
+            payload={
+                "date": session.date().isoformat(),
+                "open": 100.0 + index,
+                "high": 101.0 + index,
+                "low": 99.0 + index,
+                "close": 100.5 + index,
+                "volume": 1_000_000.0 + index,
+            },
+        )
+        for day, session in zip(days, dates, strict=True)
+        for index, symbol in enumerate(symbols)
+    ]
+    observations.extend(
+        MarketObservation(
+            observation_id=f"signal-{index}",
+            kind="fundamental",
+            symbol=symbols[index % len(symbols)],
+            event_at=dates[0],
+            available_at=dates[0],
+            payload={"headline": f"visible signal {index}", "value": index},
+        )
+        for index in range(15)
+    )
+    env = TradingEnv(
+        adapter=StockBenchAdapter(observations, data_version="bounded-prompt-fixture"),
+        episode_dates=dates,
+        episode_open_times=opens,
+        symbols=symbols,
+        initial_cash=1000.0,
+        commission_bps=10.0,
+        slippage_bps=5.0,
+        drawdown_coefficient=0.0,
+        turnover_coefficient=0.0,
+        benchmark_closes=[100.0] * len(dates),
+    )
+    raw_prompt: list[dict[str, object]] = [
+        {
+            "role": "user",
+            "content": "Manage the portfolio using only point-in-time tools.",
+        }
+    ]
+
+    class ApproximateTokenizer:
+        def apply_chat_template(
+            self,
+            conversation: object,
+            *,
+            tools: object,
+            add_generation_prompt: bool,
+            tokenize: bool,
+        ) -> list[int]:
+            assert add_generation_prompt is True
+            assert tokenize is True
+            rendered = json.dumps(
+                {"conversation": conversation, "tools": tools},
+                default=str,
+                sort_keys=True,
+            )
+            return [0] * ((len(rendered) + 3) // 4)
+
+    initial = env.reset(raw_prompt=raw_prompt)
+    assert len(initial.messages) == len(raw_prompt)
+    initial_content = initial.messages[-1]["content"]
+    current_state = json.loads(initial_content.split("Current observation:\n", 1)[1])
+    assert [record["symbol"] for record in current_state["market"]] == symbols
+    assert len(current_state["signals"]) == 10
+
+    async def assert_message_structure_is_constant() -> None:
+        retrieved, _, done, _ = await env.step(_call("retrieve", '{"query":":","limit":10}'))
+        assert not done
+        assert len(retrieved.messages) == len(raw_prompt)
+        advanced, _, done, _ = await env.step(_call("hold"))
+        assert not done
+        assert len(advanced.messages) == len(raw_prompt)
+
+    asyncio.run(assert_message_structure_is_constant())
+
+    measurements = asyncio.run(
+        _measure_episode(
+            tokenizer=ApproximateTokenizer(),
+            env=env,
+            raw_prompt=raw_prompt,
+        )
+    )
+
+    assert len(measurements) == 32
+    assert measurements[0]["stage"] == "hold_session_0_state"
+    assert measurements[1]["stage"] == "hold_session_0_after_max_retrieve"
+    assert measurements[-1]["stage"] == "positions_session_7_after_max_retrieve"
+    assert max(int(item["prompt_tokens"]) for item in measurements) < 4096
+
+
+def test_retrieve_only_matches_evidence_present_in_compact_result() -> None:
+    dates = [datetime(2025, 1, day, 21, 0, tzinfo=UTC) for day in (2, 3)]
+    opens = [datetime(2025, 1, day, 14, 30, tzinfo=UTC) for day in (2, 3)]
+    discarded_payload = {f"a{index:02d}": f"value-{index}" for index in range(12)}
+    discarded_payload["zzz"] = "hidden needle"
+    signal = MarketObservation(
+        observation_id="large-signal",
+        kind="fundamental",
+        symbol="AAA",
+        event_at=dates[0],
+        available_at=dates[0],
+        payload=discarded_payload,
+    )
+    env = TradingEnv(
+        adapter=StockBenchAdapter(
+            [
+                _bar(2, open_price=100.0, close_price=100.0),
+                _bar(3, open_price=100.0, close_price=100.0),
+                signal,
+            ],
+            data_version="retrieve-visible-evidence-fixture",
+        ),
+        episode_dates=dates,
+        episode_open_times=opens,
+        symbols=["AAA"],
+        initial_cash=1000.0,
+        commission_bps=0.0,
+        slippage_bps=0.0,
+        drawdown_coefficient=0.0,
+        turnover_coefficient=0.0,
+        benchmark_closes=[100.0, 100.0],
+    )
+
+    async def retrieve() -> None:
+        env.reset()
+        hidden, _, _, _ = await env.step(
+            _call("retrieve", '{"query":"hidden needle","limit":10}')
+        )
+        hidden_text = hidden.messages[-1]["content"]
+        hidden_state = json.loads(hidden_text.split("Current observation:\n", 1)[-1])
+        assert hidden_state["last_tool"]["result"]["results"] == []
+
+        visible, _, _, _ = await env.step(
+            _call("retrieve", '{"query":"value-0","limit":10}')
+        )
+        visible_text = visible.messages[-1]["content"]
+        visible_state = json.loads(visible_text.split("Current observation:\n", 1)[-1])
+        results = visible_state["last_tool"]["result"]["results"]
+        assert len(results) == 1
+        assert "value-0" in json.dumps(results[0], sort_keys=True)
+
+    asyncio.run(retrieve())
 
 
 def test_finance_trajectory_mode_emits_a_fin_only_on_the_final_step() -> None:
