@@ -1,0 +1,146 @@
+name: Change broadcast
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: change-broadcast-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  report:
+    name: Publish human-readable change report
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the reported revision
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Generate report
+        env:
+          REPORT_MODE: ${{ github.event_name == 'pull_request' && 'pr' || 'push' }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: >-
+          python scripts/generate_change_report.py
+          --mode "$REPORT_MODE"
+          --base "$BASE_SHA"
+          --head "$HEAD_SHA"
+          --event-path "$GITHUB_EVENT_PATH"
+          --output change-report.md
+
+      - name: Preserve report as a workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: change-report-${{ github.run_id }}
+          path: change-report.md
+          retention-days: 14
+
+      - name: Create or update the pull request report
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require("fs");
+            const marker = "<!-- finance-credit-agent-change-report -->";
+            const body = fs.readFileSync("change-report.md", "utf8");
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              ...context.repo,
+              issue_number: context.issue.number,
+              per_page: 100,
+            });
+            const existing = comments.find(
+              (comment) => comment.user?.type === "Bot" && comment.body?.includes(marker),
+            );
+            if (existing) {
+              await github.rest.issues.updateComment({
+                ...context.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                ...context.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
+
+      - name: Publish the merged change to the shared feed
+        if: github.event_name == 'push'
+        uses: actions/github-script@v7
+        env:
+          CHANGE_BROADCAST_MENTIONS: ${{ vars.CHANGE_BROADCAST_MENTIONS }}
+        with:
+          script: |
+            const fs = require("fs");
+            const title = "自动变更播报";
+            const label = "change-broadcast";
+            const report = fs.readFileSync("change-report.md", "utf8");
+            const mentions = process.env.CHANGE_BROADCAST_MENTIONS?.trim();
+
+            try {
+              await github.rest.issues.getLabel({ ...context.repo, name: label });
+            } catch (error) {
+              if (error.status !== 404) throw error;
+              await github.rest.issues.createLabel({
+                ...context.repo,
+                name: label,
+                color: "1d76db",
+                description: "Automatic two-person change broadcasts",
+              });
+            }
+
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              ...context.repo,
+              state: "all",
+              labels: label,
+              per_page: 100,
+            });
+            let feed = issues.find(
+              (issue) => !issue.pull_request && issue.title === title,
+            );
+            if (!feed) {
+              const created = await github.rest.issues.create({
+                ...context.repo,
+                title,
+                labels: [label],
+                body: [
+                  "这个 Issue 是两位合作者共享的正式变更流。",
+                  "",
+                  "请双方点击 **Subscribe**；之后每次 `main` 更新都会在这里自动发布。",
+                  "无需在这里进行数字签名或重复审批。",
+                ].join("\n"),
+              });
+              feed = created.data;
+            } else if (feed.state === "closed") {
+              const reopened = await github.rest.issues.update({
+                ...context.repo,
+                issue_number: feed.number,
+                state: "open",
+              });
+              feed = reopened.data;
+            }
+
+            const body = mentions ? `${mentions}\n\n${report}` : report;
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: feed.number,
+              body,
+            });
+            core.notice(`Published change report to issue #${feed.number}`);

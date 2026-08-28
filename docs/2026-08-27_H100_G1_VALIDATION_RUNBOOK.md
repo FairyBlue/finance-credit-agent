@@ -1,22 +1,32 @@
 # 2026-08-27 H100 G1 验证执行手册
 
+> **状态更新（2026-08-27）：** 这是绑定 `8a090b8` 的原始执行任务单。实机已完成 H100 stack
+> 和完整 preflight，但在点火前发现 prompt-budget P0，因此真实 G1 未运行且继续 `BLOCKED`。
+> 当前结论、证据和修复顺序以
+> [`2026-08-27_H100_G1_AUDIT_RESULTS.md`](2026-08-27_H100_G1_AUDIT_RESULTS.md) 为准。
+> 下文“不要继续修改代码”和“下一步直接运行 G1”的原始指令已经失效；解决 P0、冻结新 commit
+> 并重新通过验收前，不得启动 G1。
+
+文档定位：本文件保留本轮验证的原始步骤和验收标准，不是长期环境维护入口。长期版本约束见
+[`H100_COMPATIBILITY.md`](H100_COMPATIBILITY.md)。
+
 这轮已经完成了一个关键转折：**H100 兼容性修复从某台机器上的临时补丁，变成了 GitHub
 `main` 中可审计、可安装、可复现的正式实现。**
 
-## 当前状态应该怎样理解
+## 原始状态（执行前）
 
 建议拆成两个维度：
 
 | 维度 | 状态 | 解释 |
 | --- | --- | --- |
 | 仓库交接能力 | `READY` | 合作者已经可以从 GitHub 获取代码、文档、lock 和运行说明 |
-| H100 实验执行能力 | `UNVERIFIED` | 当前提交尚未在 H100 上完成 clean clone 验收、preflight 和真实 optimizer update |
+| H100 实验执行能力 | `UNVERIFIED`（执行前） | 当时尚未完成 H100 stack、preflight 或真实 optimizer update |
 | 项目综合状态 | `PARTIALLY_READY` | 当前判断准确 |
 
 那 10 个新增 pytest 也是合理的。每一个都对应真实实验风险，包括 seed 虚假透传、队列误点火、
 formal 未授权、失败后继续训练、依赖漂移。这里没有为了数量增加测试。
 
-## 现在不要继续修改代码
+## 原始冻结指令（已由 P0 审计结果取代）
 
 下一阶段应冻结：
 
@@ -314,8 +324,9 @@ proposal-level experiment
 冻结后开放 Final OOS
 ```
 
-因此当前唯一优先任务已经非常明确：
+这是执行前记录的原始优先任务：
 
 > **在 H100 的全新目录中 checkout `8a090b8`，运行环境验收脚本，然后运行 G1 preflight。**
 
-完成这两项之前，不再增加 pytest、不继续重构 launcher、不实现 T2，也不调整研究方法。
+上述 stack 和 preflight 已完成。当前唯一优先任务改为修复审计报告中的 prompt-budget P0，冻结
+新的 validation commit 并重新验收；在此之前不得启动 G1。

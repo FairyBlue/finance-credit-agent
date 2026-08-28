@@ -5,6 +5,10 @@
 for the research motivation, current gate status, frozen inputs, clean-clone setup, H100 G1 smoke,
 acceptance evidence, troubleshooting, and the work that remains after G1.
 
+For day-to-day work between the two maintainers, see
+[`docs/COLLABORATION.md`](docs/COLLABORATION.md). GitHub automatically publishes a readable report
+when a pull request changes and when a change reaches `main`.
+
 Research scaffold for testing whether finance-native **step-level credit assignment** improves a
 tool-using trading agent over outcome-only GRPO and generic StepPO. The project composes with
 [Agent-R1](https://github.com/AgentR1/Agent-R1) as a locked submodule, keeps every local change under

@@ -1,9 +1,14 @@
 # H100 兼容性与 clean-clone 复现
 
-更新日期：`2026-08-27`
+更新日期：`2026-08-28`
 
-当前状态：`PARTIALLY_READY`。依赖、launcher、queue 和本机测试已迁移到当前架构；本文所在的
-提交尚未在 H100 上执行验收，因此不得写成当前 `main` 已通过 GPU 或 G1 smoke。
+文档定位：本文是长期维护的 H100 版本、安装和证据合同。具体实验必须使用对应 runbook 指定的
+精确 commit；本文的通用安装说明不能替代实验任务单。
+
+当前状态：`PARTIALLY_READY`。H100 stack 和完整 preflight 已在验证提交 `8a090b8` 上通过，但
+本轮复用了已存在的 pinned `.venv`，没有验证从空 `.venv` 重装；真实 G1 因 prompt-budget P0
+未启动。完整证据见
+[`2026-08-27_H100_G1_AUDIT_RESULTS.md`](2026-08-27_H100_G1_AUDIT_RESULTS.md)。
 
 ## 1. 身份与证据边界
 
@@ -13,10 +18,13 @@
 | 旧 H100 验证基线 | `6ba699acce32feca8ae2c84152200b3153e3fabd` 加未提交兼容补丁 |
 | 本次实际移植基线 | `9e4bfe3c2d9d6ef36fbd684efcc78c2b1c600cfd` |
 | 本次移植提交 | `bcb28e890c0a6cde48f1d5ea2366798a9ff3590e` |
+| H100 实际验证代码 | `8a090b86f667216a28a3846520b717348b4a6764` |
+| 实机审计记录提交 | `3faea19e688e56a3a9e15aa4b5d3c839fd0da62b` |
 | Agent-R1 gitlink | `b124aa46534cbf2fb8bc8af11405774984c42ac7` |
 
 旧环境已经证明指定软件组合可以在一张 H100 NVL 上运行真实 FlashAttention CUDA kernel。
-它没有证明本次移植提交、端到端 rollout、optimizer update 或 G1 smoke 已通过。
+本轮又在验证提交上证明 stack、真实 kernel 和 preflight 可用，但没有从空 `.venv` 重装，也没有
+产生 rollout、backward、optimizer update 或 G1 smoke 通过证据。
 
 ## 2. 冻结的 H100 运行栈
 
@@ -73,14 +81,16 @@ CPython 3.10、Linux x86_64、PyTorch 2.7、CUDA 12 ABI、C++11 ABI TRUE；不�
 ## 5. clean clone 安装流程
 
 当前 lock 已完整编码 torch 2.7.0+cu128 的 CUDA 12.8 index 和 FlashAttention direct wheel，
-因此不再需要先 `uv pip install torch` 再 sync。H100 上从空目录执行：
+因此不再需要先 `uv pip install torch` 再 sync。执行已冻结实验时，先从对应 runbook 取得精确
+commit，不能 checkout 或 pull 浮动的 `main`。H100 上从空目录执行：
 
 ```bash
 git clone --recurse-submodules \
   https://github.com/HaoPan036/finance-credit-agent.git
 cd finance-credit-agent
-git checkout main
-git pull --ff-only origin main
+git fetch origin
+export FCA_VALIDATION_COMMIT=REPLACE_WITH_ACTIVE_RUNBOOK_EXACT_COMMIT
+git checkout --detach "$FCA_VALIDATION_COMMIT"
 git submodule update --init --recursive
 
 uv python install 3.10.20
@@ -185,11 +195,14 @@ torch 2.9/vLLM 0.12 环境产出本项目结果。
 
 | 检查 | 旧基线 + 本地补丁 | 本次移植提交 |
 |---|---|---|
-| FlashAttention H100 kernel | `PASSED`，2026-08-26 | `UNVERIFIED ON THIS MACHINE` |
-| 端到端 rollout / optimizer update | 未执行 | 未执行 |
-| G1 smoke | 未执行 | 未执行 |
+| FlashAttention H100 kernel | `PASSED`，2026-08-26 | `PASSED`，验证代码 `8a090b8`，复用 pinned `.venv` |
+| 从空 `.venv` clean-clone 安装 | 未记录 | `NOT TESTED` |
+| 完整 preflight-only | 未执行 | `PASSED`，未启动训练，Final OOS 未访问 |
+| 端到端 rollout / optimizer update | 未执行 | `NOT RUN`，prompt-budget P0 阻断 |
+| G1 smoke | 未执行 | `BLOCKED` |
 | 当前 pytest | 旧结果仅供历史参考 | `136 passed`（当前 Mac） |
-| Ruff / mypy | 旧结果仅供历史参考 | 通过；mypy 检查 52 个 source files |
+| Ruff / mypy | 旧结果仅供历史参考 | 通过；H100 审计中的 mypy 检查 44 个 source files |
 | lock / local sync / pip check | 旧结果仅供历史参考 | 通过；236 packages resolved，57 packages compatible |
 
-在 H100 对本文所在提交重新执行第 5 节前，项目状态保持 `PARTIALLY_READY`。
+项目状态保持 `PARTIALLY_READY`。下一步是修复审计报告中的 prompt-budget P0，冻结新的验证
+commit，然后重新执行 stack、测试、preflight 和 context-budget 门禁；通过前不得启动 G1。

@@ -1,5 +1,7 @@
 # H100 compatibility handoff（已归档）
 
+文档定位：仅保留旧链接和历史证据边界，不得作为安装或实验执行说明。
+
 这份 2026-08-26 的旧基线交接说明已经移植并整理到
 [`H100_COMPATIBILITY.md`](H100_COMPATIBILITY.md)。后者是当前 clean-clone 安装、版本约束、
 验收命令和证据边界的唯一维护入口。

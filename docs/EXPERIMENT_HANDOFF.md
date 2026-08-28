@@ -1,38 +1,42 @@
 # Finance Credit Agent：实验接手与运行手册
 
-更新日期：`2026-08-27`
+更新日期：`2026-08-28`
 
 这是一份面向新合作者的单一入口文档。即使没有读过历史对话，只要拥有本仓库、冻结历史数据和
-一台 Linux x86_64 H100，就应当能够通过本文理解研究动机、判断当前进度、完成 G1 smoke，并知道
-哪些正式实验现在仍然禁止运行。
+一台 Linux x86_64 H100，就应当能够通过本文理解研究动机、判断当前进度、知道 G1 为什么仍被
+阻断，并知道哪些修复和正式实验现在允许或禁止运行。
 
 仓库代码、配置、Git 状态和实际运行结果高于本文。如果出现冲突，立即停止实验，按第 16 节处理，
 不要自行放宽门禁。
 
 ## 0. 接手后先看这里
 
-当前结论只有四条：
+当前结论只有五条：
 
 1. 本地实验脚手架和协议门禁已经完成，状态为 `G0 PASSED`。
-2. 下一项工作不是正式 A1/A2/A3 对比，而是只在一张 H100 上运行一次
-   `A1 + Qwen3-1.7B` wiring smoke。
-3. G1 目前仍是 `BLOCKED`：仓库已提供待人工审核的 smoke candidate，但 GitHub 不包含冻结
-   历史数据、reviewed manifest、三个 processed Parquet 或模型缓存；H100 preflight 和真实
-   smoke 也尚未运行。
-4. 正式训练继续由 T2 v2 阻断；不要运行无参数的 A1/A2/A3 队列，也不要读取 StockBench Final
+2. 验证提交 `8a090b8` 已在 H100 NVL 上通过 frozen stack、真实 FlashAttention kernel、136 tests
+   和完整 preflight；本轮复用了 pinned `.venv`，没有证明从空 `.venv` clean-clone 安装通过。
+3. G1 目前仍是 `BLOCKED`：真实训练没有启动。首个 generation prompt 为 5,141 tokens，超过
+   配置上限 4,096；当前对话历史还会持续膨胀，必须先修 prompt-budget P0。
+4. 下一项开发任务是状态压缩、有界历史、retrieve 上限和 tokenizer-level context-budget 门禁，
+   然后冻结新的 validation commit 并重新验收；不得直接提高一个长度字段后点火。
+5. 正式训练继续由 T2 v2 阻断；不要运行无参数的 A1/A2/A3 队列，也不要读取 StockBench Final
    OOS 来调试 smoke。
+
+本次 H100 实测、P0/P1/P2 和证据边界见
+[`docs/2026-08-27_H100_G1_AUDIT_RESULTS.md`](2026-08-27_H100_G1_AUDIT_RESULTS.md)。
 
 接手后的推荐顺序：
 
 ```text
-从 GitHub 干净克隆
-  → 同步冻结 history 数据
-  → 验证仓库内的 smoke manifest candidate
-  → 完成人工审核并生成 processed 文件
-  → 安装 H100 GPU 环境并缓存 Qwen3-1.7B
-  → 运行 --preflight-only
-  → 运行唯一一次批准的 G1 smoke
-  → 检查 runs/<run_id>/summary.json 和 optimizer 证据
+读取 H100 实机审计
+  → 修复 prompt-budget P0 和同批 P1 门禁
+  → 增加 tokenizer-level context-budget 验收
+  → 冻结新的 validation commit
+  → 在 H100 重新核对 stack、tests、数据与模型身份
+  → 重新运行 --preflight-only
+  → 全部通过后才运行唯一一次批准的 G1 smoke
+  → 检查真实 backward、trainer step 和 optimizer-update 证据
 ```
 
 ## 1. 这个项目为什么存在
@@ -81,7 +85,7 @@ G1 smoke 只证明训练链路接通：数据能加载、环境能推进、模�
 | 项目 | 状态 | 证据或说明 |
 |---|---|---|
 | G0 协议与本地脚手架 | `PASSED` | 136 tests、Ruff、mypy、lock 与 whitespace checks 通过 |
-| G1 A1/Qwen3-1.7B smoke | `BLOCKED` | 未完成 H100 preflight，未运行真实 smoke |
+| G1 A1/Qwen3-1.7B smoke | `BLOCKED` | H100 preflight 已通过；5,141-token 首轮 prompt 超过 4,096 上限，真实 smoke 未运行 |
 | T1 未来价格扰动 | 已实现 | 历史读取与数值特征保持不变 |
 | T2 v2 train/valid 探针 | `BLOCKED` | 已预注册，未实现；禁止回退旧 StockBench 探针 |
 | T3 train-only 标准化 | 已实现 | 全样本 fit 会失败 |
@@ -89,14 +93,14 @@ G1 smoke 只证明训练链路接通：数据能加载、环境能推进、模�
 | Reward 标定 | 已冻结 | 只使用 Train；表和哈希已绑定 |
 | Smoke Final OOS 隔离 | 已实现 | 配置、manifest、processed provenance 三层 fail closed |
 | 本地结构化运行记录 | 已实现 | 非 dry-run 均写入 `runs/<run_id>/` |
-| H100 GPU/model 实测 | 未完成 | 旧基线只验证过 kernel；本次移植提交尚未在 H100 验收 |
+| H100 GPU/model 实测 | `PARTIAL PASS` | `8a090b8` 上 stack、真实 kernel 和模型缓存通过；复用 pinned `.venv`，未做空环境重装 |
 | Smoke manifest candidate | 已生成 | 状态为 `pending_human_review`，文件和 benchmark 哈希已冻结 |
-| Reviewed smoke manifest | 缺失 | 不在 GitHub；必须先审核 candidate，再按第 8 节复制产生 |
-| Smoke processed Parquet | 缺失 | 不在 GitHub，必须由 reviewed manifest 生成 |
+| Reviewed smoke manifest | H100 已使用 | 经线下审核后复制，按协议保持 untracked；GitHub 不包含该文件 |
+| Smoke processed Parquet | H100 已验证 | 实测 `train=4`、`valid=1`、`test=1`；文件不进入 GitHub |
 
 本次 H100 移植以 `9e4bfe3c2d9d6ef36fbd684efcc78c2b1c600cfd` 为实际起点；精确移植
-commit 记录在 `docs/H100_COMPATIBILITY.md`。接手时仍必须拉取最新 `origin/main`，不要
-把历史 SHA 当作 checkout 指令。
+commit 记录在 `docs/H100_COMPATIBILITY.md`。开发时先同步最新 `origin/main`；执行实验时必须
+使用当前 runbook 指定的精确 validation commit，不能在浮动的 `main` 上运行。
 
 ## 4. 冻结的实验边界
 
@@ -166,8 +170,9 @@ Final OOS，preflight 与 launcher 都会失败。把 OOS 文件改名成 `smoke
 git clone --recurse-submodules \
   https://github.com/HaoPan036/finance-credit-agent.git
 cd finance-credit-agent
-git checkout main
-git pull --ff-only origin main
+git fetch origin
+export FCA_VALIDATION_COMMIT=REPLACE_WITH_CURRENT_RUNBOOK_EXACT_COMMIT
+git checkout --detach "$FCA_VALIDATION_COMMIT"
 git submodule update --init --recursive
 
 git status --short
@@ -338,9 +343,10 @@ shadow，不是 Final OOS。
 ## 9. 安装 H100 GPU 环境并缓存模型
 
 当前 lock 已移植旧 H100 验证过的 Python 3.10.20 / torch 2.7.0+cu128 / flash-attn
-2.8.0.post2 / vLLM 0.9.2 / verl 0.7.0 / Transformers 4.53.2 / PyArrow 20.0.0 组合，
-但本次移植提交仍是 `UNVERIFIED ON THIS MACHINE`。完整 wheel 哈希、证据边界、禁止升级
-事项和 nvcc 政策见 [`docs/H100_COMPATIBILITY.md`](H100_COMPATIBILITY.md)。
+2.8.0.post2 / vLLM 0.9.2 / verl 0.7.0 / Transformers 4.53.2 / PyArrow 20.0.0 组合。
+该 stack 和真实 kernel 已在验证提交 `8a090b8` 上通过；证据来自复用的 pinned `.venv`，仍未证明
+从空 `.venv` clean-clone 安装。完整 wheel 哈希、证据边界、禁止升级事项和 nvcc 政策见
+[`docs/H100_COMPATIBILITY.md`](H100_COMPATIBILITY.md)。
 
 ```bash
 nvidia-smi
@@ -361,11 +367,15 @@ print(path)
 PY
 ```
 
-训练 launcher 会设置 `HF_HUB_OFFLINE=1`，不会在训练过程中临时下载新模型；preflight 会把本地
-resolved revision 写入运行记录。`run.seed` 控制主要数据、actor、critic 和 vLLM 随机源，
+当前 launcher 只通过 `setdefault` 尝试设置 `HF_HUB_OFFLINE=1`，外部环境仍可覆盖；模型配置也
+仍使用可变的 `main`。这是再次点火前必须修复的 P1：固定 exact revision 或 snapshot、强制
+offline，并让 preflight 校验实际身份。`run.seed` 控制主要数据、actor、critic 和 vLLM 随机源，
 但分布式 GPU 训练不承诺 bitwise deterministic。
 
 ## 10. 先 dry-run，再运行 H100 preflight
+
+`8a090b8` 已在真实 H100 上完成一次完整 preflight，并输出本节三行结果；它没有启动训练，也不
+等于 G1 passed。prompt-budget P0 修复后，必须在新的 validation commit 上重新执行本节。
 
 CPU-safe dry-run 只检查配置合并、命令构造和 Git/submodule/data version 身份：
 
@@ -404,6 +414,10 @@ Final OOS not accessed.
 
 ## 11. 运行唯一批准的 G1 smoke
 
+**当前禁止执行本节命令。** 首轮 prompt 已确定超过配置上限；必须先按实机审计修复 P0、冻结
+新 commit，并重新通过 stack、tests、数据身份、模型身份、context-budget 和 preflight 门禁。
+以下命令只保留为门禁全部恢复后的执行入口。
+
 推荐直接运行：
 
 ```bash
@@ -411,7 +425,8 @@ CUDA_VISIBLE_DEVICES=0 uv run --no-sync python -m src.agents.arm_a1 \
   --config configs/smoke_1p7b.yaml
 ```
 
-也可使用只传入 smoke 配置的队列 wrapper：
+queue wrapper 当前不能视为与 direct command 等价：watchdog 对 A1 terminal-only reward 可能误杀，
+事件位置和子进程清理也尚未闭环。修复并重新验收前，不要使用下面的 wrapper 启动 G1：
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 scripts/run_queue.sh configs/smoke_1p7b.yaml
@@ -531,6 +546,9 @@ W&B、API key、云端 logger、数字签名或加密签字流程都不需要。
 
 ## 15. G1 之后该做什么
 
+当前尚未进入“G1 之后”。首先按实机审计顺序修复 prompt-budget P0，并同批处理 exact-sync、模型
+identity/offline、episode-count 绑定和 context-budget 证据；冻结新 commit 后重新验收。
+
 G1 通过后：
 
 1. 保存并共享 `runs/<run_id>/`；
@@ -568,6 +586,8 @@ Final OOS 只在最终科学评测时开启。
 | 文件 | 作用 |
 |---|---|
 | `docs/EXPERIMENT_HANDOFF.md` | 本接手与运行手册 |
+| `docs/2026-08-27_H100_G1_AUDIT_RESULTS.md` | 当前 H100 实测结果、P0/P1/P2 与复验顺序 |
+| `docs/2026-08-27_H100_G1_VALIDATION_RUNBOOK.md` | `8a090b8` 原始执行任务单；已由实测结果更新状态 |
 | `docs/H100_COMPATIBILITY.md` | H100 frozen stack、wheel 哈希、clean-clone 和证据边界 |
 | `EVAL_PROTOCOL.md` | 冻结协议与历次追加修订 |
 | `configs/smoke_1p7b.yaml` | 唯一批准的 G1 配置 |
@@ -593,5 +613,5 @@ Final OOS 只在最终科学评测时开启。
 - 合作者无需依赖历史聊天、W&B、个人电脑路径或数字签名流程；
 - 合作者能够独立判断当前为何阻塞、下一步做什么、何时必须停止，以及什么证据才算实验通过。
 
-当前 readiness：`PARTIALLY_READY`。代码与 G0 已就绪；外部输入、H100 preflight 和真实 G1 smoke
-尚未完成。
+当前 readiness：`PARTIALLY_READY`。代码与 G0 已就绪，H100 stack 和 preflight 已通过；
+clean-clone 重装未验证，真实 G1 未启动，并被 prompt-budget P0 阻断。
