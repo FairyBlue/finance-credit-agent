@@ -14,6 +14,17 @@ from src.rewards import StepContext, build_credit_strategy
 class TradingAgentEnvLoop(AgentEnvLoop):
     """Agent-R1's generic step-MDP loop with the external trading env registered."""
 
+    async def _obs_to_prompt(
+        self, obs: Any, tools: list[dict[str, Any]] | None = None
+    ) -> list[int]:
+        prompt_ids = await super()._obs_to_prompt(obs, tools=tools)
+        if len(prompt_ids) > self.prompt_length:
+            raise RuntimeError(
+                f"tokenized trading prompt uses {len(prompt_ids)} tokens, exceeding "
+                f"configured prompt limit {self.prompt_length}; rollout aborted"
+            )
+        return prompt_ids
+
 
 class FinanceCreditAgentEnvLoop(TradingAgentEnvLoop):
     """A3 loop that retroactively allocates the final finance trajectory signal."""

@@ -32,6 +32,7 @@ from src.data.integrity import (
 from src.rewards import verify_calibration_document
 
 from .config import load_experiment_config
+from .context_budget import verify_smoke_context_budget
 from .local_runs import LocalRunRecorder
 from .metadata import RunHashes, collect_run_hashes, validate_composite_data_version
 from .update_probe import summarize_update_evidence
@@ -673,6 +674,7 @@ def verify_gpu_runtime_and_model(config: dict[str, Any]) -> dict[str, object]:
     )
     model_path = Path(selected_model).expanduser()
     model_revision: str
+    model_snapshot_path: Path
     if not model_path.is_dir():
         cache_root = Path(
             os.environ.get(
@@ -692,14 +694,17 @@ def verify_gpu_runtime_and_model(config: dict[str, Any]) -> dict[str, object]:
         model_revision = ref_path.read_text(encoding="utf-8").strip()
         if not model_revision or not (snapshots / model_revision).is_dir():
             raise RuntimeError("cached model revision does not resolve to a local snapshot")
+        model_snapshot_path = (snapshots / model_revision).resolve()
     else:
         model_revision = str(_required(config, "model").get("revision") or model_path.name)
+        model_snapshot_path = model_path.resolve()
     return {
         "cuda_available": True,
         "cuda_device_count": int(torch.cuda.device_count()),
         "gpu_model": device_name,
         "model": selected_model,
         "model_revision": model_revision,
+        "model_snapshot_path": str(model_snapshot_path),
     }
 
 
@@ -755,7 +760,12 @@ def _verify_all_preflight_inputs(
         repo_root=REPO_ROOT,
     )
     verify_processed_dataset_bindings(config, repo_root=REPO_ROOT)
-    return {"runtime": runtime, "oos": oos_evidence}
+    context_budget = (
+        verify_smoke_context_budget(config, runtime=runtime, repo_root=REPO_ROOT)
+        if is_smoke
+        else None
+    )
+    return {"runtime": runtime, "oos": oos_evidence, "context_budget": context_budget}
 
 
 def launch(

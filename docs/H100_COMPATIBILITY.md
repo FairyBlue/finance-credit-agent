@@ -1,13 +1,13 @@
 # H100 兼容性与 clean-clone 复现
 
-更新日期：`2026-08-28`
+更新日期：`2026-08-29`
 
 文档定位：本文是长期维护的 H100 版本、安装和证据合同。具体实验必须使用对应 runbook 指定的
 精确 commit；本文的通用安装说明不能替代实验任务单。
 
 当前状态：`PARTIALLY_READY`。H100 stack 和完整 preflight 已在验证提交 `8a090b8` 上通过，但
-本轮复用了已存在的 pinned `.venv`，没有验证从空 `.venv` 重装；真实 G1 因 prompt-budget P0
-未启动。完整证据见
+本轮复用了已存在的 pinned `.venv`，没有验证从空 `.venv` 重装；prompt-budget P0 已在本地完成
+修复，尚未冻结为 validation commit 或在 H100 复验，真实 G1 未启动。完整证据见
 [`2026-08-27_H100_G1_AUDIT_RESULTS.md`](2026-08-27_H100_G1_AUDIT_RESULTS.md)。
 
 ## 1. 身份与证据边界
@@ -103,6 +103,16 @@ uv run --no-sync python scripts/verify_h100_stack.py
 最后一条命令完成版本、CUDA、GPU、imports 和真实 FlashAttention kernel 验收。环境验收后，所有
 实验命令使用 `uv run --no-sync ...`，防止运行时隐式改变已验收环境。
 
+准备好 history-only processed 文件和缓存模型后，还必须运行：
+
+```bash
+CUDA_VISIBLE_DEVICES=0 uv run --no-sync python scripts/verify_context_budget.py \
+  --config configs/smoke_1p7b.yaml
+```
+
+该命令使用 Qwen 缓存 snapshot 的真实 tokenizer 审计 4 个 train candidate 的完整有界轨迹；
+`CONTEXT_BUDGET_PASSED` 只证明提示词预算门禁通过，不等于 G1 passed。
+
 ## 6. H100 验收脚本
 
 `scripts/verify_h100_stack.py` fail closed 检查：
@@ -183,6 +193,8 @@ uv sync --frozen --extra gpu --extra data
 uv pip check --python .venv/bin/python
 uv run --no-sync python scripts/verify_h100_stack.py
 uv run --no-sync pytest -q
+CUDA_VISIBLE_DEVICES=0 uv run --no-sync python scripts/verify_context_budget.py \
+  --config configs/smoke_1p7b.yaml
 uv run --no-sync ruff check src tests scripts runtime_hooks
 uv run --no-sync mypy src tests
 git diff --check
@@ -198,11 +210,12 @@ torch 2.9/vLLM 0.12 环境产出本项目结果。
 | FlashAttention H100 kernel | `PASSED`，2026-08-26 | `PASSED`，验证代码 `8a090b8`，复用 pinned `.venv` |
 | 从空 `.venv` clean-clone 安装 | 未记录 | `NOT TESTED` |
 | 完整 preflight-only | 未执行 | `PASSED`，未启动训练，Final OOS 未访问 |
-| 端到端 rollout / optimizer update | 未执行 | `NOT RUN`，prompt-budget P0 阻断 |
+| Prompt-budget P0 修复 | 不适用 | `LOCAL PASS / H100 UNVERIFIED`，待新 validation commit |
+| 端到端 rollout / optimizer update | 未执行 | `NOT RUN`，等待 P0 的 H100 context-budget 与 preflight 复验 |
 | G1 smoke | 未执行 | `BLOCKED` |
-| 当前 pytest | 旧结果仅供历史参考 | `136 passed`（当前 Mac） |
+| 当前 pytest | 旧结果仅供历史参考 | `138 passed`（当前 Mac） |
 | Ruff / mypy | 旧结果仅供历史参考 | 通过；H100 审计中的 mypy 检查 44 个 source files |
 | lock / local sync / pip check | 旧结果仅供历史参考 | 通过；236 packages resolved，57 packages compatible |
 
-项目状态保持 `PARTIALLY_READY`。下一步是修复审计报告中的 prompt-budget P0，冻结新的验证
-commit，然后重新执行 stack、测试、preflight 和 context-budget 门禁；通过前不得启动 G1。
+项目状态保持 `PARTIALLY_READY`。下一步是冻结包含 prompt-budget P0 修复的新 validation commit，
+然后在 H100 重新执行 stack、测试、context-budget 和 preflight 门禁；通过前不得启动 G1。

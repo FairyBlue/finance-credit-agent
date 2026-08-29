@@ -2,6 +2,9 @@
 
 更新日期：`2026-08-27`
 
+本地修复补充日期：`2026-08-29`。第 1～7 节保留 2026-08-27 实机审计的原始事实；后续进展见
+第 8 节，不能把本地修复结果回写成旧 validation commit 已在 H100 通过。
+
 本文记录 H100 上对 G1 wiring smoke 的实机复核结果。它补充
 [`2026-08-27_H100_G1_VALIDATION_RUNBOOK.md`](2026-08-27_H100_G1_VALIDATION_RUNBOOK.md)，
 并以实际执行证据修正其中“尚未在 H100 验证”的状态。
@@ -245,3 +248,31 @@ step，或更名并在 runbook 中说明其语义。
 6. 全部通过后才运行真实 G1，并以至少一次 finite backward 和真实 optimizer update 作为通过条件。
 
 本轮控制台输出和本地 run artifacts 已保留，可通过线下方式交接；其中不包含 W&B 或云端数据依赖。
+
+## 8. 2026-08-29 本地 P0 修复进展
+
+当前工作树已完成第 4 节列出的 P0 修复：
+
+- 当前 session 状态只保留决策所需 OHLCV、组合、有限近期事件和最后一次工具结果；
+- 对话改为初始任务加当前状态的滚动窗口，不再累计全部 assistant/tool 历史；
+- retrieve 最多返回 3 条、最多 8 个字段、文本字段最多 160 字符，完整 JSON 不超过 1 KiB；
+- smoke preflight 使用缓存 Qwen snapshot 的真实 tokenizer 和 chat template，覆盖 4 个 train
+  candidate、每个 episode 的完整 8-advance 路径，并同时检查 4,096 prompt 上限以及
+  `prompt + 2,048 response <= model context`；
+- Agent-R1 外部 flow 在运行期如果再次超过 prompt 上限会明确抛错，不再静默返回空 steps；
+- 新增独立 H100 命令 `scripts/verify_context_budget.py`，不会启动推理或训练。
+
+当前本机结果为 `138 passed`，相关 Ruff 与 mypy 检查通过。由于本机没有 H100 GPU 栈、缓存模型
+和 processed smoke Parquet，真实 Qwen token 数仍为 `UNVERIFIED ON THIS MACHINE`。因此第 1 节的
+G1 状态仍是 `BLOCKED`；下一步必须先冻结新的 validation commit，再在 H100 依次运行：
+
+```bash
+uv run --no-sync python scripts/verify_h100_stack.py
+uv run --no-sync pytest -q
+CUDA_VISIBLE_DEVICES=0 uv run --no-sync python scripts/verify_context_budget.py \
+  --config configs/smoke_1p7b.yaml
+CUDA_VISIBLE_DEVICES=0 uv run --no-sync python -m src.agents.arm_a1 \
+  --config configs/smoke_1p7b.yaml --preflight-only
+```
+
+只有四项全部通过后，才重新评估是否允许运行真实 G1。

@@ -1,6 +1,7 @@
 """Agent-R1 plugin integration exercised with deterministic mock actions."""
 
 import asyncio
+import json
 from datetime import date, datetime, timezone
 from pathlib import Path
 
@@ -12,7 +13,7 @@ from agent_r1.env.base import Action
 import src.env.trading as trading_module
 from src.data import MarketObservation, StockBenchAdapter, audit_raw_daily_manifest
 from src.data.stockbench import dataframe_content_sha256
-from src.env.trading import TradingEnv, _cached_storage_adapter
+from src.env.trading import RetrieveArgs, TradingEnv, _cached_storage_adapter
 
 UTC = timezone.utc
 
@@ -211,18 +212,23 @@ def test_mock_agent_runs_multiple_episodes_with_next_open_fills_and_safe_errors(
     async def first_episode() -> None:
         initial = env.reset()
         assert "2025-01-02" in initial.messages[-1]["content"]
+        assert len(initial.messages) == 2
+        assert "observation_id" not in initial.messages[-1]["content"]
 
         retrieved, _, done, _ = await env.step(
-            _call("retrieve", '{"query":"future surprise","limit":10}')
+            _call("retrieve", '{"query":"future surprise","limit":3}')
         )
         assert not done
-        assert "future surprise" not in retrieved.messages[-1]["content"]
+        assert '"returned":0' in retrieved.messages[-1]["content"]
+        assert '"kind":"fundamental"' not in retrieved.messages[-1]["content"]
+        assert len(retrieved.messages) == 2
 
         _, _, done, info = await env.step(_call("buy", '{"symbol":"AAA","target_weight":0.5}'))
         assert not done
         assert info["fills"][0]["raw_open_price"] == 110.0
         assert info["fills"][0]["executed_at"] == open_times[1]
         assert env.ledger.positions["AAA"] > 0.0
+        assert len(env._messages) == 2
 
         before_error_date = env.current_date
         error_observation, reward, done, info = await env.step(
@@ -233,6 +239,7 @@ def test_mock_agent_runs_multiple_episodes_with_next_open_fills_and_safe_errors(
         assert info["invalid_action"] is True
         assert env.current_date == before_error_date
         assert "Error:" in error_observation.messages[-1]["content"]
+        assert len(error_observation.messages) == 2
 
         _, _, done, _ = await env.step(_call("hold"))
         assert done
@@ -246,6 +253,78 @@ def test_mock_agent_runs_multiple_episodes_with_next_open_fills_and_safe_errors(
 
     asyncio.run(first_episode())
     asyncio.run(second_episode())
+
+
+def test_g1_history_and_retrieve_output_stay_bounded_across_eight_advances() -> None:
+    session_days = (2, 3, 6, 7, 8, 10, 13, 14, 15)
+    dates = [datetime(2025, 1, day, 21, 0, tzinfo=UTC) for day in session_days]
+    opens = [datetime(2025, 1, day, 14, 30, tzinfo=UTC) for day in session_days]
+    oversized = MarketObservation(
+        observation_id="oversized-technical",
+        kind="technical",
+        symbol="AAA",
+        event_at=dates[0],
+        available_at=dates[0],
+        payload={"text": "oversized " + "x" * 20_000, "nested": {"secret": "y" * 20_000}},
+    )
+    env = TradingEnv(
+        adapter=StockBenchAdapter(
+            [
+                *[
+                    _bar(day, open_price=100.0 + index, close_price=101.0 + index)
+                    for index, day in enumerate(session_days)
+                ],
+                oversized,
+            ],
+            data_version="bounded-context-fixture",
+        ),
+        episode_dates=dates,
+        episode_open_times=opens,
+        symbols=["AAA"],
+        initial_cash=1000.0,
+        commission_bps=0.0,
+        slippage_bps=0.0,
+        drawdown_coefficient=0.0,
+        turnover_coefficient=0.0,
+        benchmark_closes=[100.0] * len(dates),
+    )
+
+    async def episode() -> None:
+        observation = env.reset()
+        assert len(observation.messages) == 2
+        for index in range(8):
+            retrieved, _, done, _ = await env.step(
+                _call(
+                    "retrieve",
+                    json.dumps(
+                        {
+                            "query": "oversized",
+                            "limit": TradingEnv.MAX_RETRIEVE_RESULTS,
+                        }
+                    ),
+                )
+            )
+            assert not done
+            assert len(retrieved.messages) == 2
+            assert "x" * 1000 not in retrieved.messages[-1]["content"]
+
+            observation, _, done, _ = await env.step(_call("hold"))
+            assert done is (index == 7)
+            assert len(observation.messages) == 2
+            assert "observation_id" not in observation.messages[-1]["content"]
+
+        payload = env._retrieve(
+            RetrieveArgs(query="oversized", limit=TradingEnv.MAX_RETRIEVE_RESULTS)
+        )
+        encoded = json.dumps(
+            payload,
+            ensure_ascii=True,
+            separators=(",", ":"),
+            sort_keys=True,
+        ).encode("ascii")
+        assert len(encoded) <= TradingEnv.MAX_RETRIEVE_BYTES
+
+    asyncio.run(episode())
 
 
 def test_finance_trajectory_mode_emits_a_fin_only_on_the_final_step() -> None:

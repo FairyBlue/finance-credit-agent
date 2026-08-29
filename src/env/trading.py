@@ -18,6 +18,7 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from src.data import (
     AvailabilityPolicy,
+    MarketObservation,
     ObservationSnapshot,
     StockBenchAdapter,
     validate_episode_session_boundaries,
@@ -38,9 +39,9 @@ class TradingDataIntegrityError(RuntimeError):
 
 
 class RetrieveArgs(_StrictArgs):
-    query: str = Field(min_length=1)
+    query: str = Field(min_length=1, max_length=200)
     symbol: str | None = None
-    limit: int = Field(default=10, ge=1, le=50)
+    limit: int = Field(default=3, ge=1, le=3)
 
 
 class ComputeArgs(_StrictArgs):
@@ -144,6 +145,13 @@ class TradingEnv(ToolEnv):
     """
 
     TOOL_NAMES = ("retrieve", "compute", "buy", "sell", "hold", "abstain")
+    MAX_RETRIEVE_RESULTS = 3
+    MAX_RETRIEVE_BYTES = 1024
+    MAX_RETRIEVE_FIELDS = 8
+    MAX_RETRIEVE_TEXT_CHARS = 160
+    MAX_RECENT_EVENTS = 3
+    MAX_ERROR_CHARS = 240
+    MARKET_STATE_FIELDS = ("open", "high", "low", "close", "volume")
 
     def __init__(
         self,
@@ -307,6 +315,8 @@ class TradingEnv(ToolEnv):
         self._net_returns: list[float] = []
         self._turnovers: list[float] = []
         self._maximum_position_weight = 0.0
+        self._prompt_prefix: list[dict[str, Any]] = []
+        self._recent_events: list[dict[str, object]] = []
 
     @staticmethod
     def _coefficient(value: float, *, name: str) -> float:
@@ -334,6 +344,7 @@ class TradingEnv(ToolEnv):
         self._net_returns = []
         self._turnovers = []
         self._maximum_position_weight = 0.0
+        self._recent_events = []
         raw_prompt = list(kwargs.get("raw_prompt", self._base_raw_prompt))
         if not raw_prompt:
             raw_prompt = [
@@ -346,8 +357,8 @@ class TradingEnv(ToolEnv):
                 }
             ]
         super().reset(raw_prompt=raw_prompt)
-        self._messages.append({"role": "user", "content": self._state_text()})
-        return Observation(messages=list(self._messages))
+        self._prompt_prefix = [dict(message) for message in self._messages]
+        return self._observation(self._state_text(), tool_response=False)
 
     async def step(self, action: Action) -> tuple[Observation, float, bool, dict[str, Any]]:
         if self._done:
@@ -355,7 +366,6 @@ class TradingEnv(ToolEnv):
         if not isinstance(action, Action) or action.text is None:
             return self._invalid("expected Agent-R1 Action with text")
 
-        self._messages.append({"role": "assistant", "content": action.text})
         try:
             _, calls = self.format_wrapper.parse_response(action.text)
             if len(calls) != 1:
@@ -373,40 +383,134 @@ class TradingEnv(ToolEnv):
 
             if call.name == "retrieve":
                 result = self._retrieve(validated)
-                return self._success(result, info={"tool": "retrieve"})
+                self._remember_event(call.name, normalized_args)
+                return self._success(
+                    self._state_text(extra={"last_tool_result": result}),
+                    info={"result_count": result["returned"], "tool": "retrieve"},
+                )
             if call.name == "compute":
                 result = self._compute(validated)
-                return self._success(result, info={"tool": "compute"})
+                self._remember_event(call.name, normalized_args)
+                return self._success(
+                    self._state_text(extra={"last_tool_result": result}),
+                    info={"tool": "compute"},
+                )
             if call.name in {"buy", "sell"}:
                 assert isinstance(validated, TargetArgs)
                 self._queue_directional_target(call.name, validated)
+                self._remember_event(call.name, normalized_args)
                 return self._advance(call.name)
             if call.name == "abstain":
                 self._abstentions += 1
+                self._remember_event(call.name, normalized_args)
                 return self._advance("abstain")
+            self._remember_event(call.name, normalized_args)
             return self._advance("hold")
         except (KeyError, TypeError, ValidationError, ValueError) as error:
             return self._invalid(str(error))
 
-    def _retrieve(self, args: _StrictArgs) -> str:
+    def _retrieve(self, args: _StrictArgs) -> dict[str, object]:
         assert isinstance(args, RetrieveArgs)
         query = args.query.casefold()
         symbol = args.symbol.strip().upper() if args.symbol else None
         matches: list[dict[str, object]] = []
+        truncated = False
         for observation in self._snapshot():
             record = observation.canonical_record()
             if symbol is not None and observation.symbol != symbol:
                 continue
             if query not in json.dumps(record, ensure_ascii=False, sort_keys=True).casefold():
                 continue
-            matches.append(record)
             if len(matches) >= args.limit:
+                truncated = True
                 break
-        return json.dumps(
-            {"as_of": self.current_date.isoformat(), "results": matches}, sort_keys=True
+            compact = self._compact_retrieval_record(observation)
+            candidate = {
+                "as_of": self.current_date.isoformat(),
+                "results": [*matches, compact],
+                "returned": len(matches) + 1,
+                "truncated": False,
+            }
+            if self._json_size(candidate) > self.MAX_RETRIEVE_BYTES:
+                truncated = True
+                break
+            matches.append(compact)
+        result: dict[str, object] = {
+            "as_of": self.current_date.isoformat(),
+            "results": matches,
+            "returned": len(matches),
+            "truncated": truncated,
+        }
+        if self._json_size(result) > self.MAX_RETRIEVE_BYTES:
+            raise RuntimeError("bounded retrieve result exceeds its byte contract")
+        return result
+
+    @staticmethod
+    def _json_size(value: object) -> int:
+        return len(
+            json.dumps(
+                value,
+                allow_nan=False,
+                ensure_ascii=True,
+                separators=(",", ":"),
+                sort_keys=True,
+            ).encode("ascii")
         )
 
-    def _compute(self, args: _StrictArgs) -> str:
+    def _compact_retrieval_record(self, observation: MarketObservation) -> dict[str, object]:
+        keys: tuple[str, ...]
+        if observation.kind == "market":
+            keys = self.MARKET_STATE_FIELDS
+        else:
+            keys = tuple(sorted(observation.payload))[: self.MAX_RETRIEVE_FIELDS]
+        fields: dict[str, object] = {}
+        for key in keys:
+            if key not in observation.payload:
+                continue
+            value = observation.payload[key]
+            if isinstance(value, str):
+                suffix = "..." if len(value) > self.MAX_RETRIEVE_TEXT_CHARS else ""
+                fields[key] = value[: self.MAX_RETRIEVE_TEXT_CHARS] + suffix
+            elif value is None or isinstance(value, (bool, int)):
+                fields[key] = value
+            elif isinstance(value, float) and math.isfinite(value):
+                fields[key] = round(value, 8)
+        return {
+            "available_at": observation.available_at.isoformat(),
+            "fields": fields,
+            "kind": observation.kind,
+            "symbol": observation.symbol,
+        }
+
+    def _remember_event(self, tool: str, arguments: Mapping[str, object]) -> None:
+        compact_arguments: dict[str, object] = {}
+        for key in (
+            "error",
+            "limit",
+            "lookback",
+            "metric",
+            "query",
+            "reason",
+            "symbol",
+            "target_weight",
+        ):
+            if key not in arguments:
+                continue
+            value = arguments.get(key)
+            if isinstance(value, str):
+                compact_arguments[key] = value[:80]
+            elif value is None or isinstance(value, (bool, int, float)):
+                compact_arguments[key] = value
+        self._recent_events.append(
+            {
+                "arguments": compact_arguments,
+                "session_index": self._index,
+                "tool": tool,
+            }
+        )
+        self._recent_events = self._recent_events[-self.MAX_RECENT_EVENTS :]
+
+    def _compute(self, args: _StrictArgs) -> dict[str, object]:
         assert isinstance(args, ComputeArgs)
         symbol = args.symbol.strip().upper()
         closes = [
@@ -425,16 +529,13 @@ class TradingEnv(ToolEnv):
             "mean_return": float(returns.mean()),
             "volatility": float(returns.std(ddof=0)),
         }
-        return json.dumps(
-            {
-                "as_of": self.current_date.isoformat(),
-                "lookback_used": len(closes),
-                "metric": args.metric,
-                "symbol": symbol,
-                "value": values[args.metric],
-            },
-            sort_keys=True,
-        )
+        return {
+            "as_of": self.current_date.isoformat(),
+            "lookback_used": len(closes),
+            "metric": args.metric,
+            "symbol": symbol,
+            "value": values[args.metric],
+        }
 
     def _queue_directional_target(self, action_name: str, args: TargetArgs) -> None:
         symbol = args.symbol.strip().upper()
@@ -596,18 +697,63 @@ class TradingEnv(ToolEnv):
     def _state_text(self, *, extra: Mapping[str, object] | None = None) -> str:
         snapshot = self._snapshot()
         closes = self._latest_market_prices(snapshot, field="close")
-        recent_records = [observation.canonical_record() for observation in snapshot[-20:]]
+        equity = self.ledger.equity(closes)
+        expected_date = self.current_date.date().isoformat()
+        market: dict[str, dict[str, object]] = {}
+        for observation in snapshot:
+            if (
+                observation.kind != "market"
+                or observation.symbol not in self._symbols
+                or observation.payload.get("date") != expected_date
+            ):
+                continue
+            if observation.symbol in market:
+                raise TradingDataIntegrityError(
+                    f"duplicate current-session state for {observation.symbol} on {expected_date}"
+                )
+            fields: dict[str, object] = {}
+            for key in self.MARKET_STATE_FIELDS:
+                value = observation.payload.get(key)
+                if isinstance(value, (int, float)) and not isinstance(value, bool):
+                    number = float(value)
+                    if math.isfinite(number):
+                        fields[key] = round(number, 8)
+            market[observation.symbol] = fields
+        positions = {
+            symbol: {
+                "shares": round(float(shares), 8),
+                "weight": round(float(shares) * closes[symbol] / equity, 8),
+            }
+            for symbol, shares in sorted(self.ledger.positions.items())
+            if abs(shares) > 1e-12
+        }
         state: dict[str, object] = {
-            "available_tools": list(self.TOOL_NAMES),
-            "cash": self.ledger.cash,
+            "cash": round(self.ledger.cash, 8),
             "current_date": self.current_date.isoformat(),
-            "market_information": recent_records,
-            "portfolio_equity": self.ledger.equity(closes),
-            "positions": dict(self.ledger.positions),
+            "market": market,
+            "portfolio_equity": round(equity, 8),
+            "positions": positions,
+            "recent_events": list(self._recent_events),
+            "session_index": self._index,
+            "sessions_remaining": len(self._dates) - self._index - 1,
         }
         if extra:
             state.update(extra)
-        return json.dumps(state, ensure_ascii=False, sort_keys=True)
+        return json.dumps(
+            state,
+            allow_nan=False,
+            ensure_ascii=True,
+            separators=(",", ":"),
+            sort_keys=True,
+        )
+
+    def _observation(self, text: str, *, tool_response: bool = True) -> Observation:
+        content = self.format_wrapper.format_observation(text) if tool_response else text
+        self._messages = [
+            *[dict(message) for message in self._prompt_prefix],
+            {"role": "user", "content": content},
+        ]
+        return Observation(messages=list(self._messages))
 
     def _success(
         self,
@@ -617,22 +763,20 @@ class TradingEnv(ToolEnv):
         done: bool = False,
         info: dict[str, Any] | None = None,
     ) -> tuple[Observation, float, bool, dict[str, Any]]:
-        self._messages.append(
-            {"role": "user", "content": self.format_wrapper.format_observation(text)}
-        )
-        return Observation(messages=list(self._messages)), float(reward), done, dict(info or {})
+        observation = self._observation(text)
+        return observation, float(reward), done, dict(info or {})
 
     def _invalid(
         self, message: str, *, terminal: bool = False
     ) -> tuple[Observation, float, bool, dict[str, Any]]:
         self._invalid_calls += 1
-        error = f"Error: {message}"
-        self._messages.append(
-            {"role": "user", "content": self.format_wrapper.format_observation(error)}
-        )
+        safe_message = message[: self.MAX_ERROR_CHARS]
+        error = f"Error: {safe_message}"
+        self._remember_event("invalid", {"error": safe_message})
+        observation = self._observation(self._state_text(extra={"error": error}))
         return (
-            Observation(messages=list(self._messages)),
+            observation,
             0.0,
             terminal,
-            {"error": message, "invalid_action": True},
+            {"error": safe_message, "invalid_action": True},
         )

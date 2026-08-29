@@ -26,9 +26,18 @@ class RetrieveTool(_IntentTool):
     parameters = {
         "type": "object",
         "properties": {
-            "query": {"type": "string", "description": "Case-insensitive text query."},
+            "query": {
+                "type": "string",
+                "description": "Case-insensitive text query (1-200 characters).",
+                "maxLength": 200,
+            },
             "symbol": {"type": "string", "description": "Optional ticker filter."},
-            "limit": {"type": "integer", "description": "Maximum results (1-50)."},
+            "limit": {
+                "type": "integer",
+                "description": "Maximum compact results (1-3).",
+                "minimum": 1,
+                "maximum": 3,
+            },
         },
         "required": ["query"],
     }

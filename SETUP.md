@@ -178,6 +178,10 @@ ignored.
 # CPU-safe command/config/hash validation.
 uv run --no-sync python -m src.agents.arm_a1 --config configs/smoke_1p7b.yaml --dry-run
 
+# H100 real-tokenizer prompt budget: no model inference or training.
+CUDA_VISIBLE_DEVICES=0 uv run --no-sync python scripts/verify_context_budget.py \
+  --config configs/smoke_1p7b.yaml
+
 # H100 preflight only: no training and no Final OOS access.
 CUDA_VISIBLE_DEVICES=0 uv run --no-sync python -m src.agents.arm_a1 \
   --config configs/smoke_1p7b.yaml --preflight-only
@@ -192,6 +196,8 @@ print("TradingEnv plugin registered")
 PY
 
 # One-GPU Qwen3-1.7B outcome-only smoke with structured local evidence.
+# Do not run until the exact P0 validation commit passes stack, tests,
+# CONTEXT_BUDGET_PASSED, and PREFLIGHT_PASSED on H100.
 CUDA_VISIBLE_DEVICES=0 scripts/run_queue.sh configs/smoke_1p7b.yaml
 ```
 

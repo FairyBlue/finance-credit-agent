@@ -1,10 +1,10 @@
 # Finance Credit Agent：实验接手与运行手册
 
-更新日期：`2026-08-28`
+更新日期：`2026-08-29`
 
 这是一份面向新合作者的单一入口文档。即使没有读过历史对话，只要拥有本仓库、冻结历史数据和
-一台 Linux x86_64 H100，就应当能够通过本文理解研究动机、判断当前进度、知道 G1 为什么仍被
-阻断，并知道哪些修复和正式实验现在允许或禁止运行。
+一台 Linux x86_64 H100，就应当能够通过本文理解研究动机、判断当前进度、知道 G1 为什么尚未
+获准点火，并知道哪些验证和正式实验现在允许或禁止运行。
 
 仓库代码、配置、Git 状态和实际运行结果高于本文。如果出现冲突，立即停止实验，按第 16 节处理，
 不要自行放宽门禁。
@@ -13,13 +13,14 @@
 
 当前结论只有五条：
 
-1. 本地实验脚手架和协议门禁已经完成，状态为 `G0 PASSED`。
+1. 本地实验脚手架和协议门禁已经完成，状态为 `G0 PASSED`；当前本机为 138 tests passed。
 2. 验证提交 `8a090b8` 已在 H100 NVL 上通过 frozen stack、真实 FlashAttention kernel、136 tests
    和完整 preflight；本轮复用了 pinned `.venv`，没有证明从空 `.venv` clean-clone 安装通过。
-3. G1 目前仍是 `BLOCKED`：真实训练没有启动。首个 generation prompt 为 5,141 tokens，超过
-   配置上限 4,096；当前对话历史还会持续膨胀，必须先修 prompt-budget P0。
-4. 下一项开发任务是状态压缩、有界历史、retrieve 上限和 tokenizer-level context-budget 门禁，
-   然后冻结新的 validation commit 并重新验收；不得直接提高一个长度字段后点火。
+3. 首轮 H100 审计发现的 prompt-budget P0 已在当前本地工作树完成代码修复：状态改为紧凑表示，
+   历史改为滚动窗口，retrieve 限制为最多 3 条且总输出不超过 1 KiB，并把真实 tokenizer 预算
+   检查接入 smoke preflight。该修复尚未冻结为 validation commit，也尚未在 H100 实测。
+4. 下一项任务是冻结新的 validation commit，在 H100 依次重跑 stack、138 tests、独立
+   context-budget 检查和完整 preflight；这些门禁通过前仍不得点火 G1。
 5. 正式训练继续由 T2 v2 阻断；不要运行无参数的 A1/A2/A3 队列，也不要读取 StockBench Final
    OOS 来调试 smoke。
 
@@ -30,10 +31,9 @@
 
 ```text
 读取 H100 实机审计
-  → 修复 prompt-budget P0 和同批 P1 门禁
-  → 增加 tokenizer-level context-budget 验收
-  → 冻结新的 validation commit
+  → checkout 新的 P0 validation commit
   → 在 H100 重新核对 stack、tests、数据与模型身份
+  → 运行真实 tokenizer context-budget 验收
   → 重新运行 --preflight-only
   → 全部通过后才运行唯一一次批准的 G1 smoke
   → 检查真实 backward、trainer step 和 optimizer-update 证据
@@ -84,8 +84,9 @@ G1 smoke 只证明训练链路接通：数据能加载、环境能推进、模�
 
 | 项目 | 状态 | 证据或说明 |
 |---|---|---|
-| G0 协议与本地脚手架 | `PASSED` | 136 tests、Ruff、mypy、lock 与 whitespace checks 通过 |
-| G1 A1/Qwen3-1.7B smoke | `BLOCKED` | H100 preflight 已通过；5,141-token 首轮 prompt 超过 4,096 上限，真实 smoke 未运行 |
+| G0 协议与本地脚手架 | `PASSED` | 138 tests、Ruff、mypy、lock 与 whitespace checks 通过 |
+| Prompt-budget P0 修复 | `LOCAL PASS / H100 UNVERIFIED` | 紧凑状态、滚动历史、有界 retrieve、真实 tokenizer preflight 门禁已实现；待冻结 commit 和 H100 实测 |
+| G1 A1/Qwen3-1.7B smoke | `BLOCKED` | 旧 H100 preflight 已通过；P0 修复后的 context-budget/preflight 尚未在 H100 通过，真实 smoke 未运行 |
 | T1 未来价格扰动 | 已实现 | 历史读取与数值特征保持不变 |
 | T2 v2 train/valid 探针 | `BLOCKED` | 已预注册，未实现；禁止回退旧 StockBench 探针 |
 | T3 train-only 标准化 | 已实现 | 全样本 fit 会失败 |
@@ -202,7 +203,7 @@ uv lock --check
 git diff --check
 ```
 
-最后应看到 136 个 pytest 用例通过，其他检查均为成功。若最新 `main` 合理增加或合并了测试，数量
+最后应看到 138 个 pytest 用例通过，其他检查均为成功。若最新 `main` 合理增加或合并了测试，数量
 可能变化；此时以该提交的 CI/文档为准，不要仅为了恢复旧数字而修改测试。
 
 ## 7. 获取冻结 history 数据
@@ -375,7 +376,17 @@ offline，并让 preflight 校验实际身份。`run.seed` 控制主要数据、
 ## 10. 先 dry-run，再运行 H100 preflight
 
 `8a090b8` 已在真实 H100 上完成一次完整 preflight，并输出本节三行结果；它没有启动训练，也不
-等于 G1 passed。prompt-budget P0 修复后，必须在新的 validation commit 上重新执行本节。
+等于 G1 passed。prompt-budget P0 修复后，必须在新的 validation commit 上先运行独立预算检查：
+
+```bash
+CUDA_VISIBLE_DEVICES=0 uv run --no-sync python scripts/verify_context_budget.py \
+  --config configs/smoke_1p7b.yaml
+```
+
+只有输出 `"status": "CONTEXT_BUDGET_PASSED"`，并记录 `max_prompt_tokens`、
+`model_context_tokens`、`prompt_limit`、`response_limit` 和实际 tokenizer class，才继续完整
+preflight。该脚本使用缓存的 Qwen snapshot、真实 chat template、六个 tool schema 和全部 4 个
+train candidate 的完整 8-advance 路径，不启动模型推理或训练。
 
 CPU-safe dry-run 只检查配置合并、命令构造和 Git/submodule/data version 身份：
 
@@ -400,7 +411,8 @@ CUDA_VISIBLE_DEVICES=0 uv run --no-sync python -m src.agents.arm_a1 \
 ```
 
 它会检查配置与唯一 smoke 豁免、Git/submodule、reward freeze、GPU/CUDA、模型缓存、history 原始
-manifest、reviewed manifest、benchmark 重算、三个 processed 文件及 Final OOS 隔离。
+manifest、reviewed manifest、benchmark 重算、三个 processed 文件、Final OOS 隔离，并再次执行
+上述真实 tokenizer prompt-budget 门禁。
 
 只有同时看到以下三行才算通过：
 
@@ -414,8 +426,8 @@ Final OOS not accessed.
 
 ## 11. 运行唯一批准的 G1 smoke
 
-**当前禁止执行本节命令。** 首轮 prompt 已确定超过配置上限；必须先按实机审计修复 P0、冻结
-新 commit，并重新通过 stack、tests、数据身份、模型身份、context-budget 和 preflight 门禁。
+**当前禁止执行本节命令。** P0 代码修复只在当前本机通过；必须先冻结新 commit，并在 H100
+重新通过 stack、tests、数据身份、模型身份、context-budget 和 preflight 门禁。
 以下命令只保留为门禁全部恢复后的执行入口。
 
 推荐直接运行：
@@ -546,8 +558,9 @@ W&B、API key、云端 logger、数字签名或加密签字流程都不需要。
 
 ## 15. G1 之后该做什么
 
-当前尚未进入“G1 之后”。首先按实机审计顺序修复 prompt-budget P0，并同批处理 exact-sync、模型
-identity/offline、episode-count 绑定和 context-budget 证据；冻结新 commit 后重新验收。
+当前尚未进入“G1 之后”。prompt-budget P0 已在本地完成，当前唯一下一步是冻结新 validation
+commit，并在 H100 重跑 stack、tests、context-budget 和 preflight。P1 项仍保留为后续门禁工作，
+不能把本轮 P0 修复写成 P1 已完成。
 
 G1 通过后：
 
@@ -597,6 +610,7 @@ Final OOS 只在最终科学评测时开启。
 | `scripts/freeze_benchmarks.py` | 用共享账务引擎生成 benchmark NAV |
 | `scripts/prepare_episodes.py` | 生成 Agent-R1 processed Parquet |
 | `scripts/verify_h100_stack.py` | 验证版本、CUDA 与真实 FlashAttention kernel |
+| `scripts/verify_context_budget.py` | 用缓存模型的真实 tokenizer 验证完整 G1 提示词预算，不启动训练 |
 | `src/data/episodes.py` | sampling、manifest 和 Final OOS 隔离 |
 | `src/agents/launcher.py` | preflight、门禁与真实启动 |
 | `src/agents/local_runs.py` | `runs/<run_id>/` 结构化记录 |
@@ -613,5 +627,6 @@ Final OOS 只在最终科学评测时开启。
 - 合作者无需依赖历史聊天、W&B、个人电脑路径或数字签名流程；
 - 合作者能够独立判断当前为何阻塞、下一步做什么、何时必须停止，以及什么证据才算实验通过。
 
-当前 readiness：`PARTIALLY_READY`。代码与 G0 已就绪，H100 stack 和 preflight 已通过；
-clean-clone 重装未验证，真实 G1 未启动，并被 prompt-budget P0 阻断。
+当前 readiness：`PARTIALLY_READY`。代码与 G0 已就绪，P0 修复在本机通过；旧 validation commit
+的 H100 stack 和 preflight 已通过，但新修复尚未冻结或在 H100 复验，clean-clone 重装未验证，
+真实 G1 未启动。
