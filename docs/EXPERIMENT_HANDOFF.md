@@ -16,10 +16,10 @@
 1. 本地实验脚手架和协议门禁已经完成，状态为 `G0 PASSED`；当前本机为 138 tests passed。
 2. 验证提交 `8a090b8` 已在 H100 NVL 上通过 frozen stack、真实 FlashAttention kernel、136 tests
    和完整 preflight；本轮复用了 pinned `.venv`，没有证明从空 `.venv` clean-clone 安装通过。
-3. 首轮 H100 审计发现的 prompt-budget P0 已在当前本地工作树完成代码修复：状态改为紧凑表示，
-   历史改为滚动窗口，retrieve 限制为最多 3 条且总输出不超过 1 KiB，并把真实 tokenizer 预算
-   检查接入 smoke preflight。该修复尚未冻结为 validation commit，也尚未在 H100 实测。
-4. 下一项任务是冻结新的 validation commit，在 H100 依次重跑 stack、138 tests、独立
+3. `9b72dca` 修复了旧 5,141-token 膨胀路径，但随后发现原 tokenizer gate 漏掉合法的三次
+   Unicode retrieve 路径；该路径实测为 4,548 tokens，因此 P0 已重新打开。当前工作树已增加
+   Unicode-safe 状态摘要和该极限路径门禁，但尚未在 H100 复验，不能宣称 P0 closed。
+4. 下一项任务是冻结包含第二轮修复的新 validation commit，在 H100 依次重跑 stack、138 tests、独立
    context-budget 检查和完整 preflight；这些门禁通过前仍不得点火 G1。
 5. 正式训练继续由 T2 v2 阻断；不要运行无参数的 A1/A2/A3 队列，也不要读取 StockBench Final
    OOS 来调试 smoke。
@@ -80,13 +80,13 @@ G1 smoke 只证明训练链路接通：数据能加载、环境能推进、模�
 
 ## 3. 当前进度与真实阻塞
 
-状态截至 `2026-08-27`：
+状态截至 `2026-08-29`：
 
 | 项目 | 状态 | 证据或说明 |
 |---|---|---|
 | G0 协议与本地脚手架 | `PASSED` | 138 tests、Ruff、mypy、lock 与 whitespace checks 通过 |
-| Prompt-budget P0 修复 | `LOCAL PASS / H100 UNVERIFIED` | 紧凑状态、滚动历史、有界 retrieve、真实 tokenizer preflight 门禁已实现；待冻结 commit 和 H100 实测 |
-| G1 A1/Qwen3-1.7B smoke | `BLOCKED` | 旧 H100 preflight 已通过；P0 修复后的 context-budget/preflight 尚未在 H100 通过，真实 smoke 未运行 |
+| Prompt-budget P0 修复 | `REOPENED / LOCAL PATCH` | `9b72dca` 漏测的三次 Unicode retrieve 路径为 4,548 tokens；第二轮修复与扩充门禁仅在本机通过 |
+| G1 A1/Qwen3-1.7B smoke | `BLOCKED` | Unicode 极限路径修复后的 context-budget/preflight 尚未在 H100 通过，真实 smoke 未运行 |
 | T1 未来价格扰动 | 已实现 | 历史读取与数值特征保持不变 |
 | T2 v2 train/valid 探针 | `BLOCKED` | 已预注册，未实现；禁止回退旧 StockBench 探针 |
 | T3 train-only 标准化 | 已实现 | 全样本 fit 会失败 |
@@ -386,7 +386,13 @@ CUDA_VISIBLE_DEVICES=0 uv run --no-sync python scripts/verify_context_budget.py 
 只有输出 `"status": "CONTEXT_BUDGET_PASSED"`，并记录 `max_prompt_tokens`、
 `model_context_tokens`、`prompt_limit`、`response_limit` 和实际 tokenizer class，才继续完整
 preflight。该脚本使用缓存的 Qwen snapshot、真实 chat template、六个 tool schema 和全部 4 个
-train candidate 的完整 8-advance 路径，不启动模型推理或训练。
+train candidate 的完整 8-advance 路径，不启动模型推理或训练。门禁必须同时覆盖：
+
+- 每个 session 两次 ASCII retrieve 的计划路径；
+- 每个 session 三次、每次 200 个 Unicode 字符的合法 32-step 极限路径。
+
+输出的 `scenarios_checked` 必须同时包含 `planned-ascii` 和 `legal-unicode-max`。只测前者不能关闭
+P0。
 
 CPU-safe dry-run 只检查配置合并、命令构造和 Git/submodule/data version 身份：
 
@@ -426,7 +432,7 @@ Final OOS not accessed.
 
 ## 11. 运行唯一批准的 G1 smoke
 
-**当前禁止执行本节命令。** P0 代码修复只在当前本机通过；必须先冻结新 commit，并在 H100
+**当前禁止执行本节命令。** 第二轮 P0 代码修复只在当前本机通过；必须先冻结新 commit，并在 H100
 重新通过 stack、tests、数据身份、模型身份、context-budget 和 preflight 门禁。
 以下命令只保留为门禁全部恢复后的执行入口。
 
@@ -558,9 +564,9 @@ W&B、API key、云端 logger、数字签名或加密签字流程都不需要。
 
 ## 15. G1 之后该做什么
 
-当前尚未进入“G1 之后”。prompt-budget P0 已在本地完成，当前唯一下一步是冻结新 validation
-commit，并在 H100 重跑 stack、tests、context-budget 和 preflight。P1 项仍保留为后续门禁工作，
-不能把本轮 P0 修复写成 P1 已完成。
+当前尚未进入“G1 之后”。P0 因 4,548-token Unicode 路径重新打开；第二轮修复已在本机通过，
+当前唯一下一步是冻结新 validation commit，并在 H100 重跑 stack、tests、两类 context-budget
+场景和 preflight。P1 项仍保留为后续门禁工作，不能把本轮 P0 修复写成 P1 已完成。
 
 G1 通过后：
 
@@ -627,6 +633,6 @@ Final OOS 只在最终科学评测时开启。
 - 合作者无需依赖历史聊天、W&B、个人电脑路径或数字签名流程；
 - 合作者能够独立判断当前为何阻塞、下一步做什么、何时必须停止，以及什么证据才算实验通过。
 
-当前 readiness：`PARTIALLY_READY`。代码与 G0 已就绪，P0 修复在本机通过；旧 validation commit
-的 H100 stack 和 preflight 已通过，但新修复尚未冻结或在 H100 复验，clean-clone 重装未验证，
+当前 readiness：`PARTIALLY_READY`。代码与 G0 已就绪，但 `9b72dca` 的 P0 关闭结论已被
+4,548-token Unicode 路径推翻；第二轮本地修复尚未冻结或在 H100 复验，clean-clone 重装未验证，
 真实 G1 未启动。

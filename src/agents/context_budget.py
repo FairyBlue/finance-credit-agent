@@ -34,6 +34,14 @@ class PromptBudgetCase:
 
 
 @dataclass(frozen=True)
+class PromptBudgetScenario:
+    """A legal retrieve pattern that the tokenizer gate must cover."""
+
+    label: str
+    retrieve_queries: tuple[str, ...]
+
+
+@dataclass(frozen=True)
 class PromptBudgetAudit:
     """Serializable evidence that every audited prompt fits both limits."""
 
@@ -96,6 +104,41 @@ def verify_tokenized_prompt_budget(
     )
 
 
+def build_prompt_budget_scenarios(
+    *,
+    advancing_actions: int,
+    max_query_chars: int,
+    max_agent_steps: int,
+    reserved_information_steps: int,
+) -> tuple[PromptBudgetScenario, ...]:
+    """Cover both the planned path and the legal three-retrieve Unicode boundary."""
+
+    if (
+        advancing_actions <= 0
+        or max_query_chars <= 0
+        or max_agent_steps <= 0
+        or reserved_information_steps < 0
+    ):
+        raise ValueError("prompt-budget scenario limits are invalid")
+    max_uniform_retrieves = max_agent_steps // advancing_actions - 1
+    if max_uniform_retrieves < reserved_information_steps:
+        raise RuntimeError("planned information steps exceed max_agent_steps")
+    unicode_retrieves = min(3, max_uniform_retrieves)
+    if unicode_retrieves < 3:
+        raise RuntimeError("G1 no longer permits the required three-retrieve budget path")
+    unicode_query = "💹" * max_query_chars
+    return (
+        PromptBudgetScenario(
+            label="planned-ascii",
+            retrieve_queries=("market",) * reserved_information_steps,
+        ),
+        PromptBudgetScenario(
+            label="legal-unicode-max",
+            retrieve_queries=(unicode_query,) * unicode_retrieves,
+        ),
+    )
+
+
 def _required(config: dict[str, Any], *path: str) -> Any:
     value: Any = config
     for key in path:
@@ -143,7 +186,7 @@ async def _collect_episode_cases(
     raw_prompt: list[dict[str, Any]],
     env_kwargs: dict[str, Any],
     reward_mode: str,
-    information_steps: int,
+    scenario: PromptBudgetScenario,
 ) -> list[PromptBudgetCase]:
     from agent_r1.env.base import Action
 
@@ -155,7 +198,7 @@ async def _collect_episode_cases(
         raise RuntimeError(f"{label} reset did not produce chat messages")
     cases = [
         PromptBudgetCase(
-            label=f"{label}/reset",
+            label=f"{label}/{scenario.label}/reset",
             messages=observation.messages,
             tools=env.tool_schemas,
         )
@@ -165,14 +208,14 @@ async def _collect_episode_cases(
     if advancing_actions < 1:
         raise RuntimeError(f"{label} has no advancing actions")
     for session_index in range(advancing_actions):
-        for retrieval_index in range(information_steps):
+        for retrieval_index, query in enumerate(scenario.retrieve_queries):
             observation, _, done, _ = await env.step(
                 Action(
                     text=_tool_action(
                         "retrieve",
                         {
                             "limit": TradingEnv.MAX_RETRIEVE_RESULTS,
-                            "query": "market",
+                            "query": query,
                         },
                     )
                 )
@@ -181,7 +224,10 @@ async def _collect_episode_cases(
                 raise RuntimeError(f"{label} terminated during bounded retrieval audit")
             cases.append(
                 PromptBudgetCase(
-                    label=f"{label}/session-{session_index}/retrieve-{retrieval_index}",
+                    label=(
+                        f"{label}/{scenario.label}/session-{session_index}/"
+                        f"retrieve-{retrieval_index}"
+                    ),
                     messages=observation.messages,
                     tools=env.tool_schemas,
                 )
@@ -193,7 +239,7 @@ async def _collect_episode_cases(
             raise RuntimeError(f"{label} terminal boundary changed during prompt audit")
         cases.append(
             PromptBudgetCase(
-                label=f"{label}/session-{session_index}/hold",
+                label=f"{label}/{scenario.label}/session-{session_index}/hold",
                 messages=observation.messages,
                 tools=env.tool_schemas,
             )
@@ -216,6 +262,7 @@ def verify_smoke_context_budget(
     agent_path = root / str(_required(config, "framework", "agent_r1_path"))
     if str(agent_path) not in sys.path:
         sys.path.insert(0, str(agent_path))
+    from src.env.trading import TradingEnv
 
     snapshot_value = runtime.get("model_snapshot_path")
     if not isinstance(snapshot_value, str) or not snapshot_value:
@@ -246,8 +293,10 @@ def verify_smoke_context_budget(
     if arm_id not in reward_modes:
         raise RuntimeError(f"unsupported arm for prompt-budget audit: {arm_id}")
     information_steps = int(_required(config, "training", "reserved_information_steps_per_session"))
+    max_agent_steps = int(_required(config, "training", "max_agent_steps"))
 
     cases: list[PromptBudgetCase] = []
+    checked_scenarios: set[str] = set()
     for index, row in frame.iterrows():
         label = f"train-{index}"
         raw_prompt = _normalize_messages(row["prompt"], label=label)
@@ -257,17 +306,26 @@ def verify_smoke_context_budget(
             raise RuntimeError(f"{label} env_kwargs is not valid JSON") from error
         if not isinstance(env_kwargs, dict):
             raise RuntimeError(f"{label} env_kwargs is not a mapping")
-        cases.extend(
-            asyncio.run(
-                _collect_episode_cases(
-                    label=label,
-                    raw_prompt=raw_prompt,
-                    env_kwargs=env_kwargs,
-                    reward_mode=reward_modes[arm_id],
-                    information_steps=information_steps,
+        advancing_actions = len(env_kwargs.get("episode_dates", [])) - 1
+        scenarios = build_prompt_budget_scenarios(
+            advancing_actions=advancing_actions,
+            max_query_chars=TradingEnv.MAX_RETRIEVE_QUERY_CHARS,
+            max_agent_steps=max_agent_steps,
+            reserved_information_steps=information_steps,
+        )
+        for scenario in scenarios:
+            checked_scenarios.add(scenario.label)
+            cases.extend(
+                asyncio.run(
+                    _collect_episode_cases(
+                        label=label,
+                        raw_prompt=raw_prompt,
+                        env_kwargs=env_kwargs,
+                        reward_mode=reward_modes[arm_id],
+                        scenario=scenario,
+                    )
                 )
             )
-        )
 
     audit = verify_tokenized_prompt_budget(
         tokenizer=tokenizer,
@@ -280,5 +338,6 @@ def verify_smoke_context_budget(
         **audit.as_dict(),
         "episodes_checked": len(frame),
         "model_snapshot_path": str(snapshot),
+        "scenarios_checked": sorted(checked_scenarios),
         "tokenizer_class": type(tokenizer).__name__,
     }

@@ -293,20 +293,29 @@ def test_g1_history_and_retrieve_output_stay_bounded_across_eight_advances() -> 
         observation = env.reset()
         assert len(observation.messages) == 2
         for index in range(8):
-            retrieved, _, done, _ = await env.step(
-                _call(
-                    "retrieve",
-                    json.dumps(
-                        {
-                            "query": "oversized",
-                            "limit": TradingEnv.MAX_RETRIEVE_RESULTS,
-                        }
-                    ),
+            for _ in range(3):
+                retrieved, _, done, _ = await env.step(
+                    _call(
+                        "retrieve",
+                        json.dumps(
+                            {
+                                "query": "💹" * 200,
+                                "limit": TradingEnv.MAX_RETRIEVE_RESULTS,
+                            },
+                            ensure_ascii=False,
+                        ),
+                    )
                 )
-            )
-            assert not done
-            assert len(retrieved.messages) == 2
-            assert "x" * 1000 not in retrieved.messages[-1]["content"]
+                assert not done
+                assert len(retrieved.messages) == 2
+                assert "\\ud83d" not in retrieved.messages[-1]["content"]
+                assert "x" * 1000 not in retrieved.messages[-1]["content"]
+                event_arguments = env._recent_events[-1]["arguments"]
+                assert isinstance(event_arguments, dict)
+                query_summary = event_arguments["query"]
+                assert isinstance(query_summary, str)
+                assert query_summary.isascii()
+                assert len(query_summary) <= TradingEnv.MAX_EVENT_TEXT_CHARS
 
             observation, _, done, _ = await env.step(_call("hold"))
             assert done is (index == 7)

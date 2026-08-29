@@ -38,8 +38,11 @@ class TradingDataIntegrityError(RuntimeError):
     """A required bar is absent or ambiguous for the exact replay session."""
 
 
+MAX_RETRIEVE_QUERY_CHARS = 200
+
+
 class RetrieveArgs(_StrictArgs):
-    query: str = Field(min_length=1, max_length=200)
+    query: str = Field(min_length=1, max_length=MAX_RETRIEVE_QUERY_CHARS)
     symbol: str | None = None
     limit: int = Field(default=3, ge=1, le=3)
 
@@ -145,11 +148,13 @@ class TradingEnv(ToolEnv):
     """
 
     TOOL_NAMES = ("retrieve", "compute", "buy", "sell", "hold", "abstain")
+    MAX_RETRIEVE_QUERY_CHARS = MAX_RETRIEVE_QUERY_CHARS
     MAX_RETRIEVE_RESULTS = 3
     MAX_RETRIEVE_BYTES = 1024
     MAX_RETRIEVE_FIELDS = 8
     MAX_RETRIEVE_TEXT_CHARS = 160
     MAX_RECENT_EVENTS = 3
+    MAX_EVENT_TEXT_CHARS = 80
     MAX_ERROR_CHARS = 240
     MARKET_STATE_FIELDS = ("open", "high", "low", "close", "volume")
 
@@ -498,7 +503,9 @@ class TradingEnv(ToolEnv):
                 continue
             value = arguments.get(key)
             if isinstance(value, str):
-                compact_arguments[key] = value[:80]
+                compact_arguments[key] = self._bounded_ascii_text(
+                    value, limit=self.MAX_EVENT_TEXT_CHARS
+                )
             elif value is None or isinstance(value, (bool, int, float)):
                 compact_arguments[key] = value
         self._recent_events.append(
@@ -509,6 +516,12 @@ class TradingEnv(ToolEnv):
             }
         )
         self._recent_events = self._recent_events[-self.MAX_RECENT_EVENTS :]
+
+    @staticmethod
+    def _bounded_ascii_text(value: str, *, limit: int) -> str:
+        """Keep user-controlled summaries bounded even when JSON escapes Unicode."""
+
+        return value.encode("unicode_escape").decode("ascii")[:limit]
 
     def _compute(self, args: _StrictArgs) -> dict[str, object]:
         assert isinstance(args, ComputeArgs)
@@ -770,7 +783,7 @@ class TradingEnv(ToolEnv):
         self, message: str, *, terminal: bool = False
     ) -> tuple[Observation, float, bool, dict[str, Any]]:
         self._invalid_calls += 1
-        safe_message = message[: self.MAX_ERROR_CHARS]
+        safe_message = self._bounded_ascii_text(message, limit=self.MAX_ERROR_CHARS)
         error = f"Error: {safe_message}"
         self._remember_event("invalid", {"error": safe_message})
         observation = self._observation(self._state_text(extra={"error": error}))

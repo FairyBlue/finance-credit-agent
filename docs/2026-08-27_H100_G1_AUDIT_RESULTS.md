@@ -251,7 +251,7 @@ step，或更名并在 runbook 中说明其语义。
 
 ## 8. 2026-08-29 本地 P0 修复进展
 
-当前工作树已完成第 4 节列出的 P0 修复：
+本节记录的是第一轮本地修复；其“完成 P0”结论已被第 9 节的新反例推翻。第一轮工作树实现了：
 
 - 当前 session 状态只保留决策所需 OHLCV、组合、有限近期事件和最后一次工具结果；
 - 对话改为初始任务加当前状态的滚动窗口，不再累计全部 assistant/tool 历史；
@@ -276,3 +276,21 @@ CUDA_VISIBLE_DEVICES=0 uv run --no-sync python -m src.agents.arm_a1 \
 ```
 
 只有四项全部通过后，才重新评估是否允许运行真实 G1。
+
+## 9. 2026-08-29 Unicode 极限路径纠正
+
+`9b72dca` 虽然消除了旧的 5,141-token 首轮膨胀和累计历史，但其 tokenizer gate 每个 session 只
+模拟两次 ASCII `market` 查询。当前 `max_agent_steps=32` 对 8 次推进仍允许每个 session 三次
+retrieve；使用最大长度 Unicode 查询的合法路径在真实 Qwen tokenizer 上达到 4,548 tokens，超过
+4,096 上限。因此第 8 节不能作为 P0 closed 证据。
+
+第二轮本地修复执行两项收口：
+
+- 用户控制的 query/reason/error 等近期事件文本先转换为固定长度 ASCII 摘要，避免 Unicode 经
+  JSON escape 后放大；
+- tokenizer gate 同时跑 `planned-ascii` 和 `legal-unicode-max`，后者为每个 session 三次、每次
+  200 个 Unicode 字符，完整使用 32-step 合法预算。
+
+本地回归测试已经覆盖该边界，但真实修复后 token 数仍是 `UNVERIFIED ON THIS MACHINE`。只有新
+validation commit 在 H100 输出同时包含两个场景的 `CONTEXT_BUDGET_PASSED`，并再次通过完整
+preflight，P0 才能关闭。

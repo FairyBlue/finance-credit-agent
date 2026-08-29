@@ -6,8 +6,9 @@
 精确 commit；本文的通用安装说明不能替代实验任务单。
 
 当前状态：`PARTIALLY_READY`。H100 stack 和完整 preflight 已在验证提交 `8a090b8` 上通过，但
-本轮复用了已存在的 pinned `.venv`，没有验证从空 `.venv` 重装；prompt-budget P0 已在本地完成
-修复，尚未冻结为 validation commit 或在 H100 复验，真实 G1 未启动。完整证据见
+本轮复用了已存在的 pinned `.venv`，没有验证从空 `.venv` 重装；`9b72dca` 修复旧膨胀路径后又
+发现 4,548-token 的合法三次 Unicode retrieve 路径，P0 已重新打开。第二轮修复仅在本机通过，
+尚未冻结为 validation commit 或在 H100 复验，真实 G1 未启动。完整证据见
 [`2026-08-27_H100_G1_AUDIT_RESULTS.md`](2026-08-27_H100_G1_AUDIT_RESULTS.md)。
 
 ## 1. 身份与证据边界
@@ -110,7 +111,8 @@ CUDA_VISIBLE_DEVICES=0 uv run --no-sync python scripts/verify_context_budget.py 
   --config configs/smoke_1p7b.yaml
 ```
 
-该命令使用 Qwen 缓存 snapshot 的真实 tokenizer 审计 4 个 train candidate 的完整有界轨迹；
+该命令使用 Qwen 缓存 snapshot 的真实 tokenizer 审计 4 个 train candidate 的完整有界轨迹，
+并同时覆盖计划内两次 ASCII retrieve 和合法三次最大长度 Unicode retrieve；
 `CONTEXT_BUDGET_PASSED` 只证明提示词预算门禁通过，不等于 G1 passed。
 
 ## 6. H100 验收脚本
@@ -210,12 +212,12 @@ torch 2.9/vLLM 0.12 环境产出本项目结果。
 | FlashAttention H100 kernel | `PASSED`，2026-08-26 | `PASSED`，验证代码 `8a090b8`，复用 pinned `.venv` |
 | 从空 `.venv` clean-clone 安装 | 未记录 | `NOT TESTED` |
 | 完整 preflight-only | 未执行 | `PASSED`，未启动训练，Final OOS 未访问 |
-| Prompt-budget P0 修复 | 不适用 | `LOCAL PASS / H100 UNVERIFIED`，待新 validation commit |
+| Prompt-budget P0 修复 | 不适用 | `REOPENED / LOCAL PATCH`；4,548-token Unicode 漏测路径已补门禁，待新 validation commit 与 H100 复验 |
 | 端到端 rollout / optimizer update | 未执行 | `NOT RUN`，等待 P0 的 H100 context-budget 与 preflight 复验 |
 | G1 smoke | 未执行 | `BLOCKED` |
 | 当前 pytest | 旧结果仅供历史参考 | `138 passed`（当前 Mac） |
 | Ruff / mypy | 旧结果仅供历史参考 | 通过；H100 审计中的 mypy 检查 44 个 source files |
 | lock / local sync / pip check | 旧结果仅供历史参考 | 通过；236 packages resolved，57 packages compatible |
 
-项目状态保持 `PARTIALLY_READY`。下一步是冻结包含 prompt-budget P0 修复的新 validation commit，
+项目状态保持 `PARTIALLY_READY`。下一步是冻结包含第二轮 prompt-budget P0 修复的新 validation commit，
 然后在 H100 重新执行 stack、测试、context-budget 和 preflight 门禁；通过前不得启动 G1。
