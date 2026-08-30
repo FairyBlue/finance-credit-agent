@@ -258,6 +258,10 @@ def test_agent_loop_uses_the_explicit_episode_horizon_not_legacy_max_turns() -> 
     assert "data.train_max_samples=4" in command
     assert "actor_rollout_ref.rollout.logprobs_mode=null" in command
     assert "+ray_kwargs.ray_init.include_dashboard=False" in command
+    assert (
+        "+ray_kwargs.ray_init.runtime_env.env_vars.FINANCE_VLLM_DRAIN_COMPAT=0.9.2"
+        in command
+    )
     assert "actor_rollout_ref.rollout.calculate_log_probs=False" in command
     assert "algorithm.rollout_correction.bypass_mode=False" in command
 
@@ -289,6 +293,8 @@ def test_training_environment_overrides_hostile_online_parent_values(tmp_path: P
         c_compiler=str(compiler),
         parent={
             "CC": "/tmp/untrusted-compiler",
+            "FINANCE_UPDATE_PROBE_DIR": "/tmp/untrusted-probe",
+            "FINANCE_VLLM_DRAIN_COMPAT": "0.10.0",
             "HF_HUB_OFFLINE": "0",
             "HF_DATASETS_OFFLINE": "0",
             "RAY_ENABLE_UV_RUN_RUNTIME_ENV": "1",
@@ -300,7 +306,8 @@ def test_training_environment_overrides_hostile_online_parent_values(tmp_path: P
     )
 
     assert environment["CC"] == str(compiler)
-    assert environment["FINANCE_VLLM_DRAIN_COMPAT"] == "0.9.2"
+    assert "FINANCE_UPDATE_PROBE_DIR" not in environment
+    assert "FINANCE_VLLM_DRAIN_COMPAT" not in environment
     assert environment["HF_HUB_OFFLINE"] == "1"
     assert environment["HF_DATASETS_OFFLINE"] == "1"
     assert environment["RAY_ENABLE_UV_RUN_RUNTIME_ENV"] == "0"
@@ -320,6 +327,45 @@ def test_training_environment_overrides_hostile_online_parent_values(tmp_path: P
         model_snapshot_path="/cache/snapshots/exact",
     )
     assert all("Qwen/Qwen3-1.7B" not in argument for argument in command)
+
+
+def test_update_probe_is_injected_only_through_ray_worker_runtime_env(tmp_path: Path) -> None:
+    root = Path(__file__).resolve().parents[1]
+    config = load_experiment_config(root / "configs/smoke_1p7b.yaml")
+    probe_root = (tmp_path / "update-probe").resolve()
+
+    command = build_upstream_command(
+        config,
+        RunHashes(
+            agent_r1_commit="a" * 40,
+            repo_commit="b" * 40,
+            data_version="fixture",
+            repo_dirty=False,
+        ),
+        update_probe_dir=probe_root,
+    )
+
+    assert (
+        "+ray_kwargs.ray_init.runtime_env.env_vars.FINANCE_UPDATE_PROBE_DIR="
+        f"{probe_root}"
+    ) in command
+
+
+def test_update_probe_runtime_env_rejects_relative_path() -> None:
+    root = Path(__file__).resolve().parents[1]
+    config = load_experiment_config(root / "configs/smoke_1p7b.yaml")
+
+    with pytest.raises(ValueError, match="update probe directory must be absolute"):
+        build_upstream_command(
+            config,
+            RunHashes(
+                agent_r1_commit="a" * 40,
+                repo_commit="b" * 40,
+                data_version="fixture",
+                repo_dirty=False,
+            ),
+            update_probe_dir="relative/probe",
+        )
 
 
 def test_c_compiler_resolution_finds_pinned_micromamba_toolchain(tmp_path: Path) -> None:

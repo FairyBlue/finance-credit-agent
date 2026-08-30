@@ -670,7 +670,12 @@ def verify_configured_t2_gate(config: dict[str, Any], *, repo_root: str | Path) 
     )
 
 
-def build_upstream_command(config: dict[str, Any], hashes: RunHashes) -> list[str]:
+def build_upstream_command(
+    config: dict[str, Any],
+    hashes: RunHashes,
+    *,
+    update_probe_dir: str | Path | None = None,
+) -> list[str]:
     arm_id = str(_required(config, "arm", "id"))
     if arm_id not in FLOW_CONFIGS:
         raise ValueError(f"unsupported arm id: {arm_id}")
@@ -688,6 +693,11 @@ def build_upstream_command(config: dict[str, Any], hashes: RunHashes) -> list[st
     run_name = config.get("run", {}).get("name", f"{arm_id.lower()}-training")
     logger = ["console"]
     episodes = _positive_integer(config, "training", "episodes")
+
+    if update_probe_dir is not None:
+        update_probe_dir = Path(update_probe_dir)
+        if not update_probe_dir.is_absolute():
+            raise ValueError("update probe directory must be absolute")
 
     command = [
         sys.executable,
@@ -750,6 +760,14 @@ def build_upstream_command(config: dict[str, Any], hashes: RunHashes) -> list[st
         _hydra("trainer.test_freq", 1),
         _hydra("trainer.total_epochs", training["total_epochs"]),
         _hydra("ray_kwargs.ray_init.include_dashboard", False, add=True),
+        # These hooks are needed only in Ray workers. Keeping them out of the
+        # trainer's inherited environment prevents Ray's dashboard/runtime-env
+        # agents from eagerly importing torch, verl, and vLLM during startup.
+        _hydra(
+            "ray_kwargs.ray_init.runtime_env.env_vars.FINANCE_VLLM_DRAIN_COMPAT",
+            "0.9.2",
+            add=True,
+        ),
         _hydra("reproducibility.agent_r1_commit", hashes.agent_r1_commit, add=True),
         _hydra("reproducibility.repo_commit", hashes.repo_commit, add=True),
         _hydra("reproducibility.data_version", hashes.data_version, add=True),
@@ -772,6 +790,14 @@ def build_upstream_command(config: dict[str, Any], hashes: RunHashes) -> list[st
         )
     else:
         command.append(_hydra("critic.enable", False))
+    if update_probe_dir is not None:
+        command.append(
+            _hydra(
+                "ray_kwargs.ray_init.runtime_env.env_vars.FINANCE_UPDATE_PROBE_DIR",
+                str(update_probe_dir),
+                add=True,
+            )
+        )
     return command
 
 
@@ -901,6 +927,10 @@ def _training_environment(
     # injection points. Keep the recorded training environment self-contained.
     environment.pop("RAY_RUNTIME_ENV_HOOK", None)
     environment.pop("RAY_JOB_CONFIG_JSON_ENV_VAR", None)
+    # Runtime instrumentation is injected explicitly through Ray's runtime_env.
+    # Remove inherited values so Ray's own Python agents remain lightweight.
+    environment.pop("FINANCE_UPDATE_PROBE_DIR", None)
+    environment.pop("FINANCE_VLLM_DRAIN_COMPAT", None)
     environment["PYTHONPATH"] = os.pathsep.join(
         [
             str(REPO_ROOT / "runtime_hooks"),
@@ -908,8 +938,6 @@ def _training_environment(
             str(agent_path),
         ]
     )
-    environment["FINANCE_UPDATE_PROBE_DIR"] = str(probe_root)
-    environment["FINANCE_VLLM_DRAIN_COMPAT"] = "0.9.2"
     environment["VLLM_USE_V1"] = "1"
     environment["HYDRA_FULL_ERROR"] = "1"
     environment["HF_HUB_OFFLINE"] = "1"
@@ -1037,6 +1065,7 @@ def _prepare_upstream_launch(
     *,
     expected_arm: str | None,
     dry_run: bool,
+    update_probe_dir: str | Path | None = None,
 ) -> tuple[str, bool, RunHashes, list[str]]:
     """Validate static launch inputs and build the still-provisional upstream command."""
 
@@ -1071,7 +1100,11 @@ def _prepare_upstream_launch(
             bool(_required(config, "training", "require_clean_repo")) and not dry_run
         ),
     )
-    return arm_id, is_smoke, hashes, build_upstream_command(config, hashes)
+    return arm_id, is_smoke, hashes, build_upstream_command(
+        config,
+        hashes,
+        update_probe_dir=update_probe_dir,
+    )
 
 
 def _finalize_model_paths(
@@ -1130,6 +1163,7 @@ def launch(
         repo_root=REPO_ROOT,
     )
     print(f"local run record: {recorder.path}")
+    probe_root = recorder.path / "artifacts" / "update_probe"
     update_evidence: dict[str, object] | None = None
     try:
         recorder.append_event("preflight_started")
@@ -1139,6 +1173,7 @@ def launch(
             config,
             expected_arm=expected_arm,
             dry_run=False,
+            update_probe_dir=probe_root,
         )
         recorder.record_provisional_command(command)
         recorder.record_evidence("run_hashes", hashes.as_config())
@@ -1178,7 +1213,6 @@ def launch(
             model_snapshot_path=model_snapshot_path,
         )
         recorder.record_command(command)
-        probe_root = recorder.path / "artifacts" / "update_probe"
         environment = _training_environment(
             agent_path=agent_path,
             probe_root=probe_root,
