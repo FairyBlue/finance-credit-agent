@@ -39,6 +39,42 @@ PY
 
 不得用 `revision="main"`，不得安装 CUDA Toolkit，不要求系统 `nvcc`，不得单独升级 GPU 栈。
 
+## 1.5 冻结的 G1 本地输入
+
+G1 只复制 history，不复制或访问 StockBench。把冻结快照放到 `data/history/storage/` 后先核对：
+
+```bash
+uv run --no-sync python - <<'PY'
+from src.agents.config import load_experiment_config
+from src.agents.launcher import verify_configured_source_manifests
+
+config = load_experiment_config("configs/smoke_1p7b.yaml")
+audit = verify_configured_source_manifests(config, repo_root=".")["history"]
+assert audit.manifest_sha256 == "2612e707446b1c8bcd73ac6583b84558d3c4eddbaa9fc20adf7023c3c8a76c90"
+assert audit.file_count == 10820
+assert set(audit.sessions_per_symbol.values()) == {541}
+print("HISTORY_MANIFEST_VERIFIED", audit.manifest_sha256, audit.file_count)
+PY
+```
+
+然后由两位合作者线下审核 candidate；审核记录不由自动 agent 代签。通过后逐字节复制并生成
+derived smoke 数据：
+
+```bash
+cp configs/episode_manifest.smoke.candidate.yaml \
+  configs/episode_manifest.smoke.reviewed.yaml
+cmp configs/episode_manifest.smoke.candidate.yaml \
+  configs/episode_manifest.smoke.reviewed.yaml
+uv run --no-sync python scripts/prepare_episodes.py \
+  --config configs/smoke_1p7b.yaml \
+  --manifest configs/episode_manifest.smoke.reviewed.yaml
+test -f data/processed/smoke_train.parquet
+test -f data/processed/smoke_valid.parquet
+test -f data/processed/smoke_test.parquet
+```
+
+任一 hash、文件数、session 数或 `cmp` 不匹配都立即停止；不得改配置 SHA 迁就本地数据。
+
 ## 2. 代码与 prompt 门禁
 
 ```bash
@@ -69,7 +105,14 @@ CUDA_VISIBLE_DEVICES=0 uv run --no-sync python -m src.agents.arm_a1 \
 检查最新 `runs/<run_id>/artifacts/preflight_evidence.json`：应包含 validation identity、exact model
 revision/snapshot、source/reviewed/processed hashes 与行数、逐 split/scenario token maxima、最终命令
 hash，以及两个 offline flag。`command.txt` 不得含 `Qwen/Qwen3-1.7B` repo ID，必须含本地 exact
-snapshot，并包含 `data.train_max_samples=4`。
+snapshot，并包含 `data.train_max_samples=4`。`summary.json.command_state` 必须是 `FINAL`；失败 run
+的候选命令只在 `provisional_command.txt`，不能冒充 final command。
+
+配置身份应分别记录：canonical merged JSON SHA-256
+`2ec544cb4e539cdbc2d3301b255384d3fdd770f5801f8d0ba3194081ac39d844`，以及当前
+`resolved_config.yaml` 字节 SHA-256
+`b826d04cc150c3b9e54728f6e7b669c2a48691a9af36f58ca8efe5b19d103753`。后者必须以实际 run 文件
+重新计算核对；两者不是同一个 hash。
 
 ## 4. G1 点火（前三关通过后才允许）
 

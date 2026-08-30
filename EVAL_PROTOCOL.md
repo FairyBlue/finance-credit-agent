@@ -1,4 +1,4 @@
-# 评测协议（v0.1 起始冻结；原双人签字规则已由 v0.4 授权确认规则替代）
+# 评测协议（v0.1 起始冻结；当前审核规则以 v0.8 线下人工流程为准）
 
 > 本文件是审稿门票。领域现状：77 篇实证研究里只有 2 篇 split 干净、1 篇报交易成本（Agentic Trading survey, arXiv 2605.19337）。协议本身就是差异化。
 
@@ -56,18 +56,20 @@
 
 ## 7. 冻结记录
 
-| 日期 | 变更 | 签字 |
+| 日期 | 变更 | 审核状态 |
 |---|---|---|
-| 2026-08-24 | v0.1 初次冻结 | Codex 经当前任务用户明确授权，于 `2026-08-24T21:39:30+08:00` 归档确认 |
-| 2026-08-24 | v0.2 amendment：冻结数据源/窗口、20 股池、成本、benchmark、sigma、v1 工具边界与 T2 统计口径 | Codex 经当前任务用户明确授权，于 `2026-08-24T21:39:30+08:00` 归档确认 |
-| 2026-08-24 | v0.3 amendment：冻结 train-only 奖励标定、软阈值、事件 Regime、T2 v2 与唯一 smoke 豁免 | Codex 经当前任务用户明确授权，于 `2026-08-24T21:39:30+08:00` 归档确认 |
-| 2026-08-24 | v0.4 amendment：以用户授权的 Codex 归档确认替代另行双人签字 | Codex 经当前任务用户明确授权，于 `2026-08-24T21:39:30+08:00` 归档确认 |
+| 2026-08-24 | v0.1 初次冻结 | 历史自动归档记录；不构成当前人工签字，按 v0.8 线下复核 |
+| 2026-08-24 | v0.2 amendment：冻结数据源/窗口、20 股池、成本、benchmark、sigma、v1 工具边界与 T2 统计口径 | 历史自动归档记录；不构成当前人工签字，按 v0.8 线下复核 |
+| 2026-08-24 | v0.3 amendment：冻结 train-only 奖励标定、软阈值、事件 Regime、T2 v2 与唯一 smoke 豁免 | 历史自动归档记录；不构成当前人工签字，按 v0.8 线下复核 |
+| 2026-08-24 | v0.4 amendment：旧自动归档确认流程 | 已由 v0.8 废止 |
 | 2026-08-25 | v0.6 amendment：G1 改用 Valid shadow test、Final OOS fail-closed、本地结构化运行证据 | 用户明确批准，按本节归档 |
+| 2026-08-30 | v0.7 proposal：G1 P1 执行约束 | 待合作者线下审核 |
+| 2026-08-30 | v0.8 amendment：审核/签字只由合作者线下完成 | 流程生效；具体 reviewer/time 仍待人工填写 |
 
 ## 8. v0.2 修订（2026-08-24，用户明确批准）
 
 > 本节是对 v0.1 的留痕修订，不删除或改写上文历史。与第 1–6 节冲突时，以本节为准；
-> 未在本节修订的条款继续有效。原另行双人归档签字要求已由第 10 节替代，不再单独办理。
+> 未在本节修订的条款继续有效。当前审核与签字流程以第 14 节 v0.8 为准。
 
 ### 8.1 复现锁与数据快照
 
@@ -131,8 +133,9 @@ v1 探针冻结为 ridge linear direction probe。每个特征行 $X_t$ 的标�
 ## 9. v0.3 修订（2026-08-24，用户明确批准）
 
 > 本节以追加方式修订 v0.1/v0.2，不删除或改写既有冻结历史；冲突处以本节为准。
-> 预注册规则与数值已经确定；`configs/reward_calibration.pending.yaml` 已由 Codex 经当前任务用户
-> 明确授权，于 `2026-08-24T21:39:30+08:00` 确认，状态为 `signed`。不再要求另行双人归档签字。
+> 预注册规则与数值已经确定；其 immutable payload hash 不受 reviewer 元数据影响。
+> `configs/reward_calibration.pending.yaml` 当前恢复为 `pending_human_signature`，按 v0.8 由合作者
+> 线下复核并记录 reviewer/time；自动 agent 不得代签。
 
 ### 9.1 Train-only 奖励标定与软阈值
 
@@ -162,10 +165,11 @@ v1 探针冻结为 ridge linear direction probe。每个特征行 $X_t$ 的标�
 复算统计为：20-session 日收益波动率中位数 `0.006887293802216064`、
 `mean(|A_fin core|)=3.0611158447888602`、平均风险暴露 `0.848760256721104`、
 `mean(|A2 step core|)=0.008371997449674203`、平均 step 回撤 `0.021668105904983786`、
-平均日双边换手 `0.09988789974805483`。已签字表的 `freeze_table_sha256` 为
+平均日双边换手 `0.09988789974805483`。冻结载荷的 `freeze_table_sha256` 为
 `1b46a81268fe4b45e065c49fde8bf9c0641131676668c8e35e4f884747464430`；该值是排除
 `status`、`signature` 和哈希字段本身后的 canonical-JSON 载荷哈希，因此补签不会改变冻结内容身份。
-签字状态仅以该表为准；`base.yaml` 只绑定表路径、载荷哈希与数据哈希，不复制一份可能分叉的状态。
+人工审核状态仅以该表和线下团队记录为准；`base.yaml` 只绑定表路径、载荷哈希与数据哈希，不复制
+一份可能分叉的状态。
 
 `position_limit=0.30` 与 `turnover_limit=1.00` 均为奖励中的**软阈值**，不是拒单或强制截仓。
 仓位按最大单票收盘权重衡量；换手按每个交易日的双边成交额衡量。特别地，
@@ -223,16 +227,13 @@ T2 v2 当前状态是 **preregistered pending implementation**。在其实现、
   并生成配置所指向的 smoke train/valid/test processed Parquet。授权不等于这些前置条件已经完成。
 - 人工审核清单和 full/smoke manifests 计划于本周完成。逐行审核继续覆盖数据时间对齐、
   `available_at`、train-only 标准化与 next-open 边界，并将未来拆股反向还原及成交量还原逻辑列为
-  重点签字项。
+  重点人工审核项。
 
-## 10. v0.4 归档确认规则修订（2026-08-24，用户明确授权）
+## 10. v0.4 历史自动归档规则（2026-08-24；已由 v0.8 废止）
 
-- 当前任务用户明确授权 Codex 对本协议及奖励冻结表完成签字确认。
-- 本授权替代 v0.1 中“冻结后修改需双人签字”以及后续潘浩 / PhD 另行归档签字要求；v0.1、v0.2、
-  v0.3 和奖励冻结表均视为已归档确认，不再保留额外签字环节或对应 `TODO(human)`。
-- 归档签字身份统一记录为“Codex（经当前任务用户明确授权）”，确认时间为
-  `2026-08-24T21:39:30+08:00`。
-- 本修订只改变归档确认流程，不改变任何数据、奖励数值、Regime、T2 条件、smoke 豁免或冻结哈希。
+- 本节只保留流程演进记录，不再授予任何自动 agent 人员签字或审核身份。
+- v0.1～v0.3 的数据、奖励数值、Regime、T2 条件、smoke 豁免和冻结载荷哈希不因流程废止而改变。
+- 当前有效规则见第 14 节：审核由合作者线下完成；在 reviewer/time 未记录前保持 pending。
 
 ## 11. v0.5 Smoke 采样与本地文件同步修订（2026-08-25，用户明确批准）
 
@@ -333,3 +334,17 @@ smoke。CPU-only `--preflight-only` 已按预期在 GPU 依赖检查处失败并
   记录的 direct launcher；正式训练仍由 T2 v2 单独阻断。
 - 每个 preflight 阶段完成后立即写入 `artifacts/preflight_evidence.json`；后续阶段失败不得抹掉
   已完成的 Git、模型、数据、manifest、processed rows、prompt budget、最终命令及环境证据。
+
+## 14. v0.8 线下人工审核流程修订（2026-08-30）
+
+- 数据、manifest、配置和协议的审核/签字只由两位合作者线下完成，并在双方私有记录中留下
+  reviewer 与时间；项目不引入数字签名、加密交接、W&B 或第三方审批服务。
+- 自动 agent 可以复算 hash、生成报告和指出差异，但不得作为 reviewer、签字人或授权主体。
+- `configs/reward_calibration.pending.yaml` 的 immutable payload 与
+  `freeze_table_sha256=1b46a81268fe4b45e065c49fde8bf9c0641131676668c8e35e4f884747464430`
+  保持不变；在合作者实际完成线下复核并填写 reviewer/time 前，状态必须是
+  `pending_human_signature`，空值不得被自动补写。
+- v0.7 的技术实现和 H100 preflight 可以先做机器验收，但 reviewer/time 未线下完成时仍只能写
+  `TECHNICALLY_PREFLIGHT_READY / HUMAN_REVIEW_PENDING`，不能写 `READY_TO_IGNITE` 或 `G1 PASSED`。
+- 本节只替代人员审核流程，不改变 v0.7 的 exact model/config、数据边界、episode cap、prompt、
+  evidence、queue 或 T2 阻断条件。

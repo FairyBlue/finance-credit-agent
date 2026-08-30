@@ -1,5 +1,8 @@
 # 2026-08-30 H100 G1 P1 集成交接
 
+> **归档说明：** 本文描述集成要求，不再是可直接复制的当前执行入口。实际 H100 命令与外部
+> exact commit 以 `2026-08-30_H100_G1_P1_VALIDATION_RUNBOOK.md` 为准。
+
 ## 1. 任务与状态边界
 
 请以最新 prompt 修复为基底，把 H100 本地审计分支中尚未进入 `main` 的 P1 行为重新实现到新的
@@ -234,18 +237,20 @@ git diff --check
 git submodule status
 ```
 
-不得少于当前 `138 passed` 基线；新增测试后总数应增加，不能通过删除测试维持绿色。
+不得少于当时的 `138 passed` 历史基线；新增测试后总数应增加，不能通过删除测试维持绿色。
 
 H100 顺序：
 
 ```bash
+export FCA_VALIDATION_COMMIT=REPLACE_WITH_EXACT_40_CHAR_COMMIT
 uv run --no-sync python scripts/verify_h100_stack.py
 uv run --no-sync pytest -q
 CUDA_VISIBLE_DEVICES=0 uv run --no-sync python scripts/verify_context_budget.py \
   --config configs/smoke_1p7b.yaml
 HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 CUDA_VISIBLE_DEVICES=0 \
   uv run --no-sync python -m src.agents.arm_a1 \
-  --config configs/smoke_1p7b.yaml --preflight-only
+  --config configs/smoke_1p7b.yaml --preflight-only \
+  --expected-commit "$FCA_VALIDATION_COMMIT"
 ```
 
 下表全部 PASS 后才是 `READY_TO_IGNITE`：

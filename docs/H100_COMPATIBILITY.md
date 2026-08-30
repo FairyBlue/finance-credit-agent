@@ -114,8 +114,9 @@ CUDA_VISIBLE_DEVICES=0 uv run --no-sync python scripts/verify_context_budget.py 
   --config configs/smoke_1p7b.yaml
 ```
 
-该命令使用 Qwen 缓存 snapshot 的真实 tokenizer 审计 4 个 train candidate 的完整有界轨迹，
-并同时覆盖计划内两次 ASCII retrieve 和合法三次最大长度 Unicode retrieve；
+该命令使用 Qwen 缓存 snapshot 的真实 tokenizer 审计 4 个 Train 和 1 个 Valid candidate 的完整
+有界轨迹，并同时覆盖 `planned-ascii`、`legal-unicode-max`、多持仓/混合大结果路径和
+`invalid-unicode-unknown-tool` 四类场景；
 `CONTEXT_BUDGET_PASSED` 只证明提示词预算门禁通过，不等于 G1 passed。
 
 ## 6. H100 验收脚本

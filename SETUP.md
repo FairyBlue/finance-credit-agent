@@ -64,8 +64,12 @@ the matching `data.sources.history` fields in `configs/base.yaml` and the review
 The inclusive full-session windows are 2023-01-03…2024-10-31 for train and
 2024-11-01…2025-02-28 for validation.
 
+For the approved G1 smoke, copy the already frozen history snapshot into `data/history/storage/` and
+verify its manifest; do not replace it with a fresh network download. Only when intentionally
+creating a new, separately reviewed snapshot should an H100 operator run:
+
 ```bash
-uv sync --frozen --extra data
+uv sync --frozen --extra gpu --extra data
 uv run --no-sync python scripts/fetch_history.py --provider yfinance
 ```
 
@@ -77,7 +81,10 @@ manifest SHA-256 is `2612e707446b1c8bcd73ac6583b84558d3c4eddbaa9fc20adf7023c3c8a
 A Stooq snapshot must be generated into a clean location, receive an equivalent price-basis audit,
 and be recorded as a different data version; never mix providers.
 
-StockBench is the final OOS data input, not a runtime dependency or submodule:
+### Formal-only Final OOS input
+
+StockBench is the final OOS data input, not a G1 smoke prerequisite, runtime dependency, or
+submodule. Do not copy it onto the G1 host; prepare it only for the later formal/T2-approved stage:
 
 ```bash
 git clone https://github.com/ChenYXxxx/stockbench.git data/stockbench
@@ -111,45 +118,49 @@ from prices already available at the query's `as_of` time.
 The train-only calibration table at `configs/reward_calibration.pending.yaml` fixes
 `epsilon=0.0006887293802216064`, `risk_lambda=0.9016432557217152`,
 `drawdown_coefficient=0.09659355421265267`, `turnover_coefficient=0.02095348253089393`,
-`turnover_limit=1.0`, and `position_limit=0.3`. Codex signed it under the current task user's explicit
-authorization at `2026-08-24T21:39:30+08:00`; the table is the sole source of signature status. Base config binds its
-path and immutable payload hash. Calibration uses
+`turnover_limit=1.0`, and `position_limit=0.3`. Its immutable payload hash is frozen, while the
+reviewer and review time remain `pending_human_signature` until the collaborators record their
+in-person review. No automated agent signs it. Base config binds its path and immutable payload
+hash. Calibration uses
 overlapping 21-session train windows and 40 deterministic trajectories per window. Each coefficient
 is capped at 25% of its designated core's mean magnitude. Position `0.30` and daily turnover `1.00`
 are soft reward thresholds, not hard execution limits; turnover is bilateral, so `1.00` is
 approximately a 50% one-way rotation.
 
-Verify the signed table against the current frozen train inputs without rewriting it:
+Verify the frozen payload against the current train inputs without rewriting or signing it:
 
 ```bash
-uv run python scripts/calibrate_reward.py \
+uv run --no-sync python scripts/calibrate_reward.py \
   --config configs/base.yaml \
   --check configs/reward_calibration.pending.yaml
 ```
 
-Create a full reviewed manifest at the exact path configured in base. The repository already
-contains the separate smoke candidate with four short train episodes. Both manifests still require
-offline human review, with future-split reversal and de-adjusted volume as explicit review
-priorities. Generate strict chronological inputs into their separate processed files:
+The repository contains the history-only smoke candidate with four short train episodes. Review it
+offline, copy it byte-for-byte, and generate the three derived smoke Parquet files. Future-split
+reversal and de-adjusted volume are explicit review priorities:
 
 ```bash
-cp configs/episode_manifest.example.yaml configs/episode_manifest.draft.yaml
-uv run python scripts/freeze_benchmarks.py \
-  --draft configs/episode_manifest.draft.yaml \
-  --output configs/episode_manifest.reviewed.yaml
-uv run python scripts/prepare_episodes.py \
-  --manifest configs/episode_manifest.reviewed.yaml
-
 # After offline review, copy the frozen candidate byte-for-byte; do not edit its NAV values.
 cp configs/episode_manifest.smoke.candidate.yaml \
   configs/episode_manifest.smoke.reviewed.yaml
 cmp configs/episode_manifest.smoke.candidate.yaml \
   configs/episode_manifest.smoke.reviewed.yaml
-uv run python scripts/prepare_episodes.py --config configs/smoke_1p7b.yaml \
+uv run --no-sync python scripts/prepare_episodes.py --config configs/smoke_1p7b.yaml \
   --manifest configs/episode_manifest.smoke.reviewed.yaml
 
 # Do not run scripts/run_t2_probe.py against StockBench again.
 # T2 v2 is preregistered to use history train/valid only and is pending implementation.
+```
+
+The full formal manifest is a later, T2-approved workflow and is not needed for G1:
+
+```bash
+cp configs/episode_manifest.example.yaml configs/episode_manifest.draft.yaml
+uv run --no-sync python scripts/freeze_benchmarks.py \
+  --draft configs/episode_manifest.draft.yaml \
+  --output configs/episode_manifest.reviewed.yaml
+uv run --no-sync python scripts/prepare_episodes.py \
+  --manifest configs/episode_manifest.reviewed.yaml
 ```
 
 The one approved legacy T2 access used 81 StockBench OOS samples (`0.530864` aligned vs `0.518519`
@@ -177,7 +188,7 @@ ignored.
 ```bash
 export FCA_VALIDATION_COMMIT=REPLACE_WITH_EXACT_40_CHAR_COMMIT
 
-# CPU-safe command/config/hash validation.
+# CPU-safe provisional command/config/hash validation. This is not the final trainer command.
 uv run --no-sync python -m src.agents.arm_a1 --config configs/smoke_1p7b.yaml --dry-run
 
 # H100 real-tokenizer prompt budget: no model inference or training.
@@ -211,6 +222,10 @@ tracked files, the Agent-R1 submodule, or experiment code/config overlays differ
 disabled for all arguments and never invokes `uv`; formal training also remains blocked by T2 v2.
 `run.seed` is propagated to the main data/actor/critic/vLLM random sources, but distributed GPU
 execution is not promised to be bitwise deterministic.
+
+The inherited `tracking.sync` list in `base.yaml` documents the later formal workflow; it is not an
+executable G1 transfer command. For G1, copy only history into the host and copy only `runs/` back.
+Do not sync `data/stockbench`, `outputs`, or `artifacts` for the smoke.
 
 The run record must contain non-empty `reproducibility.agent_r1_commit`,
 `reproducibility.repo_commit`, and `reproducibility.data_version`; the first must equal the submodule

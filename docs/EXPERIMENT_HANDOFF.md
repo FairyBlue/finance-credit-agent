@@ -187,7 +187,8 @@ git -C third_party/agent-r1 rev-parse HEAD
 验收：
 
 - `git status --short` 没有输出；
-- 本地 HEAD 与 `origin/main` 完全一致；
+- 本地 HEAD 与外部冻结的 `$FCA_VALIDATION_COMMIT` 完全一致；`origin/main` 只作信息记录，不能
+  替代 exact validation commit；
 - submodule 输出
   `b124aa46534cbf2fb8bc8af11405774984c42ac7`。
 
@@ -198,15 +199,15 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 uv python install 3.10.20
 uv venv --python 3.10.20
 uv sync --frozen
-uv run pytest -q
-uv run ruff check src tests scripts runtime_hooks
-uv run mypy src tests
+uv run --no-sync pytest -q
+uv run --no-sync ruff check src tests scripts runtime_hooks
+uv run --no-sync mypy src tests
 uv lock --check
 git diff --check
 ```
 
-最后应看到 138 个 pytest 用例通过，其他检查均为成功。若最新 `main` 合理增加或合并了测试，数量
-可能变化；此时以该提交的 CI/文档为准，不要仅为了恢复旧数字而修改测试。
+所有已收集 pytest 用例和其他检查必须成功；测试数量随冻结提交增加时，不要为恢复旧数字而删除
+测试。
 
 ## 7. 获取冻结 history 数据
 
@@ -235,7 +236,7 @@ rsync -a --partial --info=progress2 data/history/storage/ \
 不要为 G1 同步 `data/stockbench/`。同步后先做 history-only 原始字节核验：
 
 ```bash
-uv run python - <<'PY'
+uv run --no-sync python - <<'PY'
 from src.agents.config import load_experiment_config
 from src.agents.launcher import verify_configured_source_manifests
 
@@ -270,7 +271,7 @@ episodes:                 train=4, valid=1, test=1
 验证文件哈希：
 
 ```bash
-python - <<'PY'
+uv run --no-sync python - <<'PY'
 from hashlib import sha256
 from pathlib import Path
 
@@ -282,7 +283,8 @@ print(actual)
 PY
 ```
 
-如果哈希不符，先确认 checkout 的是否为最新 `origin/main`；不要直接修改 candidate。
+如果哈希不符，先确认 checkout 的是否为 runbook 指定的 exact validation commit；不要直接修改
+candidate，也不要用浮动 `origin/main` 替换冻结身份。
 
 ### 8.2 可选：独立重现 candidate
 
@@ -291,10 +293,10 @@ PY
 
 ```bash
 audit_dir="$(mktemp -d)"
-uv run python scripts/build_smoke_manifest.py \
+uv run --no-sync python scripts/build_smoke_manifest.py \
   --config configs/smoke_1p7b.yaml \
   --output "$audit_dir/draft.yaml"
-uv run python scripts/freeze_benchmarks.py \
+uv run --no-sync python scripts/freeze_benchmarks.py \
   --config configs/smoke_1p7b.yaml \
   --draft "$audit_dir/draft.yaml" \
   --output "$audit_dir/candidate.yaml"
@@ -331,7 +333,7 @@ cmp configs/episode_manifest.smoke.candidate.yaml \
 ### 8.4 生成三个 processed 文件
 
 ```bash
-uv run python scripts/prepare_episodes.py \
+uv run --no-sync python scripts/prepare_episodes.py \
   --config configs/smoke_1p7b.yaml \
   --manifest configs/episode_manifest.smoke.reviewed.yaml
 
@@ -401,14 +403,15 @@ Train candidate 和 1 个 Valid candidate 的完整 8-advance 路径，不启动
 输出必须列出 Train/Valid，并按 split/scenario 给出最大 token 数。只测 Train 或只测
 `planned-ascii` 不能关闭 P0。
 
-CPU-safe dry-run 只检查配置合并、命令构造和 Git/submodule/data version 身份：
+CPU-safe dry-run 只检查配置合并、provisional 命令构造和基础 Git/submodule/data-version 值；它
+不执行 external expected-commit、overlay、GPU/model、raw/processed data 或 tokenizer 门禁：
 
 ```bash
 uv run --no-sync python -m src.agents.arm_a1 \
   --config configs/smoke_1p7b.yaml --dry-run
 ```
 
-确认输出只有 console logger，没有 W&B，并包含：
+确认输出标为 `command_state=PROVISIONAL`，只有 console logger、没有 W&B，并包含：
 
 ```text
 model.path=Qwen/Qwen3-1.7B
@@ -468,6 +471,7 @@ CUDA_VISIBLE_DEVICES=0 scripts/run_queue.sh configs/smoke_1p7b.yaml
 
 ```text
 runs/<run_id>/
+  provisional_command.txt
   command.txt
   resolved_config.yaml
   git_state.json
@@ -480,7 +484,9 @@ runs/<run_id>/
   artifacts/
 ```
 
-即使 preflight 或训练失败，也必须保留该目录，不要删除失败证据。
+失败时 `provisional_command.txt` 保留尚含 Hub ID 的候选命令，`command.txt` 明确标记没有 final
+命令；只有完整 preflight 通过后，`command.txt` 才是绑定本地 exact snapshot 的权威命令。即使
+preflight 或训练失败，也必须保留该目录，不要删除失败证据。
 
 ## 12. 如何判断 G1 是否真正通过
 
@@ -551,7 +557,7 @@ PY
 | missing reviewed manifest | 尚未完成 candidate 审核 | 回到第 8 节，不要把 draft 直接冒充 reviewed |
 | missing processed dataset | 三个 Parquet 尚未生成 | 从 reviewed manifest 重新运行 `prepare_episodes.py` |
 | raw manifest SHA mismatch | 数据不是冻结快照或同步损坏 | 停止，重新 rsync 原快照；不要修改冻结 SHA |
-| invalid T2 smoke exemption | smoke 配置漂移或启动了非批准配置 | 拉取干净 `main`，只使用 `configs/smoke_1p7b.yaml` |
+| invalid T2 smoke exemption | smoke 配置漂移或启动了非批准配置 | 重新 checkout runbook 的 exact commit，只使用 `configs/smoke_1p7b.yaml` |
 | Final OOS/StockBench rejection | smoke 输入污染了最终评测边界 | 删除错误输入并重新生成 history-only smoke 数据 |
 | 进程退出 0 但 update 未检出 | 没有证明发生真实训练 | G1 失败；保留 artifacts，检查梯度/optimizer/Ray hook |
 | reward collapse 或重复输出 | rollout 已失效 | G1 失败；保留 run 记录，不得挑选性删除失败 run |

@@ -51,7 +51,10 @@ class YFinanceDailyBarProvider:
         try:
             import yfinance
         except ImportError as error:
-            raise RuntimeError("install the data extra with `uv sync --extra data`") from error
+            raise RuntimeError(
+                "install the frozen extras with `uv sync --frozen --extra gpu --extra data` "
+                "on H100, or use a separate CPU-only data environment"
+            ) from error
         self._client = yfinance
         self.version = str(yfinance.__version__)
         self._corporate_actions_through = corporate_actions_through

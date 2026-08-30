@@ -1,4 +1,4 @@
-status: signed
+status: pending_human_signature
 amendment_date: '2026-08-24'
 source:
   data_version: yfinance-1.6.0-pit-nominal-xnys-2023-01-03_2025-02-28:raw-manifest-sha256:2612e707446b1c8bcd73ac6583b84558d3c4eddbaa9fc20adf7023c3c8a76c90
@@ -86,5 +86,5 @@ hashes:
   freeze_table_hash_format: canonical_json_excluding_status_signature_and_freeze_table_sha256_v1
   freeze_table_sha256: 1b46a81268fe4b45e065c49fde8bf9c0641131676668c8e35e4f884747464430
 signature:
-  reviewer: Codex（经当前任务用户明确授权）
-  signed_at: '2026-08-24T21:39:30+08:00'
+  reviewer: null
+  signed_at: null

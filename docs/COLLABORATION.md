@@ -93,6 +93,7 @@ docs: add H100 validation notes
 
 ## 7. 与实验版本的关系
 
-变更播报记录“仓库发生了什么”，不改变实验的 commit 归属。比如 G1 仍然绑定冻结提交
-`8a090b86f667216a28a3846520b717348b4a6764`；之后新增文档或协作自动化产生的新 `main` HEAD，
-不能被写成 G1 已在新提交上验证。
+变更播报记录“仓库发生了什么”，不改变实验的 commit 归属。旧提交
+`8a090b86f667216a28a3846520b717348b4a6764` 只保留为历史 preflight 证据，不再是当前 G1 身份。
+每次 G1 验证必须使用当前 validation runbook 在线下给出的 40 位 exact commit；之后新增文档或
+协作自动化产生的新 `main` HEAD，不能被写成该 frozen commit 已经验证。

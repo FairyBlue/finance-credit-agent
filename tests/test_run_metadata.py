@@ -5,6 +5,7 @@ import subprocess
 import sys
 from datetime import date
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 import pandas as pd
@@ -69,6 +70,7 @@ def test_failed_local_run_preserves_complete_reproducibility_record(
         "events.log",
         "git_state.json",
         "metrics.jsonl",
+        "provisional_command.txt",
         "resolved_config.yaml",
         "summary.json",
     }
@@ -277,21 +279,25 @@ def test_training_environment_overrides_hostile_online_parent_values(tmp_path: P
     environment = launcher_module._training_environment(
         agent_path=tmp_path / "agent-r1",
         probe_root=tmp_path / "probe",
-        parent={"HF_HUB_OFFLINE": "0", "TRANSFORMERS_OFFLINE": "false"},
+        parent={
+            "HF_HUB_OFFLINE": "0",
+            "TRANSFORMERS_OFFLINE": "false",
+            "PYTHONPATH": "/tmp/untrusted-python-overlay",
+        },
     )
 
     assert environment["HF_HUB_OFFLINE"] == "1"
     assert environment["TRANSFORMERS_OFFLINE"] == "1"
+    assert "/tmp/untrusted-python-overlay" not in environment["PYTHONPATH"]
     command = [
         "python",
         "actor_rollout_ref.model.path=Qwen/Qwen3-1.7B",
         "critic.model.path=Qwen/Qwen3-1.7B",
     ]
-    command = launcher_module._replace_hydra_override(
-        command, "actor_rollout_ref.model.path", "/cache/snapshots/exact"
-    )
-    command = launcher_module._replace_hydra_override(
-        command, "critic.model.path", "/cache/snapshots/exact"
+    command = launcher_module._finalize_model_paths(
+        command,
+        arm_id="A3",
+        model_snapshot_path="/cache/snapshots/exact",
     )
     assert all("Qwen/Qwen3-1.7B" not in argument for argument in command)
 
@@ -333,15 +339,21 @@ def test_validation_identity_fails_closed_on_each_code_identity_risk(
     ) -> None:
         def fake_git(target: Path, *arguments: str) -> str:
             if target == agent:
-                return agent_commit
+                if arguments == ("rev-parse", "HEAD"):
+                    return agent_commit
+                if arguments[0] == "status":
+                    return ""
+                if arguments[:2] == ("ls-files", "--others"):
+                    return ""
+                raise AssertionError(arguments)
             if arguments == ("rev-parse", "HEAD"):
                 return head
-            if arguments[:2] == ("status", "--porcelain"):
+            if arguments[0] == "status":
                 return tracked
             if arguments[:2] == ("submodule", "status"):
                 return submodule if submodule is not None else f" {agent_commit} agent-r1"
             if arguments[:2] == ("ls-files", "--others"):
-                return untracked
+                return f"{untracked}\0" if untracked else ""
             raise AssertionError(arguments)
 
         monkeypatch.setattr(metadata_module, "_git", fake_git)
@@ -356,12 +368,253 @@ def test_validation_identity_fails_closed_on_each_code_identity_risk(
         ({"head": "c" * 40}, "validation commit mismatch"),
         ({"tracked": " M src/agents/launcher.py"}, "clean tracked working tree"),
         ({"submodule": f"+{agent_commit} agent-r1"}, "clean pinned commit"),
-        ({"untracked": "src/runtime_override.py"}, "experiment code/config"),
+        ({"untracked": "src/runtime_override.py"}, "repository overlays"),
     )
     for arguments, message in failures:
         with pytest.raises(RuntimeError, match=message):
             exercise(**arguments)
     exercise()
+
+
+def _run_git(repo: Path, *arguments: str) -> str:
+    completed = subprocess.run(
+        ["git", "-C", str(repo), *arguments],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return completed.stdout.strip()
+
+
+def _commit_all(repo: Path, message: str) -> str:
+    _run_git(repo, "add", "-A")
+    _run_git(
+        repo,
+        "-c",
+        "user.name=Acceptance Test",
+        "-c",
+        "user.email=acceptance@example.invalid",
+        "commit",
+        "-m",
+        message,
+    )
+    return _run_git(repo, "rev-parse", "HEAD")
+
+
+def test_validation_identity_accepts_a_real_clean_submodule_and_rejects_overlays(
+    tmp_path: Path,
+) -> None:
+    agent = tmp_path / "agent-source"
+    agent.mkdir()
+    _run_git(agent, "init", "-q")
+    (agent / "agent.py").write_text("PINNED = True\n", encoding="utf-8")
+    agent_commit = _commit_all(agent, "agent")
+
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _run_git(repo, "init", "-q")
+    (repo / "experiment.yaml").write_text("run: fixture\n", encoding="utf-8")
+    (repo / ".gitignore").write_text(
+        ".venv/\ndata/\nruns/\n__pycache__/\n.coverage\nconfigs/reviewed.yaml\n",
+        encoding="utf-8",
+    )
+    _commit_all(repo, "root")
+    _run_git(
+        repo,
+        "-c",
+        "protocol.file.allow=always",
+        "submodule",
+        "add",
+        "-q",
+        str(agent),
+        "third_party/agent-r1",
+    )
+    repo_commit = _commit_all(repo, "pin submodule")
+    checkout = repo / "third_party" / "agent-r1"
+    for path in (
+        repo / ".venv/local-package.py",
+        repo / "data/history.parquet",
+        repo / "runs/run/summary.json",
+        repo / "__pycache__/module.pyc",
+        repo / ".coverage",
+        repo / "configs/reviewed.yaml",
+    ):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(b"local artifact")
+
+    identity = verify_validation_identity(
+        repo_root=repo,
+        agent_r1_path=checkout,
+        expected_repo_commit=repo_commit,
+        expected_agent_r1_commit=agent_commit,
+        allowed_untracked_paths=(repo / "configs/reviewed.yaml",),
+        required_tracked_paths=(repo / "experiment.yaml",),
+    )
+    submodule_status = identity["submodule_status"]
+    assert isinstance(submodule_status, str)
+    assert submodule_status.startswith(f" {agent_commit}")
+    assert identity["tracked_config_sources"] == ["experiment.yaml"]
+
+    (repo / "sitecustomize.py").write_text("SENTINEL = True\n", encoding="utf-8")
+    with pytest.raises(RuntimeError, match="repository overlays"):
+        verify_validation_identity(
+            repo_root=repo,
+            agent_r1_path=checkout,
+            expected_repo_commit=repo_commit,
+            expected_agent_r1_commit=agent_commit,
+        )
+    (repo / "sitecustomize.py").unlink()
+
+    (checkout / "untracked_overlay.py").write_text("SENTINEL = True\n", encoding="utf-8")
+    with pytest.raises(
+        RuntimeError,
+        match="clean tracked working tree|Agent-R1 submodule|Agent-R1 overlays",
+    ):
+        verify_validation_identity(
+            repo_root=repo,
+            agent_r1_path=checkout,
+            expected_repo_commit=repo_commit,
+            expected_agent_r1_commit=agent_commit,
+        )
+
+
+@pytest.mark.parametrize(
+    ("failure", "message", "command_state"),
+    [
+        ("missing_expected_commit", "requires --expected-commit", "NOT_BUILT"),
+        ("data_version", "smoke data version must be history-only", "NOT_BUILT"),
+        ("agent_commit", "Agent-R1 checkout mismatch", "NOT_BUILT"),
+    ],
+)
+def test_non_dry_early_failures_always_write_a_machine_readable_summary(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    failure: str,
+    message: str,
+    command_state: str,
+) -> None:
+    root = Path(__file__).resolve().parents[1]
+    config = load_experiment_config(root / "configs/smoke_1p7b.yaml")
+    config["tracking"]["log_root"] = str(tmp_path / "runs")
+    expected_commit: str | None = "a" * 40
+    if failure == "missing_expected_commit":
+        expected_commit = None
+    elif failure == "data_version":
+        config["data"]["version"] = "stale-smoke-version"
+    else:
+        config["framework"]["agent_r1_commit"] = "c" * 40
+    monkeypatch.setattr(
+        launcher_module,
+        "load_experiment_config_with_sources",
+        lambda _: (config, (root / "configs/smoke_1p7b.yaml",)),
+    )
+
+    with pytest.raises(RuntimeError, match=message):
+        launcher_module.launch(
+            "fixture.yaml",
+            dry_run=False,
+            preflight_only=True,
+            expected_arm="A1",
+            expected_commit=expected_commit,
+        )
+
+    run_dir = next((tmp_path / "runs").iterdir())
+    summary = json.loads((run_dir / "summary.json").read_text(encoding="utf-8"))
+    assert summary["status"] == "FAILED"
+    assert summary["command_state"] == command_state
+    assert message.split()[0] in summary["error"]["message"]
+
+
+def test_preflight_preserves_source_evidence_when_a_later_gate_fails(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    config: dict[str, Any] = {
+        "tracking": {"backend": "local_files"},
+        "framework": {"agent_r1_path": "agent", "agent_r1_commit": "b" * 40},
+        "data": {
+            "version": "fixture",
+            "episode_manifest": "reviewed.yaml",
+            "processed": {
+                "train_file": "train.parquet",
+                "valid_file": "valid.parquet",
+                "test_file": "test.parquet",
+            },
+            "split_source": {"train": "history"},
+            "sources": {"history": {"input_manifest_sha256": "a" * 64}},
+        },
+    }
+    for name in ("train.parquet", "valid.parquet", "test.parquet"):
+        (tmp_path / name).write_bytes(b"fixture")
+    recorder = LocalRunRecorder.create(
+        run_root=tmp_path / "runs",
+        config=config,
+        command=[sys.executable, "-m", "fixture"],
+        hashes=RunHashes("b" * 40, "a" * 40, "fixture", False),
+        run_id="staged-failure",
+        repo_root=tmp_path,
+    )
+    monkeypatch.setattr(launcher_module, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(
+        launcher_module, "verify_validation_identity", lambda **_: {"repo_commit": "a" * 40}
+    )
+    monkeypatch.setattr(launcher_module, "verify_configured_t2_gate", lambda *_args, **_kw: None)
+    monkeypatch.setattr(
+        launcher_module, "verify_smoke_final_oos_isolation", lambda *_args, **_kw: {"ok": True}
+    )
+    monkeypatch.setattr(launcher_module, "_verify_reward_freeze", lambda *_args, **_kw: None)
+    monkeypatch.setattr(
+        launcher_module,
+        "verify_gpu_runtime_and_model",
+        lambda *_args, **_kw: {"model_revision": "c" * 40},
+    )
+    monkeypatch.setattr(
+        launcher_module,
+        "verify_configured_source_manifests",
+        lambda *_args, **_kw: {
+            "history": SimpleNamespace(
+                manifest_sha256="d" * 64,
+                file_count=10820,
+                sessions_per_symbol=541,
+            )
+        },
+    )
+
+    def fail_after_source(**_: object) -> str:
+        raise RuntimeError("later benchmark gate failed")
+
+    monkeypatch.setattr(launcher_module, "verify_episode_benchmarks", fail_after_source)
+    with pytest.raises(RuntimeError, match="later benchmark gate failed") as caught:
+        launcher_module._verify_all_preflight_inputs(
+            config,
+            command=["python"],
+            is_smoke=True,
+            expected_commit="a" * 40,
+            recorder=recorder,
+        )
+    recorder.finish(returncode=None, error=caught.value)
+
+    artifact = json.loads(
+        (recorder.path / "artifacts/preflight_evidence.json").read_text(encoding="utf-8")
+    )
+    summary = json.loads((recorder.path / "summary.json").read_text(encoding="utf-8"))
+    assert artifact["source_manifests"]["history"]["file_count"] == 10820
+    assert summary["preflight_evidence"]["source_manifests"] == artifact["source_manifests"]
+
+
+def test_smoke_processed_train_rows_must_equal_episode_cap(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    config = _processed_config(tmp_path)
+    config["run"] = {"smoke": True}
+    config["training"]["episodes"] = 2
+    monkeypatch.setattr(
+        launcher_module,
+        "load_episode_manifest",
+        lambda **_: {"splits": {"train": [{}], "valid": [{}], "test": [{}]}},
+    )
+
+    with pytest.raises(RuntimeError, match="smoke train row count 1.*training.episodes=2"):
+        verify_processed_dataset_bindings(config, repo_root=tmp_path)
 
 
 @pytest.mark.parametrize(

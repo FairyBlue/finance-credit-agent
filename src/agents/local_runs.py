@@ -100,7 +100,12 @@ class LocalRunRecorder:
         path.mkdir(parents=True, exist_ok=False)
         (path / "checkpoints").mkdir()
         (path / "artifacts").mkdir()
-        (path / "command.txt").write_text(shlex.join(command) + "\n", encoding="utf-8")
+        provisional = shlex.join(command) + "\n" if command else "# command not built\n"
+        (path / "provisional_command.txt").write_text(provisional, encoding="utf-8")
+        (path / "command.txt").write_text(
+            "# no final upstream command: preflight has not passed\n",
+            encoding="utf-8",
+        )
         config_path = path / "resolved_config.yaml"
         config_path.write_text(yaml.safe_dump(config, sort_keys=True), encoding="utf-8")
         config_file_sha256 = sha256(config_path.read_bytes()).hexdigest()
@@ -195,9 +200,26 @@ class LocalRunRecorder:
                 "seed": config.get("run", {}).get("seed"),
                 "episodes": (training.get("episodes") if isinstance(training, dict) else None),
                 "rollout_n": (training.get("rollout_n") if isinstance(training, dict) else None),
+                "command_state": "PROVISIONAL" if command else "NOT_BUILT",
             },
         )
         return recorder
+
+    def _set_command_state(self, state: str) -> None:
+        summary_path = self.path / "summary.json"
+        summary = json.loads(summary_path.read_text(encoding="utf-8"))
+        summary["command_state"] = state
+        _write_json(summary_path, summary)
+
+    def record_provisional_command(self, command: list[str]) -> None:
+        """Persist the Hub-ID command separately until all preflight gates pass."""
+
+        (self.path / "provisional_command.txt").write_text(
+            shlex.join(command) + "\n",
+            encoding="utf-8",
+        )
+        self._set_command_state("PROVISIONAL")
+        self.append_event("provisional_command_built")
 
     def record_command(self, command: list[str]) -> dict[str, object]:
         """Replace the provisional command after preflight resolves local-only inputs."""
@@ -208,6 +230,7 @@ class LocalRunRecorder:
             "argv": command,
             "command_file_sha256": sha256(command_path.read_bytes()).hexdigest(),
         }
+        self._set_command_state("FINAL")
         self.record_evidence("final_command", evidence)
         return evidence
 

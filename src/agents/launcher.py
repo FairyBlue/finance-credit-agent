@@ -31,12 +31,13 @@ from src.data.integrity import (
 )
 from src.rewards import verify_calibration_document
 
-from .config import load_experiment_config
+from .config import load_experiment_config_with_sources
 from .context_budget import verify_smoke_context_budget
 from .local_runs import LocalRunRecorder
 from .metadata import (
     RunHashes,
     collect_run_hashes,
+    observe_run_hashes,
     validate_composite_data_version,
     verify_validation_identity,
 )
@@ -780,9 +781,8 @@ def _training_environment(
             str(REPO_ROOT / "runtime_hooks"),
             str(REPO_ROOT),
             str(agent_path),
-            environment.get("PYTHONPATH", ""),
         ]
-    ).rstrip(os.pathsep)
+    )
     environment["FINANCE_UPDATE_PROBE_DIR"] = str(probe_root)
     environment["VLLM_USE_V1"] = "1"
     environment["HYDRA_FULL_ERROR"] = "1"
@@ -819,6 +819,7 @@ def _verify_all_preflight_inputs(
     is_smoke: bool,
     expected_commit: str,
     recorder: LocalRunRecorder,
+    config_sources: tuple[Path, ...] = (),
 ) -> dict[str, object]:
     if _required(config, "tracking", "backend") != "local_files":
         raise RuntimeError("only local_files tracking is approved")
@@ -834,6 +835,7 @@ def _verify_all_preflight_inputs(
         expected_repo_commit=expected_commit,
         expected_agent_r1_commit=str(_required(config, "framework", "agent_r1_commit")),
         allowed_untracked_paths=(manifest_path,),
+        required_tracked_paths=config_sources,
     )
     recorder.record_evidence("validation_identity", identity)
     verify_configured_t2_gate(config, repo_root=REPO_ROOT)
@@ -901,15 +903,14 @@ def _verify_all_preflight_inputs(
     }
 
 
-def launch(
-    config_path: str | Path,
+def _prepare_upstream_launch(
+    config: dict[str, Any],
     *,
+    expected_arm: str | None,
     dry_run: bool,
-    preflight_only: bool = False,
-    expected_arm: str | None = None,
-    expected_commit: str | None = None,
-) -> int:
-    config = load_experiment_config(config_path)
+) -> tuple[str, bool, RunHashes, list[str]]:
+    """Validate static launch inputs and build the still-provisional upstream command."""
+
     arm_id = str(_required(config, "arm", "id"))
     if expected_arm is not None and arm_id != expected_arm:
         raise ValueError(f"entrypoint {expected_arm} cannot launch config for {arm_id}")
@@ -941,32 +942,94 @@ def launch(
             bool(_required(config, "training", "require_clean_repo")) and not dry_run
         ),
     )
-    command = build_upstream_command(config, hashes)
-    print(json.dumps({"command": command, "run_hashes": hashes.as_config()}, indent=2))
+    return arm_id, is_smoke, hashes, build_upstream_command(config, hashes)
+
+
+def _finalize_model_paths(
+    command: list[str], *, arm_id: str, model_snapshot_path: str
+) -> list[str]:
+    command = _replace_hydra_override(
+        command, "actor_rollout_ref.model.path", model_snapshot_path
+    )
+    if arm_id in {"A2", "A3"}:
+        command = _replace_hydra_override(command, "critic.model.path", model_snapshot_path)
+    return command
+
+
+def launch(
+    config_path: str | Path,
+    *,
+    dry_run: bool,
+    preflight_only: bool = False,
+    expected_arm: str | None = None,
+    expected_commit: str | None = None,
+) -> int:
+    config, config_sources = load_experiment_config_with_sources(config_path)
+    arm_id = str(_required(config, "arm", "id"))
+    agent_path = REPO_ROOT / str(_required(config, "framework", "agent_r1_path"))
+    is_smoke = bool(config.get("run", {}).get("smoke"))
     if dry_run:
+        _, _, hashes, command = _prepare_upstream_launch(
+            config,
+            expected_arm=expected_arm,
+            dry_run=True,
+        )
+        print(
+            json.dumps(
+                {
+                    "dry_run_command": command,
+                    "command_state": "PROVISIONAL",
+                    "run_hashes": hashes.as_config(),
+                },
+                indent=2,
+            )
+        )
         return 0
-    if expected_commit is None:
-        raise RuntimeError("non-dry validation requires --expected-commit <40-char SHA>")
     run_root = Path(str(_required(config, "tracking", "log_root")))
     if not run_root.is_absolute():
         run_root = REPO_ROOT / run_root
+    observed_hashes = observe_run_hashes(
+        repo_root=REPO_ROOT,
+        agent_r1_path=agent_path,
+        data_version=str(_required(config, "data", "version")),
+    )
     recorder = LocalRunRecorder.create(
         run_root=run_root,
         config=config,
-        command=command,
-        hashes=hashes,
+        command=[],
+        hashes=observed_hashes,
         repo_root=REPO_ROOT,
     )
     print(f"local run record: {recorder.path}")
     update_evidence: dict[str, object] | None = None
     try:
         recorder.append_event("preflight_started")
+        if expected_commit is None:
+            raise RuntimeError("non-dry validation requires --expected-commit <40-char SHA>")
+        arm_id, is_smoke, hashes, command = _prepare_upstream_launch(
+            config,
+            expected_arm=expected_arm,
+            dry_run=False,
+        )
+        recorder.record_provisional_command(command)
+        recorder.record_evidence("run_hashes", hashes.as_config())
+        print(
+            json.dumps(
+                {
+                    "provisional_command": command,
+                    "command_state": "PROVISIONAL",
+                    "run_hashes": hashes.as_config(),
+                },
+                indent=2,
+            )
+        )
         evidence = _verify_all_preflight_inputs(
             config,
             command=command,
             is_smoke=is_smoke,
             expected_commit=expected_commit,
             recorder=recorder,
+            config_sources=config_sources,
         )
         runtime_evidence = evidence.get("runtime")
         if not isinstance(runtime_evidence, dict):
@@ -977,11 +1040,11 @@ def launch(
         model_snapshot_path = runtime_evidence.get("model_snapshot_path")
         if not isinstance(model_snapshot_path, str) or not model_snapshot_path:
             raise RuntimeError("preflight model snapshot path is invalid")
-        command = _replace_hydra_override(
-            command, "actor_rollout_ref.model.path", model_snapshot_path
+        command = _finalize_model_paths(
+            command,
+            arm_id=arm_id,
+            model_snapshot_path=model_snapshot_path,
         )
-        if arm_id in {"A2", "A3"}:
-            command = _replace_hydra_override(command, "critic.model.path", model_snapshot_path)
         recorder.record_command(command)
         probe_root = recorder.path / "artifacts" / "update_probe"
         environment = _training_environment(agent_path=agent_path, probe_root=probe_root)

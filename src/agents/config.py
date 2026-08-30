@@ -19,11 +19,17 @@ def _deep_merge(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any
     return result
 
 
-def load_experiment_config(path: str | Path, *, _stack: tuple[Path, ...] = ()) -> dict[str, Any]:
+def _load_experiment_config(
+    path: str | Path,
+    *,
+    stack: tuple[Path, ...],
+    sources: list[Path],
+) -> dict[str, Any]:
     config_path = Path(path).expanduser().resolve()
-    if config_path in _stack:
-        cycle = " -> ".join(str(item) for item in (*_stack, config_path))
+    if config_path in stack:
+        cycle = " -> ".join(str(item) for item in (*stack, config_path))
         raise ValueError(f"config inheritance cycle: {cycle}")
+    sources.append(config_path)
     document = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     if not isinstance(document, dict):
         raise ValueError(f"experiment config must be a mapping: {config_path}")
@@ -37,6 +43,25 @@ def load_experiment_config(path: str | Path, *, _stack: tuple[Path, ...] = ()) -
         parent_path = (config_path.parent / parent).resolve()
         merged = _deep_merge(
             merged,
-            load_experiment_config(parent_path, _stack=(*_stack, config_path)),
+            _load_experiment_config(
+                parent_path,
+                stack=(*stack, config_path),
+                sources=sources,
+            ),
         )
     return _deep_merge(merged, document)
+
+
+def load_experiment_config_with_sources(
+    path: str | Path,
+) -> tuple[dict[str, Any], tuple[Path, ...]]:
+    """Load a merged config and return every YAML source in resolution order."""
+
+    sources: list[Path] = []
+    config = _load_experiment_config(path, stack=(), sources=sources)
+    return config, tuple(dict.fromkeys(sources))
+
+
+def load_experiment_config(path: str | Path) -> dict[str, Any]:
+    config, _ = load_experiment_config_with_sources(path)
+    return config
