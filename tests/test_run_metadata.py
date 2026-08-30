@@ -280,10 +280,15 @@ def test_episode_cap_rejects_non_positive_or_non_integer_values() -> None:
 
 
 def test_training_environment_overrides_hostile_online_parent_values(tmp_path: Path) -> None:
+    compiler = tmp_path / "x86_64-conda-linux-gnu-gcc"
+    compiler.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+    compiler.chmod(0o755)
     environment = launcher_module._training_environment(
         agent_path=tmp_path / "agent-r1",
         probe_root=tmp_path / "probe",
+        c_compiler=str(compiler),
         parent={
+            "CC": "/tmp/untrusted-compiler",
             "HF_HUB_OFFLINE": "0",
             "HF_DATASETS_OFFLINE": "0",
             "RAY_ENABLE_UV_RUN_RUNTIME_ENV": "1",
@@ -294,12 +299,14 @@ def test_training_environment_overrides_hostile_online_parent_values(tmp_path: P
         },
     )
 
+    assert environment["CC"] == str(compiler)
     assert environment["HF_HUB_OFFLINE"] == "1"
     assert environment["HF_DATASETS_OFFLINE"] == "1"
     assert environment["RAY_ENABLE_UV_RUN_RUNTIME_ENV"] == "0"
     assert "RAY_RUNTIME_ENV_HOOK" not in environment
     assert "RAY_JOB_CONFIG_JSON_ENV_VAR" not in environment
     assert environment["TRANSFORMERS_OFFLINE"] == "1"
+    assert environment["TRITON_CACHE_DIR"] == str(tmp_path / "triton_cache")
     assert "/tmp/untrusted-python-overlay" not in environment["PYTHONPATH"]
     command = [
         "python",
@@ -312,6 +319,55 @@ def test_training_environment_overrides_hostile_online_parent_values(tmp_path: P
         model_snapshot_path="/cache/snapshots/exact",
     )
     assert all("Qwen/Qwen3-1.7B" not in argument for argument in command)
+
+
+def test_c_compiler_resolution_finds_pinned_micromamba_toolchain(tmp_path: Path) -> None:
+    compiler = tmp_path / "bin" / "x86_64-conda-linux-gnu-gcc"
+    compiler.parent.mkdir()
+    compiler.write_text(
+        "#!/bin/sh\nprintf 'fixture gcc 15.2.0\\n'\n",
+        encoding="utf-8",
+    )
+    compiler.chmod(0o755)
+
+    path, version = launcher_module._resolve_c_compiler(
+        parent={"PATH": ""},
+        base_prefix=tmp_path,
+    )
+
+    assert path == str(compiler.resolve())
+    assert version == "fixture gcc 15.2.0"
+
+
+def test_c_compiler_resolution_fails_closed_when_none_is_available(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(launcher_module.shutil, "which", lambda *_args, **_kwargs: None)
+
+    with pytest.raises(RuntimeError, match="working host C compiler is required"):
+        launcher_module._resolve_c_compiler(parent={"PATH": ""}, base_prefix=tmp_path)
+
+
+def test_triton_compiler_probe_uses_a_fresh_cache_and_fails_closed(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    observed_cache: Path | None = None
+
+    def fail_probe(*_args: object, **kwargs: object) -> subprocess.CompletedProcess[str]:
+        nonlocal observed_cache
+        environment = kwargs["env"]
+        assert isinstance(environment, dict)
+        observed_cache = Path(environment["TRITON_CACHE_DIR"])
+        assert observed_cache.is_dir()
+        assert environment["CC"] == "/fixture/gcc"
+        return subprocess.CompletedProcess([], 1, stdout="", stderr="fixture compile failure")
+
+    monkeypatch.setattr(launcher_module.subprocess, "run", fail_probe)
+
+    with pytest.raises(RuntimeError, match="fixture compile failure"):
+        launcher_module._verify_triton_cuda_utils("/fixture/gcc")
+    assert observed_cache is not None
+    assert not observed_cache.exists()
 
 
 def test_model_resolution_requires_the_exact_local_revision(tmp_path: Path) -> None:

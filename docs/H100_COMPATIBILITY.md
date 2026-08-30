@@ -42,8 +42,10 @@ model/offline、episode cap、增量证据、validation identity、direct-only P
 | verl | `0.7.0` | `gpu` extra，与 Agent-R1 一致 |
 | flash-attn | `2.8.0.post2` | 预编译 direct wheel |
 | Transformers | `4.53.2` | Linux x86_64 `gpu` extra |
+| Triton | `3.3.0` | torch wheel 依赖；fresh `cuda_utils` compiler probe |
 | PyArrow | `20.0.0` | 项目核心依赖 |
 | datasets | `4.0.0` | Linux x86_64 `gpu` extra；内置本地 Parquet loader |
+| host C compiler | GCC `15.2.0=h7be306e_28` | micromamba base prefix；仅编译 Triton CPU driver shim |
 
 `datasets==1.2.1` 读取本地 Parquet 时仍会联网获取旧 loader script，无法满足本项目的
 offline 合同；`4.0.0` 将 Parquet builder 内置于 wheel，且与冻结的 PyArrow 20 兼容。
@@ -74,8 +76,12 @@ CPython 3.10、Linux x86_64、PyTorch 2.7、CUDA 12 ABI、C++11 ABI TRUE；不�
 12.8 runtime。`nvidia-smi` 显示的是 driver 的最高 CUDA 兼容能力，不是本项目 runtime，也不
 代表安装了 CUDA Toolkit。
 
-当前使用预编译 FlashAttention wheel，所以不需要 CUDA Toolkit 或 `nvcc`。只有以下情况才建立
-新的环境升级任务：
+当前使用预编译 FlashAttention wheel，所以不需要 CUDA Toolkit 或 `nvcc`。vLLM 0.9.2 的
+Triton runtime 首次加载仍会编译一个很小的 CPU `cuda_utils` driver shim，因此主机必须有 C
+编译器；H100 micromamba 环境固定使用 `gcc_linux-64=15.2.0=h7be306e_28`，launcher 会解析绝对路径、设置
+`CC` 并在 preflight 中实际编译/加载该 shim。这个要求与 CUDA Toolkit/`nvcc` 无关。
+
+只有以下情况才建立新的环境升级任务：
 
 - 改用 Python 3.11/3.12、非 x86_64 或不同 C++ ABI，且没有匹配 wheel；
 - 升级 PyTorch、CUDA ABI 或 flash-attn；
@@ -99,12 +105,19 @@ export FCA_VALIDATION_COMMIT=REPLACE_WITH_ACTIVE_RUNBOOK_EXACT_COMMIT
 git checkout --detach "$FCA_VALIDATION_COMMIT"
 git submodule update --init --recursive
 
-uv python install 3.10.20
-uv venv --python 3.10.20
+micromamba install -n finance-credit -c conda-forge \
+  "python=3.10.20" "gcc_linux-64=15.2.0=h7be306e_28"
+FCA_GPU_PYTHON="$(micromamba run -n finance-credit which python)"
+uv venv --python "$FCA_GPU_PYTHON"
 uv sync --frozen --extra gpu --extra data
 uv pip check --python .venv/bin/python
 uv run --no-sync python scripts/verify_h100_stack.py
 ```
+
+这条 micromamba 路线保证 `.venv` 的 `sys.base_prefix` 与 pinned GCC 位于同一前缀，是当前
+H100 的复现路径。若改用 `uv python install` 管理的独立 Python，则必须在宿主机安装完整的
+C toolchain（Debian/Ubuntu 通常是 `build-essential`）并把可执行编译器的绝对路径放入
+`CC`；不能把 GCC 装到一个与 `.venv` 无关的 micromamba 环境后假定它会被自动发现。
 
 最后一条命令完成版本、CUDA、GPU、imports 和真实 FlashAttention kernel 验收。环境验收后，所有
 实验命令使用 `uv run --no-sync ...`，防止运行时隐式改变已验收环境。
@@ -127,8 +140,9 @@ CUDA_VISIBLE_DEVICES=0 uv run --no-sync python scripts/verify_context_budget.py 
 
 - CPython 3.10.20、Linux x86_64；
 - torch 2.7.0+cu128 与 `torch.version.cuda == "12.8"`；
+- 可执行 host C compiler，且 Triton `cuda_utils` 可实际编译并加载；
 - CUDA 可用，设备名包含 `H100`；
-- vLLM、verl、flash-attn、Transformers、PyArrow、datasets 的 import 和精确版本；
+- vLLM、verl、Triton、flash-attn、Transformers、PyArrow、datasets 的 import 和精确版本；
 - FlashAttention CUDA kernel 输出 shape 为 `(1, 16, 4, 64)`；
 - kernel 输出全部 finite。
 

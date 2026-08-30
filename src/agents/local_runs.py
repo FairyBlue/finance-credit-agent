@@ -144,7 +144,7 @@ class LocalRunRecorder:
                 "platform": platform.platform(),
                 "packages": {
                     name: _package_version(name)
-                    for name in ("datasets", "torch", "verl", "vllm", "flash-attn")
+                    for name in ("datasets", "torch", "triton", "verl", "vllm", "flash-attn")
                 },
                 "gpu": _gpu_inventory(),
             },
@@ -239,12 +239,14 @@ class LocalRunRecorder:
         """Record only the approved non-secret controls supplied to the trainer."""
 
         names = (
+            "CC",
             "CUDA_VISIBLE_DEVICES",
             "HF_DATASETS_OFFLINE",
             "HF_HUB_OFFLINE",
             "HYDRA_FULL_ERROR",
             "RAY_ENABLE_UV_RUN_RUNTIME_ENV",
             "TRANSFORMERS_OFFLINE",
+            "TRITON_CACHE_DIR",
             "VLLM_USE_V1",
         )
         flags = {name: environment[name] for name in names if name in environment}

@@ -4,17 +4,26 @@ from __future__ import annotations
 
 import importlib
 import json
+import os
 import platform
 import sys
 from importlib.metadata import version
+from pathlib import Path
 
 import torch
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from src.agents.launcher import _resolve_c_compiler, _verify_triton_cuda_utils  # noqa: E402
 
 EXPECTED_DISTRIBUTIONS = {
     "datasets": "4.0.0",
     "flash-attn": "2.8.0.post2",
     "pyarrow": "20.0.0",
     "transformers": "4.53.2",
+    "triton": "3.3.0",
     "verl": "0.7.0",
     "vllm": "0.9.2",
 }
@@ -25,6 +34,10 @@ def main() -> int:
     assert sys.version_info[:3] == (3, 10, 20), platform.python_version()
     assert platform.system() == "Linux", platform.system()
     assert platform.machine() == "x86_64", platform.machine()
+
+    c_compiler, c_compiler_version = _resolve_c_compiler()
+    os.environ["CC"] = c_compiler
+    _verify_triton_cuda_utils(c_compiler)
 
     actual_versions: dict[str, str] = {}
     for distribution, expected in EXPECTED_DISTRIBUTIONS.items():
@@ -50,6 +63,10 @@ def main() -> int:
         json.dumps(
             {
                 "cuda_runtime": torch.version.cuda,
+                "c_compiler": {
+                    "path": c_compiler,
+                    "version": c_compiler_version,
+                },
                 "distributions": actual_versions,
                 "flash_attention": {
                     "dtype": str(output.dtype),

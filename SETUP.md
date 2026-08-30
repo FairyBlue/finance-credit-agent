@@ -45,15 +45,33 @@ environment.
 The lock encodes torch's CUDA 12.8 index and the CPython 3.10/Linux x86_64 prebuilt flash-attn
 wheel. Install the complete frozen environment in one sync:
 
+vLLM/Triton also needs a host C compiler for its small `cuda_utils` CPU driver shim. This is not
+`nvcc` and does not require the CUDA Toolkit. On the current H100 micromamba host, pin the
+toolchain and make the GPU `.venv` use that same Python base prefix:
+
+```bash
+micromamba install -n finance-credit -c conda-forge \
+  "gcc_linux-64=15.2.0=h7be306e_28"
+FCA_GPU_PYTHON="$(micromamba run -n finance-credit which python)"
+uv venv --clear --python "$FCA_GPU_PYTHON"
+```
+
+The `--clear` operation replaces only `.venv`; it does not touch repository data or run
+artifacts. If a host instead keeps the uv-managed Python from section 2, install its distro C
+toolchain (for example, Debian/Ubuntu `build-essential`) and set `CC` to the compiler's absolute
+path. Do not install GCC into an unrelated micromamba prefix: the launcher intentionally fails
+closed unless it can resolve and execute the compiler used by the trainer.
+
 ```bash
 uv sync --frozen --extra gpu --extra data
 uv pip check --python .venv/bin/python
 uv run --no-sync python scripts/verify_h100_stack.py
 ```
 
-No CUDA Toolkit or system `nvcc` is required because flash-attn is not built from source. Do not
-independently upgrade any GPU component or use `uv run` without `--no-sync` after stack acceptance.
-The verifier runs a real FlashAttention CUDA kernel; passing it is not evidence that G1 passed.
+No CUDA Toolkit or system `nvcc` is required because flash-attn is not built from source. The
+verifier resolves the host C compiler, compiles/loads Triton's `cuda_utils`, and runs a real
+FlashAttention CUDA kernel. Do not independently upgrade any GPU component or use `uv run` without
+`--no-sync` after stack acceptance. Passing the verifier is not evidence that G1 passed.
 
 ## 4. Frozen data snapshots
 

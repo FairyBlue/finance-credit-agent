@@ -6,8 +6,10 @@ import argparse
 import importlib.util
 import json
 import os
+import shutil
 import subprocess
 import sys
+import tempfile
 from datetime import date, datetime, time
 from hashlib import sha256
 from pathlib import Path
@@ -53,6 +55,97 @@ WIRING_SMOKE_KIND = "wiring_smoke_1p7b"
 WIRING_SMOKE_CONFIG_SHA256 = "2ec544cb4e539cdbc2d3301b255384d3fdd770f5801f8d0ba3194081ac39d844"
 QWEN3_1P7B_REVISION = "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e"
 DATASETS_VERSION = "4.0.0"
+
+
+def _resolve_c_compiler(
+    *,
+    parent: dict[str, str] | None = None,
+    base_prefix: str | Path | None = None,
+) -> tuple[str, str]:
+    """Resolve and identify the host C compiler required by Triton's driver shim."""
+
+    environment = os.environ if parent is None else parent
+    prefix = Path(sys.base_prefix if base_prefix is None else base_prefix)
+    candidates: list[str | Path] = []
+    configured = environment.get("CC")
+    if configured:
+        candidates.append(configured)
+    candidates.extend(
+        [
+            prefix / "bin" / "x86_64-conda-linux-gnu-gcc",
+            prefix / "bin" / "x86_64-conda-linux-gnu-cc",
+            "cc",
+            "gcc",
+            "clang",
+            "x86_64-conda-linux-gnu-gcc",
+            "x86_64-conda-linux-gnu-cc",
+        ]
+    )
+    searched: list[str] = []
+    for candidate in candidates:
+        rendered = str(candidate)
+        searched.append(rendered)
+        resolved = (
+            shutil.which(rendered, path=environment.get("PATH"))
+            if os.sep not in rendered
+            else rendered
+        )
+        if resolved is None:
+            continue
+        path = Path(resolved).expanduser().resolve()
+        if not path.is_file() or not os.access(path, os.X_OK):
+            continue
+        try:
+            result = subprocess.run(
+                [str(path), "--version"],
+                check=True,
+                capture_output=True,
+                text=True,
+                timeout=10,
+            )
+        except (OSError, subprocess.SubprocessError):
+            continue
+        version_line = (result.stdout or result.stderr).splitlines()
+        if not version_line:
+            continue
+        return str(path), version_line[0]
+    raise RuntimeError(
+        "a working host C compiler is required for Triton's cuda_utils shim; "
+        "install the pinned compiler from SETUP.md or set CC to an executable compiler "
+        f"(searched: {', '.join(searched)})"
+    )
+
+
+def _verify_triton_cuda_utils(c_compiler: str) -> None:
+    """Compile/load the exact Triton CPU driver shim needed by vLLM workers."""
+
+    environment = dict(os.environ)
+    environment["CC"] = c_compiler
+    with tempfile.TemporaryDirectory(prefix="finance-triton-probe-") as cache_dir:
+        # An isolated cache proves the compiler/linker path instead of merely
+        # loading a cuda_utils artifact produced by an earlier run.
+        environment["TRITON_CACHE_DIR"] = cache_dir
+        try:
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    "-c",
+                    (
+                        "from triton.backends.nvidia.driver import CudaUtils; "
+                        "CudaUtils(); print('TRITON_CUDA_UTILS_COMPILE_OK')"
+                    ),
+                ],
+                cwd=REPO_ROOT,
+                env=environment,
+                capture_output=True,
+                text=True,
+                timeout=120,
+            )
+        except subprocess.TimeoutExpired as error:
+            raise RuntimeError("Triton cuda_utils compiler probe timed out") from error
+    if result.returncode != 0 or "TRITON_CUDA_UTILS_COMPILE_OK" not in result.stdout:
+        detail = (result.stderr or result.stdout).strip()
+        raise RuntimeError(f"Triton cuda_utils compiler probe failed: {detail}")
 
 
 def _required(config: dict[str, Any], *path: str) -> Any:
@@ -771,6 +864,8 @@ def verify_gpu_runtime_and_model(config: dict[str, Any]) -> dict[str, object]:
     if not torch.cuda.is_available() or torch.cuda.device_count() < 1:
         raise RuntimeError("CUDA GPU is unavailable")
     device_name = str(torch.cuda.get_device_name(0))
+    c_compiler, c_compiler_version = _resolve_c_compiler()
+    _verify_triton_cuda_utils(c_compiler)
     selected_model, model_revision, model_snapshot_path = _resolve_exact_model_snapshot(config)
     from transformers import AutoConfig  # type: ignore[import-not-found]
 
@@ -779,6 +874,9 @@ def verify_gpu_runtime_and_model(config: dict[str, Any]) -> dict[str, object]:
         "cuda_available": True,
         "cuda_device_count": int(torch.cuda.device_count()),
         "gpu_model": device_name,
+        "c_compiler": c_compiler,
+        "c_compiler_version": c_compiler_version,
+        "triton_cuda_utils_compile": True,
         "datasets_version": datasets.__version__,
         "model": selected_model,
         "model_revision": model_revision,
@@ -787,7 +885,11 @@ def verify_gpu_runtime_and_model(config: dict[str, Any]) -> dict[str, object]:
 
 
 def _training_environment(
-    *, agent_path: Path, probe_root: Path, parent: dict[str, str] | None = None
+    *,
+    agent_path: Path,
+    probe_root: Path,
+    c_compiler: str,
+    parent: dict[str, str] | None = None,
 ) -> dict[str, str]:
     environment = dict(os.environ if parent is None else parent)
     # Ray's automatic ``uv run`` hook in 2.58 cannot handle the
@@ -812,6 +914,8 @@ def _training_environment(
     environment["HF_HUB_OFFLINE"] = "1"
     environment["HF_DATASETS_OFFLINE"] = "1"
     environment["TRANSFORMERS_OFFLINE"] = "1"
+    environment["CC"] = c_compiler
+    environment["TRITON_CACHE_DIR"] = str(probe_root.parent / "triton_cache")
     return environment
 
 
@@ -1064,6 +1168,9 @@ def launch(
         model_snapshot_path = runtime_evidence.get("model_snapshot_path")
         if not isinstance(model_snapshot_path, str) or not model_snapshot_path:
             raise RuntimeError("preflight model snapshot path is invalid")
+        c_compiler = runtime_evidence.get("c_compiler")
+        if not isinstance(c_compiler, str) or not c_compiler:
+            raise RuntimeError("preflight C compiler evidence is invalid")
         command = _finalize_model_paths(
             command,
             arm_id=arm_id,
@@ -1071,7 +1178,11 @@ def launch(
         )
         recorder.record_command(command)
         probe_root = recorder.path / "artifacts" / "update_probe"
-        environment = _training_environment(agent_path=agent_path, probe_root=probe_root)
+        environment = _training_environment(
+            agent_path=agent_path,
+            probe_root=probe_root,
+            c_compiler=c_compiler,
+        )
         recorder.record_environment_flags(environment)
         recorder.append_event("preflight_passed", final_oos_accessed=False if is_smoke else None)
         if preflight_only:
