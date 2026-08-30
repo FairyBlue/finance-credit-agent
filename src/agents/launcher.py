@@ -909,6 +909,7 @@ def _training_environment(
         ]
     )
     environment["FINANCE_UPDATE_PROBE_DIR"] = str(probe_root)
+    environment["FINANCE_VLLM_DRAIN_COMPAT"] = "0.9.2"
     environment["VLLM_USE_V1"] = "1"
     environment["HYDRA_FULL_ERROR"] = "1"
     environment["HF_HUB_OFFLINE"] = "1"

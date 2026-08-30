@@ -241,6 +241,7 @@ class LocalRunRecorder:
         names = (
             "CC",
             "CUDA_VISIBLE_DEVICES",
+            "FINANCE_VLLM_DRAIN_COMPAT",
             "HF_DATASETS_OFFLINE",
             "HF_HUB_OFFLINE",
             "HYDRA_FULL_ERROR",

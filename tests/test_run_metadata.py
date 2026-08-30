@@ -300,6 +300,7 @@ def test_training_environment_overrides_hostile_online_parent_values(tmp_path: P
     )
 
     assert environment["CC"] == str(compiler)
+    assert environment["FINANCE_VLLM_DRAIN_COMPAT"] == "0.9.2"
     assert environment["HF_HUB_OFFLINE"] == "1"
     assert environment["HF_DATASETS_OFFLINE"] == "1"
     assert environment["RAY_ENABLE_UV_RUN_RUNTIME_ENV"] == "0"

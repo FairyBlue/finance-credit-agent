@@ -1,5 +1,19 @@
-"""Load the opt-in optimizer update probe in every Python and Ray worker."""
+"""Load launcher-controlled runtime hooks in every Python and Ray worker."""
 
-from src.agents.update_probe import install_from_environment
 
-install_from_environment()
+def _install_runtime_hooks() -> None:
+    """Stop interpreter startup if required training instrumentation cannot load."""
+
+    try:
+        from src.agents.update_probe import install_from_environment as install_update_probe
+        from src.agents.vllm_compat import install_from_environment as install_vllm_compat
+
+        install_update_probe()
+        install_vllm_compat()
+    except Exception as exc:
+        # CPython deliberately swallows ordinary ``sitecustomize`` exceptions.
+        # SystemExit is outside that handler and keeps required G1 hooks fail-closed.
+        raise SystemExit(f"finance runtime hook installation failed: {exc}") from exc
+
+
+_install_runtime_hooks()
