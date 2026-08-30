@@ -628,6 +628,10 @@ def build_upstream_command(config: dict[str, Any], hashes: RunHashes) -> list[st
         _hydra("actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu", 1),
         _hydra("actor_rollout_ref.rollout.tensor_model_parallel_size", 1),
         _hydra("actor_rollout_ref.rollout.name", "vllm"),
+        # Pinned vLLM 0.9.2 predates this CLI flag; keep decoupled actor-side
+        # old-logprob recomputation explicit when omitting the rollout mode.
+        _hydra("actor_rollout_ref.rollout.logprobs_mode", "null"),
+        _hydra("actor_rollout_ref.rollout.calculate_log_probs", False),
         _hydra("actor_rollout_ref.rollout.gpu_memory_utilization", 0.55),
         _hydra("actor_rollout_ref.rollout.n", 1 if is_step_po else training["rollout_n"]),
         _hydra("actor_rollout_ref.rollout.engine_kwargs.vllm.seed", seed, add=True),
@@ -642,6 +646,7 @@ def build_upstream_command(config: dict[str, Any], hashes: RunHashes) -> list[st
         _hydra("actor_rollout_ref.ref.fsdp_config.param_offload", True),
         _hydra("reward_model.enable", False),
         _hydra("algorithm.use_kl_in_reward", False),
+        _hydra("algorithm.rollout_correction.bypass_mode", False),
         _hydra("trainer.critic_warmup", 0),
         _hydra("trainer.logger", logger),
         _hydra("trainer.project_name", _required(config, "tracking", "project")),
@@ -651,6 +656,7 @@ def build_upstream_command(config: dict[str, Any], hashes: RunHashes) -> list[st
         _hydra("trainer.save_freq", -1 if config.get("run", {}).get("smoke") else 50),
         _hydra("trainer.test_freq", 1),
         _hydra("trainer.total_epochs", training["total_epochs"]),
+        _hydra("ray_kwargs.ray_init.include_dashboard", False, add=True),
         _hydra("reproducibility.agent_r1_commit", hashes.agent_r1_commit, add=True),
         _hydra("reproducibility.repo_commit", hashes.repo_commit, add=True),
         _hydra("reproducibility.data_version", hashes.data_version, add=True),
