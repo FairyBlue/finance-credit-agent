@@ -74,6 +74,68 @@ def test_drain_compat_never_replaces_a_native_method() -> None:
     assert AsyncLLMFixture.wait_for_requests_to_drain is native_method
 
 
+def test_cumem_wake_releases_cached_pinned_backups_after_resume(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    events: list[object] = []
+
+    class CuMemAllocatorFixture:
+        def wake_up(self, tags: list[str] | None = None) -> str:
+            events.append(("wake", tags))
+            return "resumed"
+
+    monkeypatch.setattr(
+        vllm_compat,
+        "_empty_pinned_host_cache",
+        lambda: events.append("empty_host_cache"),
+    )
+
+    assert vllm_compat.patch_cumem_allocator_class(CuMemAllocatorFixture) is True
+    assert CuMemAllocatorFixture().wake_up(tags=["weights"]) == "resumed"
+    assert events == [("wake", ["weights"]), "empty_host_cache"]
+    assert vllm_compat.patch_cumem_allocator_class(CuMemAllocatorFixture) is False
+
+    events.clear()
+    assert CuMemAllocatorFixture().wake_up(tags=["kv_cache"]) == "resumed"
+    assert events == [("wake", ["kv_cache"])]
+
+    events.clear()
+    assert CuMemAllocatorFixture().wake_up() == "resumed"
+    assert events == [("wake", None), "empty_host_cache"]
+
+
+def test_cumem_wake_does_not_release_backups_after_failed_resume(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class CuMemAllocatorFixture:
+        def wake_up(self) -> None:
+            raise RuntimeError("resume failed")
+
+    empty_calls = 0
+
+    def count_empty_calls() -> None:
+        nonlocal empty_calls
+        empty_calls += 1
+
+    monkeypatch.setattr(vllm_compat, "_empty_pinned_host_cache", count_empty_calls)
+    vllm_compat.patch_cumem_allocator_class(CuMemAllocatorFixture)
+
+    with pytest.raises(RuntimeError, match="resume failed"):
+        CuMemAllocatorFixture().wake_up()
+    assert empty_calls == 0
+
+
+def test_host_cache_cleanup_fails_closed_without_pinned_torch_primitive(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    torch_fixture = ModuleType("torch")
+    torch_fixture._C = object()  # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, "torch", torch_fixture)
+
+    with pytest.raises(RuntimeError, match="pinned host cache cleanup is unavailable"):
+        vllm_compat._empty_pinned_host_cache()
+
+
 def test_install_is_inert_without_launcher_control(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -111,10 +173,24 @@ def test_install_patches_the_exact_vllm_class(
 
     modules = {
         name: ModuleType(name)
-        for name in ("vllm", "vllm.v1", "vllm.v1.engine", "vllm.v1.engine.async_llm")
+        for name in (
+            "vllm",
+            "vllm.device_allocator",
+            "vllm.device_allocator.cumem",
+            "vllm.v1",
+            "vllm.v1.engine",
+            "vllm.v1.engine.async_llm",
+        )
     }
-    for name in ("vllm", "vllm.v1", "vllm.v1.engine"):
+    for name in ("vllm", "vllm.device_allocator", "vllm.v1", "vllm.v1.engine"):
         modules[name].__path__ = []  # type: ignore[attr-defined]
+    class CuMemAllocatorFixture:
+        def wake_up(self) -> None:
+            return None
+
+    modules["vllm.device_allocator.cumem"].CuMemAllocator = (  # type: ignore[attr-defined]
+        CuMemAllocatorFixture
+    )
     modules["vllm.v1.engine.async_llm"].AsyncLLM = AsyncLLMFixture  # type: ignore[attr-defined]
     for name, module in modules.items():
         monkeypatch.setitem(sys.modules, name, module)
@@ -126,3 +202,5 @@ def test_install_patches_the_exact_vllm_class(
     method = AsyncLLMFixture.__dict__["wait_for_requests_to_drain"]
     assert method is vllm_compat._wait_for_requests_to_drain
     assert method.__dict__["_finance_vllm_092_drain_compat"] is True
+    wake_up = CuMemAllocatorFixture.__dict__["wake_up"]
+    assert wake_up.__dict__["_finance_vllm_092_host_cache_compat"] is True

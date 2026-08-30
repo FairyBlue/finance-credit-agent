@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import os
+from functools import wraps
 from importlib.metadata import version as package_version
 from typing import Any
 
@@ -49,6 +50,39 @@ def patch_async_llm_class(async_llm_class: type[Any]) -> bool:
     return True
 
 
+def _empty_pinned_host_cache() -> None:
+    """Return released vLLM sleep backups to the host memory controller."""
+
+    import torch
+
+    empty_cache = getattr(torch._C, "_host_emptyCache", None)
+    if not callable(empty_cache):
+        raise RuntimeError("pinned host cache cleanup is unavailable in the pinned torch build")
+    empty_cache()
+
+
+def patch_cumem_allocator_class(cumem_allocator_class: type[Any]) -> bool:
+    """Release cached pinned sleep backups after each successful vLLM wake-up."""
+
+    original = cumem_allocator_class.wake_up
+    if getattr(original, "_finance_vllm_092_host_cache_compat", False):
+        return False
+
+    @wraps(original)
+    def wake_up(instance: Any, *args: Any, **kwargs: Any) -> Any:
+        result = original(instance, *args, **kwargs)
+        tags = kwargs.get("tags", args[0] if args else None)
+        # Sleep level 1 backs up only weights. KV-cache wake-ups recreate
+        # discarded allocations and must not flush unrelated pinned buffers.
+        if tags is None or "weights" in tags:
+            _empty_pinned_host_cache()
+        return result
+
+    wake_up._finance_vllm_092_host_cache_compat = True  # type: ignore[attr-defined]
+    cumem_allocator_class.wake_up = wake_up
+    return True
+
+
 def install_from_environment() -> None:
     """Install the exact-version shim only in launcher-controlled workers."""
 
@@ -67,7 +101,15 @@ def install_from_environment() -> None:
             f"got {installed_version}"
         )
 
+    from vllm.device_allocator.cumem import CuMemAllocator
     from vllm.v1.engine.async_llm import AsyncLLM
 
-    if patch_async_llm_class(AsyncLLM):
-        logger.info("installed vLLM %s request-drain compatibility shim", installed_version)
+    drain_patched = patch_async_llm_class(AsyncLLM)
+    host_cache_patched = patch_cumem_allocator_class(CuMemAllocator)
+    if drain_patched or host_cache_patched:
+        logger.info(
+            "installed vLLM %s compatibility shims (request_drain=%s, host_cache=%s)",
+            installed_version,
+            drain_patched,
+            host_cache_patched,
+        )

@@ -691,6 +691,7 @@ def build_upstream_command(
     if isinstance(seed, bool) or not isinstance(seed, int) or seed < 0:
         raise ValueError("run.seed must be a non-negative integer")
     run_name = config.get("run", {}).get("name", f"{arm_id.lower()}-training")
+    is_smoke = bool(config.get("run", {}).get("smoke"))
     logger = ["console"]
     episodes = _positive_integer(config, "training", "episodes")
 
@@ -714,6 +715,9 @@ def build_upstream_command(
         _hydra("data.truncation", "error"),
         _hydra("data.return_raw_chat", True),
         _hydra("data.seed", seed),
+        # The four-row smoke does not benefit from verl's 16 persistent train/val
+        # loader children, which amplify cgroup pressure during hybrid sleep/wake.
+        *([_hydra("data.dataloader_num_workers", 0)] if is_smoke else []),
         _hydra("actor_rollout_ref.model.path", model_name),
         _hydra("actor_rollout_ref.actor.optim.lr", training["learning_rate"]),
         _hydra("actor_rollout_ref.actor.data_loader_seed", seed),
@@ -756,7 +760,7 @@ def build_upstream_command(
         _hydra("trainer.experiment_name", run_name),
         _hydra("trainer.n_gpus_per_node", training["n_gpus_per_node"]),
         _hydra("trainer.nnodes", 1),
-        _hydra("trainer.save_freq", -1 if config.get("run", {}).get("smoke") else 50),
+        _hydra("trainer.save_freq", -1 if is_smoke else 50),
         _hydra("trainer.test_freq", 1),
         _hydra("trainer.total_epochs", training["total_epochs"]),
         _hydra("ray_kwargs.ray_init.include_dashboard", False, add=True),

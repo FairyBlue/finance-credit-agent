@@ -256,6 +256,7 @@ def test_agent_loop_uses_the_explicit_episode_horizon_not_legacy_max_turns() -> 
 
     assert "actor_rollout_ref.rollout.agent.max_steps=32" in command
     assert "data.train_max_samples=4" in command
+    assert "data.dataloader_num_workers=0" in command
     assert "actor_rollout_ref.rollout.logprobs_mode=null" in command
     assert "+ray_kwargs.ray_init.include_dashboard=False" in command
     assert (
@@ -264,6 +265,24 @@ def test_agent_loop_uses_the_explicit_episode_horizon_not_legacy_max_turns() -> 
     )
     assert "actor_rollout_ref.rollout.calculate_log_probs=False" in command
     assert "algorithm.rollout_correction.bypass_mode=False" in command
+
+
+def test_non_smoke_run_preserves_upstream_dataloader_worker_default() -> None:
+    root = Path(__file__).resolve().parents[1]
+    config = load_experiment_config(root / "configs/smoke_1p7b.yaml")
+    config["run"]["smoke"] = False
+
+    command = build_upstream_command(
+        config,
+        RunHashes(
+            agent_r1_commit="a" * 40,
+            repo_commit="b" * 40,
+            data_version="fixture",
+            repo_dirty=False,
+        ),
+    )
+
+    assert all(not argument.startswith("data.dataloader_num_workers=") for argument in command)
 
 
 def test_episode_cap_rejects_non_positive_or_non_integer_values() -> None:
