@@ -415,7 +415,8 @@ def test_validation_identity_accepts_a_real_clean_submodule_and_rejects_overlays
     _run_git(repo, "init", "-q")
     (repo / "experiment.yaml").write_text("run: fixture\n", encoding="utf-8")
     (repo / ".gitignore").write_text(
-        ".venv/\ndata/\nruns/\n__pycache__/\n*.egg-info/\n.coverage\n"
+        ".venv/\ndata/\nruns/\n__pycache__/\n*.py[cod]\n*.egg-info/\n"
+        ".coverage\n.ignore\n"
         "configs/reviewed.yaml\n",
         encoding="utf-8",
     )
@@ -443,6 +444,7 @@ def test_validation_identity_accepts_a_real_clean_submodule_and_rejects_overlays
         repo / "src/fixture.egg-info/requires.txt",
         repo / "src/fixture.egg-info/top_level.txt",
         repo / ".coverage",
+        repo / ".ignore",
         repo / "configs/reviewed.yaml",
     ):
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -472,6 +474,20 @@ def test_validation_identity_accepts_a_real_clean_submodule_and_rejects_overlays
             expected_agent_r1_commit=agent_commit,
         )
     (repo / "src/fixture.egg-info/bootstrap.py").unlink()
+
+    for overlay in (
+        repo / "src/fixture.egg-info/entry_points.txt",
+        repo / "rogue.pyc",
+    ):
+        overlay.write_bytes(b"runtime-affecting overlay")
+        with pytest.raises(RuntimeError, match="repository overlays"):
+            verify_validation_identity(
+                repo_root=repo,
+                agent_r1_path=checkout,
+                expected_repo_commit=repo_commit,
+                expected_agent_r1_commit=agent_commit,
+            )
+        overlay.unlink()
 
     (repo / "sitecustomize.py").write_text("SENTINEL = True\n", encoding="utf-8")
     with pytest.raises(RuntimeError, match="repository overlays"):

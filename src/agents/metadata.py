@@ -176,6 +176,8 @@ def _is_allowed_artifact(path: str, *, roots: set[str]) -> bool:
     ):
         return True
     return candidate.name == ".DS_Store" or (
+        len(candidate.parts) == 1 and candidate.name == ".ignore"
+    ) or (
         len(candidate.parts) == 1 and candidate.name.startswith(".coverage")
     ) or (
         len(candidate.parts) == 1
