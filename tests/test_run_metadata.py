@@ -415,7 +415,8 @@ def test_validation_identity_accepts_a_real_clean_submodule_and_rejects_overlays
     _run_git(repo, "init", "-q")
     (repo / "experiment.yaml").write_text("run: fixture\n", encoding="utf-8")
     (repo / ".gitignore").write_text(
-        ".venv/\ndata/\nruns/\n__pycache__/\n.coverage\nconfigs/reviewed.yaml\n",
+        ".venv/\ndata/\nruns/\n__pycache__/\n*.egg-info/\n.coverage\n"
+        "configs/reviewed.yaml\n",
         encoding="utf-8",
     )
     _commit_all(repo, "root")
@@ -436,6 +437,11 @@ def test_validation_identity_accepts_a_real_clean_submodule_and_rejects_overlays
         repo / "data/history.parquet",
         repo / "runs/run/summary.json",
         repo / "__pycache__/module.pyc",
+        repo / "src/fixture.egg-info/PKG-INFO",
+        repo / "src/fixture.egg-info/SOURCES.txt",
+        repo / "src/fixture.egg-info/dependency_links.txt",
+        repo / "src/fixture.egg-info/requires.txt",
+        repo / "src/fixture.egg-info/top_level.txt",
         repo / ".coverage",
         repo / "configs/reviewed.yaml",
     ):
@@ -454,6 +460,18 @@ def test_validation_identity_accepts_a_real_clean_submodule_and_rejects_overlays
     assert isinstance(submodule_status, str)
     assert submodule_status.startswith(f" {agent_commit}")
     assert identity["tracked_config_sources"] == ["experiment.yaml"]
+
+    (repo / "src/fixture.egg-info/bootstrap.py").write_text(
+        "SENTINEL = True\n", encoding="utf-8"
+    )
+    with pytest.raises(RuntimeError, match="repository overlays"):
+        verify_validation_identity(
+            repo_root=repo,
+            agent_r1_path=checkout,
+            expected_repo_commit=repo_commit,
+            expected_agent_r1_commit=agent_commit,
+        )
+    (repo / "src/fixture.egg-info/bootstrap.py").unlink()
 
     (repo / "sitecustomize.py").write_text("SENTINEL = True\n", encoding="utf-8")
     with pytest.raises(RuntimeError, match="repository overlays"):

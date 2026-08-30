@@ -149,6 +149,13 @@ _SUBMODULE_ARTIFACT_ROOTS = {
     "outputs",
     "wandb",
 }
+_INERT_EGG_INFO_FILES = {
+    "PKG-INFO",
+    "SOURCES.txt",
+    "dependency_links.txt",
+    "requires.txt",
+    "top_level.txt",
+}
 
 
 def _nul_paths(value: str) -> set[str]:
@@ -160,6 +167,13 @@ def _is_allowed_artifact(path: str, *, roots: set[str]) -> bool:
     if not candidate.parts:
         return False
     if candidate.parts[0] in roots or "__pycache__" in candidate.parts:
+        return True
+    # Editable/build installs may leave setuptools metadata next to the source
+    # tree.  These files are inert for Python import; keep executable plugin
+    # metadata (for example entry_points.txt) and arbitrary files fail-closed.
+    if candidate.name in _INERT_EGG_INFO_FILES and any(
+        part.endswith(".egg-info") for part in candidate.parts[:-1]
+    ):
         return True
     return candidate.name == ".DS_Store" or (
         len(candidate.parts) == 1 and candidate.name.startswith(".coverage")
