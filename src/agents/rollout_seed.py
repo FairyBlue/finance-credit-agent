@@ -319,14 +319,30 @@ def _patch_loaded_agent_flow_module(module: ModuleType) -> None:
     if not issubclass(modified_class, base_class):
         raise RuntimeError("Agent-R1 Ray modified worker no longer inherits AgentFlowWorkerBase")
 
+    base_method = inspect.getattr_static(base_class, "_run_agent_flow", None)
+    if (
+        not inspect.isfunction(base_method)
+        or base_method.__module__ != _AGENT_FLOW_MODULE
+        or base_method.__qualname__ != "AgentFlowWorkerBase._run_agent_flow"
+        or getattr(base_method, "_finance_rollout_seed", False)
+    ):
+        raise RuntimeError("Agent-R1 base _run_agent_flow is no longer import-addressable")
+
     # Ray copies and trace-wraps inherited methods when @ray.remote executes.
-    # Patch that concrete dispatch class as well as the base class used directly.
+    # Only patch that concrete dispatch class. Keeping the base method at its
+    # importable module/qualname is essential: nested Ray actor export can then
+    # resolve the tracing wrapper's captured method against the actor process's
+    # live module globals (including its dynamically populated agent registry).
+    dispatch_method = inspect.getattr_static(modified_class, "_run_agent_flow", None)
+    if (
+        not inspect.isfunction(dispatch_method)
+        or inspect.unwrap(dispatch_method) is not base_method
+    ):
+        raise RuntimeError("Agent-R1 Ray dispatch no longer resolves to the importable base method")
     patch_agent_flow_worker_class(modified_class)
-    patch_agent_flow_worker_class(base_class)
-    for cls in (modified_class, base_class):
-        worker_class: Any = cls
-        if not getattr(worker_class._run_agent_flow, "_finance_rollout_seed", False):
-            raise RuntimeError("deterministic rollout seed patch did not attach to worker class")
+    worker_class: Any = modified_class
+    if not getattr(worker_class._run_agent_flow, "_finance_rollout_seed", False):
+        raise RuntimeError("deterministic rollout seed patch did not attach to worker class")
 
 
 class _AgentFlowPatchLoader(importlib.abc.Loader):

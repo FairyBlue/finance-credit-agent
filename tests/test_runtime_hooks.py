@@ -91,73 +91,134 @@ def test_sitecustomize_hook_failure_stops_interpreter(
 
 
 @pytest.mark.integration
-def test_real_ray_worker_installs_lazy_agent_flow_patch(tmp_path: Path) -> None:
+def test_nested_ray_actor_uses_live_agent_flow_registry(tmp_path: Path) -> None:
     if importlib.util.find_spec("ray") is None:
         pytest.skip("pinned Ray runtime is not installed")
     repo = Path(__file__).resolve().parents[1]
     seed_root = (tmp_path / "ray-seeds").resolve()
+    flow_config = (tmp_path / "agent-flow.yaml").resolve()
+    flow_config.write_text(
+        "- name: trading\n  _target_: ignored.fixture\n  marker: actor-live\n",
+        encoding="utf-8",
+    )
     script = f"""
 import json
 import ray
+from omegaconf import OmegaConf
 
 ray.init(
     address="local",
-    num_cpus=1,
+    num_cpus=3,
     include_dashboard=False,
-    runtime_env={{"env_vars": {{"FINANCE_ROLLOUT_SEED_DIR": {str(seed_root)!r}}}}},
+    runtime_env={{"env_vars": {{
+        "CUDA_VISIBLE_DEVICES": "",
+        "FINANCE_ROLLOUT_SEED_DIR": {str(seed_root)!r},
+    }}}},
 )
 
 @ray.remote
-def inspect_worker():
-    import asyncio
+def task_runner_probe():
+    import os
     import sys
-    from types import SimpleNamespace
     target = "agent_r1.agent_flow.agent_flow"
     imported_before_probe = target in sys.modules
     import agent_r1.agent_flow.agent_flow as agent_flow
     modified = agent_flow.AgentFlowWorker.__ray_metadata__.modified_class
-    identity = {{"step": 1, "sample_index": 3, "rollout_n": 0, "validate": False}}
 
-    class FlowFixture:
-        async def run(self, _sampling_params, **kwargs):
-            return kwargs["_finance_rollout_identity_v1"]
+    def lightweight_init(self, config, server_handles, reward_router_address=None):
+        import agent_r1.agent_flow.agent_flow as actor_agent_flow
 
-    instance = SimpleNamespace(
-        config=SimpleNamespace(data={{}}),
-        server_manager=object(),
-        reward_loop_worker=object(),
-        tokenizer=object(),
-        processor=None,
-        dataset_cls=object(),
-    )
-    agent_flow._agent_flow_registry["trading"] = {{}}
-    agent_flow.hydra.utils.instantiate = lambda **_kwargs: FlowFixture()
-    forwarded_identity = asyncio.run(
-        modified._run_agent_flow(
-            instance,
+        class RewardLoopWorkerFixture:
+            @classmethod
+            def options(cls, **_kwargs):
+                return cls()
+
+            def remote(self, *_args, **_kwargs):
+                return object()
+
+        actor_agent_flow.AsyncLLMServerManager = lambda *_args, **_kwargs: object()
+        actor_agent_flow.get_dataset_class = lambda _config: object
+        actor_agent_flow.copy_to_local = lambda path: path
+        actor_agent_flow.hf_tokenizer = lambda *_args, **_kwargs: object()
+        actor_agent_flow.hf_processor = lambda *_args, **_kwargs: None
+        actor_agent_flow.RewardLoopWorker = RewardLoopWorkerFixture
+        actor_agent_flow.RolloutTraceConfig.init = lambda *_args, **_kwargs: None
+        actor_agent_flow.AgentFlowWorkerBase.__init__(
+            self,
+            config,
+            server_handles,
+            reward_router_address,
+        )
+
+    async def probe_generate(self, _batch):
+        import os
+        import agent_r1.agent_flow.agent_flow as actor_agent_flow
+
+        identity = {{"step": 1, "sample_index": 3, "rollout_n": 0, "validate": False}}
+
+        class FlowFixture:
+            def __init__(self, marker):
+                self.marker = marker
+
+            async def run(self, _sampling_params, **kwargs):
+                return {{
+                    "forwarded_identity": kwargs["_finance_rollout_identity_v1"],
+                    "marker": self.marker,
+                }}
+
+        actor_agent_flow.hydra.utils.instantiate = lambda **call: FlowFixture(
+            call["config"]["marker"]
+        )
+        result = await self._run_agent_flow(
             {{}},
             identity,
             agent_name="trading",
             trace=False,
             index=3,
         )
-    )
+        return {{
+            **result,
+            "actor_pid": os.getpid(),
+            "base_patched": bool(getattr(
+                actor_agent_flow.AgentFlowWorkerBase._run_agent_flow,
+                "_finance_rollout_seed",
+                False,
+            )),
+            "dispatch_patched": bool(getattr(
+                type(self)._run_agent_flow,
+                "_finance_rollout_seed",
+                False,
+            )),
+            "registry_keys": sorted(actor_agent_flow._agent_flow_registry),
+        }}
+
+    modified.__init__ = lightweight_init
+    modified.generate_sequences = probe_generate
+    config = OmegaConf.create({{
+        "actor_rollout_ref": {{
+            "model": {{"path": "/fixture/model"}},
+            "rollout": {{
+                "agent": {{"agent_flow_config_path": {str(flow_config)!r}}},
+                "trace": {{}},
+            }},
+        }},
+        "data": {{}},
+        "trainer": {{"experiment_name": "nested-ray-test", "project_name": "test"}},
+    }})
+    actor = agent_flow.AgentFlowWorker.remote(config, [], None)
+    result = ray.get(actor.generate_sequences.remote(None))
     return {{
         "imported_before_probe": imported_before_probe,
-        "base_patched": bool(getattr(
-            agent_flow.AgentFlowWorkerBase._run_agent_flow,
-            "_finance_rollout_seed",
-            False,
-        )),
-        "modified_patched": bool(getattr(
+        "task_runner_dispatch_patched": bool(getattr(
             modified._run_agent_flow,
             "_finance_rollout_seed",
             False,
         )),
-        "forwarded_identity": forwarded_identity,
+        "task_runner_pid": os.getpid(),
+        "actor_result": result,
     }}
 
-print("RAY_HOOK_RESULT=" + json.dumps(ray.get(inspect_worker.remote()), sort_keys=True))
+print("RAY_HOOK_RESULT=" + json.dumps(ray.get(task_runner_probe.remote()), sort_keys=True))
 ray.shutdown()
 """
     environment = os.environ.copy()
@@ -183,7 +244,7 @@ ray.shutdown()
         text=True,
     )
     try:
-        stdout, stderr = process.communicate(timeout=120)
+        stdout, stderr = process.communicate(timeout=240)
     except subprocess.TimeoutExpired:
         os.killpg(process.pid, signal.SIGTERM)
         try:
@@ -194,17 +255,22 @@ ray.shutdown()
         pytest.fail(f"Ray hook probe timed out\nstdout:\n{stdout}\nstderr:\n{stderr}")
 
     assert process.returncode == 0, stdout + stderr
-    result_line = next(
-        line for line in stdout.splitlines() if line.startswith("RAY_HOOK_RESULT=")
-    )
-    assert json.loads(result_line.removeprefix("RAY_HOOK_RESULT=")) == {
-        "base_patched": True,
+    result_line = next(line for line in stdout.splitlines() if line.startswith("RAY_HOOK_RESULT="))
+    result = json.loads(result_line.removeprefix("RAY_HOOK_RESULT="))
+    assert result["imported_before_probe"] is False
+    assert result["task_runner_dispatch_patched"] is True
+    assert isinstance(result["actor_result"]["actor_pid"], int)
+    assert result["task_runner_pid"] != result["actor_result"]["actor_pid"]
+    assert result["actor_result"] == {
+        "actor_pid": result["actor_result"]["actor_pid"],
+        "base_patched": False,
+        "dispatch_patched": True,
         "forwarded_identity": {
             "rollout_n": 0,
             "sample_index": 3,
             "step": 1,
             "validate": False,
         },
-        "imported_before_probe": False,
-        "modified_patched": True,
+        "marker": "actor-live",
+        "registry_keys": ["agent_env_loop", "single_step_agent", "trading"],
     }
