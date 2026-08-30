@@ -257,6 +257,8 @@ def test_agent_loop_uses_the_explicit_episode_horizon_not_legacy_max_turns() -> 
     assert "actor_rollout_ref.rollout.agent.max_steps=32" in command
     assert "data.train_max_samples=4" in command
     assert "data.dataloader_num_workers=0" in command
+    assert "actor_rollout_ref.actor.fsdp_config.param_offload=True" in command
+    assert "actor_rollout_ref.actor.fsdp_config.optimizer_offload=False" in command
     assert "actor_rollout_ref.rollout.logprobs_mode=null" in command
     assert "+ray_kwargs.ray_init.include_dashboard=False" in command
     assert (
@@ -283,6 +285,8 @@ def test_non_smoke_run_preserves_upstream_dataloader_worker_default() -> None:
     )
 
     assert all(not argument.startswith("data.dataloader_num_workers=") for argument in command)
+    assert "actor_rollout_ref.actor.fsdp_config.param_offload=True" in command
+    assert "actor_rollout_ref.actor.fsdp_config.optimizer_offload=True" in command
 
 
 def test_episode_cap_rejects_non_positive_or_non_integer_values() -> None:

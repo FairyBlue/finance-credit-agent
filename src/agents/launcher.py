@@ -730,7 +730,9 @@ def build_upstream_command(
         _hydra("actor_rollout_ref.actor.kl_loss_type", "low_var_kl"),
         _hydra("actor_rollout_ref.actor.entropy_coeff", 0),
         _hydra("actor_rollout_ref.actor.fsdp_config.param_offload", True),
-        _hydra("actor_rollout_ref.actor.fsdp_config.optimizer_offload", True),
+        # Keep Adam state resident for the H100 smoke to avoid host transfers and
+        # memory.high reclaim; parameter offload still preserves rollout headroom.
+        _hydra("actor_rollout_ref.actor.fsdp_config.optimizer_offload", not is_smoke),
         _hydra("actor_rollout_ref.actor.fsdp_config.seed", seed),
         _hydra("actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu", 1),
         _hydra("actor_rollout_ref.rollout.tensor_model_parallel_size", 1),
