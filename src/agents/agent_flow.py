@@ -10,9 +10,46 @@ from agent_r1.agent_flow.agent_env_loop import AgentEnvLoop
 from src.env.trading import TradingEnv as _TradingEnv  # noqa: F401
 from src.rewards import StepContext, build_credit_strategy
 
+from .rollout_seed import (
+    ROLLOUT_IDENTITY_KWARG,
+    ROLLOUT_SEED_SCHEME,
+    build_seeded_server_manager,
+    normalize_rollout_identity,
+)
+
 
 class TradingAgentEnvLoop(AgentEnvLoop):
     """Agent-R1's generic step-MDP loop with the external trading env registered."""
+
+    server_manager: Any
+
+    async def run(self, sampling_params: dict[str, Any], **kwargs: Any):
+        if ROLLOUT_IDENTITY_KWARG not in kwargs:
+            raise RuntimeError(
+                "deterministic rollout identity was not supplied by the runtime hook"
+            )
+        identity = normalize_rollout_identity(kwargs.pop(ROLLOUT_IDENTITY_KWARG))
+        original_manager = self.server_manager
+        seeded_manager = build_seeded_server_manager(
+            original_manager,
+            base_seed=self.config.data.seed,
+            trajectory=identity,
+        )
+        self.server_manager = seeded_manager
+        try:
+            output = await super().run(sampling_params, **kwargs)
+        finally:
+            self.server_manager = original_manager
+        if len(output.steps) != len(seeded_manager.request_seeds):
+            raise RuntimeError(
+                "rollout seed evidence count does not match generated environment steps"
+            )
+        for step, request_seed in zip(
+            output.steps, seeded_manager.request_seeds, strict=True
+        ):
+            step.extra_fields["finance_rollout_seed"] = request_seed
+            step.extra_fields["finance_rollout_seed_scheme"] = ROLLOUT_SEED_SCHEME
+        return output
 
     async def _obs_to_prompt(
         self, obs: Any, tools: list[dict[str, Any]] | None = None

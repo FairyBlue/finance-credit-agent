@@ -43,6 +43,7 @@ from .metadata import (
     validate_composite_data_version,
     verify_validation_identity,
 )
+from .rollout_seed import summarize_rollout_seed_evidence
 from .update_probe import summarize_update_evidence
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -765,6 +766,7 @@ def build_upstream_command(
         _hydra("trainer.save_freq", -1 if is_smoke else 50),
         _hydra("trainer.test_freq", 1),
         _hydra("trainer.total_epochs", training["total_epochs"]),
+        _hydra("ray_kwargs.ray_init.address", "local", add=True),
         _hydra("ray_kwargs.ray_init.include_dashboard", False, add=True),
         # These hooks are needed only in Ray workers. Keeping them out of the
         # trainer's inherited environment prevents Ray's dashboard/runtime-env
@@ -801,6 +803,13 @@ def build_upstream_command(
             _hydra(
                 "ray_kwargs.ray_init.runtime_env.env_vars.FINANCE_UPDATE_PROBE_DIR",
                 str(update_probe_dir),
+                add=True,
+            )
+        )
+        command.append(
+            _hydra(
+                "ray_kwargs.ray_init.runtime_env.env_vars.FINANCE_ROLLOUT_SEED_DIR",
+                str(update_probe_dir.parent / "rollout_seed"),
                 add=True,
             )
         )
@@ -933,9 +942,12 @@ def _training_environment(
     # injection points. Keep the recorded training environment self-contained.
     environment.pop("RAY_RUNTIME_ENV_HOOK", None)
     environment.pop("RAY_JOB_CONFIG_JSON_ENV_VAR", None)
+    environment.pop("RAY_ADDRESS", None)
+    environment.pop("RAY_NAMESPACE", None)
     # Runtime instrumentation is injected explicitly through Ray's runtime_env.
     # Remove inherited values so Ray's own Python agents remain lightweight.
     environment.pop("FINANCE_UPDATE_PROBE_DIR", None)
+    environment.pop("FINANCE_ROLLOUT_SEED_DIR", None)
     environment.pop("FINANCE_VLLM_DRAIN_COMPAT", None)
     environment["PYTHONPATH"] = os.pathsep.join(
         [
@@ -1170,7 +1182,9 @@ def launch(
     )
     print(f"local run record: {recorder.path}")
     probe_root = recorder.path / "artifacts" / "update_probe"
+    rollout_seed_root = recorder.path / "artifacts" / "rollout_seed"
     update_evidence: dict[str, object] | None = None
+    rollout_seed_evidence: dict[str, object] | None = None
     try:
         recorder.append_event("preflight_started")
         if expected_commit is None:
@@ -1241,6 +1255,15 @@ def launch(
             )
             return 0
         returncode = _run_with_local_capture(command, environment=environment, recorder=recorder)
+        rollout_seed_evidence = summarize_rollout_seed_evidence(
+            rollout_seed_root,
+            expected_base_seed=_required(config, "run", "seed"),
+        )
+        if returncode == 0 and rollout_seed_evidence["training_request_count"] == 0:
+            raise RuntimeError(
+                "training exited successfully but no deterministic training request seed "
+                "evidence was recorded"
+            )
         update_evidence = summarize_update_evidence(probe_root)
         representative = update_evidence.get("representative_update")
         if isinstance(representative, dict):
@@ -1263,6 +1286,7 @@ def launch(
             extra={
                 "final_oos_accessed": False if is_smoke else None,
                 "optimizer_update_evidence": update_evidence,
+                "rollout_seed_evidence": rollout_seed_evidence,
                 "model_revision": model_revision,
             },
         )
@@ -1274,6 +1298,7 @@ def launch(
             extra={
                 "final_oos_accessed": False if is_smoke else None,
                 "optimizer_update_evidence": update_evidence,
+                "rollout_seed_evidence": rollout_seed_evidence,
             },
         )
         raise

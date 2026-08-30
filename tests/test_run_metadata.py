@@ -261,6 +261,7 @@ def test_agent_loop_uses_the_explicit_episode_horizon_not_legacy_max_turns() -> 
     assert "actor_rollout_ref.actor.fsdp_config.optimizer_offload=False" in command
     assert "actor_rollout_ref.rollout.logprobs_mode=null" in command
     assert "+ray_kwargs.ray_init.include_dashboard=False" in command
+    assert "+ray_kwargs.ray_init.address=local" in command
     assert (
         "+ray_kwargs.ray_init.runtime_env.env_vars.FINANCE_VLLM_DRAIN_COMPAT=0.9.2"
         in command
@@ -317,10 +318,13 @@ def test_training_environment_overrides_hostile_online_parent_values(tmp_path: P
         parent={
             "CC": "/tmp/untrusted-compiler",
             "FINANCE_UPDATE_PROBE_DIR": "/tmp/untrusted-probe",
+            "FINANCE_ROLLOUT_SEED_DIR": "/tmp/untrusted-seeds",
             "FINANCE_VLLM_DRAIN_COMPAT": "0.10.0",
             "HF_HUB_OFFLINE": "0",
             "HF_DATASETS_OFFLINE": "0",
             "RAY_ENABLE_UV_RUN_RUNTIME_ENV": "1",
+            "RAY_ADDRESS": "ray://untrusted.example:10001",
+            "RAY_NAMESPACE": "untrusted-namespace",
             "RAY_RUNTIME_ENV_HOOK": "untrusted.hook",
             "RAY_JOB_CONFIG_JSON_ENV_VAR": '{"runtime_env":{"working_dir":"/tmp"}}',
             "TRANSFORMERS_OFFLINE": "false",
@@ -330,10 +334,13 @@ def test_training_environment_overrides_hostile_online_parent_values(tmp_path: P
 
     assert environment["CC"] == str(compiler)
     assert "FINANCE_UPDATE_PROBE_DIR" not in environment
+    assert "FINANCE_ROLLOUT_SEED_DIR" not in environment
     assert "FINANCE_VLLM_DRAIN_COMPAT" not in environment
     assert environment["HF_HUB_OFFLINE"] == "1"
     assert environment["HF_DATASETS_OFFLINE"] == "1"
     assert environment["RAY_ENABLE_UV_RUN_RUNTIME_ENV"] == "0"
+    assert "RAY_ADDRESS" not in environment
+    assert "RAY_NAMESPACE" not in environment
     assert "RAY_RUNTIME_ENV_HOOK" not in environment
     assert "RAY_JOB_CONFIG_JSON_ENV_VAR" not in environment
     assert environment["TRANSFORMERS_OFFLINE"] == "1"
@@ -371,6 +378,10 @@ def test_update_probe_is_injected_only_through_ray_worker_runtime_env(tmp_path: 
     assert (
         "+ray_kwargs.ray_init.runtime_env.env_vars.FINANCE_UPDATE_PROBE_DIR="
         f"{probe_root}"
+    ) in command
+    assert (
+        "+ray_kwargs.ray_init.runtime_env.env_vars.FINANCE_ROLLOUT_SEED_DIR="
+        f"{probe_root.parent / 'rollout_seed'}"
     ) in command
 
 

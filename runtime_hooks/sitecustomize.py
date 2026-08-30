@@ -5,11 +5,15 @@ def _install_runtime_hooks() -> None:
     """Stop interpreter startup if required training instrumentation cannot load."""
 
     try:
+        from src.agents.rollout_seed import (
+            install_from_environment as install_rollout_seed,
+        )
         from src.agents.update_probe import install_from_environment as install_update_probe
         from src.agents.vllm_compat import install_from_environment as install_vllm_compat
 
         install_update_probe()
         install_vllm_compat()
+        install_rollout_seed()
     except Exception as exc:
         # CPython deliberately swallows ordinary ``sitecustomize`` exceptions.
         # SystemExit is outside that handler and keeps required G1 hooks fail-closed.
