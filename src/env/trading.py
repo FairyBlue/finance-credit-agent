@@ -254,11 +254,7 @@ class TradingEnv(ToolEnv):
                 storage_root=str(Path(str(storage_root)).expanduser().resolve()),
                 symbols=self._symbols,
                 data_version=str(data_version),
-                data_start=(
-                    data_start
-                    if isinstance(data_start, str)
-                    else data_start.isoformat()
-                ),
+                data_start=(data_start if isinstance(data_start, str) else data_start.isoformat()),
                 data_end=(data_end if isinstance(data_end, str) else data_end.isoformat()),
                 input_manifest_sha256=input_manifest_sha256,
                 input_file_count=input_file_count,
@@ -333,6 +329,10 @@ class TradingEnv(ToolEnv):
     @property
     def current_date(self) -> datetime:
         return self._dates[self._index]
+
+    @property
+    def symbols(self) -> tuple[str, ...]:
+        return self._symbols
 
     def reset(self, **kwargs: Any) -> Observation:
         self.ledger = PortfolioLedger(
@@ -421,15 +421,14 @@ class TradingEnv(ToolEnv):
         matches: list[dict[str, object]] = []
         truncated = False
         for observation in self._snapshot():
-            record = observation.canonical_record()
             if symbol is not None and observation.symbol != symbol:
                 continue
-            if query not in json.dumps(record, ensure_ascii=False, sort_keys=True).casefold():
+            compact = self._compact_retrieval_record(observation)
+            if query not in json.dumps(compact, ensure_ascii=False, sort_keys=True).casefold():
                 continue
             if len(matches) >= args.limit:
                 truncated = True
                 break
-            compact = self._compact_retrieval_record(observation)
             candidate = {
                 "as_of": self.current_date.isoformat(),
                 "results": [*matches, compact],

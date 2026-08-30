@@ -175,6 +175,8 @@ requires a clean, reviewed configuration and a passing implementation of T2 v2; 
 ignored.
 
 ```bash
+export FCA_VALIDATION_COMMIT=REPLACE_WITH_EXACT_40_CHAR_COMMIT
+
 # CPU-safe command/config/hash validation.
 uv run --no-sync python -m src.agents.arm_a1 --config configs/smoke_1p7b.yaml --dry-run
 
@@ -184,7 +186,8 @@ CUDA_VISIBLE_DEVICES=0 uv run --no-sync python scripts/verify_context_budget.py 
 
 # H100 preflight only: no training and no Final OOS access.
 CUDA_VISIBLE_DEVICES=0 uv run --no-sync python -m src.agents.arm_a1 \
-  --config configs/smoke_1p7b.yaml --preflight-only
+  --config configs/smoke_1p7b.yaml --preflight-only \
+  --expected-commit "$FCA_VALIDATION_COMMIT"
 
 # Verify the external plugin imports against the locked submodule.
 PYTHONPATH="$PWD:$PWD/third_party/agent-r1" uv run --no-sync python - <<'PY'
@@ -198,13 +201,16 @@ PY
 # One-GPU Qwen3-1.7B outcome-only smoke with structured local evidence.
 # Do not run until the exact P0 validation commit passes stack, tests,
 # CONTEXT_BUDGET_PASSED, and PREFLIGHT_PASSED on H100.
-CUDA_VISIBLE_DEVICES=0 scripts/run_queue.sh configs/smoke_1p7b.yaml
+CUDA_VISIBLE_DEVICES=0 uv run --no-sync python -m src.agents.arm_a1 \
+  --config configs/smoke_1p7b.yaml \
+  --expected-commit "$FCA_VALIDATION_COMMIT"
 ```
 
-The queue has no implicit default. A formal queue requires `--formal` and preflights every config
-before the first training process; T2 v2 currently blocks those formal preflights. `run.seed` is
-propagated to the main data/actor/critic/vLLM random sources, but distributed GPU execution is not
-promised to be bitwise deterministic.
+Set `FCA_VALIDATION_COMMIT` to the exact committed SHA being validated; non-dry launch fails if HEAD,
+tracked files, the Agent-R1 submodule, or experiment code/config overlays differ. The queue is
+disabled for all arguments and never invokes `uv`; formal training also remains blocked by T2 v2.
+`run.seed` is propagated to the main data/actor/critic/vLLM random sources, but distributed GPU
+execution is not promised to be bitwise deterministic.
 
 The run record must contain non-empty `reproducibility.agent_r1_commit`,
 `reproducibility.repo_commit`, and `reproducibility.data_version`; the first must equal the submodule

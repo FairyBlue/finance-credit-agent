@@ -70,7 +70,12 @@ def test_tokenized_prompt_budget_passes_and_fails_closed_at_both_limits() -> Non
         max_agent_steps=32,
         reserved_information_steps=2,
     )
-    assert [scenario.label for scenario in scenarios] == ["planned-ascii", "legal-unicode-max"]
-    unicode_queries = scenarios[-1].retrieve_queries
+    assert [scenario.label for scenario in scenarios] == [
+        "planned-ascii",
+        "legal-unicode-max",
+        "max-positions-mixed-bounded",
+        "invalid-unicode-unknown-tool",
+    ]
+    unicode_queries = scenarios[1].retrieve_queries
     assert len(unicode_queries) == 3
     assert all(len(query) == 200 and not query.isascii() for query in unicode_queries)

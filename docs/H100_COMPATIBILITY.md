@@ -1,14 +1,17 @@
 # H100 兼容性与 clean-clone 复现
 
-更新日期：`2026-08-29`
+更新日期：`2026-08-30`
 
 文档定位：本文是长期维护的 H100 版本、安装和证据合同。具体实验必须使用对应 runbook 指定的
 精确 commit；本文的通用安装说明不能替代实验任务单。
 
+当前任务单：
+[`2026-08-30_H100_G1_P1_VALIDATION_RUNBOOK.md`](2026-08-30_H100_G1_P1_VALIDATION_RUNBOOK.md)。
+
 当前状态：`PARTIALLY_READY`。H100 stack 和完整 preflight 已在验证提交 `8a090b8` 上通过，但
-本轮复用了已存在的 pinned `.venv`，没有验证从空 `.venv` 重装；`9b72dca` 修复旧膨胀路径后又
-发现 4,548-token 的合法三次 Unicode retrieve 路径，P0 已重新打开。第二轮修复仅在本机通过，
-尚未冻结为 validation commit 或在 H100 复验，真实 G1 未启动。完整证据见
+本轮复用了已存在的 pinned `.venv`，没有验证从空 `.venv` 重装。Unicode-safe P0 与 exact
+model/offline、episode cap、增量证据、validation identity、direct-only P1 集成仅在本机通过，
+尚未冻结为 validation commit 或在 H100 复验，真实 G1 未启动。历史证据见
 [`2026-08-27_H100_G1_AUDIT_RESULTS.md`](2026-08-27_H100_G1_AUDIT_RESULTS.md)。
 
 ## 1. 身份与证据边界
@@ -151,22 +154,24 @@ wandb 参数。lock 中的传递 package 不等于重新启用 W&B。
 
 ## 8. queue 安全语义
 
-允许的 smoke 调用：
+G1 只允许 direct launcher；先由 runbook 提供 exact commit：
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 scripts/run_queue.sh configs/smoke_1p7b.yaml
+export FCA_VALIDATION_COMMIT=REPLACE_WITH_EXACT_40_CHAR_COMMIT
+CUDA_VISIBLE_DEVICES=0 uv run --no-sync python -m src.agents.arm_a1 \
+  --config configs/smoke_1p7b.yaml \
+  --expected-commit "$FCA_VALIDATION_COMMIT"
 ```
 
-正式队列必须显式授权：
+`scripts/run_queue.sh` 对所有参数都 fail closed，且不得调用 `uv`：
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 scripts/run_queue.sh --formal \
-  configs/arm_a1.yaml configs/arm_a2.yaml configs/arm_a3.yaml
+scripts/run_queue.sh configs/smoke_1p7b.yaml
+scripts/run_queue.sh --formal configs/arm_a1.yaml
 ```
 
-无参数或未带 `--formal` 的正式配置会在调用 uv 前退出非零。所有配置先完成 preflight；全部通过
-后才启动第一项训练。任一 preflight 或训练失败都会保留非零退出码并停止后续任务。当前 T2 v2
-尚未实现，所以正式 preflight 仍应 fail closed。
+在 queue 的 stage-aware process-group、信号和退出码语义重新设计并验收前，不得恢复。当前 T2 v2
+尚未实现，正式 launcher 仍应 fail closed。
 
 ## 9. G1 规模与验收边界
 
@@ -177,7 +182,7 @@ candidate、batch size 2、epoch 1 和 processed-data preflight 共同约束；�
 G1 至少要求：
 
 - `optimizer_step_count >= 1`；
-- `global_step >= 1`；
+- `observed_update_record_count >= 1`（仅表示探针记录存在，不是独立 trainer step）；
 - gradient finite；
 - parameter update detected 且 delta finite/non-zero；
 - Final OOS 未访问。
@@ -212,12 +217,13 @@ torch 2.9/vLLM 0.12 环境产出本项目结果。
 | FlashAttention H100 kernel | `PASSED`，2026-08-26 | `PASSED`，验证代码 `8a090b8`，复用 pinned `.venv` |
 | 从空 `.venv` clean-clone 安装 | 未记录 | `NOT TESTED` |
 | 完整 preflight-only | 未执行 | `PASSED`，未启动训练，Final OOS 未访问 |
-| Prompt-budget P0 修复 | 不适用 | `REOPENED / LOCAL PATCH`；4,548-token Unicode 漏测路径已补门禁，待新 validation commit 与 H100 复验 |
-| 端到端 rollout / optimizer update | 未执行 | `NOT RUN`，等待 P0 的 H100 context-budget 与 preflight 复验 |
+| Prompt-budget P0 修复 | 不适用 | `LOCAL PASS / H100 UNVERIFIED`；Train/Valid 四类路径待实机复验 |
+| P1 启动与证据门禁 | 不适用 | `LOCAL PASS / H100 UNVERIFIED`；exact snapshot/offline/cap/identity/direct-only 已实现 |
+| 端到端 rollout / optimizer update | 未执行 | `NOT RUN`，等待 P0/P1 的 H100 context-budget 与 preflight 复验 |
 | G1 smoke | 未执行 | `BLOCKED` |
-| 当前 pytest | 旧结果仅供历史参考 | `138 passed`（当前 Mac） |
+| 当前 pytest | 旧结果仅供历史参考 | `141 passed`（当前 Mac） |
 | Ruff / mypy | 旧结果仅供历史参考 | 通过；H100 审计中的 mypy 检查 44 个 source files |
 | lock / local sync / pip check | 旧结果仅供历史参考 | 通过；236 packages resolved，57 packages compatible |
 
-项目状态保持 `PARTIALLY_READY`。下一步是冻结包含第二轮 prompt-budget P0 修复的新 validation commit，
-然后在 H100 重新执行 stack、测试、context-budget 和 preflight 门禁；通过前不得启动 G1。
+项目状态保持 `PARTIALLY_READY`。下一步是冻结包含 P0/P1 集成的新 validation commit，然后在 H100
+重新执行 stack、测试、context-budget 和 preflight 门禁；通过前不得启动 G1。

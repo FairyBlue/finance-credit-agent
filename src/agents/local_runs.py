@@ -103,7 +103,16 @@ class LocalRunRecorder:
         (path / "command.txt").write_text(shlex.join(command) + "\n", encoding="utf-8")
         config_path = path / "resolved_config.yaml"
         config_path.write_text(yaml.safe_dump(config, sort_keys=True), encoding="utf-8")
-        config_sha256 = sha256(config_path.read_bytes()).hexdigest()
+        config_file_sha256 = sha256(config_path.read_bytes()).hexdigest()
+        canonical_config_sha256 = sha256(
+            json.dumps(
+                config,
+                allow_nan=False,
+                ensure_ascii=False,
+                separators=(",", ":"),
+                sort_keys=True,
+            ).encode()
+        ).hexdigest()
         diff = subprocess.run(
             ["git", "-C", str(repo), "diff", "--binary", "HEAD"],
             check=False,
@@ -176,7 +185,8 @@ class LocalRunRecorder:
                 "status": "RUNNING",
                 "started_at_utc": started,
                 "run_id": identifier,
-                "resolved_config_sha256": config_sha256,
+                "canonical_merged_config_sha256": canonical_config_sha256,
+                "resolved_config_file_sha256": config_file_sha256,
                 "data_manifest_sha256": data_manifest_sha256,
                 "model_name": (
                     model.get("name") or model.get("train") if isinstance(model, dict) else None
@@ -188,6 +198,50 @@ class LocalRunRecorder:
             },
         )
         return recorder
+
+    def record_command(self, command: list[str]) -> dict[str, object]:
+        """Replace the provisional command after preflight resolves local-only inputs."""
+
+        command_path = self.path / "command.txt"
+        command_path.write_text(shlex.join(command) + "\n", encoding="utf-8")
+        evidence: dict[str, object] = {
+            "argv": command,
+            "command_file_sha256": sha256(command_path.read_bytes()).hexdigest(),
+        }
+        self.record_evidence("final_command", evidence)
+        return evidence
+
+    def record_environment_flags(self, environment: dict[str, str]) -> dict[str, str]:
+        """Record only the approved non-secret controls supplied to the trainer."""
+
+        names = (
+            "CUDA_VISIBLE_DEVICES",
+            "HF_HUB_OFFLINE",
+            "HYDRA_FULL_ERROR",
+            "TRANSFORMERS_OFFLINE",
+            "VLLM_USE_V1",
+        )
+        flags = {name: environment[name] for name in names if name in environment}
+        environment_path = self.path / "environment.json"
+        document = json.loads(environment_path.read_text(encoding="utf-8"))
+        document["trainer_environment_flags"] = flags
+        _write_json(environment_path, document)
+        self.record_evidence("trainer_environment", flags)
+        return flags
+
+    def record_evidence(self, stage: str, value: object) -> None:
+        """Persist each completed preflight stage before later gates can fail."""
+
+        evidence_path = self.path / "artifacts" / "preflight_evidence.json"
+        document: dict[str, object] = {}
+        if evidence_path.exists():
+            loaded = json.loads(evidence_path.read_text(encoding="utf-8"))
+            if isinstance(loaded, dict):
+                document = loaded
+        document[stage] = value
+        _write_json(evidence_path, document)
+        self.append_event("preflight_stage_passed", stage=stage)
+        self.last_completed_stage = stage
 
     def append_event(self, event: str, **fields: object) -> None:
         self.events.write(
@@ -229,7 +283,7 @@ class LocalRunRecorder:
             "exit_code": returncode if returncode is not None else 1,
             "wall_clock_seconds": time.monotonic() - self.started_monotonic,
             "last_completed_stage": self.last_completed_stage,
-            "global_step": int(optimizer.get("global_update_count", 0)),
+            "observed_update_record_count": int(optimizer.get("global_update_count", 0)),
             "optimizer_step_count": int(optimizer.get("optimizer_step_count", 0)),
             "backward_count": int(optimizer.get("backward_count", 0)),
             "peak_gpu_memory_bytes": int(optimizer.get("peak_gpu_memory_bytes", 0)),
@@ -241,6 +295,9 @@ class LocalRunRecorder:
             }
         if extra:
             summary.update(extra)
+        evidence_path = self.path / "artifacts" / "preflight_evidence.json"
+        if evidence_path.exists():
+            summary["preflight_evidence"] = json.loads(evidence_path.read_text(encoding="utf-8"))
         self.append_event("run_finished", status=status, returncode=returncode)
         _write_json(summary_path, summary)
         self.events.close()

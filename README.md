@@ -54,7 +54,7 @@ src/rewards/              A_fin and M1/M2/M3 strategy interface
 src/agents/               three training entrypoints, hash capture, Agent-R1 flows
 src/evaluation/           shared metrics/baselines and three standard figures
 tests/                    leakage, accounting, reward, environment, and metric specifications
-scripts/run_queue.sh      one-GPU sequential experiment queue
+scripts/run_queue.sh      fail-closed disabled queue; G1 uses the direct launcher
 scripts/watchdog.py       collapsed-reward/repeated-output process watchdog
 scripts/fetch_history.py  freeze yfinance/Stooq train+valid inputs and checksums
 scripts/build_smoke_manifest.py generate the deterministic history-only G1 manifest draft
@@ -210,26 +210,25 @@ worker independently recomputes its source manifest on first load before caching
 ## Training and evaluation
 
 ```bash
+export FCA_VALIDATION_COMMIT=REPLACE_WITH_EXACT_40_CHAR_COMMIT
+
 # Inspect exact upstream command and the three recorded hashes without a GPU.
 uv run --no-sync python -m src.agents.arm_a1 --config configs/smoke_1p7b.yaml --dry-run
 
 # H100-only preflight; performs no training and never accesses Final OOS.
 CUDA_VISIBLE_DEVICES=0 uv run --no-sync python -m src.agents.arm_a1 \
-  --config configs/smoke_1p7b.yaml --preflight-only
+  --config configs/smoke_1p7b.yaml --preflight-only \
+  --expected-commit "$FCA_VALIDATION_COMMIT"
 
 # H100 smoke run with structured local evidence under runs/<run_id>/.
-scripts/run_queue.sh configs/smoke_1p7b.yaml
-
-# Formal queues require explicit authorization and all-config preflight.
-# T2 v2 currently blocks this command before training starts.
-CUDA_VISIBLE_DEVICES=0 scripts/run_queue.sh --formal \
-  configs/arm_a1.yaml configs/arm_a2.yaml configs/arm_a3.yaml
+CUDA_VISIBLE_DEVICES=0 uv run --no-sync python -m src.agents.arm_a1 \
+  --config configs/smoke_1p7b.yaml \
+  --expected-commit "$FCA_VALIDATION_COMMIT"
 ```
 
-With no arguments the queue exits non-zero before invoking uv. The watchdog terminates only the
-active queued PID after eight logged zero-reward updates or eight identical model-output records,
-writes the reason to `runs/queue_logs/watchdog_events.jsonl`, and the queue stops with a non-zero
-status instead of continuing to later experiments.
+`scripts/run_queue.sh` is disabled fail-closed for every argument and never invokes `uv`. Until its
+stage-aware process-group and signal semantics are redesigned and reviewed, use only the direct
+launcher commands above. Formal runs remain blocked by T2 v2.
 
 `src/evaluation/` computes cumulative/annualized return, Sharpe, Sortino, maximum drawdown, turnover,
 cost ratio, benchmark-adjusted return, tool-call count/success, invalid-call and abstain rates, token

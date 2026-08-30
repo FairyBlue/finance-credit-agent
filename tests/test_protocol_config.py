@@ -34,9 +34,7 @@ def test_h100_dependency_lock_preserves_the_verified_runtime_contract() -> None:
     flash_attn = next(block for block in packages if '\nname = "flash-attn"\n' in block)
     assert f'source = {{ url = "{FLASH_ATTN_WHEEL}" }}' in flash_attn
     assert "sdist =" not in flash_attn
-    assert "sha256:8d7502817aacefb906a06d991b5c5777ecbc541aeefd76fb46466aaa787f0034" in (
-        flash_attn
-    )
+    assert "sha256:8d7502817aacefb906a06d991b5c5777ecbc541aeefd76fb46466aaa787f0034" in (flash_attn)
 
     pyarrow = next(block for block in packages if '\nname = "pyarrow"\n' in block)
     transformers = next(block for block in packages if '\nname = "transformers"\n' in block)
@@ -210,6 +208,10 @@ def test_tracking_is_local_and_declares_the_file_sync_plan() -> None:
 def test_g1_smoke_uses_exact_valid_shadow_and_no_final_oos() -> None:
     config = load_experiment_config(ROOT / "configs/smoke_1p7b.yaml")
 
+    assert config["model"]["name"] == "Qwen/Qwen3-1.7B"
+    assert config["model"]["debug"] == "Qwen/Qwen3-1.7B"
+    assert config["model"]["local_files_only"] is True
+    assert config["model"]["revision"] == "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e"
     assert config["data"]["sources"]["stockbench"] is None
     assert config["data"]["split_source"] == {
         "train": "history",

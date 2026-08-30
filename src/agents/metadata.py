@@ -96,3 +96,69 @@ def collect_run_hashes(
         data_version=data_version,
         repo_dirty=dirty,
     )
+
+
+def verify_validation_identity(
+    *,
+    repo_root: Path,
+    agent_r1_path: Path,
+    expected_repo_commit: str,
+    expected_agent_r1_commit: str,
+    allowed_untracked_paths: tuple[Path, ...] = (),
+) -> dict[str, object]:
+    """Bind a validation to an external commit and reject runtime code/config overlays."""
+
+    if len(expected_repo_commit) != 40 or any(
+        character not in "0123456789abcdef" for character in expected_repo_commit
+    ):
+        raise RuntimeError("--expected-commit must be a full lowercase 40-character commit")
+    actual_repo_commit = _git(repo_root, "rev-parse", "HEAD")
+    if actual_repo_commit != expected_repo_commit:
+        raise RuntimeError(
+            f"validation commit mismatch: expected {expected_repo_commit}, got {actual_repo_commit}"
+        )
+    tracked_status = _git(repo_root, "status", "--porcelain", "--untracked-files=no")
+    if tracked_status:
+        raise RuntimeError("validation requires a clean tracked working tree")
+
+    actual_agent_commit = _git(agent_r1_path, "rev-parse", "HEAD")
+    if actual_agent_commit != expected_agent_r1_commit:
+        raise RuntimeError(
+            f"Agent-R1 checkout mismatch: expected {expected_agent_r1_commit}, "
+            f"got {actual_agent_commit}"
+        )
+    relative_agent = agent_r1_path.resolve().relative_to(repo_root.resolve())
+    submodule_status = _git(repo_root, "submodule", "status", "--", str(relative_agent))
+    expected_status = f" {expected_agent_r1_commit}"
+    if not submodule_status.startswith(expected_status):
+        raise RuntimeError("Agent-R1 submodule is not at the clean pinned commit")
+
+    scopes = ("src", "configs", "runtime_hooks", "scripts")
+    candidates: set[str] = set()
+    for arguments in (
+        ("ls-files", "--others", "--exclude-standard", "--", *scopes),
+        ("ls-files", "--others", "--ignored", "--exclude-standard", "--", *scopes),
+    ):
+        output = _git(repo_root, *arguments)
+        candidates.update(line for line in output.splitlines() if line)
+    allowed = {
+        str(path.resolve().relative_to(repo_root.resolve())) for path in allowed_untracked_paths
+    }
+    risky_suffixes = {".py", ".yaml", ".yml", ".sh", ".toml"}
+    risky = sorted(
+        path
+        for path in candidates
+        if path not in allowed and Path(path).suffix.casefold() in risky_suffixes
+    )
+    if risky:
+        raise RuntimeError(
+            "validation found untracked or ignored experiment code/config: " + ", ".join(risky)
+        )
+    return {
+        "expected_repo_commit": expected_repo_commit,
+        "repo_commit": actual_repo_commit,
+        "tracked_working_tree": "clean",
+        "agent_r1_commit": actual_agent_commit,
+        "submodule_status": submodule_status,
+        "experiment_overlays": [],
+    }

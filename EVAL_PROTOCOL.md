@@ -303,3 +303,33 @@ A1/Qwen3-1.7B wiring-smoke merged-config SHA-256 为
 H100 GPU extra、本地模型 revision、reviewed smoke manifest 和三个 processed 文件，也未运行真实
 smoke。CPU-only `--preflight-only` 已按预期在 GPU 依赖检查处失败并保留结构化失败 summary；该结果
 不构成 G1 进展。
+
+## 13. v0.7 G1 P1 执行约束提案（2026-08-30，待线下审核）
+
+本节记录当前实现，尚不表示 H100 验收通过，也不改变正式训练由 T2 v2 阻断的状态。线下审核完成
+前，G1 继续保持 `BLOCKED`。
+
+- 唯一 smoke 模型固定为 `Qwen/Qwen3-1.7B` revision
+  `70d244cc86ccca08cf5af4e1e306ecf908b1ad5e`。preflight 只接受本地 exact snapshot，最终
+  actor/critic 命令不得保留模型 repo ID；训练环境强制
+  `HF_HUB_OFFLINE=1`、`TRANSFORMERS_OFFLINE=1`。
+- Smoke merged-config canonical SHA-256 更新为
+  `2ec544cb4e539cdbc2d3301b255384d3fdd770f5801f8d0ba3194081ac39d844`。它取代 v0.6 的
+  `6c58a822...`，但不改变采样日期、reward、Regime 或 Final OOS 边界。
+- `training.episodes=4` 同时绑定 processed train 行数和上游
+  `data.train_max_samples=4`；布尔值、零、负数、浮点数和字符串均不得作为 episode cap。
+- `retrieve` 每次最多 3 条，结果 JSON 最多 1 KiB，recent events 最多 3 条；用户控制文本以
+  Unicode-safe 的有界 ASCII 摘要进入状态。模型仅保留当前两条消息，真实 tokenizer 门禁覆盖
+  Train/Valid、计划 ASCII、三次最大 Unicode retrieve、多持仓混合路径及 Unicode unknown-tool
+  错误路径，并同时检查 prompt limit 与 prompt + response 的模型上下文上限。
+- `retrieve` 只匹配最终可见的 compact evidence，不得根据随后会被删除的原始字段命中。
+- 非 dry-run 必须由外部传入 `--expected-commit <40-char SHA>`，并核对 HEAD、tracked tree、
+  Agent-R1 submodule 和实验相关未跟踪/ignored 代码或配置。reviewed manifest 可作为明确允许的
+  线下输入。
+- `summary.global_step` 已删除，因为它过去只是 optimizer probe 记录数的别名。当前准确字段为
+  `observed_update_record_count`；G1 的有效更新证据是 `backward_count >= 1`、
+  `optimizer_step_count >= 1`、finite gradient 和 non-zero parameter delta。
+- `scripts/run_queue.sh` 在所有参数下 fail closed，且不得启动 `uv` 或训练。P1 验收只允许本文档
+  记录的 direct launcher；正式训练仍由 T2 v2 单独阻断。
+- 每个 preflight 阶段完成后立即写入 `artifacts/preflight_evidence.json`；后续阶段失败不得抹掉
+  已完成的 Git、模型、数据、manifest、processed rows、prompt budget、最终命令及环境证据。

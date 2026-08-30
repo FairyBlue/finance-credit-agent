@@ -332,6 +332,10 @@ def test_g1_history_and_retrieve_output_stay_bounded_across_eight_advances() -> 
             sort_keys=True,
         ).encode("ascii")
         assert len(encoded) <= TradingEnv.MAX_RETRIEVE_BYTES
+        hidden_payload = env._retrieve(
+            RetrieveArgs(query="secret", limit=TradingEnv.MAX_RETRIEVE_RESULTS)
+        )
+        assert hidden_payload["returned"] == 0
 
     asyncio.run(episode())
 
@@ -382,10 +386,7 @@ def test_finance_risk_uses_maximum_daily_bilateral_turnover_not_episode_sum() ->
     dates = [datetime(2025, 1, day, 21, 0, tzinfo=UTC) for day in (2, 3, 6, 7)]
     opens = [datetime(2025, 1, day, 14, 30, tzinfo=UTC) for day in (2, 3, 6, 7)]
     adapter = StockBenchAdapter(
-        [
-            _bar(day, open_price=100.0, close_price=100.0)
-            for day in (2, 3, 6, 7)
-        ],
+        [_bar(day, open_price=100.0, close_price=100.0) for day in (2, 3, 6, 7)],
         data_version="daily-turnover-fixture-v1",
     )
     env = TradingEnv(

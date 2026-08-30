@@ -35,10 +35,12 @@ class PromptBudgetCase:
 
 @dataclass(frozen=True)
 class PromptBudgetScenario:
-    """A legal retrieve pattern that the tokenizer gate must cover."""
+    """A legal or invalid-but-recoverable path that the tokenizer gate must cover."""
 
     label: str
     retrieve_queries: tuple[str, ...]
+    advancing_action: str = "hold"
+    invalid_tool_name: str | None = None
 
 
 @dataclass(frozen=True)
@@ -135,6 +137,16 @@ def build_prompt_budget_scenarios(
         PromptBudgetScenario(
             label="legal-unicode-max",
             retrieve_queries=(unicode_query,) * unicode_retrieves,
+        ),
+        PromptBudgetScenario(
+            label="max-positions-mixed-bounded",
+            retrieve_queries=(unicode_query, unicode_query, "market"),
+            advancing_action="buy-next-symbol",
+        ),
+        PromptBudgetScenario(
+            label="invalid-unicode-unknown-tool",
+            retrieve_queries=(),
+            invalid_tool_name="💹" * max_query_chars,
         ),
     )
 
@@ -233,13 +245,44 @@ async def _collect_episode_cases(
                 )
             )
 
-        observation, _, done, _ = await env.step(Action(text=_tool_action("hold")))
+        if scenario.invalid_tool_name is not None:
+            for invalid_index in range(3):
+                observation, _, done, _ = await env.step(
+                    Action(text=_tool_action(scenario.invalid_tool_name))
+                )
+                if done or observation.messages is None:
+                    raise RuntimeError(f"{label} terminated during invalid-tool budget audit")
+                cases.append(
+                    PromptBudgetCase(
+                        label=(
+                            f"{label}/{scenario.label}/session-{session_index}/"
+                            f"invalid-{invalid_index}"
+                        ),
+                        messages=observation.messages,
+                        tools=env.tool_schemas,
+                    )
+                )
+
+        action_name = "hold"
+        action_arguments: dict[str, object] | None = None
+        if scenario.advancing_action == "buy-next-symbol":
+            symbols = env.symbols
+            if len(symbols) < advancing_actions:
+                raise RuntimeError(f"{label} lacks symbols for max-position prompt audit")
+            action_name = "buy"
+            action_arguments = {
+                "symbol": symbols[session_index],
+                "target_weight": 0.1,
+            }
+        observation, _, done, _ = await env.step(
+            Action(text=_tool_action(action_name, action_arguments))
+        )
         expected_done = session_index == advancing_actions - 1
         if done is not expected_done or observation.messages is None:
             raise RuntimeError(f"{label} terminal boundary changed during prompt audit")
         cases.append(
             PromptBudgetCase(
-                label=f"{label}/{scenario.label}/session-{session_index}/hold",
+                label=f"{label}/{scenario.label}/session-{session_index}/{action_name}",
                 messages=observation.messages,
                 tools=env.tool_schemas,
             )
@@ -275,15 +318,6 @@ def verify_smoke_context_budget(
     model_config = AutoConfig.from_pretrained(snapshot, local_files_only=True)
     model_context_tokens = _model_context_tokens(model_config)
 
-    train_path = root / str(_required(config, "data", "processed", "train_file"))
-    frame = pd.read_parquet(train_path)
-    expected_episodes = int(_required(config, "training", "episodes"))
-    if len(frame) != expected_episodes:
-        raise RuntimeError(
-            f"prompt-budget train candidate count {len(frame)} does not match "
-            f"training.episodes={expected_episodes}"
-        )
-
     reward_modes = {
         "A1": "outcome_only",
         "A2": "generic_step",
@@ -295,49 +329,78 @@ def verify_smoke_context_budget(
     information_steps = int(_required(config, "training", "reserved_information_steps_per_session"))
     max_agent_steps = int(_required(config, "training", "max_agent_steps"))
 
-    cases: list[PromptBudgetCase] = []
+    grouped_cases: dict[tuple[str, str], list[PromptBudgetCase]] = {}
     checked_scenarios: set[str] = set()
-    for index, row in frame.iterrows():
-        label = f"train-{index}"
-        raw_prompt = _normalize_messages(row["prompt"], label=label)
-        try:
-            env_kwargs = json.loads(row["env_kwargs"])
-        except (TypeError, json.JSONDecodeError) as error:
-            raise RuntimeError(f"{label} env_kwargs is not valid JSON") from error
-        if not isinstance(env_kwargs, dict):
-            raise RuntimeError(f"{label} env_kwargs is not a mapping")
-        advancing_actions = len(env_kwargs.get("episode_dates", [])) - 1
-        scenarios = build_prompt_budget_scenarios(
-            advancing_actions=advancing_actions,
-            max_query_chars=TradingEnv.MAX_RETRIEVE_QUERY_CHARS,
-            max_agent_steps=max_agent_steps,
-            reserved_information_steps=information_steps,
-        )
-        for scenario in scenarios:
-            checked_scenarios.add(scenario.label)
-            cases.extend(
-                asyncio.run(
-                    _collect_episode_cases(
-                        label=label,
-                        raw_prompt=raw_prompt,
-                        env_kwargs=env_kwargs,
-                        reward_mode=reward_modes[arm_id],
-                        scenario=scenario,
+    split_counts: dict[str, int] = {}
+    for split in ("train", "valid"):
+        path = root / str(_required(config, "data", "processed", f"{split}_file"))
+        frame = pd.read_parquet(path)
+        if frame.empty:
+            raise RuntimeError(f"prompt-budget {split} candidate set is empty")
+        if split == "train":
+            expected_episodes = int(_required(config, "training", "episodes"))
+            if len(frame) != expected_episodes:
+                raise RuntimeError(
+                    f"prompt-budget train candidate count {len(frame)} does not match "
+                    f"training.episodes={expected_episodes}"
+                )
+        split_counts[split] = len(frame)
+        for index, row in frame.iterrows():
+            label = f"{split}-{index}"
+            raw_prompt = _normalize_messages(row["prompt"], label=label)
+            try:
+                env_kwargs = json.loads(row["env_kwargs"])
+            except (TypeError, json.JSONDecodeError) as error:
+                raise RuntimeError(f"{label} env_kwargs is not valid JSON") from error
+            if not isinstance(env_kwargs, dict):
+                raise RuntimeError(f"{label} env_kwargs is not a mapping")
+            advancing_actions = len(env_kwargs.get("episode_dates", [])) - 1
+            scenarios = build_prompt_budget_scenarios(
+                advancing_actions=advancing_actions,
+                max_query_chars=TradingEnv.MAX_RETRIEVE_QUERY_CHARS,
+                max_agent_steps=max_agent_steps,
+                reserved_information_steps=information_steps,
+            )
+            for scenario in scenarios:
+                checked_scenarios.add(scenario.label)
+                grouped_cases.setdefault((split, scenario.label), []).extend(
+                    asyncio.run(
+                        _collect_episode_cases(
+                            label=label,
+                            raw_prompt=raw_prompt,
+                            env_kwargs=env_kwargs,
+                            reward_mode=reward_modes[arm_id],
+                            scenario=scenario,
+                        )
                     )
                 )
-            )
 
-    audit = verify_tokenized_prompt_budget(
-        tokenizer=tokenizer,
-        cases=cases,
-        prompt_limit=int(_required(config, "training", "max_prompt_length")),
-        response_limit=int(_required(config, "training", "max_response_length")),
-        model_context_tokens=model_context_tokens,
-    )
+    prompt_limit = int(_required(config, "training", "max_prompt_length"))
+    response_limit = int(_required(config, "training", "max_response_length"))
+    scenario_audits: dict[str, dict[str, object]] = {"train": {}, "valid": {}}
+    audits: list[PromptBudgetAudit] = []
+    for (split, scenario_label), cases in grouped_cases.items():
+        audit = verify_tokenized_prompt_budget(
+            tokenizer=tokenizer,
+            cases=cases,
+            prompt_limit=prompt_limit,
+            response_limit=response_limit,
+            model_context_tokens=model_context_tokens,
+        )
+        audits.append(audit)
+        scenario_audits[split][scenario_label] = audit.as_dict()
+    max_audit = max(audits, key=lambda item: item.max_prompt_tokens)
     return {
-        **audit.as_dict(),
-        "episodes_checked": len(frame),
+        "cases_checked": sum(audit.cases_checked for audit in audits),
+        "max_case": max_audit.max_case,
+        "max_prompt_tokens": max_audit.max_prompt_tokens,
+        "model_context_tokens": model_context_tokens,
+        "prompt_limit": prompt_limit,
+        "response_limit": response_limit,
+        "episodes_checked": split_counts,
+        "splits_checked": ["train", "valid"],
         "model_snapshot_path": str(snapshot),
+        "per_split_scenario": scenario_audits,
         "scenarios_checked": sorted(checked_scenarios),
         "tokenizer_class": type(tokenizer).__name__,
     }

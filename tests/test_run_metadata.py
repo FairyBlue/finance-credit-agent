@@ -12,6 +12,7 @@ import pytest
 import yaml
 
 import src.agents.launcher as launcher_module
+import src.agents.metadata as metadata_module
 from src.agents.config import load_experiment_config
 from src.agents.launcher import (
     build_upstream_command,
@@ -21,7 +22,12 @@ from src.agents.launcher import (
     verify_smoke_processed_row_provenance,
 )
 from src.agents.local_runs import LocalRunRecorder
-from src.agents.metadata import RunHashes, composite_data_version, validate_composite_data_version
+from src.agents.metadata import (
+    RunHashes,
+    composite_data_version,
+    validate_composite_data_version,
+    verify_validation_identity,
+)
 from src.agents.update_probe import summarize_update_evidence
 from src.data.episodes import benchmark_series_sha256
 from src.data.integrity import audit_raw_daily_manifest
@@ -51,6 +57,7 @@ def test_failed_local_run_preserves_complete_reproducibility_record(
         ),
         run_id="fixture-run",
     )
+    recorder.record_evidence("identity", {"repo_commit": "b" * 40})
     recorder.finish(returncode=None, error=RuntimeError("preflight blocked"))
 
     assert {path.name for path in recorder.path.iterdir()} == {
@@ -71,6 +78,9 @@ def test_failed_local_run_preserves_complete_reproducibility_record(
         "message": "preflight blocked",
         "type": "RuntimeError",
     }
+    assert summary["preflight_evidence"]["identity"] == {"repo_commit": "b" * 40}
+    assert "global_step" not in summary
+    assert summary["observed_update_record_count"] == 0
     assert json.loads((recorder.path / "git_state.json").read_text())["repo_dirty"] is True
 
 
@@ -243,6 +253,115 @@ def test_agent_loop_uses_the_explicit_episode_horizon_not_legacy_max_turns() -> 
     )
 
     assert "actor_rollout_ref.rollout.agent.max_steps=32" in command
+    assert "data.train_max_samples=4" in command
+
+
+def test_episode_cap_rejects_non_positive_or_non_integer_values() -> None:
+    root = Path(__file__).resolve().parents[1]
+    for invalid in (False, 0, -1, 1.5, "4"):
+        config = load_experiment_config(root / "configs/smoke_1p7b.yaml")
+        config["training"]["episodes"] = invalid
+        with pytest.raises(ValueError, match="training.episodes must be a positive integer"):
+            build_upstream_command(
+                config,
+                RunHashes(
+                    agent_r1_commit="a" * 40,
+                    repo_commit="b" * 40,
+                    data_version="fixture",
+                    repo_dirty=False,
+                ),
+            )
+
+
+def test_training_environment_overrides_hostile_online_parent_values(tmp_path: Path) -> None:
+    environment = launcher_module._training_environment(
+        agent_path=tmp_path / "agent-r1",
+        probe_root=tmp_path / "probe",
+        parent={"HF_HUB_OFFLINE": "0", "TRANSFORMERS_OFFLINE": "false"},
+    )
+
+    assert environment["HF_HUB_OFFLINE"] == "1"
+    assert environment["TRANSFORMERS_OFFLINE"] == "1"
+    command = [
+        "python",
+        "actor_rollout_ref.model.path=Qwen/Qwen3-1.7B",
+        "critic.model.path=Qwen/Qwen3-1.7B",
+    ]
+    command = launcher_module._replace_hydra_override(
+        command, "actor_rollout_ref.model.path", "/cache/snapshots/exact"
+    )
+    command = launcher_module._replace_hydra_override(
+        command, "critic.model.path", "/cache/snapshots/exact"
+    )
+    assert all("Qwen/Qwen3-1.7B" not in argument for argument in command)
+
+
+def test_model_resolution_requires_the_exact_local_revision(tmp_path: Path) -> None:
+    root = Path(__file__).resolve().parents[1]
+    config = load_experiment_config(root / "configs/smoke_1p7b.yaml")
+    revision = config["model"]["revision"]
+    snapshot = tmp_path / "models--Qwen--Qwen3-1.7B" / "snapshots" / revision
+    snapshot.mkdir(parents=True)
+
+    model, resolved_revision, resolved_snapshot = launcher_module._resolve_exact_model_snapshot(
+        config, cache_root=tmp_path
+    )
+    assert model == "Qwen/Qwen3-1.7B"
+    assert resolved_revision == revision
+    assert resolved_snapshot == snapshot.resolve()
+
+    config["model"]["revision"] = "c" * 40
+    with pytest.raises(RuntimeError, match="exact model revision is not cached locally"):
+        launcher_module._resolve_exact_model_snapshot(config, cache_root=tmp_path)
+
+
+def test_validation_identity_fails_closed_on_each_code_identity_risk(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    expected = "a" * 40
+    agent_commit = "b" * 40
+    repo = tmp_path / "repo"
+    agent = repo / "third_party" / "agent-r1"
+    agent.mkdir(parents=True)
+
+    def exercise(
+        *,
+        head: str = expected,
+        tracked: str = "",
+        submodule: str | None = None,
+        untracked: str = "",
+    ) -> None:
+        def fake_git(target: Path, *arguments: str) -> str:
+            if target == agent:
+                return agent_commit
+            if arguments == ("rev-parse", "HEAD"):
+                return head
+            if arguments[:2] == ("status", "--porcelain"):
+                return tracked
+            if arguments[:2] == ("submodule", "status"):
+                return submodule if submodule is not None else f" {agent_commit} agent-r1"
+            if arguments[:2] == ("ls-files", "--others"):
+                return untracked
+            raise AssertionError(arguments)
+
+        monkeypatch.setattr(metadata_module, "_git", fake_git)
+        verify_validation_identity(
+            repo_root=repo,
+            agent_r1_path=agent,
+            expected_repo_commit=expected,
+            expected_agent_r1_commit=agent_commit,
+        )
+
+    failures = (
+        ({"head": "c" * 40}, "validation commit mismatch"),
+        ({"tracked": " M src/agents/launcher.py"}, "clean tracked working tree"),
+        ({"submodule": f"+{agent_commit} agent-r1"}, "clean pinned commit"),
+        ({"untracked": "src/runtime_override.py"}, "experiment code/config"),
+    )
+    for arguments, message in failures:
+        with pytest.raises(RuntimeError, match=message):
+            exercise(**arguments)
+    exercise()
 
 
 @pytest.mark.parametrize(
@@ -389,6 +508,8 @@ def test_only_declared_wiring_smoke_can_bypass_the_t2_gate(tmp_path: Path) -> No
         (("arm", "id"), "A2"),
         (("model", "name"), "Qwen/Qwen3-4B"),
         (("model", "debug"), "Qwen/Qwen3-4B"),
+        (("model", "revision"), "main"),
+        (("model", "local_files_only"), False),
         (("training", "episodes"), 5),
         (("training", "max_agent_steps"), 31),
         (("training", "train_batch_size"), 3),
