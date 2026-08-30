@@ -52,6 +52,7 @@ FLOW_CONFIGS = {
 WIRING_SMOKE_KIND = "wiring_smoke_1p7b"
 WIRING_SMOKE_CONFIG_SHA256 = "2ec544cb4e539cdbc2d3301b255384d3fdd770f5801f8d0ba3194081ac39d844"
 QWEN3_1P7B_REVISION = "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e"
+DATASETS_VERSION = "4.0.0"
 
 
 def _required(config: dict[str, Any], *path: str) -> Any:
@@ -746,12 +747,18 @@ def verify_gpu_runtime_and_model(config: dict[str, Any]) -> dict[str, object]:
 
     missing = [
         module
-        for module in ("torch", "verl", "vllm", "flash_attn")
+        for module in ("datasets", "torch", "verl", "vllm", "flash_attn")
         if importlib.util.find_spec(module) is None
     ]
     if missing:
         raise RuntimeError(
             "GPU extra is incomplete; missing importable modules: " + ", ".join(missing)
+        )
+    import datasets
+
+    if datasets.__version__ != DATASETS_VERSION:
+        raise RuntimeError(
+            f"datasets=={DATASETS_VERSION} is required, got {datasets.__version__}"
         )
     import torch
 
@@ -766,6 +773,7 @@ def verify_gpu_runtime_and_model(config: dict[str, Any]) -> dict[str, object]:
         "cuda_available": True,
         "cuda_device_count": int(torch.cuda.device_count()),
         "gpu_model": device_name,
+        "datasets_version": datasets.__version__,
         "model": selected_model,
         "model_revision": model_revision,
         "model_snapshot_path": str(model_snapshot_path),
@@ -796,6 +804,7 @@ def _training_environment(
     environment["VLLM_USE_V1"] = "1"
     environment["HYDRA_FULL_ERROR"] = "1"
     environment["HF_HUB_OFFLINE"] = "1"
+    environment["HF_DATASETS_OFFLINE"] = "1"
     environment["TRANSFORMERS_OFFLINE"] = "1"
     return environment
 

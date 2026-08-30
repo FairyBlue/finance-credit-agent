@@ -11,7 +11,7 @@ from importlib.metadata import version
 import torch
 
 EXPECTED_DISTRIBUTIONS = {
-    "datasets": "1.2.1",
+    "datasets": "4.0.0",
     "flash-attn": "2.8.0.post2",
     "pyarrow": "20.0.0",
     "transformers": "4.53.2",

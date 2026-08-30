@@ -143,7 +143,8 @@ class LocalRunRecorder:
                 "python_executable": sys.executable,
                 "platform": platform.platform(),
                 "packages": {
-                    name: _package_version(name) for name in ("torch", "verl", "vllm", "flash-attn")
+                    name: _package_version(name)
+                    for name in ("datasets", "torch", "verl", "vllm", "flash-attn")
                 },
                 "gpu": _gpu_inventory(),
             },
@@ -239,6 +240,7 @@ class LocalRunRecorder:
 
         names = (
             "CUDA_VISIBLE_DEVICES",
+            "HF_DATASETS_OFFLINE",
             "HF_HUB_OFFLINE",
             "HYDRA_FULL_ERROR",
             "RAY_ENABLE_UV_RUN_RUNTIME_ENV",

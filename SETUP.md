@@ -2,7 +2,7 @@
 
 These steps target one Linux x86_64 H100-NVL (96 GB) and CPython 3.10.20. The pinned GPU set is
 PyTorch 2.7.0+cu128, vLLM 0.9.2, flash-attn 2.8.0.post2, verl 0.7.0, Transformers
-4.53.2, and PyArrow 20.0.0. See [`docs/H100_COMPATIBILITY.md`](docs/H100_COMPATIBILITY.md) for the
+4.53.2, PyArrow 20.0.0, and datasets 4.0.0. See [`docs/H100_COMPATIBILITY.md`](docs/H100_COMPATIBILITY.md) for the
 wheel hash, evidence boundary, and upgrade policy.
 
 ## 1. Driver, repository, and submodule

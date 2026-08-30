@@ -43,10 +43,12 @@ model/offline、episode cap、增量证据、validation identity、direct-only P
 | flash-attn | `2.8.0.post2` | 预编译 direct wheel |
 | Transformers | `4.53.2` | Linux x86_64 `gpu` extra |
 | PyArrow | `20.0.0` | 项目核心依赖 |
-| datasets | `1.2.1` | GPU 栈传递依赖；验收脚本检查 import 与版本 |
+| datasets | `4.0.0` | Linux x86_64 `gpu` extra；内置本地 Parquet loader |
 
-PyArrow 20 是兼容性上限，不是随意选择：`datasets==1.2.1` 仍使用从 PyArrow 21 起删除的
-`PyExtensionType`。Transformers 4.53.2 是 vLLM 0.9.2/Agent-R1 已验证组合，不能让 resolver
+`datasets==1.2.1` 读取本地 Parquet 时仍会联网获取旧 loader script，无法满足本项目的
+offline 合同；`4.0.0` 将 Parquet builder 内置于 wheel，且与冻结的 PyArrow 20 兼容。
+PyArrow 20 继续作为已验证 H100 ABI 的固定版本，不能随 resolver 漂移。
+Transformers 4.53.2 是 vLLM 0.9.2/Agent-R1 已验证组合，不能让 resolver
 自动漂移到 5.x。
 
 ## 3. FlashAttention wheel 合同
@@ -192,7 +194,7 @@ G1 至少要求：
 
 ## 10. 升级禁区与维护门禁
 
-不要单独升级 torch、vLLM、verl、flash-attn、Transformers、PyArrow 或 Python。任何运行栈变更
+不要单独升级 torch、vLLM、verl、flash-attn、Transformers、datasets、PyArrow 或 Python。任何运行栈变更
 必须作为一个整体重新 lock，并至少完成：
 
 ```bash

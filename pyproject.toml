@@ -9,7 +9,7 @@ dependencies = [
   "matplotlib>=3.8,<4",
   "numpy>=1.26,<3",
   "pandas>=2.1,<4",
-  # datasets==1.2.1 still imports pa.PyExtensionType, removed in PyArrow 21.
+  # Keep the Arrow ABI fixed across the verified H100 environment.
   "pyarrow==20.0.0",
   "pydantic>=2.8,<3",
   "pyyaml>=6.0.2,<7",
@@ -23,6 +23,7 @@ data = [
 # Linux/x86_64 markers keep the default development environment CPU-only.
 # Exact versions mirror the locked Agent-R1 revision; see SETUP.md.
 gpu = [
+  "datasets==4.0.0; sys_platform == 'linux' and platform_machine == 'x86_64'",
   "flash-attn==2.8.0.post2; python_version == '3.10' and sys_platform == 'linux' and platform_machine == 'x86_64'",
   "torch==2.7.0; sys_platform == 'linux' and platform_machine == 'x86_64'",
   "transformers==4.53.2; sys_platform == 'linux' and platform_machine == 'x86_64'",
@@ -78,6 +79,7 @@ module = [
   "exchange_calendars.*",
   "flash_attn",
   "flash_attn.*",
+  "datasets.*",
   "pandas.*",
   "torch",
   "torch.*",

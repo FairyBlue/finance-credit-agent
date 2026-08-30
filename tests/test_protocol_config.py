@@ -4,6 +4,7 @@ from copy import deepcopy
 from pathlib import Path
 
 import exchange_calendars as xcals
+import pandas as pd
 import pytest
 import yaml
 
@@ -28,6 +29,7 @@ def test_h100_dependency_lock_preserves_the_verified_runtime_contract() -> None:
     packages = lock.split("[[package]]")
 
     assert '"pyarrow==20.0.0"' in project
+    assert '"datasets==4.0.0;' in project
     assert '"transformers==4.53.2;' in project
     assert FLASH_ATTN_WHEEL in project
 
@@ -36,13 +38,45 @@ def test_h100_dependency_lock_preserves_the_verified_runtime_contract() -> None:
     assert "sdist =" not in flash_attn
     assert "sha256:8d7502817aacefb906a06d991b5c5777ecbc541aeefd76fb46466aaa787f0034" in (flash_attn)
 
+    datasets = next(block for block in packages if '\nname = "datasets"\n' in block)
     pyarrow = next(block for block in packages if '\nname = "pyarrow"\n' in block)
     transformers = next(block for block in packages if '\nname = "transformers"\n' in block)
     torch = next(block for block in packages if '\nname = "torch"\n' in block)
+    assert '\nversion = "4.0.0"\n' in datasets
     assert '\nversion = "20.0.0"\n' in pyarrow
     assert '\nversion = "4.53.2"\n' in transformers
     assert '\nversion = "2.7.0+cu128"\n' in torch
     assert 'source = { registry = "https://download.pytorch.org/whl/cu128" }' in torch
+
+
+def test_pinned_datasets_loads_local_parquet_without_remote_builder(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("HF_DATASETS_OFFLINE", "1")
+    datasets = pytest.importorskip("datasets")
+    parquet_path = tmp_path / "nested.parquet"
+    pd.DataFrame(
+        [
+            {
+                "data_source": "fixture/train",
+                "prompt": [{"role": "user", "content": "local only"}],
+                "reward_model": {"style": "rule"},
+                "extra_info": {"episode_id": "fixture-001"},
+                "env_kwargs": {"episode_dates": ["2024-01-02T21:00:00+00:00"]},
+            }
+        ]
+    ).to_parquet(parquet_path, index=False)
+
+    loaded = datasets.load_dataset(
+        "parquet",
+        data_files=str(parquet_path),
+        split="train",
+        cache_dir=str(tmp_path / "datasets-cache"),
+    )
+
+    assert datasets.__version__ == "4.0.0"
+    assert len(loaded) == 1
+    assert loaded[0]["extra_info"]["episode_id"] == "fixture-001"
 
 
 def test_public_event_regimes_cover_every_oos_session_exactly_once() -> None:
