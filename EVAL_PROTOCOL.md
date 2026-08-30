@@ -63,8 +63,8 @@
 | 2026-08-24 | v0.3 amendment：冻结 train-only 奖励标定、软阈值、事件 Regime、T2 v2 与唯一 smoke 豁免 | 历史自动归档记录；不构成当前人工签字，按 v0.8 线下复核 |
 | 2026-08-24 | v0.4 amendment：旧自动归档确认流程 | 已由 v0.8 废止 |
 | 2026-08-25 | v0.6 amendment：G1 改用 Valid shadow test、Final OOS fail-closed、本地结构化运行证据 | 用户明确批准，按本节归档 |
-| 2026-08-30 | v0.7 proposal：G1 P1 执行约束 | 待合作者线下审核 |
-| 2026-08-30 | v0.8 amendment：审核/签字只由合作者线下完成 | 流程生效；具体 reviewer/time 仍待人工填写 |
+| 2026-08-30 | v0.7 amendment：G1 P1 执行约束 | 两位合作者线下人工审核通过；授权唯一一次 G1 wiring smoke |
+| 2026-08-30 | v0.8 amendment：审核/签字只由合作者线下完成 | 两位合作者线下共同审核已完成；记录时间为 2026-08-30T14:46:33+00:00 |
 
 ## 8. v0.2 修订（2026-08-24，用户明确批准）
 
@@ -134,8 +134,8 @@ v1 探针冻结为 ridge linear direction probe。每个特征行 $X_t$ 的标�
 
 > 本节以追加方式修订 v0.1/v0.2，不删除或改写既有冻结历史；冲突处以本节为准。
 > 预注册规则与数值已经确定；其 immutable payload hash 不受 reviewer 元数据影响。
-> `configs/reward_calibration.pending.yaml` 当前恢复为 `pending_human_signature`，按 v0.8 由合作者
-> 线下复核并记录 reviewer/time；自动 agent 不得代签。
+> 两位合作者已按 v0.8 在线下共同复核；`configs/reward_calibration.pending.yaml` 仅记录通用审核角色
+> 与时间，不公开个人身份。自动 agent 只代为落盘用户确认的审核结论，不是 reviewer。
 
 ### 9.1 Train-only 奖励标定与软阈值
 
@@ -222,12 +222,11 @@ T2 v2 当前状态是 **preregistered pending implementation**。在其实现、
   训练，不产生科学结论，也不能把豁免扩展到其他 arm、模型、数据集或训练配置。门禁绑定完整
   merged config 的 canonical SHA-256
   `9ad12d73e0db7b6213c602b1fe04ec7841e97e0fab11fda0652594551da02c9d`，任一配置漂移均失去豁免。
-- 已授权把冻结数据快照复制到 H100、安装 GPU extra、登录 W&B 并运行该 smoke；实际启动前
-  仍须具备 H100 主机访问方式，完成人工审核的 `configs/episode_manifest.smoke.reviewed.yaml`，
-  并生成配置所指向的 smoke train/valid/test processed Parquet。授权不等于这些前置条件已经完成。
-- 人工审核清单和 full/smoke manifests 计划于本周完成。逐行审核继续覆盖数据时间对齐、
-  `available_at`、train-only 标准化与 next-open 边界，并将未来拆股反向还原及成交量还原逻辑列为
-  重点人工审核项。
+- 已授权把冻结数据快照复制到 H100、安装 GPU extra 并运行该 smoke；实际启动前仍须具备 H100
+  主机访问方式、字节一致的 `configs/episode_manifest.smoke.reviewed.yaml`，并生成配置所指向的
+  smoke train/valid/test processed Parquet。
+- 两位合作者已于 2026-08-30 线下完成人工审核，范围覆盖数据时间对齐、`available_at`、train-only
+  标准化、next-open 边界、拆股反向还原及成交量还原逻辑；当前 v0.7 G1 smoke 获准点火。
 
 ## 10. v0.4 历史自动归档规则（2026-08-24；已由 v0.8 废止）
 
@@ -300,15 +299,15 @@ v0.5 的 merged-config SHA-256
 A1/Qwen3-1.7B wiring-smoke merged-config SHA-256 为
 `6c58a822d3a6ff2751fbbfcda9451c9ad3eae9ffe81acb24d3417c3de40fe0ed`。
 
-本次本地全量验证完成后，G0 状态为 `PASSED`。当前 G1 仍为 `BLOCKED`：本工作区未具备并验证
-H100 GPU extra、本地模型 revision、reviewed smoke manifest 和三个 processed 文件，也未运行真实
-smoke。CPU-only `--preflight-only` 已按预期在 GPU 依赖检查处失败并保留结构化失败 summary；该结果
-不构成 G1 进展。
+以下是 v0.6 落地当时的历史状态：G0 为 `PASSED`，G1 因尚未具备 H100 GPU extra、本地模型、
+reviewed manifest 和 processed 文件而为 `BLOCKED`。该历史状态已由第 13、14 节以及 2026-08-30
+H100 preflight 实测更新；真实 smoke 是否通过仍只能由本次 G1 运行证据决定。
 
-## 13. v0.7 G1 P1 执行约束提案（2026-08-30，待线下审核）
+## 13. v0.7 G1 P1 执行约束（2026-08-30，线下人工审核通过）
 
-本节记录当前实现，尚不表示 H100 验收通过，也不改变正式训练由 T2 v2 阻断的状态。线下审核完成
-前，G1 继续保持 `BLOCKED`。
+两位合作者已于 2026-08-30 线下人工审核并通过本节，授权在最终 `main` commit 的完整 H100
+preflight 通过后启动唯一一次 A1/Qwen3-1.7B G1 wiring smoke。本授权不适用于正式 A1/A2/A3
+训练，不解除 T2 v2 阻断，也不允许访问 Final OOS。
 
 - 唯一 smoke 模型固定为 `Qwen/Qwen3-1.7B` revision
   `70d244cc86ccca08cf5af4e1e306ecf908b1ad5e`。preflight 只接受本地 exact snapshot，最终
@@ -340,11 +339,13 @@ smoke。CPU-only `--preflight-only` 已按预期在 GPU 依赖检查处失败并
 - 数据、manifest、配置和协议的审核/签字只由两位合作者线下完成，并在双方私有记录中留下
   reviewer 与时间；项目不引入数字签名、加密交接、W&B 或第三方审批服务。
 - 自动 agent 可以复算 hash、生成报告和指出差异，但不得作为 reviewer、签字人或授权主体。
+- 用户已于 2026-08-30 确认两位合作者完成线下共同审核并批准 v0.7；仓库只记录通用 reviewer
+  `two project collaborators (offline joint review)` 和确认时间，不记录个人身份。
 - `configs/reward_calibration.pending.yaml` 的 immutable payload 与
   `freeze_table_sha256=1b46a81268fe4b45e065c49fde8bf9c0641131676668c8e35e4f884747464430`
-  保持不变；在合作者实际完成线下复核并填写 reviewer/time 前，状态必须是
-  `pending_human_signature`，空值不得被自动补写。
-- v0.7 的技术实现和 H100 preflight 可以先做机器验收，但 reviewer/time 未线下完成时仍只能写
-  `TECHNICALLY_PREFLIGHT_READY / HUMAN_REVIEW_PENDING`，不能写 `READY_TO_IGNITE` 或 `G1 PASSED`。
+  保持不变；当前状态为 `signed`，signature 元数据不参与 immutable payload hash。
+- 人工审核门禁已完成。最终 `main` exact commit 再次通过完整 H100 preflight 后状态为
+  `READY_TO_IGNITE`；只有真实 smoke 满足 rollout、reward、backward、optimizer update、非零参数
+  变化、干净退出和完整本地证据后，才能写 `G1 PASSED`。
 - 本节只替代人员审核流程，不改变 v0.7 的 exact model/config、数据边界、episode cap、prompt、
   evidence、queue 或 T2 阻断条件。

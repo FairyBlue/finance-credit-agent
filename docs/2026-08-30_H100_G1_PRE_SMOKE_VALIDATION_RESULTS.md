@@ -1,6 +1,6 @@
 # H100 G1 冒烟前技术验收结果（2026-08-30）
 
-状态：`TECHNICALLY_PREFLIGHT_READY / HUMAN_REVIEW_PENDING`
+状态更新：`V0.7 HUMAN REVIEW PASSED / READY FOR FINAL-MAIN PREFLIGHT`
 
 ## 技术结论
 
@@ -14,11 +14,10 @@ No training was started.
 Final OOS not accessed.
 ```
 
-本次没有启动训练，也没有访问 StockBench Final OOS。当前剩余的非机器门禁是两位合作者按
-[`EVAL_PROTOCOL.md`](../EVAL_PROTOCOL.md) v0.8 在线下完成数据、smoke manifest、配置/协议和
-reward calibration 的人工复核，并在双方私有记录中留下 reviewer/time；自动 agent 没有代签。
-机器能够验证 reviewed manifest 的字节与哈希，但不能据此证明人工审核已经发生。因此本报告不能把
-当前状态写成 `READY_TO_IGNITE` 或 `G1 PASSED`。
+本次没有启动训练，也没有访问 StockBench Final OOS。报告生成后，两位合作者已于 2026-08-30
+按 [`EVAL_PROTOCOL.md`](../EVAL_PROTOCOL.md) v0.8 在线下完成人工审核，用户确认 v0.7 通过并授权
+G1 smoke。最终 `main` exact commit 仍须重新通过完整 preflight；真实 smoke 尚未运行，因此当前
+不能写 `G1 PASSED`。
 
 本文件是上述已验收提交的后继纯文档提交。Git 身份门禁绑定完整 commit，所以合并或 cherry-pick
 产生新的 SHA 后，必须以新的外部确认 40 位 commit 重跑完整 preflight；不得把本报告提交本身误称为
@@ -125,8 +124,8 @@ Python 解释器或宿主机的攻击者的安全沙箱。
 
 ### 4. 协议与人工签字语义已纠正
 
-- [`configs/reward_calibration.pending.yaml`](../configs/reward_calibration.pending.yaml) 保持
-  `status: pending_human_signature`，reviewer/time 为空。
+- [`configs/reward_calibration.pending.yaml`](../configs/reward_calibration.pending.yaml) 已记录
+  `status: signed`、通用 reviewer 角色和带时区时间，不公开个人身份。
 - immutable reward payload hash 保持：
   `1b46a81268fe4b45e065c49fde8bf9c0641131676668c8e35e4f884747464430`。
 - 自动 agent 只复算 payload/hash 和机器门禁，不再冒充人工 reviewer。
@@ -187,25 +186,20 @@ repo/submodule overlay、hostile parent `PYTHONPATH`、early failure summary、�
 
 ## 限制与剩余门禁
 
-1. **人工审核仍待完成。** 两位合作者必须线下复核数据、smoke manifest、配置/协议及 reward
-   calibration，并在双方私有记录和约定文件中填写真实 reviewer/time；自动 agent 不得代签。
-2. **本报告不是一次训练结果。** preflight 没有 rollout、backward、optimizer step 或参数变化，不能
+1. **本报告不是一次训练结果。** preflight 没有 rollout、backward、optimizer step 或参数变化，不能
    用来证明“模型学到了东西”。
-3. **合并会改变 commit。** 合并、rebase、cherry-pick 或任何文档变更都会产生新 SHA；实际点火前必须
+2. **合并会改变 commit。** 合并、rebase、cherry-pick 或任何文档变更都会产生新 SHA；实际点火前必须
    用新 SHA 重跑全量测试、stack/context 和 preflight。
-4. **正式训练仍受 T2 v2 阻断。** G1 wiring smoke 通过不解除 A1/A2/A3 正式实验的 T2 门槛。
-5. **身份门禁不是宿主机安全边界。** 它防止可信协作者工作区中的未提交执行覆盖和证据漂移，不防御
+3. **正式训练仍受 T2 v2 阻断。** G1 wiring smoke 通过不解除 A1/A2/A3 正式实验的 T2 门槛。
+4. **身份门禁不是宿主机安全边界。** 它防止可信协作者工作区中的未提交执行覆盖和证据漂移，不防御
    已控制 shell、Python 启动过程或 H100 主机的攻击者。
 
 ## 合作者下一步
 
-1. Review 本分支的三个实现提交及本报告；建议先保持提交边界，便于逐项审计。
-2. 双方线下完成数据、smoke manifest、配置/协议及 reward calibration 的人工复核与记录。
-3. 合并到目标分支后，由维护者把新的完整 40 位 merge commit 线下发给 H100 执行者。
-4. H100 执行者在新 commit 上重跑本报告的测试、stack 和完整 preflight。
-5. 只有再次得到三行成功输出且人工审核完成，才使用 direct launcher 启动一次 A1/Qwen3-1.7B
+1. 合并到目标分支后，用新的完整 40 位 commit 重跑本报告的测试、stack 和完整 preflight。
+2. 只有再次得到三行成功输出，才使用 direct launcher 启动一次 A1/Qwen3-1.7B
    wiring smoke；不要使用 [`scripts/run_queue.sh`](../scripts/run_queue.sh)。
-6. smoke 完成后保留并本地拷贝 `runs/<run_id>/`、控制台日志、峰值显存和总耗时；smoke 通过仍不解除
+3. smoke 完成后保留并本地拷贝 `runs/<run_id>/`、控制台日志、峰值显存和总耗时；smoke 通过仍不解除
    T2 v2 正式训练阻断。
 
 实际点火命令必须绑定合并后的新 SHA：
@@ -217,5 +211,4 @@ CUDA_VISIBLE_DEVICES=0 uv run --no-sync python -m src.agents.arm_a1 \
   --expected-commit "$FCA_VALIDATION_COMMIT"
 ```
 
-当前没有剩余的已知机器级 pre-smoke blocker。剩余决策只有人工审核完成时间，以及合作者采用 merge
-还是 cherry-pick；两条集成路径都必须对最终 commit 重新验收。
+当前没有剩余的已知人工或机器级 pre-smoke blocker；只需对最终 `main` exact commit 重新验收。

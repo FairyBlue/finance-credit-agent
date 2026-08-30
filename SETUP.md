@@ -118,10 +118,10 @@ from prices already available at the query's `as_of` time.
 The train-only calibration table at `configs/reward_calibration.pending.yaml` fixes
 `epsilon=0.0006887293802216064`, `risk_lambda=0.9016432557217152`,
 `drawdown_coefficient=0.09659355421265267`, `turnover_coefficient=0.02095348253089393`,
-`turnover_limit=1.0`, and `position_limit=0.3`. Its immutable payload hash is frozen, while the
-reviewer and review time remain `pending_human_signature` until the collaborators record their
-in-person review. No automated agent signs it. Base config binds its path and immutable payload
-hash. Calibration uses
+`turnover_limit=1.0`, and `position_limit=0.3`. Its immutable payload hash is frozen. Both
+collaborators completed their offline joint review on 2026-08-30; the table records only a generic
+reviewer role and timezone-aware timestamp, not personal identities. No automated agent acts as
+reviewer. Base config binds its path and immutable payload hash. Calibration uses
 overlapping 21-session train windows and 40 deterministic trajectories per window. Each coefficient
 is capped at 25% of its designated core's mean magnitude. Position `0.30` and daily turnover `1.00`
 are soft reward thresholds, not hard execution limits; turnover is bilateral, so `1.00` is

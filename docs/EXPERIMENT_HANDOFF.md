@@ -80,14 +80,14 @@ G1 smoke 只证明训练链路接通：数据能加载、环境能推进、模�
 
 ## 3. 当前进度与真实阻塞
 
-状态截至 `2026-08-29`：
+状态截至 `2026-08-30`：
 
 | 项目 | 状态 | 证据或说明 |
 |---|---|---|
-| G0 协议与本地脚手架 | `PASSED` | 141 tests；Ruff、mypy、lock 与 whitespace checks 通过 |
-| Prompt-budget P0 修复 | `LOCAL PASS / H100 UNVERIFIED` | 保留 Unicode 修复，并覆盖 Train/Valid、混合持仓/检索及 Unicode invalid 路径 |
-| G1 P1 门禁 | `LOCAL PASS / H100 UNVERIFIED` | exact model/offline、4-row cap、增量证据、direct-only 与 expected-commit 已实现 |
-| G1 A1/Qwen3-1.7B smoke | `BLOCKED` | 新 integration commit 尚未冻结并在 H100 通过 context-budget/preflight，真实 smoke 未运行 |
+| G0 协议与本地脚手架 | `PASSED` | 147 tests；Ruff、mypy、lock 与 whitespace checks 通过 |
+| Prompt-budget P0 修复 | `H100 PASS` | 620 个真实 tokenizer cases，最大 prompt 3045/4096 tokens |
+| G1 P1 门禁 | `H100 PREFLIGHT PASS` | exact model/offline、4-row cap、增量证据、direct-only 与 expected-commit 已实测 |
+| G1 A1/Qwen3-1.7B smoke | `READY_TO_IGNITE AFTER FINAL-MAIN PREFLIGHT` | v0.7 已由两位合作者线下审核通过；真实 smoke 尚未运行 |
 | T1 未来价格扰动 | 已实现 | 历史读取与数值特征保持不变 |
 | T2 v2 train/valid 探针 | `BLOCKED` | 已预注册，未实现；禁止回退旧 StockBench 探针 |
 | T3 train-only 标准化 | 已实现 | 全样本 fit 会失败 |
@@ -629,7 +629,7 @@ Final OOS 只在最终科学评测时开启。
 | `EVAL_PROTOCOL.md` | 冻结协议与历次追加修订 |
 | `configs/smoke_1p7b.yaml` | 唯一批准的 G1 配置 |
 | `configs/base.yaml` | 数据、reward、交易、Regime 与门禁基础配置 |
-| `configs/episode_manifest.smoke.candidate.yaml` | 已冻结、待线下人工审核的 G1 候选清单 |
+| `configs/episode_manifest.smoke.candidate.yaml` | 已冻结并于 2026-08-30 线下审核通过；reviewed 副本保持本地 ignored |
 | `scripts/build_smoke_manifest.py` | 生成确定性 history-only smoke 草稿 |
 | `scripts/freeze_benchmarks.py` | 用共享账务引擎生成 benchmark NAV |
 | `scripts/prepare_episodes.py` | 生成 Agent-R1 processed Parquet |

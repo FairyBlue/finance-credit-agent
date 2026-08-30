@@ -59,7 +59,7 @@ scripts/watchdog.py       collapsed-reward/repeated-output process watchdog
 scripts/fetch_history.py  freeze yfinance/Stooq train+valid inputs and checksums
 scripts/build_smoke_manifest.py generate the deterministic history-only G1 manifest draft
 scripts/freeze_benchmarks.py generate shared-ledger benchmark NAV + checksum
-configs/episode_manifest.smoke.candidate.yaml frozen, pending-human-review G1 candidate
+configs/episode_manifest.smoke.candidate.yaml frozen G1 candidate; reviewed copy stays local/ignored
 scripts/run_t2_probe.py   disabled legacy OOS entrypoint retained for audit history
 scripts/verify_h100_stack.py pinned-version and real FlashAttention CUDA acceptance
 runs/                     ignored local preflight/training evidence, one directory per run
@@ -70,9 +70,9 @@ third_party/agent-r1/     read-only locked submodule
 `EVAL_PROTOCOL.md` preserves the substantive v0.1 protocol and its dated amendments. V0.3 freezes
 the train-only reward rule, event-anchored regimes, T2 v2, and the narrow G1 exemption; v0.6 replaces
 the old full-OOS smoke with the Valid-derived shadow test and requires structured local and direct
-optimizer-update evidence; v0.7 proposes the exact-model, prompt, evidence and validation-identity
-gates used by G1. Review/sign-off is recorded offline by the collaborators; no agent or digital
-signature substitutes for it. New protocol changes require another recorded amendment.
+optimizer-update evidence; v0.7 defines the exact-model, prompt, evidence and validation-identity
+gates used by G1 and was approved offline by both collaborators on 2026-08-30. No agent or digital
+signature substitutes for that human review. New protocol changes require another recorded amendment.
 
 ## CPU quick start
 
@@ -138,9 +138,10 @@ The deterministic train-only reward calibration has produced
 `configs/reward_calibration.pending.yaml`; its values are `epsilon=0.0006887293802216064`,
 `risk_lambda=0.9016432557217152`, `drawdown_coefficient=0.09659355421265267`,
 `turnover_coefficient=0.02095348253089393`, `turnover_limit=1.0`, and `position_limit=0.3`.
-The immutable payload is frozen, but the table remains `pending_human_signature` until the
-collaborators record their in-person review; no automated agent signs it. Base config binds only its
-path and immutable payload hash. It uses overlapping 21-session train windows and 40
+The immutable payload is frozen and both collaborators completed their offline joint review on
+2026-08-30; the table records a generic reviewer role and timestamp without publishing personal
+identity. No automated agent acts as reviewer. Base config binds only its path and immutable payload
+hash. It uses overlapping 21-session train windows and 40
 fixed trajectories per window (20 single-stock holds plus 20 cyclic midpoint rotations). Each
 penalty is calibrated at no more than 25% of its specified core's mean magnitude. The two limits
 are soft reward thresholds: turnover is measured daily and bilaterally, so `1.00` is approximately
@@ -166,8 +167,8 @@ uv run --no-sync python scripts/freeze_benchmarks.py \
 uv run --no-sync python scripts/prepare_episodes.py \
   --manifest configs/episode_manifest.reviewed.yaml
 
-# The repository already contains the frozen pending-human-review smoke candidate.
-# Review it offline, then copy it byte-for-byte; it never contains Final OOS.
+# The repository contains the frozen smoke candidate approved offline on 2026-08-30.
+# Copy it byte-for-byte to the ignored reviewed path; it never contains Final OOS.
 cp configs/episode_manifest.smoke.candidate.yaml \
   configs/episode_manifest.smoke.reviewed.yaml
 cmp configs/episode_manifest.smoke.candidate.yaml \
