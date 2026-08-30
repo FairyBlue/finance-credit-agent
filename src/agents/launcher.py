@@ -776,6 +776,15 @@ def _training_environment(
     *, agent_path: Path, probe_root: Path, parent: dict[str, str] | None = None
 ) -> dict[str, str]:
     environment = dict(os.environ if parent is None else parent)
+    # Ray's automatic ``uv run`` hook in 2.58 cannot handle the
+    # ``working_dir: None`` emitted by verl 0.7. This is a single-node run
+    # whose workers already use the driver's pinned Python, so disable that
+    # packaging hook instead of uploading the repository as a working dir.
+    environment["RAY_ENABLE_UV_RUN_RUNTIME_ENV"] = "0"
+    # Once the uv hook is disabled, Ray would otherwise honor these inherited
+    # injection points. Keep the recorded training environment self-contained.
+    environment.pop("RAY_RUNTIME_ENV_HOOK", None)
+    environment.pop("RAY_JOB_CONFIG_JSON_ENV_VAR", None)
     environment["PYTHONPATH"] = os.pathsep.join(
         [
             str(REPO_ROOT / "runtime_hooks"),

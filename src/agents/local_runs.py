@@ -241,6 +241,7 @@ class LocalRunRecorder:
             "CUDA_VISIBLE_DEVICES",
             "HF_HUB_OFFLINE",
             "HYDRA_FULL_ERROR",
+            "RAY_ENABLE_UV_RUN_RUNTIME_ENV",
             "TRANSFORMERS_OFFLINE",
             "VLLM_USE_V1",
         )

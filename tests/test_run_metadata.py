@@ -281,12 +281,18 @@ def test_training_environment_overrides_hostile_online_parent_values(tmp_path: P
         probe_root=tmp_path / "probe",
         parent={
             "HF_HUB_OFFLINE": "0",
+            "RAY_ENABLE_UV_RUN_RUNTIME_ENV": "1",
+            "RAY_RUNTIME_ENV_HOOK": "untrusted.hook",
+            "RAY_JOB_CONFIG_JSON_ENV_VAR": '{"runtime_env":{"working_dir":"/tmp"}}',
             "TRANSFORMERS_OFFLINE": "false",
             "PYTHONPATH": "/tmp/untrusted-python-overlay",
         },
     )
 
     assert environment["HF_HUB_OFFLINE"] == "1"
+    assert environment["RAY_ENABLE_UV_RUN_RUNTIME_ENV"] == "0"
+    assert "RAY_RUNTIME_ENV_HOOK" not in environment
+    assert "RAY_JOB_CONFIG_JSON_ENV_VAR" not in environment
     assert environment["TRANSFORMERS_OFFLINE"] == "1"
     assert "/tmp/untrusted-python-overlay" not in environment["PYTHONPATH"]
     command = [
