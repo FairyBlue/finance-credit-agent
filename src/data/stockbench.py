@@ -7,6 +7,7 @@ from collections.abc import Iterator, Mapping, Sequence
 from copy import deepcopy
 from dataclasses import dataclass
 from datetime import date, datetime, time, timezone
+from functools import lru_cache
 from hashlib import sha256
 from io import BytesIO
 from pathlib import Path
@@ -25,6 +26,16 @@ def _require_aware(value: datetime, *, name: str) -> datetime:
     if value.tzinfo is None or value.utcoffset() is None:
         raise ValueError(f"{name} must be timezone-aware")
     return value.astimezone(timezone.utc)
+
+
+@lru_cache(maxsize=4_096)
+def _market_available_at(exchange_calendar: str, trading_date: date) -> datetime:
+    calendar = xcals.get_calendar(exchange_calendar)
+    session = trading_date.isoformat()
+    if not calendar.is_session(session):
+        raise ValueError(f"{session} is not an {exchange_calendar} session")
+    close = calendar.session_close(session).to_pydatetime()
+    return _require_aware(close, name="market close").astimezone(timezone.utc)
 
 
 def _freeze_json(value: Any) -> JsonValue:
@@ -99,12 +110,7 @@ class AvailabilityPolicy:
         """Return the actual exchange close, including holidays and early closes."""
 
         # TODO(human): line-review exchange calendar, early closes, timezone, and bar boundary.
-        calendar = xcals.get_calendar(self.exchange_calendar)
-        session = trading_date.isoformat()
-        if not calendar.is_session(session):
-            raise ValueError(f"{session} is not an {self.exchange_calendar} session")
-        close = calendar.session_close(session).to_pydatetime()
-        return _require_aware(close, name="market close").astimezone(timezone.utc)
+        return _market_available_at(self.exchange_calendar, trading_date)
 
 
 @dataclass(frozen=True, slots=True)

@@ -2,6 +2,9 @@
 
 状态更新：`V0.7 HUMAN REVIEW PASSED / READY FOR FINAL-MAIN PREFLIGHT`
 
+后续状态更新：G1 已于 2026-08-31 通过，T2 v2 已于 2026-09-01 通过。本文其余状态和下一步保留
+为 2026-08-30 pre-smoke 验收时的历史记录。
+
 ## 技术结论
 
 H100 上 A1/Qwen3-1.7B wiring smoke 的代码、环境、数据、prompt、命令透传和本地证据门禁均已通过。
@@ -190,7 +193,7 @@ repo/submodule overlay、hostile parent `PYTHONPATH`、early failure summary、�
    用来证明“模型学到了东西”。
 2. **合并会改变 commit。** 合并、rebase、cherry-pick 或任何文档变更都会产生新 SHA；实际点火前必须
    用新 SHA 重跑全量测试、stack/context 和 preflight。
-3. **正式训练仍受 T2 v2 阻断。** G1 wiring smoke 通过不解除 A1/A2/A3 正式实验的 T2 门槛。
+3. **报告当时正式训练受 T2 v2 阻断。** T2 v2 后于 2026-09-01 通过；这仍不自动授权正式训练。
 4. **身份门禁不是宿主机安全边界。** 它防止可信协作者工作区中的未提交执行覆盖和证据漂移，不防御
    已控制 shell、Python 启动过程或 H100 主机的攻击者。
 
@@ -199,8 +202,8 @@ repo/submodule overlay、hostile parent `PYTHONPATH`、early failure summary、�
 1. 合并到目标分支后，用新的完整 40 位 commit 重跑本报告的测试、stack 和完整 preflight。
 2. 只有再次得到三行成功输出，才使用 direct launcher 启动一次 A1/Qwen3-1.7B
    wiring smoke；不要使用 [`scripts/run_queue.sh`](../scripts/run_queue.sh)。
-3. smoke 完成后保留并本地拷贝 `runs/<run_id>/`、控制台日志、峰值显存和总耗时；smoke 通过仍不解除
-   T2 v2 正式训练阻断。
+3. smoke 完成后保留并本地拷贝 `runs/<run_id>/`、控制台日志、峰值显存和总耗时；这是报告当时的
+   执行要求。G1 和 T2 v2 现均已通过，但仍需其他正式训练门禁。
 
 实际点火命令必须绑定合并后的新 SHA：
 

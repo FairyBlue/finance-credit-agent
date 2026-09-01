@@ -5,6 +5,9 @@
 本地修复补充日期：`2026-08-29`。第 1～7 节保留 2026-08-27 实机审计的原始事实；后续进展见
 第 8 节，不能把本地修复结果回写成旧 validation commit 已在 H100 通过。
 
+后续状态更新：G1 已于 2026-08-31 通过，T2 v2 已于 2026-09-01 通过。下表中的 `BLOCKED` 是
+2026-08-27 审计时状态，不是当前状态；当前结果分别见对应的 G1 与 T2 结果报告。
+
 本文记录 H100 上对 G1 wiring smoke 的实机复核结果。它补充
 [`2026-08-27_H100_G1_VALIDATION_RUNBOOK.md`](2026-08-27_H100_G1_VALIDATION_RUNBOOK.md)，
 并以实际执行证据修正其中“尚未在 H100 验证”的状态。
@@ -19,7 +22,7 @@
 | 从空 `.venv` 建立全新 clean-clone 环境 | `NOT TESTED` | 本轮隔离 checkout 复用了已存在且版本匹配的 pinned 环境 |
 | 真实 rollout、reward、backward、optimizer update | `NOT RUN` | 发现确定的 prompt-budget P0 后主动停止，未点火 |
 | G1 wiring smoke | `BLOCKED` | 首个候选 episode 在第一次生成前已超过 prompt 上限 |
-| formal training | `BLOCKED BY T2 v2` | G1 通过也不解除正式训练门禁 |
+| formal training | `AT AUDIT: BLOCKED BY T2 v2` | 审计当时状态；T2 v2 后于 2026-09-01 通过 |
 
 这里的 `preflight-only status=PASSED` 只表示 preflight 阶段通过，不能写成 G1 已通过。
 本轮没有运行真实训练，也没有产生 optimizer-update 证据。

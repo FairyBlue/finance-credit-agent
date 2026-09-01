@@ -1,10 +1,10 @@
 # Finance Credit Agent：实验接手与运行手册
 
-更新日期：`2026-08-30`
+更新日期：`2026-09-01`
 
 这是一份面向新合作者的单一入口文档。即使没有读过历史对话，只要拥有本仓库、冻结历史数据和
-一台 Linux x86_64 H100，就应当能够通过本文理解研究动机、判断当前进度、知道 G1 为什么尚未
-获准点火，并知道哪些验证和正式实验现在允许或禁止运行。
+一台 Linux x86_64 H100，就应当能够通过本文理解研究动机、判断当前进度、复核已经完成的 G1
+与 T2 v2，并知道哪些验证和正式实验现在允许或禁止运行。
 
 仓库代码、配置、Git 状态和实际运行结果高于本文。如果出现冲突，立即停止实验，按第 16 节处理，
 不要自行放宽门禁。
@@ -13,30 +13,31 @@
 
 当前结论只有五条：
 
-1. 本地实验脚手架和协议门禁已经完成，状态为 `G0 PASSED`；当前本机为 141 tests passed。
-2. 验证提交 `8a090b8` 已在 H100 NVL 上通过 frozen stack、真实 FlashAttention kernel、136 tests
-   和完整 preflight；本轮复用了 pinned `.venv`，没有证明从空 `.venv` clean-clone 安装通过。
-3. `7443699` 的 Unicode-safe prompt 修复已保留；本轮又补齐 exact model/offline、4-row cap、
-   Train/Valid 多场景 tokenizer gate、增量证据和 exact validation identity。当前只在本机验证，
-   尚未在 H100 复验，不能宣称 P0/P1 closed。
-4. 下一项任务是把本轮变更冻结为新的 validation commit，在 H100 依次重跑 stack、tests、独立
-   context-budget 检查和完整 preflight；这些门禁通过前仍不得点火 G1。
-5. `scripts/run_queue.sh` 已全面 fail closed；G1 只能使用带 `--expected-commit` 的 direct launcher。
-   正式训练继续由 T2 v2 阻断，不得读取 StockBench Final OOS 来调试 smoke。
+1. 本地实验脚手架和协议门禁已经完成，状态为 `G0 PASSED`。
+2. A1/Qwen3-1.7B 的单卡 H100 wiring smoke 已在 commit
+   `2d48bf6db8961998b1450644ef542a293ea8f95d` 上通过，真实 rollout、reward、backward 和两次
+   optimizer update 均有结构化证据，且 `final_oos_accessed=false`。
+3. T2 v2 已在冻结 history Train/Valid 上通过：真实管道未显著检出，强、弱正控制均检出；聚合
+   证据位于 `configs/t2_v2_result.json`，launcher 会复核字节哈希、协议身份和联合判定。
+4. G1 和 T2 的通过都不构成正式训练授权。正式运行仍需 reviewed formal manifests、干净的代码/
+   数据/模型身份和完整 preflight；A3 主结论前还必须实现并预注册 M2 或 M3。
+5. StockBench Final OOS 继续关闭；旧 T2 OOS CLI 永久 fail closed。`scripts/run_queue.sh` 也保持
+   fail closed，实际运行只使用带 `--expected-commit` 的 direct launcher。
 
-本次 H100 实测、P0/P1/P2 和证据边界见
-[`docs/2026-08-27_H100_G1_AUDIT_RESULTS.md`](2026-08-27_H100_G1_AUDIT_RESULTS.md)。
+G1 与 T2 的结果边界分别见
+[`docs/2026-08-31_H100_G1_SMOKE_RESULTS.md`](2026-08-31_H100_G1_SMOKE_RESULTS.md) 和
+[`docs/2026-09-01_T2_V2_RESULTS.md`](2026-09-01_T2_V2_RESULTS.md)。第 5～14 节保留为 G1 的历史
+运行与复核手册；当前状态以本节、第 3 节和第 15 节为准。
 
 接手后的推荐顺序：
 
 ```text
-读取 H100 实机审计
-  → checkout 新的 P0 validation commit
-  → 在 H100 重新核对 stack、tests、数据与模型身份
-  → 运行真实 tokenizer context-budget 验收
-  → 重新运行 --preflight-only
-  → 全部通过后才运行唯一一次批准的 G1 smoke
-  → 检查真实 backward、trainer step 和 optimizer-update 证据
+复核 G1 与 T2 v2 结果报告
+  → 审核并冻结正式 manifests 与 benchmark
+  → 完成 A3 的 M2 或 M3 实现与预注册
+  → 冻结干净的正式执行 commit 和数据/模型身份
+  → 在 H100 重新核对 stack、tests 与完整 preflight
+  → 获得明确运行授权后再进入正式实验
 ```
 
 ## 1. 这个项目为什么存在
@@ -59,7 +60,7 @@
 引擎或不可复现的数据版本污染。金融回测中的这些错误往往不会让程序报错，反而会让结果看起来
 更好，所以项目采用“先证明实验有效，再扩大训练”的顺序。
 
-## 2. 为什么现在只跑 G1 smoke
+## 2. G1 smoke 的证据边界
 
 G1 smoke 只证明训练链路接通：数据能加载、环境能推进、模型能 rollout、reward 能产生、反向传播
 和 optimizer 能真实更新参数、运行证据能完整保存。
@@ -71,25 +72,26 @@ G1 smoke 只证明训练链路接通：数据能加载、环境能推进、模�
 - 超参数、模型或 checkpoint 选择；
 - 调整 reward、Regime 或 T2 规则。
 
-正式训练暂时不能开始，原因有两个：
+G1 已经通过，但正式训练不会因此自动开始，当前还需满足：
 
-- T2 v2 泄漏探针已经预注册，但尚未实现和通过；正式 launcher 会 fail closed。
+- T2 v2 已通过并解除该项 blocker，但正式 reviewed manifests、干净执行身份和完整 preflight 仍
+  必须逐项完成。
 - A3 当前只有 M1 uniform broadcast 作为 smoke/ablation，支持科学主结论的 M2 或 M3 尚未实现。
 
-因此，完成 G1 后的正确动作是记录结果并返回开发，不是顺手启动正式三臂实验。
+因此，G1 和 T2 通过后的正确动作是继续正式实验准备，不是顺手启动三臂训练。
 
 ## 3. 当前进度与真实阻塞
 
-状态截至 `2026-08-30`：
+状态截至 `2026-09-01`：
 
 | 项目 | 状态 | 证据或说明 |
 |---|---|---|
-| G0 协议与本地脚手架 | `PASSED` | 147 tests；Ruff、mypy、lock 与 whitespace checks 通过 |
+| G0 协议与本地脚手架 | `PASSED` | 当前全量 217 tests；Ruff、mypy、lock 与 whitespace checks 通过 |
 | Prompt-budget P0 修复 | `H100 PASS` | 620 个真实 tokenizer cases，最大 prompt 3045/4096 tokens |
 | G1 P1 门禁 | `H100 PREFLIGHT PASS` | exact model/offline、4-row cap、增量证据、direct-only 与 expected-commit 已实测 |
-| G1 A1/Qwen3-1.7B smoke | `READY_TO_IGNITE AFTER FINAL-MAIN PREFLIGHT` | v0.7 已由两位合作者线下审核通过；真实 smoke 尚未运行 |
+| G1 A1/Qwen3-1.7B smoke | `PASSED` | H100 实测完成；rollout、reward、backward、optimizer update 与 Final OOS 隔离证据齐全 |
 | T1 未来价格扰动 | 已实现 | 历史读取与数值特征保持不变 |
-| T2 v2 train/valid 探针 | `BLOCKED` | 已预注册，未实现；禁止回退旧 StockBench 探针 |
+| T2 v2 train/valid 探针 | `PASSED` | 冻结 history Train/Valid 三条件联合通过；artifact 与 launcher 门禁已绑定 |
 | T3 train-only 标准化 | 已实现 | 全样本 fit 会失败 |
 | T4 未来文档删除不变性 | 已实现 | 历史检索结果保持不变 |
 | Reward 标定 | 已冻结 | 只使用 Train；表和哈希已绑定 |
@@ -465,7 +467,8 @@ queue wrapper 当前全面禁用：watchdog 对 A1 terminal-only reward 可能�
 CUDA_VISIBLE_DEVICES=0 scripts/run_queue.sh configs/smoke_1p7b.yaml
 ```
 
-不得通过 `--formal` 绕过。正式训练由 T2 v2 门禁单独阻断。
+不得通过 `--formal` 绕过任何门禁。T2 v2 当前由已通过且 hash-bound 的 artifact 放行；正式运行
+仍须满足 reviewed manifests、干净执行身份和完整 preflight。
 
 每次非 dry-run 都会创建：
 
@@ -581,22 +584,17 @@ W&B、API key、云端 logger、数字签名或加密签字流程都不需要。
 
 ## 15. G1 之后该做什么
 
-当前尚未进入“G1 之后”。Unicode-safe P0 与本轮 P1 集成已在本机通过定向检查；当前唯一下一步
-是冻结新 validation commit，并在 H100 重跑 stack、tests、Train/Valid 四类 context-budget 场景
-和 preflight。H100 结果回来前，只能写成 `LOCAL PASS / H100 UNVERIFIED`。
+G1 与 T2 v2 均已通过，结果及限制已经提交为独立报告。接下来按以下顺序推进：
 
-G1 通过后：
+1. 复核 T2 artifact 的 protocol/raw-byte SHA 绑定，并保留旧 OOS probe 的永久禁用状态；
+2. 生成、人工审核并冻结正式 manifests、benchmark NAV 和 processed Parquet；
+3. 为 A3 主结论实现并预注册 M2 或 M3，不能用 M1 冒充；
+4. 冻结干净的正式执行 commit，以及代码、数据和模型身份；
+5. 在 H100 重跑当前完整 tests、stack 核验和 formal preflight；
+6. 获得明确授权后才执行正式 A1/A2/A3，并保存完整 `runs/<run_id>/` 证据。
 
-1. 保存并共享 `runs/<run_id>/`；
-2. 在团队进度记录中把 G1 改为 `PASSED`；
-3. 不打开 Final OOS，不启动正式三臂训练；
-4. 实现 T2 v2：只允许 history Train/Valid，pooled per-stock，强弱两档正控制均只在内存；
-5. T2 v2 必须同时满足强档检出、40% flip 弱档检出、真实管道未显著检出；
-6. 弱档未检出必须如实保留为功效边界；
-7. 正式 A3 主结论前，实现并预注册 M2 或 M3，不能用 M1 冒充。
-
-只有 T2 v2 通过、正式 manifests 完成审核、代码和数据身份冻结后，才进入正式实验设计与执行。
-Final OOS 只在最终科学评测时开启。
+Final OOS 仍只在最终科学评测时开启。T2 的 real-pipeline non-detection 是“没有显著证据”，不是
+“证明不存在泄漏”。
 
 ## 16. 信息冲突时如何处理
 
@@ -617,11 +615,13 @@ Final OOS 只在最终科学评测时开启。
 
 ## 17. 文件导航
 
-只跑 G1 时，最重要的文件是：
+接手当前阶段时，最重要的文件是：
 
 | 文件 | 作用 |
 |---|---|
 | `docs/EXPERIMENT_HANDOFF.md` | 本接手与运行手册 |
+| `docs/2026-08-31_H100_G1_SMOKE_RESULTS.md` | 已通过的 G1 smoke 结果、证据哈希与限制 |
+| `docs/2026-09-01_T2_V2_RESULTS.md` | 已通过的 T2 v2 结果、统计身份与 artifact 门禁 |
 | `docs/2026-08-27_H100_G1_AUDIT_RESULTS.md` | 当前 H100 实测结果、P0/P1/P2 与复验顺序 |
 | `docs/2026-08-27_H100_G1_VALIDATION_RUNBOOK.md` | `8a090b8` 原始执行任务单；已由实测结果更新状态 |
 | `docs/2026-08-30_H100_G1_P1_VALIDATION_RUNBOOK.md` | 本轮 P0/P1 集成的唯一当前 H100 验收命令 |
@@ -635,6 +635,8 @@ Final OOS 只在最终科学评测时开启。
 | `scripts/prepare_episodes.py` | 生成 Agent-R1 processed Parquet |
 | `scripts/verify_h100_stack.py` | 验证版本、CUDA 与真实 FlashAttention kernel |
 | `scripts/verify_context_budget.py` | 用缓存模型的真实 tokenizer 验证完整 G1 提示词预算，不启动训练 |
+| `scripts/run_t2_v2_probe.py` | 运行冻结的 history-only T2 v2 并输出聚合证据 |
+| `configs/t2_v2_result.json` | launcher 复核的 T2 v2 聚合证据 |
 | `src/data/episodes.py` | sampling、manifest 和 Final OOS 隔离 |
 | `src/agents/launcher.py` | preflight、门禁与真实启动 |
 | `src/agents/local_runs.py` | `runs/<run_id>/` 结构化记录 |
@@ -651,5 +653,5 @@ Final OOS 只在最终科学评测时开启。
 - 合作者无需依赖历史聊天、W&B、个人电脑路径或数字签名流程；
 - 合作者能够独立判断当前为何阻塞、下一步做什么、何时必须停止，以及什么证据才算实验通过。
 
-当前 readiness：`PARTIALLY_READY`。代码、G0、Unicode-safe P0 和 P1 集成已在本机就绪，但本轮
-变更尚未冻结为 validation commit，也未在 H100 复验；clean-clone 重装与真实 G1 均未执行。
+当前 readiness：`FORMAL_PREPARATION`。G1 与 T2 v2 已通过；正式 manifests、A3 M2/M3、干净
+执行身份和正式 H100 preflight 尚未完成，因此仍不得启动正式三臂训练。

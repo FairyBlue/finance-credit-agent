@@ -881,9 +881,54 @@ def test_preregistered_t2_v2_blocks_formal_training_without_reopening_stockbench
     root = Path(__file__).resolve().parents[1]
     config = load_experiment_config(root / "configs/base.yaml")
     config["run"] = {"smoke": False}
+    probe = config["evaluation"]["shifted_label_probe_v2"]
+    probe["implementation_status"] = "preregistered_pending_implementation"
+    probe.pop("result_artifact", None)
+    probe.pop("result_sha256", None)
     assert not hasattr(launcher_module, "run_configured_temporal_leakage_probe")
 
     with pytest.raises(RuntimeError, match="T2 v2 is preregistered but not implemented"):
+        verify_configured_t2_gate(config, repo_root=tmp_path)
+
+
+def test_passed_t2_v2_artifact_releases_the_formal_training_gate(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    root = Path(__file__).resolve().parents[1]
+    config = load_experiment_config(root / "configs/base.yaml")
+    config["run"] = {"smoke": False}
+    probe = config["evaluation"]["shifted_label_probe_v2"]
+    probe["implementation_status"] = "passed"
+    probe["result_artifact"] = "configs/t2_v2_result.json"
+    probe["result_sha256"] = "a" * 64
+    observed: list[tuple[dict[str, Any], Path]] = []
+
+    def verify(configured: dict[str, Any], *, repo_root: str | Path) -> dict[str, object]:
+        observed.append((configured, Path(repo_root)))
+        return {"passed": True}
+
+    monkeypatch.setattr(launcher_module, "verify_t2_v2_artifact", verify)
+
+    verify_configured_t2_gate(config, repo_root=tmp_path)
+
+    assert observed == [(config, tmp_path)]
+
+
+def test_invalid_passed_t2_v2_artifact_keeps_formal_training_blocked(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    root = Path(__file__).resolve().parents[1]
+    config = load_experiment_config(root / "configs/base.yaml")
+    config["run"] = {"smoke": False}
+    probe = config["evaluation"]["shifted_label_probe_v2"]
+    probe["implementation_status"] = "passed"
+
+    def reject(*_args: object, **_kwargs: object) -> dict[str, object]:
+        raise RuntimeError("artifact SHA-256 mismatch")
+
+    monkeypatch.setattr(launcher_module, "verify_t2_v2_artifact", reject)
+
+    with pytest.raises(RuntimeError, match="artifact SHA-256 mismatch"):
         verify_configured_t2_gate(config, repo_root=tmp_path)
 
 
@@ -925,6 +970,10 @@ def test_legacy_t2_cli_stops_before_reading_any_oos_input(tmp_path: Path) -> Non
 def test_only_declared_wiring_smoke_can_bypass_the_t2_gate(tmp_path: Path) -> None:
     root = Path(__file__).resolve().parents[1]
     approved = load_experiment_config(root / "configs/smoke_1p7b.yaml")
+    approved_probe = approved["evaluation"]["shifted_label_probe_v2"]
+    approved_probe["implementation_status"] = "preregistered_pending_implementation"
+    approved_probe.pop("result_artifact", None)
+    approved_probe.pop("result_sha256", None)
     verify_configured_t2_gate(approved, repo_root=tmp_path)
 
     for invalid_run in (
@@ -933,6 +982,10 @@ def test_only_declared_wiring_smoke_can_bypass_the_t2_gate(tmp_path: Path) -> No
         {"smoke": True, "kind": "unregistered_smoke"},
     ):
         invalid = load_experiment_config(root / "configs/smoke_1p7b.yaml")
+        invalid_probe = invalid["evaluation"]["shifted_label_probe_v2"]
+        invalid_probe["implementation_status"] = "preregistered_pending_implementation"
+        invalid_probe.pop("result_artifact", None)
+        invalid_probe.pop("result_sha256", None)
         invalid["run"] = invalid_run
         with pytest.raises(RuntimeError, match="invalid T2 smoke exemption"):
             verify_configured_t2_gate(invalid, repo_root=tmp_path)
@@ -972,6 +1025,10 @@ def test_wiring_smoke_exemption_rejects_contract_drift(
 ) -> None:
     root = Path(__file__).resolve().parents[1]
     config = load_experiment_config(root / "configs/smoke_1p7b.yaml")
+    probe = config["evaluation"]["shifted_label_probe_v2"]
+    probe["implementation_status"] = "preregistered_pending_implementation"
+    probe.pop("result_artifact", None)
+    probe.pop("result_sha256", None)
     target: dict[str, Any] = config
     for key in path[:-1]:
         target = target[key]

@@ -311,7 +311,7 @@ COLLABORATOR_READY
 ```text
 G1 wiring smoke
     ↓
-实现并通过 T2 v2
+T2 v2 PASSED（2026-09-01）
     ↓
 解决实验臂因果混杂
     ↓

@@ -9,7 +9,8 @@ A1 / Qwen3-1.7B 的单卡 H100 wiring smoke 在代码提交
 optimizer update 均留下了结构化证据，launcher/trainer 最终返回 `0`，且未访问 Final OOS。
 
 本结果只证明训练链路已接通，不证明模型已经学会交易，也不构成收益、Sharpe、显著性或正式训练结论。
-正式 A1/A2/A3 训练仍由 T2 v2 门禁阻断。
+本报告生成时，正式 A1/A2/A3 训练仍由 T2 v2 门禁阻断；T2 已于 2026-09-01 通过，见本文末的
+后续状态更新。
 
 ## 验收身份与范围
 
@@ -75,8 +76,14 @@ Ray actor 的序列化路径捕获了闭包式 patched 基类方法，导致 act
 - history-only train/valid 不是 strict OOS，且不能排除与模型预训练数据重叠；Final OOS 本次未评估。
 - 日志中有一次非致命 Ray worker registration-timeout 记录；随后 worker 正常初始化并完成 run，
   未出现 traceback、OOM 或 terminal error。
-- 按 [`EVAL_PROTOCOL.md`](../EVAL_PROTOCOL.md) 的边界，下一步应回到 T2 v2 的实现与评审；在该门禁
-  通过前，不启动正式三臂训练，也不访问 Final OOS。
+- 按 [`EVAL_PROTOCOL.md`](../EVAL_PROTOCOL.md) 的边界，本报告生成时的下一步是 T2 v2 实现与
+  评审；该项现已完成。正式训练仍需满足其余独立门禁，且此时仍不访问 Final OOS。
 
 本文件是通过 G1 的代码提交之后生成的纯文档记录；它产生的新 commit 未被该次 smoke 验证，不能把
 报告 commit 冒充为已验收代码身份。
+
+## 后续状态更新（2026-09-01）
+
+上述“T2 v2 尚未通过”的表述是本报告生成时的状态。T2 v2 现已在冻结 history Train/Valid 上通过，
+详见 [`2026-09-01_T2_V2_RESULTS.md`](2026-09-01_T2_V2_RESULTS.md)。这只解除 T2 blocker，不改变
+本报告对 G1 的证据边界，也不自动授权正式训练。

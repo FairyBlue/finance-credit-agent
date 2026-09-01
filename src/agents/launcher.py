@@ -31,6 +31,7 @@ from src.data.integrity import (
     verify_overlap_reconciliation,
     verify_raw_daily_manifest,
 )
+from src.evaluation.t2_v2 import verify_t2_v2_artifact
 from src.rewards import verify_calibration_document
 
 from .config import load_experiment_config_with_sources
@@ -645,11 +646,11 @@ def _is_declared_wiring_smoke(config: dict[str, Any]) -> bool:
     return True
 
 
-def verify_configured_t2_gate(config: dict[str, Any], *, repo_root: str | Path) -> None:
-    """Allow only the exact smoke while T2 v2 is preregistered but unimplemented."""
+def verify_configured_t2_gate(
+    config: dict[str, Any], *, repo_root: str | Path
+) -> dict[str, object]:
+    """Require a verified T2 v2 pass, retaining only the historical smoke exemption."""
 
-    if _is_declared_wiring_smoke(config):
-        return
     evaluation = _required(config, "evaluation")
     if not isinstance(evaluation, dict):
         raise RuntimeError("evaluation must be a mapping")
@@ -665,6 +666,14 @@ def verify_configured_t2_gate(config: dict[str, Any], *, repo_root: str | Path) 
         or source_policy.get("stockbench_oos_access") != "forbidden"
     ):
         raise RuntimeError("T2 v2 must fail closed with StockBench OOS access forbidden")
+    if preregistered_v2.get("implementation_status") == "passed":
+        try:
+            evidence = verify_t2_v2_artifact(config, repo_root=repo_root)
+        except ValueError as error:
+            raise RuntimeError(f"T2 v2 configuration verification failed: {error}") from error
+        return {"gate": "passed_artifact", **evidence}
+    if _is_declared_wiring_smoke(config):
+        return {"gate": "approved_historical_wiring_smoke_exemption"}
     raise RuntimeError(
         "T2 v2 is preregistered but not implemented; formal training is blocked "
         "without reopening the legacy StockBench probe"
@@ -1013,8 +1022,8 @@ def _verify_all_preflight_inputs(
         required_tracked_paths=config_sources,
     )
     recorder.record_evidence("validation_identity", identity)
-    verify_configured_t2_gate(config, repo_root=REPO_ROOT)
-    recorder.record_evidence("t2_gate", {"approved_smoke_exemption": is_smoke})
+    t2_evidence = verify_configured_t2_gate(config, repo_root=REPO_ROOT)
+    recorder.record_evidence("t2_gate", t2_evidence)
     oos_evidence = verify_smoke_final_oos_isolation(config) if is_smoke else None
     recorder.record_evidence("final_oos_isolation", oos_evidence)
     _verify_reward_freeze(config)

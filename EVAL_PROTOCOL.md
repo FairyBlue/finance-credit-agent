@@ -65,6 +65,7 @@
 | 2026-08-25 | v0.6 amendment：G1 改用 Valid shadow test、Final OOS fail-closed、本地结构化运行证据 | 用户明确批准，按本节归档 |
 | 2026-08-30 | v0.7 amendment：G1 P1 执行约束 | 两位合作者线下人工审核通过；授权唯一一次 G1 wiring smoke |
 | 2026-08-30 | v0.8 amendment：审核/签字只由合作者线下完成 | 两位合作者线下共同审核已完成；记录时间为 2026-08-30T14:46:33+00:00 |
+| 2026-09-01 | v0.9 execution record：T2 v2 实现、运行证据与门禁接线 | 自动化三条件通过；不改变 v0.3 预注册口径，不构成人工 reviewer 签字 |
 
 ## 8. v0.2 修订（2026-08-24，用户明确批准）
 
@@ -199,9 +200,9 @@ v1 探针冻结为 ridge linear direction probe。每个特征行 $X_t$ 的标�
 为 `81`，aligned accuracy 为 `0.530864`，shifted accuracy 为 `0.518519`。该结果不满足旧版
 通过条件，且不得用于继续挑选特征或规则；此后 StockBench 仅在最终一次科学评测中开启。
 
-T2 v2 当前状态是 **preregistered pending implementation**。在其实现、测试并按以上条件通过前，
-正式训练门禁必须直接 fail closed 且不得回退旧 StockBench 探针；旧 CLI 也必须在读取配置或 OOS
-输入前退出。不得重跑旧探针，也不得把预注册文本本身当作门禁通过。
+这是 v0.3 记录时的状态：T2 v2 为 **preregistered pending implementation**，因此正式训练门禁
+必须直接 fail closed 且不得回退旧 StockBench 探针。当前状态已由第 15 节更新为 `PASSED`；旧 CLI
+仍必须在读取配置或 OOS 输入前退出，且不得重跑旧探针。
 
 ### 9.3 公开事件锚定的 OOS regime
 
@@ -307,7 +308,7 @@ H100 preflight 实测更新；真实 smoke 是否通过仍只能由本次 G1 运
 
 两位合作者已于 2026-08-30 线下人工审核并通过本节，授权在最终 `main` commit 的完整 H100
 preflight 通过后启动唯一一次 A1/Qwen3-1.7B G1 wiring smoke。本授权不适用于正式 A1/A2/A3
-训练，不解除 T2 v2 阻断，也不允许访问 Final OOS。
+训练；在 v0.7 当时不解除 T2 v2 阻断，也不允许访问 Final OOS。T2 后续通过状态见第 15 节。
 
 - 唯一 smoke 模型固定为 `Qwen/Qwen3-1.7B` revision
   `70d244cc86ccca08cf5af4e1e306ecf908b1ad5e`。preflight 只接受本地 exact snapshot，最终
@@ -330,7 +331,7 @@ preflight 通过后启动唯一一次 A1/Qwen3-1.7B G1 wiring smoke。本授权�
   `observed_update_record_count`；G1 的有效更新证据是 `backward_count >= 1`、
   `optimizer_step_count >= 1`、finite gradient 和 non-zero parameter delta。
 - `scripts/run_queue.sh` 在所有参数下 fail closed，且不得启动 `uv` 或训练。P1 验收只允许本文档
-  记录的 direct launcher；正式训练仍由 T2 v2 单独阻断。
+  记录的 direct launcher；正式训练在 v0.7 当时仍由 T2 v2 单独阻断，现状态见第 15 节。
 - 每个 preflight 阶段完成后立即写入 `artifacts/preflight_evidence.json`；后续阶段失败不得抹掉
   已完成的 Git、模型、数据、manifest、processed rows、prompt budget、最终命令及环境证据。
 
@@ -348,4 +349,33 @@ preflight 通过后启动唯一一次 A1/Qwen3-1.7B G1 wiring smoke。本授权�
   `READY_TO_IGNITE`；只有真实 smoke 满足 rollout、reward、backward、optimizer update、非零参数
   变化、干净退出和完整本地证据后，才能写 `G1 PASSED`。
 - 本节只替代人员审核流程，不改变 v0.7 的 exact model/config、数据边界、episode cap、prompt、
-  evidence、queue 或 T2 阻断条件。
+  evidence、queue 或当时有效的 T2 阻断条件；该条件随后由第 15 节的 `PASSED` 结果解除。
+
+## 15. v0.9 T2 v2 实现与执行记录（2026-09-01）
+
+> 本节记录 v0.3 已预注册 T2 v2 的实现与实际运行结果，不修改数据窗口、特征、标签、bootstrap、
+> seed、显著性阈值、正控制强度或三条件通过规则。自动 agent 生成代码、复算结果和落盘哈希，
+> 不充当 v0.8 所定义的人工 reviewer。
+
+- 实现只读取冻结 history Train/Valid；运行证据明确记录 `stockbench_oos_accessed=false`。Train 在
+  20-session 因果滚动窗口和 split 内两期标签边界裁剪后为 439 sessions、8,780 个股票-session
+  样本；Valid 在 split 内末端裁剪后为 78 sessions、1,560 个样本。
+- 线性探针沿用 `ridge_linear_direction_v1`：L2 penalty 为 `1e-6`，截距不惩罚，均值与总体标准差
+  只在 Train 拟合。正控制作为额外一列仅在内存追加到同一真实特征矩阵；零收益按非负方向处理。
+  这些实现细节纳入 protocol payload，SHA-256 为
+  `c26ab1e4648320e01933df63f36ac1498c58833b387bc24712d30f33aa35bdb7`。
+- 严格运行结果如下；“检出”仍表示单侧 95% 下界严格高于 `0.5`：
+
+| 分支 | Balanced accuracy | 单侧 95% 下界 | 判定 |
+|---|---:|---:|---|
+| 真实管道 | `0.49935736777842044` | `0.49445947047260524` | 未显著检出 |
+| 强正控制 | `1.0` | `1.0` | 检出 |
+| 40% flip 弱正控制 | `0.595495148126727` | `0.5756388102707657` | 检出 |
+
+- 三条件联合判定为 `PASSED`。聚合证据保存在 `configs/t2_v2_result.json`，原始字节 SHA-256 为
+  `aff81d0af5fb458768abd741264ce312a7c0767884069824a7e309286ea27436`；正控制特征和翻转数组没有
+  落盘。launcher 会重新校验 artifact 字节哈希、protocol hash、history manifest、样本/session
+  数、bootstrap 元数据及三条件语义，任一漂移继续 fail closed，且绝不回退旧 StockBench 探针。
+- T2 v2 这一项阻塞已经解除。真实管道未显著检出仍只表示“没有显著泄漏证据”，不是无泄漏证明；
+  本记录也不自动批准正式训练。正式实验仍须满足干净代码身份、正式 reviewed manifests、数据与
+  模型 preflight，以及 A3 主结论所需 M2/M3 等独立条件，Final OOS 仍保持关闭至最终科学评测。

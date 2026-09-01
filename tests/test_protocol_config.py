@@ -132,7 +132,7 @@ def test_public_event_regimes_cover_every_oos_session_exactly_once() -> None:
     assert len(covered_sessions) == len(set(covered_sessions)) == 83
 
 
-def test_t2_v2_is_preregistered_without_disabling_the_legacy_blocking_gate() -> None:
+def test_t2_v2_pass_is_bound_without_reenabling_the_legacy_oos_probe() -> None:
     config = _base_config()
     evaluation = config["evaluation"]
 
@@ -142,7 +142,11 @@ def test_t2_v2_is_preregistered_without_disabling_the_legacy_blocking_gate() -> 
     assert legacy["metric"] == "oos_direction_accuracy"
 
     probe = evaluation["shifted_label_probe_v2"]
-    assert probe["implementation_status"] == "preregistered_pending_implementation"
+    assert probe["implementation_status"] == "passed"
+    assert probe["result_artifact"] == "configs/t2_v2_result.json"
+    assert probe["result_sha256"] == (
+        "aff81d0af5fb458768abd741264ce312a7c0767884069824a7e309286ea27436"
+    )
     assert probe["source_policy"] == {
         "allowed_source": "history",
         "fit_split": "train",

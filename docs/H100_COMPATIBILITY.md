@@ -187,8 +187,9 @@ scripts/run_queue.sh configs/smoke_1p7b.yaml
 scripts/run_queue.sh --formal configs/arm_a1.yaml
 ```
 
-在 queue 的 stage-aware process-group、信号和退出码语义重新设计并验收前，不得恢复。当前 T2 v2
-尚未实现，正式 launcher 仍应 fail closed。
+在 queue 的 stage-aware process-group、信号和退出码语义重新设计并验收前，不得恢复。T2 v2 已于
+2026-09-01 通过并由 hash-bound artifact 放行；正式 launcher 对 artifact 或其他门禁的任何漂移仍
+应 fail closed。
 
 ## 9. G1 规模与验收边界
 

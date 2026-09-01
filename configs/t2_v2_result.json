@@ -1,0 +1,64 @@
+{
+  "dataset": {
+    "source": "history",
+    "stockbench_oos_accessed": false,
+    "train_sample_count": 8780,
+    "train_session_count": 439,
+    "valid_sample_count": 1560,
+    "valid_session_count": 78
+  },
+  "history_file_count": 10820,
+  "history_manifest_sha256": "2612e707446b1c8bcd73ac6583b84558d3c4eddbaa9fc20adf7023c3c8a76c90",
+  "interpretation": {
+    "real_pipeline_non_detection": "no_significant_evidence_not_proof_of_absence",
+    "weak_control_miss": "probe_power_boundary"
+  },
+  "passed": true,
+  "protocol": {
+    "alpha": 0.05,
+    "baseline": 0.5,
+    "block_size_sessions": 5,
+    "bootstrap_samples": 2000,
+    "metric": "balanced_accuracy",
+    "positive_control_features_persisted": false,
+    "seed": 1729,
+    "sha256": "c26ab1e4648320e01933df63f36ac1498c58833b387bc24712d30f33aa35bdb7"
+  },
+  "result": {
+    "real_pipeline": {
+      "alpha": 0.05,
+      "baseline": 0.5,
+      "block_size_sessions": 5,
+      "bootstrap_samples": 2000,
+      "lower_bound": 0.49445947047260524,
+      "point_estimate": 0.49935736777842044,
+      "sample_count": 1560,
+      "seed": 1729,
+      "session_count": 78
+    },
+    "strong_positive_control": {
+      "alpha": 0.05,
+      "baseline": 0.5,
+      "block_size_sessions": 5,
+      "bootstrap_samples": 2000,
+      "lower_bound": 1.0,
+      "point_estimate": 1.0,
+      "sample_count": 1560,
+      "seed": 1729,
+      "session_count": 78
+    },
+    "weak_positive_control": {
+      "alpha": 0.05,
+      "baseline": 0.5,
+      "block_size_sessions": 5,
+      "bootstrap_samples": 2000,
+      "lower_bound": 0.5756388102707657,
+      "point_estimate": 0.595495148126727,
+      "sample_count": 1560,
+      "seed": 1729,
+      "session_count": 78
+    }
+  },
+  "schema_version": "t2_v2_result_v2",
+  "status": "passed"
+}

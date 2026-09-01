@@ -201,7 +201,9 @@ evaluation:
     require_significant_drop_from_unshifted: true
     require_shifted_ci_contains_random_baseline: true
   shifted_label_probe_v2:
-    implementation_status: preregistered_pending_implementation
+    implementation_status: passed
+    result_artifact: configs/t2_v2_result.json
+    result_sha256: aff81d0af5fb458768abd741264ce312a7c0767884069824a7e309286ea27436
     source_policy:
       allowed_source: history
       fit_split: train

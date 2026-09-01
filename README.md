@@ -61,6 +61,8 @@ scripts/build_smoke_manifest.py generate the deterministic history-only G1 manif
 scripts/freeze_benchmarks.py generate shared-ledger benchmark NAV + checksum
 configs/episode_manifest.smoke.candidate.yaml frozen G1 candidate; reviewed copy stays local/ignored
 scripts/run_t2_probe.py   disabled legacy OOS entrypoint retained for audit history
+scripts/run_t2_v2_probe.py run the frozen history-only T2 v2 probe and write bound evidence
+configs/t2_v2_result.json repository T2 v2 aggregate result bound by SHA-256
 scripts/verify_h100_stack.py pinned-version and real FlashAttention CUDA acceptance
 runs/                     ignored local preflight/training evidence, one directory per run
 third_party/agent-r1/     read-only locked submodule
@@ -71,8 +73,9 @@ third_party/agent-r1/     read-only locked submodule
 the train-only reward rule, event-anchored regimes, T2 v2, and the narrow G1 exemption; v0.6 replaces
 the old full-OOS smoke with the Valid-derived shadow test and requires structured local and direct
 optimizer-update evidence; v0.7 defines the exact-model, prompt, evidence and validation-identity
-gates used by G1 and was approved offline by both collaborators on 2026-08-30. No agent or digital
-signature substitutes for that human review. New protocol changes require another recorded amendment.
+gates used by G1 and was approved offline by both collaborators on 2026-08-30; v0.9 records the
+history-only T2 v2 implementation and its 2026-09-01 execution evidence. No agent or digital signature
+substitutes for human review. New protocol changes require another recorded amendment.
 
 ## CPU quick start
 
@@ -116,7 +119,7 @@ Current leakage-test status:
 | Test | Executable status |
 |---|---|
 | T1 future-price corruption | Implemented; historical retrieval and numeric feature bytes invariant |
-| T2 shifted labels | V2 preregistered on train/valid but not implemented; formal gate blocks before any legacy OOS rerun |
+| T2 shifted labels | V2 passed on frozen history Train/Valid; bound artifact is revalidated by the formal gate |
 | T3 train-only statistics | Implemented; full-sample fits raise `FullSampleFitError` |
 | T4 future-document deletion | Implemented; historical retrieval bytes invariant |
 
@@ -176,7 +179,7 @@ cmp configs/episode_manifest.smoke.candidate.yaml \
 uv run --no-sync python scripts/prepare_episodes.py --config configs/smoke_1p7b.yaml \
   --manifest configs/episode_manifest.smoke.reviewed.yaml
 
-# Do not rerun the legacy T2 probe against StockBench OOS. T2 v2 will use history train/valid only.
+# Do not rerun the legacy T2 probe against StockBench OOS. T2 v2 uses history Train/Valid only.
 ```
 
 The builder rejects random/overlapping splits and writes the Agent-R1 parquet inputs under ignored
@@ -188,19 +191,21 @@ launcher also recomputes every reviewed benchmark NAV from the frozen raw bars b
 same `PortfolioLedger` powers trained arms, equal-weight buy-and-hold, all cash, frozen zero-shot
 schedules, and any AlphaQuanter-aligned target schedule.
 
-The legacy real T2 run remains a scientific blocker, not a software failure. Its unique approved
-StockBench OOS access used 81 samples and reported `0.530864` aligned accuracy and `0.518519`
-shifted accuracy; artifact SHA-256 is
-`612fe086d380126190aaa23d37a6ee9670eaaf646f993469fc3836ee0c03f347`. StockBench is now closed to
-all probe reruns, feature selection, and power analysis. T2 v2 is preregistered but pending
-implementation: it pools per-stock samples, fits on history train, decides on history valid, and
-requires both ephemeral positive controls (exact future direction and a 40%-flip, approximately
-60%-strength future direction) to be detected while the real pipeline is not significantly
-detected. A weak-control miss must remain in the record as a probe-power boundary; real-pipeline
-non-detection is absence of significant evidence, not proof of no leakage. Until v2 is implemented
-and passes, formal launch fails closed without a legacy fallback, and the legacy CLI exits before
-reading any configuration or OOS input. Only the exact current A1/Qwen3-1.7B wiring smoke is exempt,
-and its complete merged configuration is hash-bound; it is not scientific training.
+The legacy real T2 run used its one approved StockBench OOS access and is retained only as historical
+evidence: 81 samples, `0.530864` aligned accuracy, `0.518519` shifted accuracy, and artifact SHA-256
+`612fe086d380126190aaa23d37a6ee9670eaaf646f993469fc3836ee0c03f347`. StockBench remains closed to
+probe reruns, feature selection, and power analysis.
+
+T2 v2 passed on 2026-09-01 using only frozen history Train/Valid data. It pooled per-stock samples,
+fit on Train, decided on Valid, detected both ephemeral positive controls, and did not significantly
+detect the real pipeline. The real/strong/weak balanced accuracies were respectively `0.499357`,
+`1.0`, and `0.595495`; the repository aggregate artifact is
+[`configs/t2_v2_result.json`](configs/t2_v2_result.json), with raw-byte SHA-256
+`aff81d0af5fb458768abd741264ce312a7c0767884069824a7e309286ea27436`. The formal launcher recomputes
+the frozen protocol identity and three-condition verdict from that artifact and fails closed on any
+drift. This clears the T2 blocker without proving absence of leakage or authorizing formal training;
+see [`docs/2026-09-01_T2_V2_RESULTS.md`](docs/2026-09-01_T2_V2_RESULTS.md). The legacy CLI still exits
+before reading configuration or OOS input.
 
 For both sources, the raw manifest includes only the approved symbols and XNYS sessions. Relative
 POSIX paths are sorted by UTF-8 bytes; each line is
@@ -231,7 +236,8 @@ CUDA_VISIBLE_DEVICES=0 uv run --no-sync python -m src.agents.arm_a1 \
 
 `scripts/run_queue.sh` is disabled fail-closed for every argument and never invokes `uv`. Until its
 stage-aware process-group and signal semantics are redesigned and reviewed, use only the direct
-launcher commands above. Formal runs remain blocked by T2 v2.
+launcher commands above. T2 v2 has passed, but formal runs still require clean code/data identity,
+reviewed formal manifests, complete preflight, and the remaining arm-specific scientific work.
 
 `src/evaluation/` computes cumulative/annualized return, Sharpe, Sortino, maximum drawdown, turnover,
 cost ratio, benchmark-adjusted return, tool-call count/success, invalid-call and abstain rates, token
@@ -244,18 +250,16 @@ The five-session tariff-crash metrics are descriptive only and must carry no sig
 
 ## Remaining required work
 
-1. **T2 v2 implementation:** implement and test the preregistered pooled per-stock train/valid probe
-   and both in-memory positive controls without reopening StockBench. Formal training remains
-   blocked until it passes the frozen criteria.
-2. **Reviewed manifests and benchmark:** the frozen smoke candidate is committed; review it offline,
-   copy it byte-for-byte to the configured reviewed path, and build the three ignored processed
-   Parquet files. The full formal manifest remains pending and is not needed for G1.
+1. **Reviewed formal manifests and benchmark:** T2 v2 is complete and its aggregate artifact is
+   hash-bound. The remaining data-plane task is to review and freeze the full formal manifests,
+   benchmark NAV, and processed Parquet inputs before any formal run.
+2. **A3 scientific implementation:** implement and preregister M2 or M3 before using A3 for the main
+   scientific comparison; M1 remains smoke/ablation only.
 3. **Disabled modalities:** keep current fundamentals and news disabled unless a later protocol
    amendment defines and reviews their point-in-time fields.
 4. **Human line review:** use the offline checklist in `docs/EXPERIMENT_HANDOFF.md` for future-split
    reversal/volume handling, data timing, train-only transforms, and next-open execution. No digital
    signature or separate cryptographic signing workflow is required.
-5. **Authorized smoke preparation:** copy the ignored history snapshot to the H100 host with rsync/scp,
-   install the GPU extra, and run only the A1/Qwen3-1.7B wiring smoke after the reviewed smoke
-   manifest, processed paths, and host access are ready. Keep timestamped local logs and sync the
-   `runs/` directory back with rsync; W&B is disabled. Do not copy or expose StockBench to the smoke.
+5. **Formal-run readiness:** freeze a clean execution commit, verify the frozen history and model
+   identities on the H100 host, run complete preflight, and preserve `runs/` evidence. G1 has already
+   passed and must not be represented as formal scientific training.

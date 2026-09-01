@@ -2,6 +2,9 @@
 
 > **归档说明：** 本文描述集成要求，不再是可直接复制的当前执行入口。实际 H100 命令与外部
 > exact commit 以 `2026-08-30_H100_G1_P1_VALIDATION_RUNBOOK.md` 为准。
+>
+> **后续状态：** G1 已于 2026-08-31 通过，T2 v2 已于 2026-09-01 通过。本文中的 `BLOCKED`
+> 和 T2 阻断描述仅代表集成当时状态。
 
 ## 1. 任务与状态边界
 
@@ -268,7 +271,7 @@ HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 CUDA_VISIBLE_DEVICES=0 \
 | Full preflight | 输出 `PREFLIGHT_PASSED`、`No training was started.`、`Final OOS not accessed.` |
 
 只有随后真实 smoke 产生 rollout、finite reward、至少一次满足 4.6 的 backward/optimizer/parameter
-update 证据并干净退出，才能写 `G1 PASSED`。冒烟通过仍不解除 T2 正式训练阻断。
+update 证据并干净退出，才能写 `G1 PASSED`。这是集成当时的门禁；G1 与 T2 v2 后续均已通过。
 
 ## 7. 合作者交付物
 

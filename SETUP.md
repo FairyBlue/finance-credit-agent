@@ -167,7 +167,7 @@ uv run --no-sync python scripts/prepare_episodes.py --config configs/smoke_1p7b.
   --manifest configs/episode_manifest.smoke.reviewed.yaml
 
 # Do not run scripts/run_t2_probe.py against StockBench again.
-# T2 v2 is preregistered to use history train/valid only and is pending implementation.
+# T2 v2 passed on frozen history Train/Valid; verify configs/t2_v2_result.json via the launcher.
 ```
 
 The full formal manifest is a later, T2-approved workflow and is not needed for G1:
@@ -184,24 +184,25 @@ uv run --no-sync python scripts/prepare_episodes.py \
 The one approved legacy T2 access used 81 StockBench OOS samples (`0.530864` aligned vs `0.518519`
 shifted) and produced artifact SHA-256
 `612fe086d380126190aaa23d37a6ee9670eaaf646f993469fc3836ee0c03f347`. StockBench is closed to
-further probe use. T2 v2 will pool per-stock rows, fit on history train, decide on history valid, and
-use two ephemeral controls: exact future direction and a 40%-flip future direction (approximately
-60% balanced-accuracy strength). Both controls must be detected and the real pipeline must not be
-significantly detected. Keep any weak-control miss as a power-boundary result; non-detection is not
-proof of absence. V2 remains preregistered pending implementation, so formal launch fails closed
-without a legacy fallback; `scripts/run_t2_probe.py` itself exits before reading any configuration
-or OOS input. Only the exact, complete hash-bound A1/Qwen3-1.7B wiring-smoke configuration is exempt,
-and it cannot support a scientific claim.
+further probe use. T2 v2 subsequently pooled per-stock rows, fit on history Train, decided on history
+Valid, and used two ephemeral controls: exact future direction and a 40%-flip future direction. It
+passed on 2026-09-01: real/strong/weak balanced accuracy was respectively `0.499357`, `1.0`, and
+`0.595495`, with one-sided lower bounds `0.494459`, `1.0`, and `0.575639`. Non-detection of the real
+pipeline is not proof of absence. The aggregate result is bound at `configs/t2_v2_result.json` with
+raw-byte SHA-256 `aff81d0af5fb458768abd741264ce312a7c0767884069824a7e309286ea27436`;
+the launcher recomputes its protocol and three-condition verdict. `scripts/run_t2_probe.py` still
+exits before reading any configuration or OOS input, with no legacy fallback.
 
 ## 5. Local-file tracking, rsync, and smoke verification
 
 Copying the frozen history snapshot to H100, installing the GPU extra, and running the
 A1/Qwen3-1.7B wiring smoke are authorized. W&B is disabled; structured local evidence is written
-under `runs/<run_id>/`. The run still requires H100 host access, a human-reviewed
+under `runs/<run_id>/`. The successful G1 evidence is recorded in
+`docs/2026-08-31_H100_G1_SMOKE_RESULTS.md`; reproducing the run still requires H100 host access, a human-reviewed
 `configs/episode_manifest.smoke.reviewed.yaml`, and all configured smoke train/valid/test processed
-Parquet paths. This authorization does not mark those prerequisites complete. Formal training still
-requires a clean, reviewed configuration and a passing implementation of T2 v2; data files remain
-ignored.
+Parquet paths. Formal training still requires a clean, reviewed configuration, reviewed formal
+manifests, complete preflight, and all arm-specific scientific prerequisites. T2 v2 itself is now
+passed and hash-bound; data files remain ignored.
 
 ```bash
 export FCA_VALIDATION_COMMIT=REPLACE_WITH_EXACT_40_CHAR_COMMIT
@@ -237,7 +238,9 @@ CUDA_VISIBLE_DEVICES=0 uv run --no-sync python -m src.agents.arm_a1 \
 
 Set `FCA_VALIDATION_COMMIT` to the exact committed SHA being validated; non-dry launch fails if HEAD,
 tracked files, the Agent-R1 submodule, or experiment code/config overlays differ. The queue is
-disabled for all arguments and never invokes `uv`; formal training also remains blocked by T2 v2.
+disabled for all arguments and never invokes `uv`. T2 v2 now passes the formal T2 gate; formal
+training remains unavailable until the other reviewed-manifest, identity, preflight, and arm-specific
+requirements are satisfied.
 `run.seed` is propagated to the main data/actor/critic/vLLM random sources, but distributed GPU
 execution is not promised to be bitwise deterministic.
 
