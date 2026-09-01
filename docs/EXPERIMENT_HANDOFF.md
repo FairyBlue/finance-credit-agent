@@ -19,8 +19,8 @@
    optimizer update 均有结构化证据，且 `final_oos_accessed=false`。
 3. T2 v2 已在冻结 history Train/Valid 上通过：真实管道未显著检出，强、弱正控制均检出；聚合
    证据位于 `configs/t2_v2_result.json`，launcher 会复核字节哈希、协议身份和联合判定。
-4. G1 和 T2 的通过都不构成正式训练授权。正式运行仍需 reviewed formal manifests、干净的代码/
-   数据/模型身份和完整 preflight；A3 主结论前还必须实现并预注册 M2 或 M3。
+4. Formal manifest 已由两位合作者按最小清单确认并晋级为 `reviewed`；`441/60/1` processed rows、
+   manifest/row 绑定和 raw-bar benchmark 重放均已通过。正式运行还需干净身份和完整 preflight。
 5. StockBench Final OOS 继续关闭；旧 T2 OOS CLI 永久 fail closed。`scripts/run_queue.sh` 也保持
    fail closed，实际运行只使用带 `--expected-commit` 的 direct launcher。
 
@@ -33,7 +33,6 @@ G1 与 T2 的结果边界分别见
 
 ```text
 复核 G1 与 T2 v2 结果报告
-  → 审核并冻结正式 manifests 与 benchmark
   → 完成 A3 的 M2 或 M3 实现与预注册
   → 冻结干净的正式执行 commit 和数据/模型身份
   → 在 H100 重新核对 stack、tests 与完整 preflight
@@ -74,8 +73,7 @@ G1 smoke 只证明训练链路接通：数据能加载、环境能推进、模�
 
 G1 已经通过，但正式训练不会因此自动开始，当前还需满足：
 
-- T2 v2 已通过并解除该项 blocker，但正式 reviewed manifests、干净执行身份和完整 preflight 仍
-  必须逐项完成。
+- T2 v2 与 formal reviewed manifest 已完成，但干净执行身份和完整 preflight 仍必须逐项完成。
 - A3 当前只有 M1 uniform broadcast 作为 smoke/ablation，支持科学主结论的 M2 或 M3 尚未实现。
 
 因此，G1 和 T2 通过后的正确动作是继续正式实验准备，不是顺手启动三臂训练。
@@ -86,7 +84,7 @@ G1 已经通过，但正式训练不会因此自动开始，当前还需满足�
 
 | 项目 | 状态 | 证据或说明 |
 |---|---|---|
-| G0 协议与本地脚手架 | `PASSED` | 当前全量 217 tests；Ruff、mypy、lock 与 whitespace checks 通过 |
+| G0 协议与本地脚手架 | `PASSED` | 当前全量 221 tests；Ruff、mypy、lock 与 whitespace checks 通过 |
 | Prompt-budget P0 修复 | `H100 PASS` | 620 个真实 tokenizer cases，最大 prompt 3045/4096 tokens |
 | G1 P1 门禁 | `H100 PREFLIGHT PASS` | exact model/offline、4-row cap、增量证据、direct-only 与 expected-commit 已实测 |
 | G1 A1/Qwen3-1.7B smoke | `PASSED` | H100 实测完成；rollout、reward、backward、optimizer update 与 Final OOS 隔离证据齐全 |
@@ -101,6 +99,8 @@ G1 已经通过，但正式训练不会因此自动开始，当前还需满足�
 | Smoke manifest candidate | 已生成 | 状态为 `pending_human_review`，文件和 benchmark 哈希已冻结 |
 | Reviewed smoke manifest | H100 已使用 | 经线下审核后复制，按协议保持 untracked；GitHub 不包含该文件 |
 | Smoke processed Parquet | H100 已验证 | 实测 `train=4`、`valid=1`、`test=1`；文件不进入 GitHub |
+| Formal reviewed manifest | `PASSED` | 两位合作者已确认；raw SHA `4a8ff4f3...a5a54a3`，benchmark SHA `a8650738...b117b8` |
+| Formal processed Parquet | `PASSED` | 已生成并验证 `441/60/1` rows；文件保持 Git-ignored |
 
 本次 H100 移植以 `9e4bfe3c2d9d6ef36fbd684efcc78c2b1c600cfd` 为实际起点；精确移植
 commit 记录在 `docs/H100_COMPATIBILITY.md`。开发时先同步最新 `origin/main`；执行实验时必须
@@ -467,8 +467,8 @@ queue wrapper 当前全面禁用：watchdog 对 A1 terminal-only reward 可能�
 CUDA_VISIBLE_DEVICES=0 scripts/run_queue.sh configs/smoke_1p7b.yaml
 ```
 
-不得通过 `--formal` 绕过任何门禁。T2 v2 当前由已通过且 hash-bound 的 artifact 放行；正式运行
-仍须满足 reviewed manifests、干净执行身份和完整 preflight。
+不得通过 `--formal` 绕过任何门禁。T2 v2 当前由已通过且 hash-bound 的 artifact 放行，formal
+reviewed manifest 也已完成；正式运行仍须满足干净执行身份和完整 preflight。
 
 每次非 dry-run 都会创建：
 
@@ -557,7 +557,7 @@ PY
 | 缺少 `torch/verl/vllm/flash_attn` | GPU extra 未正确安装 | 按第 9 节顺序重装，不要随意升级 verl |
 | `CUDA GPU is unavailable` | 驱动、CUDA visibility 或资源分配错误 | 检查 `nvidia-smi`、调度器和 `CUDA_VISIBLE_DEVICES` |
 | model revision not cached | 本地没有 Qwen3-1.7B snapshot/ref | 按第 9 节预下载，训练中不要联网补下载 |
-| missing reviewed manifest | 尚未完成 candidate 审核 | 回到第 8 节，不要把 draft 直接冒充 reviewed |
+| missing reviewed manifest | reviewed 文件缺失或未同步 | formal 使用仓库内 reviewed 文件；smoke 回到第 8 节，不要把 draft 直接冒充 reviewed |
 | missing processed dataset | 三个 Parquet 尚未生成 | 从 reviewed manifest 重新运行 `prepare_episodes.py` |
 | raw manifest SHA mismatch | 数据不是冻结快照或同步损坏 | 停止，重新 rsync 原快照；不要修改冻结 SHA |
 | invalid T2 smoke exemption | smoke 配置漂移或启动了非批准配置 | 重新 checkout runbook 的 exact commit，只使用 `configs/smoke_1p7b.yaml` |
@@ -587,7 +587,8 @@ W&B、API key、云端 logger、数字签名或加密签字流程都不需要。
 G1 与 T2 v2 均已通过，结果及限制已经提交为独立报告。接下来按以下顺序推进：
 
 1. 复核 T2 artifact 的 protocol/raw-byte SHA 绑定，并保留旧 OOS probe 的永久禁用状态；
-2. 生成、人工审核并冻结正式 manifests、benchmark NAV 和 processed Parquet；
+2. formal reviewed manifest、benchmark 重放和 `441/60/1` processed rows 已完成；换执行主机时只需
+   从仓库内 reviewed manifest 重新生成 Git-ignored Parquet；
 3. 为 A3 主结论实现并预注册 M2 或 M3，不能用 M1 冒充；
 4. 冻结干净的正式执行 commit，以及代码、数据和模型身份；
 5. 在 H100 重跑当前完整 tests、stack 核验和 formal preflight；
@@ -622,6 +623,7 @@ Final OOS 仍只在最终科学评测时开启。T2 的 real-pipeline non-detect
 | `docs/EXPERIMENT_HANDOFF.md` | 本接手与运行手册 |
 | `docs/2026-08-31_H100_G1_SMOKE_RESULTS.md` | 已通过的 G1 smoke 结果、证据哈希与限制 |
 | `docs/2026-09-01_T2_V2_RESULTS.md` | 已通过的 T2 v2 结果、统计身份与 artifact 门禁 |
+| `docs/2026-09-01_FORMAL_MANIFEST_RESULTS.md` | formal manifest 的审核、晋级、processed 与复算证据 |
 | `docs/2026-08-27_H100_G1_AUDIT_RESULTS.md` | 当前 H100 实测结果、P0/P1/P2 与复验顺序 |
 | `docs/2026-08-27_H100_G1_VALIDATION_RUNBOOK.md` | `8a090b8` 原始执行任务单；已由实测结果更新状态 |
 | `docs/2026-08-30_H100_G1_P1_VALIDATION_RUNBOOK.md` | 本轮 P0/P1 集成的唯一当前 H100 验收命令 |
@@ -631,7 +633,9 @@ Final OOS 仍只在最终科学评测时开启。T2 的 real-pipeline non-detect
 | `configs/base.yaml` | 数据、reward、交易、Regime 与门禁基础配置 |
 | `configs/episode_manifest.smoke.candidate.yaml` | 已冻结并于 2026-08-30 线下审核通过；reviewed 副本保持本地 ignored |
 | `scripts/build_smoke_manifest.py` | 生成确定性 history-only smoke 草稿 |
+| `scripts/build_formal_manifest.py` | 生成确定性 441/60/1 formal manifest 草稿 |
 | `scripts/freeze_benchmarks.py` | 用共享账务引擎生成 benchmark NAV |
+| `configs/episode_manifest.reviewed.yaml` | 已确认并绑定的 `441/60/1` formal manifest |
 | `scripts/prepare_episodes.py` | 生成 Agent-R1 processed Parquet |
 | `scripts/verify_h100_stack.py` | 验证版本、CUDA 与真实 FlashAttention kernel |
 | `scripts/verify_context_budget.py` | 用缓存模型的真实 tokenizer 验证完整 G1 提示词预算，不启动训练 |
@@ -653,5 +657,5 @@ Final OOS 仍只在最终科学评测时开启。T2 的 real-pipeline non-detect
 - 合作者无需依赖历史聊天、W&B、个人电脑路径或数字签名流程；
 - 合作者能够独立判断当前为何阻塞、下一步做什么、何时必须停止，以及什么证据才算实验通过。
 
-当前 readiness：`FORMAL_PREPARATION`。G1 与 T2 v2 已通过；正式 manifests、A3 M2/M3、干净
-执行身份和正式 H100 preflight 尚未完成，因此仍不得启动正式三臂训练。
+当前 readiness：`FORMAL_MANIFEST_REVIEWED`。G1、T2 v2、formal manifest 和本地 processed 绑定
+均已通过；A3 M2/M3、干净执行身份和正式 H100 preflight 尚未完成，因此仍不得启动正式三臂训练。

@@ -66,6 +66,7 @@
 | 2026-08-30 | v0.7 amendment：G1 P1 执行约束 | 两位合作者线下人工审核通过；授权唯一一次 G1 wiring smoke |
 | 2026-08-30 | v0.8 amendment：审核/签字只由合作者线下完成 | 两位合作者线下共同审核已完成；记录时间为 2026-08-30T14:46:33+00:00 |
 | 2026-09-01 | v0.9 execution record：T2 v2 实现、运行证据与门禁接线 | 自动化三条件通过；不改变 v0.3 预注册口径，不构成人工 reviewer 签字 |
+| 2026-09-01 | v1.0 formal manifest record：formal episode 采样、最小审核与 processed 绑定 | 两位合作者已确认；reviewed manifest、benchmark 重放和 `441/60/1` processed rows 均已验证 |
 
 ## 8. v0.2 修订（2026-08-24，用户明确批准）
 
@@ -377,5 +378,34 @@ preflight 通过后启动唯一一次 A1/Qwen3-1.7B G1 wiring smoke。本授权�
   落盘。launcher 会重新校验 artifact 字节哈希、protocol hash、history manifest、样本/session
   数、bootstrap 元数据及三条件语义，任一漂移继续 fail closed，且绝不回退旧 StockBench 探针。
 - T2 v2 这一项阻塞已经解除。真实管道未显著检出仍只表示“没有显著泄漏证据”，不是无泄漏证明；
-  本记录也不自动批准正式训练。正式实验仍须满足干净代码身份、正式 reviewed manifests、数据与
-  模型 preflight，以及 A3 主结论所需 M2/M3 等独立条件，Final OOS 仍保持关闭至最终科学评测。
+  本记录也不自动批准正式训练。formal reviewed manifest 已于本日完成；正式实验仍须满足干净
+  代码身份、数据与模型 preflight，以及 A3 主结论所需 M2/M3 等独立条件，Final OOS 仍保持关闭
+  至最终科学评测。
+
+## 16. v1.0 Formal Reviewed Manifest（2026-09-01）
+
+> 用户批准采用最小化 formal manifest 流程：只保留机器可复算的数据/split/benchmark/row 绑定和
+> 两位合作者的内容确认，不增加数字签名、第三方审批或复杂同步。两位合作者已完成内容确认；自动
+> agent 只执行确定性晋级和复算，不作为 reviewer。
+
+- Formal Train/Valid 沿用第 9.1 节已经冻结的 21-session horizon，按 XNYS session、stride 1
+  生成重叠窗口：Train 461 sessions 形成 441 个 episode，Valid 80 sessions 形成 60 个 episode。
+  每个 episode 的 20 个相邻收益区间与奖励标定 horizon 一致，且在两个 split 内独立生成。
+- Final OOS 继续是 `2025-03-03`～`2025-06-30` 的单个不可拆分 83-session episode，不产生内部
+  选择窗口。Train/Valid 每个 episode 的预算为 `20 × (1 advance + 2 information) = 60` steps，
+  不超过 formal `max_agent_steps=256`。
+- candidate 由确定性生成器和共享 next-open 账务引擎生成。candidate 原始字节 SHA-256 为
+  `4fe7da766d214f6fa14e71e080a537759354caf2de842237d244a332d19dbc98`；benchmark series SHA-256 为
+  `a86507384e6806db84066a0cd286cc143664ecddb3c2b851f63562ea45b117b8`。两次独立冷启动生成结果
+  byte-for-byte 相同。
+- 生成前重新核验 history `10,820` 文件和 StockBench `1,660` 文件的 raw manifest，分别精确匹配
+  `2612e707...a76c90` 与 `8b48fc7d...42bd1f`；每只股票分别为 541/83 sessions。
+- 两位合作者已核对三个 split 的 source/日期、`441/60/1` episode 数、`21/21/83` session 长度、
+  20 股 universe、benchmark series hash 和 candidate raw-byte hash。晋级只修改 status 并重命名为
+  `configs/episode_manifest.reviewed.yaml`；reviewed raw SHA-256 为
+  `4a8ff4f3ad8c9305c03aab17f44ebda5c4d493c22b6610a67a70ba238a5a54a3`。逆向还原 status 后 raw hash
+  精确回到 candidate hash，证明其余字节未变。
+- processed Train/Valid/Test 已生成并核对为 `441/60/1` rows，文件 SHA-256 分别为
+  `87e9de90...21b33b`、`5e088b15...bacbcf`、`92b6e574...f692b`。Train/Valid 的 launcher 逐行绑定
+  检查通过，Test 由 builder 验证为单个完整 OOS row；从冻结 raw bars 独立重放 benchmark 仍得到
+  `a8650738...b117b8`。该重放只验证冻结基准，不运行 agent、不产生 Final OOS 性能或调参信号。

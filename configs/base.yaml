@@ -54,6 +54,23 @@ data:
     test: stockbench
   # Must be a committed, human-reviewed copy of episode_manifest.example.yaml.
   episode_manifest: configs/episode_manifest.reviewed.yaml
+  formal_episode_sampling:
+    calendar: XNYS
+    train:
+      selection: rolling_sessions
+      sessions_per_episode: 21
+      stride_sessions: 1
+      expected_episodes: 441
+    valid:
+      selection: rolling_sessions
+      sessions_per_episode: 21
+      stride_sessions: 1
+      expected_episodes: 60
+    test:
+      selection: full_window
+      sessions_per_episode: 83
+      expected_episodes: 1
+      indivisible_oos: true
   processed:
     train_file: data/processed/train.parquet
     valid_file: data/processed/valid.parquet

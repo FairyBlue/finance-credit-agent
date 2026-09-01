@@ -170,16 +170,28 @@ uv run --no-sync python scripts/prepare_episodes.py --config configs/smoke_1p7b.
 # T2 v2 passed on frozen history Train/Valid; verify configs/t2_v2_result.json via the launcher.
 ```
 
-The full formal manifest is a later, T2-approved workflow and is not needed for G1:
+The reviewed formal manifest uses frozen 21-session rolling Train/Valid windows and one complete
+83-session Final OOS episode. The first two commands reproduce the pre-review candidate in `/tmp`;
+the committed reviewed file is the status-only promotion confirmed by both collaborators:
 
 ```bash
-cp configs/episode_manifest.example.yaml configs/episode_manifest.draft.yaml
+uv run --no-sync python scripts/build_formal_manifest.py \
+  --config configs/base.yaml \
+  --output /tmp/finance-credit-agent-formal-manifest-draft.yaml
 uv run --no-sync python scripts/freeze_benchmarks.py \
-  --draft configs/episode_manifest.draft.yaml \
-  --output configs/episode_manifest.reviewed.yaml
+  --draft /tmp/finance-credit-agent-formal-manifest-draft.yaml \
+  --output /tmp/finance-credit-agent-formal-manifest-candidate.yaml
+
 uv run --no-sync python scripts/prepare_episodes.py \
   --manifest configs/episode_manifest.reviewed.yaml
 ```
+
+The reviewed manifest raw-byte SHA-256 is
+`4a8ff4f3ad8c9305c03aab17f44ebda5c4d493c22b6610a67a70ba238a5a54a3`, and its benchmark series
+SHA-256 is `a86507384e6806db84066a0cd286cc143664ecddb3c2b851f63562ea45b117b8`. The generated processed
+inputs were verified at Train/Valid/Test `441/60/1` rows; they remain Git-ignored and must be rebuilt
+on another execution host. Full evidence is in
+[`docs/2026-09-01_FORMAL_MANIFEST_RESULTS.md`](docs/2026-09-01_FORMAL_MANIFEST_RESULTS.md).
 
 The one approved legacy T2 access used 81 StockBench OOS samples (`0.530864` aligned vs `0.518519`
 shifted) and produced artifact SHA-256

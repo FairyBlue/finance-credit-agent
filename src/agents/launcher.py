@@ -630,8 +630,12 @@ def _is_declared_wiring_smoke(config: dict[str, Any]) -> bool:
             raise RuntimeError(
                 f"invalid T2 smoke exemption: {label} must be {expected!r}, got {actual!r}"
             )
+    canonical_config = {**config, "data": dict(_required(config, "data"))}
+    # The formal-only sampling policy was added after G1 completed and cannot
+    # alter the historical wiring-smoke identity or execution behavior.
+    canonical_config["data"].pop("formal_episode_sampling", None)
     canonical = json.dumps(
-        config,
+        canonical_config,
         allow_nan=False,
         ensure_ascii=False,
         separators=(",", ":"),

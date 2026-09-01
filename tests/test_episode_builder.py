@@ -1,6 +1,8 @@
 """Audited episode manifest conversion into Agent-R1 parquet rows."""
 
 import json
+import subprocess
+import sys
 from copy import deepcopy
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -13,9 +15,12 @@ import yaml
 from src.agents.config import load_experiment_config
 from src.data.episodes import (
     benchmark_series_sha256,
+    build_formal_episode_manifest_draft,
     build_smoke_episode_manifest_draft,
     freeze_episode_benchmarks,
+    load_episode_manifest,
     prepare_episode_datasets,
+    resolve_formal_episode_sessions,
     validate_episode_manifest_metadata,
     verify_episode_benchmarks,
 )
@@ -24,6 +29,90 @@ from src.env import ExecutionPolicy
 from src.evaluation import buy_and_hold_equal_weight_targets, replay_target_weights
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_formal_sampling_resolves_frozen_21_session_windows_and_full_oos() -> None:
+    config = load_experiment_config(ROOT / "configs/base.yaml")
+
+    resolved = resolve_formal_episode_sessions(config)
+
+    assert len(resolved["train"]) == 441
+    assert len(resolved["valid"]) == 60
+    assert len(resolved["test"]) == 1
+    assert {len(episode) for episode in resolved["train"]} == {21}
+    assert {len(episode) for episode in resolved["valid"]} == {21}
+    assert len(resolved["test"][0]) == 83
+    assert resolved["train"][0][0] == "2023-01-03"
+    assert resolved["train"][-1][-1] == "2024-10-31"
+    assert resolved["valid"][0][0] == "2024-11-01"
+    assert resolved["valid"][-1][-1] == "2025-02-28"
+    assert resolved["test"][0][0] == "2025-03-03"
+    assert resolved["test"][0][-1] == "2025-06-30"
+
+
+def test_formal_manifest_draft_is_deterministic_and_sampling_bound(
+    tmp_path: Path,
+) -> None:
+    output = build_formal_episode_manifest_draft(
+        config_path=ROOT / "configs/base.yaml",
+        output_path=tmp_path / "formal-draft.yaml",
+    )
+    manifest = yaml.safe_load(output.read_text(encoding="utf-8"))
+    config = load_experiment_config(ROOT / "configs/base.yaml")
+
+    assert manifest["status"] == "generated_pending_collaborator_review"
+    assert len(manifest["splits"]["train"]) == 441
+    assert len(manifest["splits"]["valid"]) == 60
+    assert len(manifest["splits"]["test"]) == 1
+    assert len(manifest["splits"]["test"][0]["episode_dates"]) == 83
+    validate_episode_manifest_metadata(config, manifest, verify_benchmark_series=False)
+
+    tampered = deepcopy(manifest)
+    tampered["splits"]["valid"][0]["episode_dates"][0] = (
+        tampered["splits"]["train"][0]["episode_dates"][0]
+    )
+    with pytest.raises(ValueError, match="dates do not match frozen sampling"):
+        validate_episode_manifest_metadata(
+            config, tampered, verify_benchmark_series=False
+        )
+
+
+def test_formal_manifest_cli_is_importable_outside_repository(tmp_path: Path) -> None:
+    completed = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/build_formal_manifest.py"), "--help"],
+        cwd=tmp_path,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.returncode == 0
+    assert "--output" in completed.stdout
+
+
+def test_pending_formal_manifest_cannot_be_used_as_reviewed_input(
+    tmp_path: Path,
+) -> None:
+    path = build_formal_episode_manifest_draft(
+        config_path=ROOT / "configs/base.yaml",
+        output_path=tmp_path / "formal-candidate.yaml",
+    )
+    manifest = yaml.safe_load(path.read_text(encoding="utf-8"))
+    for episodes in manifest["splits"].values():
+        for episode in episodes:
+            episode["benchmark_closes"] = [1.0] * len(episode["episode_dates"])
+    manifest["benchmark"]["series_sha256"] = benchmark_series_sha256(
+        manifest["splits"]
+    )
+    path.write_text(yaml.safe_dump(manifest, sort_keys=False), encoding="utf-8")
+    config = load_experiment_config(ROOT / "configs/base.yaml")
+
+    with pytest.raises(ValueError, match="must have status reviewed"):
+        load_episode_manifest(config=config, manifest_path=path)
+
+    manifest["status"] = "reviewed"
+    path.write_text(yaml.safe_dump(manifest, sort_keys=False), encoding="utf-8")
+    assert load_episode_manifest(config=config, manifest_path=path)["status"] == "reviewed"
 
 
 def test_smoke_manifest_draft_is_history_only_and_provenance_tampering_fails(

@@ -58,8 +58,10 @@ scripts/run_queue.sh      fail-closed disabled queue; G1 uses the direct launche
 scripts/watchdog.py       collapsed-reward/repeated-output process watchdog
 scripts/fetch_history.py  freeze yfinance/Stooq train+valid inputs and checksums
 scripts/build_smoke_manifest.py generate the deterministic history-only G1 manifest draft
+scripts/build_formal_manifest.py generate the frozen 441/60/1 formal manifest draft
 scripts/freeze_benchmarks.py generate shared-ledger benchmark NAV + checksum
 configs/episode_manifest.smoke.candidate.yaml frozen G1 candidate; reviewed copy stays local/ignored
+configs/episode_manifest.reviewed.yaml collaborator-reviewed 441/60/1 formal manifest
 scripts/run_t2_probe.py   disabled legacy OOS entrypoint retained for audit history
 scripts/run_t2_v2_probe.py run the frozen history-only T2 v2 probe and write bound evidence
 configs/t2_v2_result.json repository T2 v2 aggregate result bound by SHA-256
@@ -158,15 +160,20 @@ uv run --no-sync python scripts/calibrate_reward.py \
   --check configs/reward_calibration.pending.yaml
 ```
 
-Copy the manifest template to a draft and provide timezone-aware close/open timestamps. The freezer,
-rather than a human, writes the equal-weight benchmark NAV and its checksum through the shared
-`PortfolioLedger`. Review the generated manifest before a run:
+The formal manifest generator deterministically resolves 441 overlapping 21-session Train episodes,
+60 overlapping 21-session Valid episodes, and one indivisible 83-session Final OOS episode. The
+freezer writes equal-weight benchmark NAV through the shared `PortfolioLedger`:
 
 ```bash
-cp configs/episode_manifest.example.yaml configs/episode_manifest.draft.yaml
+uv run --no-sync python scripts/build_formal_manifest.py \
+  --config configs/base.yaml \
+  --output /tmp/finance-credit-agent-formal-manifest-draft.yaml
 uv run --no-sync python scripts/freeze_benchmarks.py \
-  --draft configs/episode_manifest.draft.yaml \
-  --output configs/episode_manifest.reviewed.yaml
+  --draft /tmp/finance-credit-agent-formal-manifest-draft.yaml \
+  --output /tmp/finance-credit-agent-formal-manifest-candidate.yaml
+
+# The committed reviewed manifest was promoted with a status-only change after
+# both collaborators confirmed the minimal review fields.
 uv run --no-sync python scripts/prepare_episodes.py \
   --manifest configs/episode_manifest.reviewed.yaml
 
@@ -181,6 +188,13 @@ uv run --no-sync python scripts/prepare_episodes.py --config configs/smoke_1p7b.
 
 # Do not rerun the legacy T2 probe against StockBench OOS. T2 v2 uses history Train/Valid only.
 ```
+
+The reviewed manifest raw SHA-256 is
+`4a8ff4f3ad8c9305c03aab17f44ebda5c4d493c22b6610a67a70ba238a5a54a3`; its benchmark series
+SHA-256 is `a86507384e6806db84066a0cd286cc143664ecddb3c2b851f63562ea45b117b8`.
+The local processed result was verified at 441/60/1 rows. See
+[`docs/2026-09-01_FORMAL_MANIFEST_RESULTS.md`](docs/2026-09-01_FORMAL_MANIFEST_RESULTS.md) for the
+candidate-to-reviewed proof and artifact hashes.
 
 The builder rejects random/overlapping splits and writes the Agent-R1 parquet inputs under ignored
 `data/processed/`. The smoke shadow is the nine Valid sessions from `2024-11-14` through
@@ -236,8 +250,8 @@ CUDA_VISIBLE_DEVICES=0 uv run --no-sync python -m src.agents.arm_a1 \
 
 `scripts/run_queue.sh` is disabled fail-closed for every argument and never invokes `uv`. Until its
 stage-aware process-group and signal semantics are redesigned and reviewed, use only the direct
-launcher commands above. T2 v2 has passed, but formal runs still require clean code/data identity,
-reviewed formal manifests, complete preflight, and the remaining arm-specific scientific work.
+launcher commands above. T2 v2 and the formal manifest gate have passed, but formal runs still
+require clean code/data identity, complete preflight, and the remaining arm-specific scientific work.
 
 `src/evaluation/` computes cumulative/annualized return, Sharpe, Sortino, maximum drawdown, turnover,
 cost ratio, benchmark-adjusted return, tool-call count/success, invalid-call and abstain rates, token
@@ -250,16 +264,14 @@ The five-session tariff-crash metrics are descriptive only and must carry no sig
 
 ## Remaining required work
 
-1. **Reviewed formal manifests and benchmark:** T2 v2 is complete and its aggregate artifact is
-   hash-bound. The remaining data-plane task is to review and freeze the full formal manifests,
-   benchmark NAV, and processed Parquet inputs before any formal run.
-2. **A3 scientific implementation:** implement and preregister M2 or M3 before using A3 for the main
+1. **A3 scientific implementation:** implement and preregister M2 or M3 before using A3 for the main
    scientific comparison; M1 remains smoke/ablation only.
-3. **Disabled modalities:** keep current fundamentals and news disabled unless a later protocol
+2. **Disabled modalities:** keep current fundamentals and news disabled unless a later protocol
    amendment defines and reviews their point-in-time fields.
-4. **Human line review:** use the offline checklist in `docs/EXPERIMENT_HANDOFF.md` for future-split
+3. **Human line review:** use the offline checklist in `docs/EXPERIMENT_HANDOFF.md` for future-split
    reversal/volume handling, data timing, train-only transforms, and next-open execution. No digital
    signature or separate cryptographic signing workflow is required.
-5. **Formal-run readiness:** freeze a clean execution commit, verify the frozen history and model
+4. **Formal-run readiness:** regenerate the ignored processed Parquet from the committed reviewed
+   manifest on the execution host, freeze a clean commit, verify the frozen history and model
    identities on the H100 host, run complete preflight, and preserve `runs/` evidence. G1 has already
    passed and must not be represented as formal scientific training.

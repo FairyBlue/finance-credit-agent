@@ -202,6 +202,174 @@ def build_smoke_episode_manifest_draft(*, config_path: str | Path, output_path: 
     return output
 
 
+def resolve_formal_episode_sessions(
+    config: dict[str, Any],
+) -> dict[str, tuple[tuple[str, ...], ...]]:
+    """Resolve the frozen formal rolling windows and indivisible OOS episode."""
+
+    if config.get("run", {}).get("smoke") is True:
+        raise ValueError("formal episode sampling cannot use a smoke configuration")
+    data = config.get("data")
+    if not isinstance(data, dict):
+        raise ValueError("formal config data must be a mapping")
+    sampling = data.get("formal_episode_sampling")
+    windows = data.get("windows")
+    if not isinstance(sampling, dict) or not isinstance(windows, dict):
+        raise ValueError("formal episode sampling and windows must be frozen mappings")
+    calendar_name = str(sampling.get("calendar", ""))
+    if calendar_name != str(data.get("availability", {}).get("exchange_calendar")):
+        raise ValueError("formal episode sampling calendar must match data availability")
+    calendar = xcals.get_calendar(calendar_name)
+
+    def split_sessions(split: str) -> tuple[str, ...]:
+        window = windows.get(split)
+        if not isinstance(window, dict):
+            raise ValueError(f"data.windows.{split} must be a mapping")
+        return tuple(
+            value.strftime("%Y-%m-%d")
+            for value in calendar.sessions_in_range(str(window["start"]), str(window["end"]))
+        )
+
+    def positive_integer(policy: dict[str, Any], key: str, *, split: str) -> int:
+        value = policy.get(key)
+        if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+            raise ValueError(
+                f"formal episode sampling {split}.{key} must be a positive integer"
+            )
+        return value
+
+    resolved: dict[str, tuple[tuple[str, ...], ...]] = {}
+    for split in ("train", "valid"):
+        policy = sampling.get(split)
+        if not isinstance(policy, dict) or policy.get("selection") != "rolling_sessions":
+            raise ValueError(f"formal episode sampling {split} must use rolling_sessions")
+        sessions = split_sessions(split)
+        width = positive_integer(policy, "sessions_per_episode", split=split)
+        stride = positive_integer(policy, "stride_sessions", split=split)
+        expected = positive_integer(policy, "expected_episodes", split=split)
+        if width > len(sessions):
+            raise ValueError(f"formal episode sampling {split} window is too short")
+        episodes = tuple(
+            tuple(sessions[start : start + width])
+            for start in range(0, len(sessions) - width + 1, stride)
+        )
+        if len(episodes) != expected:
+            raise ValueError(
+                f"formal episode sampling {split} expected {expected} episodes, "
+                f"resolved {len(episodes)}"
+            )
+        resolved[split] = episodes
+
+    test_policy = sampling.get("test")
+    if (
+        not isinstance(test_policy, dict)
+        or test_policy.get("selection") != "full_window"
+        or test_policy.get("indivisible_oos") is not True
+    ):
+        raise ValueError("formal test sampling must be an indivisible full_window")
+    test_sessions = split_sessions("test")
+    test_width = positive_integer(test_policy, "sessions_per_episode", split="test")
+    test_expected = positive_integer(test_policy, "expected_episodes", split="test")
+    if test_width != len(test_sessions) or test_expected != 1:
+        raise ValueError("formal test sampling must contain the complete OOS in one episode")
+    resolved["test"] = (test_sessions,)
+    return resolved
+
+
+def build_formal_episode_manifest_draft(
+    *, config_path: str | Path, output_path: str | Path
+) -> Path:
+    """Create the deterministic formal manifest awaiting minimal collaborator review."""
+
+    config = load_experiment_config(config_path)
+    resolved = resolve_formal_episode_sessions(config)
+    output = Path(output_path).expanduser().resolve()
+    if output.exists():
+        raise FileExistsError(f"refusing to overwrite formal manifest draft: {output}")
+
+    data = config["data"]
+    sampling = data["formal_episode_sampling"]
+    calendar = xcals.get_calendar(str(sampling["calendar"]))
+    source_keys = {
+        "history": (
+            "provider",
+            "provider_version",
+            "retrieved_at_utc",
+            "input_manifest_sha256",
+            "files",
+        ),
+        "stockbench": (
+            "repo_commit",
+            "storage_tree",
+            "input_manifest_sha256",
+            "files",
+        ),
+    }
+    active_sources = {str(data["split_source"][split]) for split in SPLITS}
+    snapshots = {
+        source_name: {
+            key: data["sources"][source_name][key]
+            for key in source_keys[source_name]
+        }
+        for source_name in sorted(active_sources)
+    }
+
+    def episode(split: str, index: int, session_days: tuple[str, ...]) -> dict[str, object]:
+        labels = [pd.Timestamp(day) for day in session_days]
+        return {
+            "episode_id": f"formal-{split}-{index + 1:04d}",
+            "episode_dates": [calendar.session_close(label).isoformat() for label in labels],
+            "episode_open_times": [calendar.session_open(label).isoformat() for label in labels],
+        }
+
+    manifest: dict[str, object] = {
+        "version": 1,
+        "status": "generated_pending_collaborator_review",
+        "review_focus": [
+            "split_windows_and_sources_match_frozen_config",
+            "train_valid_use_21_session_rolling_windows",
+            "test_is_one_indivisible_83_session_oos_episode",
+            "benchmark_hash_and_processed_row_counts_recompute",
+        ],
+        "data_snapshot": snapshots,
+        "split_windows": {
+            split: {
+                "source": data["split_source"][split],
+                "first_session": str(data["windows"][split]["start"]),
+                "last_session": str(data["windows"][split]["end"]),
+                **(
+                    {"indivisible_oos": data["windows"][split]["indivisible_oos"]}
+                    if split == "test"
+                    else {}
+                ),
+            }
+            for split in SPLITS
+        },
+        "episode_sampling": deepcopy(sampling),
+        "universe": data["universe"]["symbols"],
+        "benchmark": {
+            "definition": config["reward"]["benchmark"],
+            "accounting_engine": config["reward"]["benchmark_accounting_engine"],
+            "execution": config["reward"]["benchmark_execution"],
+        },
+        "modalities": {
+            "news_enabled": data["retrieval"]["news_enabled"],
+            "allowed_retrieval": data["retrieval"]["allowed_modalities"],
+        },
+        "splits": {
+            split: [
+                episode(split, index, session_days)
+                for index, session_days in enumerate(resolved[split])
+            ]
+            for split in SPLITS
+        },
+    }
+    validate_episode_manifest_metadata(config, manifest, verify_benchmark_series=False)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(yaml.safe_dump(manifest, sort_keys=False), encoding="utf-8")
+    return output
+
+
 def verify_smoke_final_oos_isolation(config: dict[str, Any]) -> dict[str, object]:
     """Fail closed unless the G1 test split is the approved history-backed shadow."""
 
@@ -377,6 +545,43 @@ def validate_episode_manifest_metadata(
                     session = _timestamp(raw_date, field=f"smoke {split} episode_dates").date()
                     if FINAL_OOS_START <= session <= FINAL_OOS_END:
                         raise ValueError(f"smoke manifest enters Final OOS: {session.isoformat()}")
+    elif "formal_episode_sampling" in data:
+        sampling = data.get("formal_episode_sampling")
+        if not isinstance(sampling, dict) or manifest.get("episode_sampling") != sampling:
+            raise ValueError("manifest formal episode sampling does not match the frozen config")
+        expected_sessions = resolve_formal_episode_sessions(config)
+        split_documents = manifest.get("splits")
+        if not isinstance(split_documents, dict):
+            raise ValueError("formal manifest splits must be a frozen mapping")
+        calendar = xcals.get_calendar(str(sampling["calendar"]))
+        for split in SPLITS:
+            episodes = split_documents.get(split)
+            expected_episodes = expected_sessions[split]
+            if not isinstance(episodes, list) or len(episodes) != len(expected_episodes):
+                raise ValueError(
+                    f"formal manifest split {split} must contain "
+                    f"{len(expected_episodes)} episodes"
+                )
+            for index, (episode, session_days) in enumerate(
+                zip(episodes, expected_episodes, strict=True)
+            ):
+                if not isinstance(episode, dict):
+                    raise ValueError(f"formal manifest {split}[{index}] must be a mapping")
+                labels = [pd.Timestamp(day) for day in session_days]
+                expected_dates = [
+                    calendar.session_close(label).isoformat() for label in labels
+                ]
+                expected_opens = [
+                    calendar.session_open(label).isoformat() for label in labels
+                ]
+                if episode.get("episode_dates") != expected_dates:
+                    raise ValueError(
+                        f"formal manifest {split}[{index}] dates do not match frozen sampling"
+                    )
+                if episode.get("episode_open_times") != expected_opens:
+                    raise ValueError(
+                        f"formal manifest {split}[{index}] opens do not match frozen sampling"
+                    )
 
     if manifest.get("universe") != data["universe"]["symbols"]:
         raise ValueError("manifest universe does not match the frozen config")
@@ -446,6 +651,12 @@ def load_episode_manifest(*, config: dict[str, Any], manifest_path: str | Path) 
     if not isinstance(manifest.get("splits"), dict):
         raise ValueError("episode manifest must contain a splits mapping")
     validate_episode_manifest_metadata(config, manifest)
+    if (
+        "formal_episode_sampling" in config.get("data", {})
+        and config.get("run", {}).get("smoke") is not True
+        and manifest.get("status") != "reviewed"
+    ):
+        raise ValueError("formal episode manifest must have status reviewed")
     return manifest
 
 
@@ -489,6 +700,9 @@ def _populate_episode_benchmarks(
         str(availability.get("exchange_calendar", "XNYS")),
     )
     adapters: dict[str, StockBenchAdapter] = {}
+    price_cache: dict[
+        tuple[str, datetime], tuple[dict[str, float], dict[str, float]]
+    ] = {}
 
     def source_adapter(source_name: str) -> StockBenchAdapter:
         existing = adapters.get(source_name)
@@ -542,10 +756,16 @@ def _populate_episode_benchmarks(
                 session_opens=open_times,
                 exchange_calendar=str(availability.get("exchange_calendar", "XNYS")),
             )
-            price_pairs = [
-                _exact_session_prices(adapter=adapter, as_of=close_at, symbols=symbols)
-                for close_at in dates
-            ]
+            price_pairs: list[tuple[dict[str, float], dict[str, float]]] = []
+            for close_at in dates:
+                cache_key = (source_name, close_at)
+                prices = price_cache.get(cache_key)
+                if prices is None:
+                    prices = _exact_session_prices(
+                        adapter=adapter, as_of=close_at, symbols=symbols
+                    )
+                    price_cache[cache_key] = prices
+                price_pairs.append(prices)
             replay = replay_target_weights(
                 session_close_times=dates,
                 session_open_times=open_times,
