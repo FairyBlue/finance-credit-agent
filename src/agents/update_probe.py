@@ -33,6 +33,11 @@ def summarize_update_evidence(probe_root: str | Path) -> dict[str, object]:
         )
     detected_records = [record for record in records if record.get("detected") is True]
     representative = detected_records[0] if detected_records else (records[0] if records else None)
+    detected_role_counts: dict[str, int] = defaultdict(int)
+    for record in detected_records:
+        role = record.get("role")
+        if isinstance(role, str) and role:
+            detected_role_counts[role] += 1
     peak_gpu_memory_bytes = max(
         (int(record.get("peak_gpu_memory_bytes", 0)) for record in records),
         default=0,
@@ -42,6 +47,8 @@ def summarize_update_evidence(probe_root: str | Path) -> dict[str, object]:
         "backward_count": sum(per_process_backward.values()),
         "optimizer_step_count": len(records),
         "global_update_count": len(records),
+        "detected_role_counts": dict(sorted(detected_role_counts.items())),
+        "detected_roles": sorted(detected_role_counts),
         "worker_files": len(list(root.glob("*.jsonl"))) if root.is_dir() else 0,
         "peak_gpu_memory_bytes": peak_gpu_memory_bytes,
         "representative_update": representative,
@@ -87,7 +94,7 @@ def install_from_environment() -> None:
             return name, sampled_parameter, sampled_gradient.cpu().clone()
         return None
 
-    def patch_class(cls: type[Any], module_attribute: str) -> None:
+    def patch_class(cls: type[Any], module_attribute: str, role: str) -> None:
         original: Callable[..., Any] = cls._optimizer_step
         if getattr(original, "_finance_update_probe", False):
             return
@@ -99,6 +106,7 @@ def install_from_environment() -> None:
             state["optimizer_step_count"] += 1
             record: dict[str, object] = {
                 "pid": os.getpid(),
+                "role": role,
                 "backward_count": state["backward_count"],
                 "optimizer_step_count": state["optimizer_step_count"],
                 "global_update_count": state["optimizer_step_count"],
@@ -144,5 +152,5 @@ def install_from_environment() -> None:
     from verl.workers.actor.dp_actor import DataParallelPPOActor
     from verl.workers.critic.dp_critic import DataParallelPPOCritic
 
-    patch_class(DataParallelPPOActor, "actor_module")
-    patch_class(DataParallelPPOCritic, "critic_module")
+    patch_class(DataParallelPPOActor, "actor_module", "actor")
+    patch_class(DataParallelPPOCritic, "critic_module", "critic")

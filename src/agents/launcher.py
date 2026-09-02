@@ -64,7 +64,7 @@ A1_WIRING_SMOKE_CURRENT_CONFIG_SHA256 = (
 )
 A3_M1_WIRING_SMOKE_KIND = "a3_m1_wiring_smoke_1p7b"
 A3_M1_WIRING_SMOKE_CONFIG_SHA256 = (
-    "fc4371d919bc27e66b2fb007bb183f82b2e9b7a9215218516c9b50fe544d1bfa"
+    "b446c8dcf78dced95df4c6ac17758f1147a5685d7bc3b1eeb8290c2d5bb4437d"
 )
 DECLARED_SMOKE_CONFIG_SHA256 = {
     WIRING_SMOKE_KIND: A1_WIRING_SMOKE_CURRENT_CONFIG_SHA256,
@@ -822,6 +822,28 @@ def verify_a3_smoke_credit_summary(
         raise RuntimeError("step-credit and rollout-seed trajectory identities do not match")
 
 
+def verify_a3_optimizer_update_evidence(
+    update_evidence: Mapping[str, object],
+) -> None:
+    """Require finite parameter changes from both halves of the A3 update."""
+
+    role_counts = update_evidence.get("detected_role_counts")
+    if not isinstance(role_counts, Mapping):
+        raise RuntimeError("A3 smoke optimizer evidence has no detected role counts")
+    missing = [
+        role
+        for role in ("critic", "actor")
+        if not isinstance(role_counts.get(role), int)
+        or isinstance(role_counts.get(role), bool)
+        or role_counts.get(role, 0) <= 0
+    ]
+    if missing:
+        raise RuntimeError(
+            "A3 smoke requires finite non-zero optimizer updates for both critic "
+            f"and actor; missing: {', '.join(missing)}"
+        )
+
+
 def build_upstream_command(
     config: dict[str, Any],
     hashes: RunHashes,
@@ -845,6 +867,16 @@ def build_upstream_command(
     is_smoke = bool(config.get("run", {}).get("smoke"))
     logger = ["console"]
     episodes = _positive_integer(config, "training", "episodes")
+    total_training_steps = training.get("total_training_steps")
+    if total_training_steps is not None and (
+        isinstance(total_training_steps, bool)
+        or not isinstance(total_training_steps, int)
+        or total_training_steps <= 0
+    ):
+        raise ValueError("training.total_training_steps must be a positive integer")
+    critic_param_offload = training.get("critic_param_offload", True)
+    if not isinstance(critic_param_offload, bool):
+        raise ValueError("training.critic_param_offload must be a boolean")
 
     if update_probe_dir is not None:
         update_probe_dir = Path(update_probe_dir)
@@ -916,6 +948,11 @@ def build_upstream_command(
         _hydra("trainer.save_freq", -1 if is_smoke else 50),
         _hydra("trainer.test_freq", 1),
         _hydra("trainer.total_epochs", training["total_epochs"]),
+        *(
+            [_hydra("trainer.total_training_steps", total_training_steps)]
+            if total_training_steps is not None
+            else []
+        ),
         _hydra("ray_kwargs.ray_init.address", "local", add=True),
         _hydra("ray_kwargs.ray_init.include_dashboard", False, add=True),
         # These hooks are needed only in Ray workers. Keeping them out of the
@@ -941,7 +978,10 @@ def build_upstream_command(
                 _hydra("critic.model.enable_gradient_checkpointing", True),
                 _hydra("critic.data_loader_seed", seed),
                 _hydra("critic.ppo_micro_batch_size_per_gpu", 1),
-                _hydra("critic.model.fsdp_config.param_offload", True),
+                _hydra(
+                    "critic.model.fsdp_config.param_offload",
+                    critic_param_offload,
+                ),
                 _hydra("critic.model.fsdp_config.optimizer_offload", True),
                 _hydra("critic.model.fsdp_config.seed", seed),
             ]
@@ -1449,6 +1489,8 @@ def launch(
                     rollout_seed_evidence,
                 )
         update_evidence = summarize_update_evidence(probe_root)
+        if returncode == 0 and arm_id == "A3":
+            verify_a3_optimizer_update_evidence(update_evidence)
         representative = update_evidence.get("representative_update")
         if isinstance(representative, dict):
             global_update_count = update_evidence.get("global_update_count")

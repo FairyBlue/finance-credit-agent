@@ -94,6 +94,7 @@ def test_optimizer_evidence_gate_requires_a_real_finite_parameter_change(
     records = [
         {
             "pid": 7,
+            "role": "critic",
             "backward_count": 1,
             "optimizer_step_count": 1,
             "global_update_count": 1,
@@ -104,6 +105,7 @@ def test_optimizer_evidence_gate_requires_a_real_finite_parameter_change(
         },
         {
             "pid": 7,
+            "role": "actor",
             "backward_count": 2,
             "optimizer_step_count": 2,
             "global_update_count": 2,
@@ -123,9 +125,28 @@ def test_optimizer_evidence_gate_requires_a_real_finite_parameter_change(
     assert evidence["backward_count"] == 2
     assert evidence["optimizer_step_count"] == 2
     assert evidence["global_update_count"] == 2
+    assert evidence["detected_role_counts"] == {"actor": 1}
+    assert evidence["detected_roles"] == ["actor"]
     representative = evidence["representative_update"]
     assert isinstance(representative, dict)
     assert representative["parameter_delta_max"] == 0.004
+
+
+def test_a3_optimizer_evidence_requires_detected_critic_and_actor_updates() -> None:
+    launcher_module.verify_a3_optimizer_update_evidence(
+        {"detected_role_counts": {"critic": 1, "actor": 1}}
+    )
+
+    for role_counts, missing in (
+        ({"critic": 1}, "actor"),
+        ({"actor": 1}, "critic"),
+        ({"critic": 1, "actor": 0}, "actor"),
+        ({}, "critic, actor"),
+    ):
+        with pytest.raises(RuntimeError, match=f"missing: {missing}"):
+            launcher_module.verify_a3_optimizer_update_evidence(
+                {"detected_role_counts": role_counts}
+            )
 
 
 @pytest.mark.parametrize("violation", ["stockbench_source", "false_provenance", "final_oos_date"])
@@ -862,7 +883,10 @@ def test_a3_m1_smoke_command_locks_shared_steppo_pipeline(tmp_path: Path) -> Non
     assert "algorithm.adv_estimator=gae" in command
     assert "actor_rollout_ref.actor.policy_loss.loss_mode=gspo" in command
     assert "actor_rollout_ref.rollout.n=1" in command
+    assert "trainer.total_training_steps=1" in command
     assert "critic.model.path=Qwen/Qwen3-1.7B" in command
+    assert "critic.model.fsdp_config.param_offload=False" in command
+    assert "critic.model.fsdp_config.optimizer_offload=True" in command
     assert (
         "actor_rollout_ref.rollout.agent.agent_flow_config_path="
         f"{root / 'configs/agent_flow_a3.yaml'}"
@@ -871,6 +895,33 @@ def test_a3_m1_smoke_command_locks_shared_steppo_pipeline(tmp_path: Path) -> Non
         "+ray_kwargs.ray_init.runtime_env.env_vars."
         f"FINANCE_STEP_CREDIT_EVIDENCE_DIR={tmp_path / 'step_credit'}"
     ) in command
+
+
+@pytest.mark.parametrize(
+    ("field", "invalid_value", "message"),
+    [
+        ("total_training_steps", 0, "must be a positive integer"),
+        ("total_training_steps", True, "must be a positive integer"),
+        ("critic_param_offload", "false", "must be a boolean"),
+    ],
+)
+def test_a3_m1_smoke_rejects_invalid_resource_controls(
+    field: str, invalid_value: object, message: str
+) -> None:
+    root = Path(__file__).resolve().parents[1]
+    config = load_experiment_config(root / "configs/smoke_a3_m1_1p7b.yaml")
+    config["training"][field] = invalid_value
+
+    with pytest.raises(ValueError, match=message):
+        build_upstream_command(
+            config,
+            RunHashes(
+                agent_r1_commit="a" * 40,
+                repo_commit="b" * 40,
+                data_version="fixture",
+                repo_dirty=False,
+            ),
+        )
 
 
 def test_a3_m1_config_rejects_role_semantics_and_implementation_drift() -> None:
