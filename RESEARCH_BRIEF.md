@@ -28,7 +28,42 @@ R = episode 收益，B = 同期 benchmark 收益，σ = 同期波动率，RiskPe
 
 把 $A^{fin}$ 分配到步骤的机制是开放问题。**如果只做均匀广播，本工作退化为 reward shaping，不构成 credit assignment 贡献**（审稿必杀点，也是与 AlphaQuanter 差异化的根基）。候选机制（按实现难度排序，proposal 至少做出 M2 或 M3 之一）：
 
-- **M1 uniform immediate-step reward v1**：对一条实际含 $T$ 个 Agent-R1 interaction steps 的完成轨迹，在终局计算 $A^{fin}$ 后，将即时奖励设为 $r_t^{M1}=A^{fin}/T$；最后一步吸收浮点余差，使 $\sum_t r_t^{M1}=A^{fin}$ 精确成立。这些值是输入 StepPO 的 immediate rewards，不是直接或均匀的 optimizer advantages；StepPO 随后通过 step-level GAE 计算 advantage。M1 是必需的正式消融，但不能作为 A3 主方法。
+- **M1 uniform immediate-step reward v1**：M1 是 action-agnostic、轨迹总量守恒的 reward
+  redistribution 对照。除终局 $A^{fin}$ 和实际轨迹长度外，它不使用 action、portfolio state、
+  market regime、步骤质量或反事实证据，具体语义如下：
+  - **时序边界与步单位**：$A^{fin}$ 只在 `finance_trajectory` 完整终止后得到；M1 随后回溯式
+    重写这条已生成 rollout 的训练 reward timeline。`immediate_step_reward_v1` 中的
+    `immediate` 是指这些值作为 StepPO 的逐步 reward 输入，不表示 agent 执行动作时获得在线即时
+    反馈，也不会改变生成当前这条 rollout 的行为。$T$ 精确定义为实际保留的 Agent-R1
+    interaction/environment steps 数，包括已经实现的 retrieve、compute、hold、trade、abstain 或
+    invalid step；它不是 market sessions、token 数、推理文本长度或配置中的最大步数。
+  - **分配与守恒**：先把终局信号转换为有限 Python float $v$，令 $q=v/T$；前 $T-1$ 步写入
+    $r_t^{M1}=q$，最后一步写入 $r_T^{M1}=v-\sum_{t=1}^{T-1}r_t^{M1}$。最后一步只吸收浮点
+    余差，因而不保证所有 step reward bitwise 完全相同，但保证证据层 Python step-credit 向量的
+    普通求和精确等于 $v$。正、负信号保持符号，零保持为零；M1 不做 clipping、重新标定或
+    action-specific weighting。轨迹越长，每步 reward 的绝对值通常越小，但分配总量不会随 $T$
+    膨胀。
+  - **输入域与 fail-closed 边界**：M1 核心允许任意有限的正、零、负信号，拒绝 NaN、$\pm\infty$
+    和空 steps；A3 flow 另外拒绝截断轨迹、错误终止位置、非 `finance_trajectory` 以及环境 trace 与
+    Agent-R1 reward 不一致。$A^{fin}=0$ 在方法定义上合法；wiring smoke 要求 Train/Valid 各出现
+    非零信号只是为了证明接线，不是 M1 的算法限制。
+  - **进入优化器后的语义**：上述向量只是 reward，不是 return 或直接写给 actor 的 advantage。
+    共享 StepPO 管线仍按 trajectory/step 顺序，由 critic value、终止 mask、$\gamma$ 和 $\lambda$
+    计算 step-level GAE，再进行 step-level whitening 并映射到 response mask 后执行 actor 更新。
+    因此实际 optimizer advantages 通常不均匀，也不要求其总和、discounted return 或 float32 trainer
+    metric 继续等于 $A^{fin}$；GAE 产生非均匀 advantage 也不会让 M1 获得 action-specific 或因果
+    step attribution。
+  - **具体例子**：若 $A^{fin}=0.9$、$T=3$，M1 的 immediate rewards 为
+    $[0.3,0.3,0.3]$。在仅用于验证语义的合成例子中，若 value 全为 0 且
+    $\gamma=\lambda=1$，GAE returns 为 $[0.9,0.6,0.3]$，标准化 advantages 为
+    $[1,0,-1]$。这只说明“即时奖励均匀”不等于“optimizer advantage 均匀”，不是正式实验
+    超参数或性能结果。
+  - **科学角色**：M1 只回答“把 finance-native 终局信号均分到实际 steps，再配合 StepPO 后能达到
+    什么表现”，本质上仍是 reward-shaping control。正式比较时，A3-M1 必须与 A3-main 使用相同的
+    $A^{fin}$、模型、数据、StepPO 优化器、seed set、超参数选择规则和预注册预算。只有 A3-main
+    按预注册 gate 胜过这一对照，才可能把增益归因于 M2/M3 的非均匀 finance-native credit
+    allocation；即使如此，该 gate 也只是必要条件。M1 本身不能作为 A3 主方法，也不能单独支持
+    credit-assignment 贡献；目前通过的只是 wiring smoke，不是正式 A3-M1 消融结果。
 - **M2 状态分组步级优势**：借 Agent-R1 的 step-MDP，按（portfolio 状态 × 市场 regime）做 GiGPO 式锚点分组，在组内计算相对步级优势——同一市况同一仓位下，不同步骤选择的差异才归因于步骤本身。
 - **M3 反事实信息贡献**：对信息获取步骤（retrieve/compute）估计反事实贡献——遮蔽该步骤的返回结果重新 rollout 决策，决策变化幅度 × 结果质量 = 该步 credit。成本高，可采样估计。
 
