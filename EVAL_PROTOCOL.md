@@ -67,6 +67,7 @@
 | 2026-08-30 | v0.8 amendment：审核/签字只由合作者线下完成 | 两位合作者线下共同审核已完成；记录时间为 2026-08-30T14:46:33+00:00 |
 | 2026-09-01 | v0.9 execution record：T2 v2 实现、运行证据与门禁接线 | 自动化三条件通过；不改变 v0.3 预注册口径，不构成人工 reviewer 签字 |
 | 2026-09-01 | v1.0 formal manifest record：formal episode 采样、最小审核与 processed 绑定 | 两位合作者已确认；reviewed manifest、benchmark 重放和 `441/60/1` processed rows 均已验证 |
+| 2026-09-02 | v1.1 A3 formal comparison amendment：StepPO v4 pin、M1 immediate-reward 正式消融、三类四配置与 M1 superiority gate | M1、比较矩阵与引用 pin 按用户要求落盘；superiority statistic 仍待两位合作者在正式训练前线下冻结 |
 
 ## 8. v0.2 修订（2026-08-24，用户明确批准）
 
@@ -409,3 +410,30 @@ preflight 通过后启动唯一一次 A1/Qwen3-1.7B G1 wiring smoke。本授权�
   `87e9de90...21b33b`、`5e088b15...bacbcf`、`92b6e574...f692b`。Train/Valid 的 launcher 逐行绑定
   检查通过，Test 由 builder 验证为单个完整 OOS row；从冻结 raw bars 独立重放 benchmark 仍得到
   `a8650738...b117b8`。该重放只验证冻结基准，不运行 agent、不产生 Final OOS 性能或调参信号。
+
+## 17. v1.1 A3 正式比较与 M1 消融（2026-09-02）
+
+> 本节以追加方式澄清早期“三臂”和“M1 smoke/ablation only”的简写；不改写历史正文，不批准或
+> 启动任何正式训练，也不开放 Final OOS。与早期简写冲突时，以本节为准。
+
+- StepPO 的论文/方法语义固定引用
+  [`arXiv:2604.18401v4`](https://arxiv.org/abs/2604.18401v4)（2026-06-21）。可执行实现继续独立固定为
+  Agent-R1 commit `b124aa46534cbf2fb8bc8af11405774984c42ac7`；paper pin 不替代 executable
+  commit pin，版本号也不构成对未固定代码的授权。
+- M1 冻结为 **uniform immediate-step reward v1**：对一条实际含 $T$ 个 Agent-R1 interaction
+  steps 的完成轨迹，在终局计算 $A^{fin}$ 后，将每步即时奖励设为
+  $r_t^{M1}=A^{fin}/T$；最后一步吸收浮点余差，使 $\sum_t r_t^{M1}=A^{fin}$ 精确成立。
+  这些数值是输入 StepPO 的 immediate rewards，不是直接或均匀的 optimizer advantages；StepPO
+  随后通过 step-level GAE 计算实际 advantage。
+- 正式设计保持 A1 outcome-only、A2 generic step credit、A3 finance-native 三类方法，但最小比较
+  矩阵包含四个配置：`A1`、`A2`、`A3-M1` 以及采用预注册 M2 或 M3 的 `A3-main`。A3-M1 是必需
+  的正式消融，必须按正式 Train/Valid、模型、StepPO 优化器、seed set、超参数选择规则和预算运行；
+  它不能被表述为 A3 主方法。A3-main 必须实现 M2 或 M3，不能以 M1 冒充。
+- finance-native credit-assignment 主张的必要但非充分条件是：A3-main 在与 A3-M1 相同的上述条件和
+  预注册等预算口径下，通过预注册的 M1 superiority gate。若未通过，即使 A3-main 优于 A1/A2，
+  也只能报告 $A^{fin}$ / reward-shaping 结果，不得声称新的逐步 credit assignment 有增益。
+- superiority statistic 的主指标、聚合方式、优劣方向、阈值或不确定性规则，以及预算计量单位，仍待
+  两位合作者在线下于正式训练前共同冻结；本文不自行选择数值。在该统计规则落盘并完成所需 M2/M3
+  实现、测试、干净执行身份和完整 H100 preflight 前，正式比较继续 fail closed。
+- 所有四个配置的 checkpoint 必须在同一次 Final OOS 开启前冻结；A3-M1 的正式消融身份不构成提前
+  查看 Final OOS、选择 A3-main 或追加调参的许可。

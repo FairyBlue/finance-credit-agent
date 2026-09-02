@@ -319,6 +319,7 @@ def test_training_environment_overrides_hostile_online_parent_values(tmp_path: P
             "CC": "/tmp/untrusted-compiler",
             "FINANCE_UPDATE_PROBE_DIR": "/tmp/untrusted-probe",
             "FINANCE_ROLLOUT_SEED_DIR": "/tmp/untrusted-seeds",
+            "FINANCE_STEP_CREDIT_EVIDENCE_DIR": "/tmp/untrusted-credit",
             "FINANCE_VLLM_DRAIN_COMPAT": "0.10.0",
             "HF_HUB_OFFLINE": "0",
             "HF_DATASETS_OFFLINE": "0",
@@ -335,6 +336,7 @@ def test_training_environment_overrides_hostile_online_parent_values(tmp_path: P
     assert environment["CC"] == str(compiler)
     assert "FINANCE_UPDATE_PROBE_DIR" not in environment
     assert "FINANCE_ROLLOUT_SEED_DIR" not in environment
+    assert "FINANCE_STEP_CREDIT_EVIDENCE_DIR" not in environment
     assert "FINANCE_VLLM_DRAIN_COMPAT" not in environment
     assert environment["HF_HUB_OFFLINE"] == "1"
     assert environment["HF_DATASETS_OFFLINE"] == "1"
@@ -808,9 +810,15 @@ def test_nondefault_yaml_seed_reaches_every_upstream_rng(
     arm_id: str, expects_critic_seed: bool
 ) -> None:
     root = Path(__file__).resolve().parents[1]
-    config = load_experiment_config(root / "configs/smoke_1p7b.yaml")
+    config_path = (
+        root / "configs/smoke_a3_m1_1p7b.yaml"
+        if arm_id == "A3"
+        else root / "configs/smoke_1p7b.yaml"
+    )
+    config = load_experiment_config(config_path)
     config["run"]["seed"] = 123
-    config["arm"]["id"] = arm_id
+    if arm_id == "A2":
+        config["arm"] = load_experiment_config(root / "configs/arm_a2.yaml")["arm"]
 
     command = build_upstream_command(
         config,
@@ -836,6 +844,113 @@ def test_nondefault_yaml_seed_reaches_every_upstream_rng(
     assert critic_seeds.issubset(command) is expects_critic_seed
 
 
+def test_a3_m1_smoke_command_locks_shared_steppo_pipeline(tmp_path: Path) -> None:
+    root = Path(__file__).resolve().parents[1]
+    config = load_experiment_config(root / "configs/smoke_a3_m1_1p7b.yaml")
+
+    command = build_upstream_command(
+        config,
+        RunHashes(
+            agent_r1_commit="a" * 40,
+            repo_commit="b" * 40,
+            data_version="fixture",
+            repo_dirty=False,
+        ),
+        update_probe_dir=tmp_path / "update_probe",
+    )
+
+    assert "algorithm.adv_estimator=gae" in command
+    assert "actor_rollout_ref.actor.policy_loss.loss_mode=gspo" in command
+    assert "actor_rollout_ref.rollout.n=1" in command
+    assert "critic.model.path=Qwen/Qwen3-1.7B" in command
+    assert (
+        "actor_rollout_ref.rollout.agent.agent_flow_config_path="
+        f"{root / 'configs/agent_flow_a3.yaml'}"
+    ) in command
+    assert (
+        "+ray_kwargs.ray_init.runtime_env.env_vars."
+        f"FINANCE_STEP_CREDIT_EVIDENCE_DIR={tmp_path / 'step_credit'}"
+    ) in command
+
+
+def test_a3_m1_config_rejects_role_semantics_and_implementation_drift() -> None:
+    root = Path(__file__).resolve().parents[1]
+
+    config = load_experiment_config(root / "configs/smoke_a3_m1_1p7b.yaml")
+    config["arm"]["credit_semantics"] = "direct_advantage_v1"
+    with pytest.raises(RuntimeError, match="credit semantics do not match"):
+        launcher_module.resolve_agent_flow_config(config)
+
+    config = load_experiment_config(root / "configs/smoke_a3_m1_1p7b.yaml")
+    config["finance_credit"]["m1_uniform"]["implemented"] = False
+    with pytest.raises(RuntimeError, match="not implemented"):
+        launcher_module.resolve_agent_flow_config(config)
+
+    config = load_experiment_config(root / "configs/smoke_a3_m1_1p7b.yaml")
+    config["arm"]["scientific_role"] = "main_method"
+    config["finance_credit"]["m1_uniform"]["scientific_role"] = "main_method"
+    with pytest.raises(RuntimeError, match="formal_ablation"):
+        launcher_module.resolve_agent_flow_config(config)
+
+
+def test_a3_m1_config_rejects_mechanism_flow_drift(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = Path(__file__).resolve().parents[1]
+    config = load_experiment_config(root / "configs/smoke_a3_m1_1p7b.yaml")
+    drifted_flow = tmp_path / "agent_flow_a3.yaml"
+    drifted_flow.write_text(
+        "\n".join(
+            [
+                "- name: trading",
+                "  _target_: src.agents.agent_flow.FinanceCreditAgentEnvLoop",
+                "  env_type: trading",
+                "  reward_mode: finance_trajectory",
+                "  credit_strategy: m2_state_regime_group",
+                "  credit_semantics: immediate_step_reward_v1",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setitem(launcher_module.A3_FLOW_CONFIGS, "m1_uniform", drifted_flow)
+
+    with pytest.raises(RuntimeError, match="mechanism/flow configuration mismatch"):
+        launcher_module.resolve_agent_flow_config(config)
+
+
+def test_a3_smoke_credit_summary_requires_both_splits_and_matching_identity() -> None:
+    credit = {
+        "worker_files": 1,
+        "training_trajectory_count": 4,
+        "validation_trajectory_count": 2,
+        "training_nonzero_trajectory_advantage_count": 3,
+        "validation_nonzero_trajectory_advantage_count": 1,
+        "trajectory_identity_sha256": "a" * 64,
+    }
+    rollout = {"trajectory_identity_sha256": "a" * 64}
+
+    launcher_module.verify_a3_smoke_credit_summary(credit, rollout)
+
+    for key in (
+        "worker_files",
+        "training_trajectory_count",
+        "validation_trajectory_count",
+        "training_nonzero_trajectory_advantage_count",
+        "validation_nonzero_trajectory_advantage_count",
+    ):
+        drifted = dict(credit)
+        drifted[key] = 0
+        with pytest.raises(RuntimeError):
+            launcher_module.verify_a3_smoke_credit_summary(drifted, rollout)
+
+    with pytest.raises(RuntimeError, match="identities do not match"):
+        launcher_module.verify_a3_smoke_credit_summary(
+            credit,
+            {"trajectory_identity_sha256": "b" * 64},
+        )
+
+
 def test_smoke_uses_console_only_local_tracking() -> None:
     root = Path(__file__).resolve().parents[1]
     config = load_experiment_config(root / "configs/smoke_1p7b.yaml")
@@ -855,11 +970,35 @@ def test_smoke_uses_console_only_local_tracking() -> None:
     assert all("wandb" not in argument.casefold() for argument in command)
 
 
-def test_wiring_smoke_declares_the_only_approved_run_kind() -> None:
+def test_all_executable_smoke_kinds_have_frozen_merged_config_identities() -> None:
     root = Path(__file__).resolve().parents[1]
-    config = load_experiment_config(root / "configs/smoke_1p7b.yaml")
+    expected = {
+        "configs/smoke_1p7b.yaml": (
+            "wiring_smoke_1p7b",
+            launcher_module.A1_WIRING_SMOKE_CURRENT_CONFIG_SHA256,
+        ),
+        "configs/smoke_a3_m1_1p7b.yaml": (
+            "a3_m1_wiring_smoke_1p7b",
+            launcher_module.A3_M1_WIRING_SMOKE_CONFIG_SHA256,
+        ),
+    }
 
-    assert config["run"]["kind"] == "wiring_smoke_1p7b"
+    for relative_path, (kind, config_sha256) in expected.items():
+        config = load_experiment_config(root / relative_path)
+        evidence = launcher_module.verify_declared_smoke_identity(config)
+        assert evidence == {
+            "kind": kind,
+            "canonical_merged_config_sha256": config_sha256,
+        }
+
+
+def test_a3_m1_smoke_identity_rejects_any_merged_config_drift() -> None:
+    root = Path(__file__).resolve().parents[1]
+    config = load_experiment_config(root / "configs/smoke_a3_m1_1p7b.yaml")
+    config["training"]["max_agent_steps"] = 33
+
+    with pytest.raises(RuntimeError, match="merged config SHA-256"):
+        launcher_module.verify_declared_smoke_identity(config)
 
 
 def test_missing_t2_v2_blocks_without_falling_back_to_the_legacy_oos_probe(

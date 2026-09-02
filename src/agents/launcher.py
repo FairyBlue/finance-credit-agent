@@ -10,6 +10,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from collections.abc import Mapping
 from datetime import date, datetime, time
 from hashlib import sha256
 from pathlib import Path
@@ -36,6 +37,7 @@ from src.rewards import verify_calibration_document
 
 from .config import load_experiment_config_with_sources
 from .context_budget import verify_smoke_context_budget
+from .credit_evidence import summarize_step_credit_evidence
 from .local_runs import LocalRunRecorder
 from .metadata import (
     RunHashes,
@@ -51,10 +53,23 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 FLOW_CONFIGS = {
     "A1": REPO_ROOT / "configs" / "agent_flow_a1.yaml",
     "A2": REPO_ROOT / "configs" / "agent_flow_a2.yaml",
-    "A3": REPO_ROOT / "configs" / "agent_flow_a3.yaml",
+}
+A3_FLOW_CONFIGS = {
+    "m1_uniform": REPO_ROOT / "configs" / "agent_flow_a3.yaml",
 }
 WIRING_SMOKE_KIND = "wiring_smoke_1p7b"
 WIRING_SMOKE_CONFIG_SHA256 = "2ec544cb4e539cdbc2d3301b255384d3fdd770f5801f8d0ba3194081ac39d844"
+A1_WIRING_SMOKE_CURRENT_CONFIG_SHA256 = (
+    "9ac8b3b495ec2451082ade8d47bb9cc4066f85d1337ec9f3acc3e0b9ecb78e6a"
+)
+A3_M1_WIRING_SMOKE_KIND = "a3_m1_wiring_smoke_1p7b"
+A3_M1_WIRING_SMOKE_CONFIG_SHA256 = (
+    "fc4371d919bc27e66b2fb007bb183f82b2e9b7a9215218516c9b50fe544d1bfa"
+)
+DECLARED_SMOKE_CONFIG_SHA256 = {
+    WIRING_SMOKE_KIND: A1_WIRING_SMOKE_CURRENT_CONFIG_SHA256,
+    A3_M1_WIRING_SMOKE_KIND: A3_M1_WIRING_SMOKE_CONFIG_SHA256,
+}
 QWEN3_1P7B_REVISION = "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e"
 DATASETS_VERSION = "4.0.0"
 
@@ -650,6 +665,37 @@ def _is_declared_wiring_smoke(config: dict[str, Any]) -> bool:
     return True
 
 
+def verify_declared_smoke_identity(config: dict[str, Any]) -> dict[str, str]:
+    """Lock every executable smoke to one reviewed merged configuration."""
+
+    run = config.get("run")
+    if not isinstance(run, dict):
+        raise RuntimeError("invalid smoke identity: run must be a mapping")
+    if run.get("smoke") is not True:
+        raise RuntimeError("invalid smoke identity: run.smoke must be true")
+    kind = run.get("kind")
+    if not isinstance(kind, str) or kind not in DECLARED_SMOKE_CONFIG_SHA256:
+        raise RuntimeError(f"invalid smoke identity: unregistered run.kind={kind!r}")
+    canonical_config = {**config, "tracking": dict(_required(config, "tracking"))}
+    # Evidence storage is relocatable and does not alter the executable smoke.
+    canonical_config["tracking"].pop("log_root", None)
+    canonical = json.dumps(
+        canonical_config,
+        allow_nan=False,
+        ensure_ascii=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode()
+    observed = sha256(canonical).hexdigest()
+    expected = DECLARED_SMOKE_CONFIG_SHA256[kind]
+    if observed != expected:
+        raise RuntimeError(
+            "invalid smoke identity: merged config SHA-256 must be "
+            f"{expected}, got {observed}"
+        )
+    return {"kind": kind, "canonical_merged_config_sha256": observed}
+
+
 def verify_configured_t2_gate(
     config: dict[str, Any], *, repo_root: str | Path
 ) -> dict[str, object]:
@@ -684,6 +730,98 @@ def verify_configured_t2_gate(
     )
 
 
+def resolve_agent_flow_config(config: dict[str, Any]) -> Path:
+    """Resolve one fail-closed Agent-R1 flow from the declared arm mechanism."""
+
+    arm = _required(config, "arm")
+    arm_id = str(_required(arm, "id"))
+    if arm_id in FLOW_CONFIGS:
+        return FLOW_CONFIGS[arm_id]
+    if arm_id != "A3":
+        raise ValueError(f"unsupported arm id: {arm_id}")
+
+    mechanism = str(_required(arm, "mechanism"))
+    if mechanism not in A3_FLOW_CONFIGS:
+        raise RuntimeError(f"A3 mechanism is not executable: {mechanism!r}")
+    if _required(arm, "optimizer") != "steppo":
+        raise RuntimeError("A3 requires the shared StepPO optimizer")
+    if _required(arm, "credit_assignment") != "finance_native":
+        raise RuntimeError("A3 requires finance_native credit_assignment")
+    if _required(arm, "reward_signal") != "A_fin":
+        raise RuntimeError("A3 requires reward_signal=A_fin")
+
+    credit_semantics = str(_required(arm, "credit_semantics"))
+    scientific_role = str(_required(arm, "scientific_role"))
+    mechanism_config = _required(config, "finance_credit", mechanism)
+    if not isinstance(mechanism_config, dict):
+        raise RuntimeError(f"finance_credit.{mechanism} must be a mapping")
+    if mechanism_config.get("implemented") is not True:
+        raise RuntimeError(f"A3 mechanism is not implemented: {mechanism!r}")
+    if mechanism_config.get("credit_semantics") != credit_semantics:
+        raise RuntimeError("A3 arm and mechanism credit semantics do not match")
+    if mechanism_config.get("scientific_role") != scientific_role:
+        raise RuntimeError("A3 arm and mechanism scientific roles do not match")
+    if mechanism == "m1_uniform" and scientific_role != "formal_ablation":
+        raise RuntimeError("M1 is executable only as the formal_ablation control")
+
+    flow_path = A3_FLOW_CONFIGS[mechanism]
+    document = yaml.safe_load(flow_path.read_text(encoding="utf-8"))
+    if not isinstance(document, list) or len(document) != 1:
+        raise RuntimeError("A3 flow config must contain exactly one flow definition")
+    flow = document[0]
+    if not isinstance(flow, dict):
+        raise RuntimeError("A3 flow definition must be a mapping")
+    expected = {
+        "_target_": "src.agents.agent_flow.FinanceCreditAgentEnvLoop",
+        "env_type": "trading",
+        "reward_mode": "finance_trajectory",
+        "credit_strategy": mechanism,
+        "credit_semantics": credit_semantics,
+    }
+    mismatches = {
+        key: {"expected": value, "actual": flow.get(key)}
+        for key, value in expected.items()
+        if flow.get(key) != value
+    }
+    if mismatches:
+        raise RuntimeError(f"A3 mechanism/flow configuration mismatch: {mismatches}")
+    return flow_path
+
+
+def verify_a3_smoke_credit_summary(
+    step_credit_evidence: Mapping[str, object],
+    rollout_seed_evidence: Mapping[str, object],
+) -> None:
+    """Require full, non-zero train/validation M1 evidence for a successful smoke."""
+
+    worker_files = step_credit_evidence.get("worker_files")
+    if not isinstance(worker_files, int) or isinstance(worker_files, bool) or worker_files <= 0:
+        raise RuntimeError(
+            "A3 training exited successfully but no step-credit evidence file was recorded"
+        )
+    for split in ("training", "validation"):
+        trajectory_count = step_credit_evidence.get(f"{split}_trajectory_count")
+        if (
+            not isinstance(trajectory_count, int)
+            or isinstance(trajectory_count, bool)
+            or trajectory_count <= 0
+        ):
+            raise RuntimeError(f"A3 smoke recorded no {split} step-credit trajectories")
+        nonzero_count = step_credit_evidence.get(
+            f"{split}_nonzero_trajectory_advantage_count"
+        )
+        if (
+            not isinstance(nonzero_count, int)
+            or isinstance(nonzero_count, bool)
+            or nonzero_count <= 0
+        ):
+            raise RuntimeError(f"A3 smoke recorded no non-zero {split} A_fin trajectory")
+    if step_credit_evidence.get(
+        "trajectory_identity_sha256"
+    ) != rollout_seed_evidence.get("trajectory_identity_sha256"):
+        raise RuntimeError("step-credit and rollout-seed trajectory identities do not match")
+
+
 def build_upstream_command(
     config: dict[str, Any],
     hashes: RunHashes,
@@ -691,8 +829,7 @@ def build_upstream_command(
     update_probe_dir: str | Path | None = None,
 ) -> list[str]:
     arm_id = str(_required(config, "arm", "id"))
-    if arm_id not in FLOW_CONFIGS:
-        raise ValueError(f"unsupported arm id: {arm_id}")
+    flow_config = resolve_agent_flow_config(config)
     training = _required(config, "training")
     data = _required(config, "data")
     processed = _required(data, "processed")
@@ -760,7 +897,7 @@ def build_upstream_command(
         _hydra("actor_rollout_ref.rollout.engine_kwargs.vllm.seed", seed, add=True),
         _hydra(
             "actor_rollout_ref.rollout.agent.agent_flow_config_path",
-            str(FLOW_CONFIGS[arm_id]),
+            str(flow_config),
         ),
         _hydra("actor_rollout_ref.rollout.agent.default_agent_flow", "trading"),
         _hydra("actor_rollout_ref.rollout.agent.max_steps", training["max_agent_steps"]),
@@ -826,6 +963,15 @@ def build_upstream_command(
                 add=True,
             )
         )
+        if arm_id == "A3":
+            command.append(
+                _hydra(
+                    "ray_kwargs.ray_init.runtime_env.env_vars."
+                    "FINANCE_STEP_CREDIT_EVIDENCE_DIR",
+                    str(update_probe_dir.parent / "step_credit"),
+                    add=True,
+                )
+            )
     return command
 
 
@@ -961,6 +1107,7 @@ def _training_environment(
     # Remove inherited values so Ray's own Python agents remain lightweight.
     environment.pop("FINANCE_UPDATE_PROBE_DIR", None)
     environment.pop("FINANCE_ROLLOUT_SEED_DIR", None)
+    environment.pop("FINANCE_STEP_CREDIT_EVIDENCE_DIR", None)
     environment.pop("FINANCE_VLLM_DRAIN_COMPAT", None)
     environment["PYTHONPATH"] = os.pathsep.join(
         [
@@ -1026,6 +1173,12 @@ def _verify_all_preflight_inputs(
         required_tracked_paths=config_sources,
     )
     recorder.record_evidence("validation_identity", identity)
+    smoke_identity = (
+        verify_declared_smoke_identity(config)
+        if config.get("run", {}).get("smoke") is True
+        else None
+    )
+    recorder.record_evidence("smoke_identity", smoke_identity)
     t2_evidence = verify_configured_t2_gate(config, repo_root=REPO_ROOT)
     recorder.record_evidence("t2_gate", t2_evidence)
     oos_evidence = verify_smoke_final_oos_isolation(config) if is_smoke else None
@@ -1131,6 +1284,8 @@ def _prepare_upstream_launch(
             bool(_required(config, "training", "require_clean_repo")) and not dry_run
         ),
     )
+    if is_smoke:
+        verify_declared_smoke_identity(config)
     return arm_id, is_smoke, hashes, build_upstream_command(
         config,
         hashes,
@@ -1196,8 +1351,10 @@ def launch(
     print(f"local run record: {recorder.path}")
     probe_root = recorder.path / "artifacts" / "update_probe"
     rollout_seed_root = recorder.path / "artifacts" / "rollout_seed"
+    step_credit_root = recorder.path / "artifacts" / "step_credit"
     update_evidence: dict[str, object] | None = None
     rollout_seed_evidence: dict[str, object] | None = None
+    step_credit_evidence: dict[str, object] | None = None
     try:
         recorder.append_event("preflight_started")
         if expected_commit is None:
@@ -1277,6 +1434,20 @@ def launch(
                 "training exited successfully but no deterministic training request seed "
                 "evidence was recorded"
             )
+        if arm_id == "A3":
+            step_credit_evidence = summarize_step_credit_evidence(
+                step_credit_root,
+                expected_mechanism=str(_required(config, "arm", "mechanism")),
+                expected_output_semantics=str(
+                    _required(config, "arm", "credit_semantics")
+                ),
+                expected_base_seed=_required(config, "run", "seed"),
+            )
+            if returncode == 0:
+                verify_a3_smoke_credit_summary(
+                    step_credit_evidence,
+                    rollout_seed_evidence,
+                )
         update_evidence = summarize_update_evidence(probe_root)
         representative = update_evidence.get("representative_update")
         if isinstance(representative, dict):
@@ -1300,6 +1471,7 @@ def launch(
                 "final_oos_accessed": False if is_smoke else None,
                 "optimizer_update_evidence": update_evidence,
                 "rollout_seed_evidence": rollout_seed_evidence,
+                "step_credit_evidence": step_credit_evidence,
                 "model_revision": model_revision,
             },
         )
@@ -1312,6 +1484,7 @@ def launch(
                 "final_oos_accessed": False if is_smoke else None,
                 "optimizer_update_evidence": update_evidence,
                 "rollout_seed_evidence": rollout_seed_evidence,
+                "step_credit_evidence": step_credit_evidence,
             },
         )
         raise

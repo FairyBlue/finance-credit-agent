@@ -519,6 +519,10 @@ def summarize_rollout_seed_evidence(
     canonical_sha256 = sha256(
         json.dumps(canonical_records, sort_keys=True, separators=(",", ":")).encode("ascii")
     ).hexdigest()
+    sorted_trajectories = sorted(trajectories)
+    trajectory_identity_sha256 = sha256(
+        json.dumps(sorted_trajectories, separators=(",", ":")).encode("ascii")
+    ).hexdigest()
     return {
         "schema_version": ROLLOUT_SEED_EVIDENCE_SCHEMA_VERSION,
         "scheme": ROLLOUT_SEED_SCHEME,
@@ -526,6 +530,9 @@ def summarize_rollout_seed_evidence(
         "trajectory_count": len(trajectories),
         "training_request_count": sum(record["validate"] is False for record in records),
         "validation_request_count": sum(record["validate"] is True for record in records),
+        "training_trajectory_count": sum(identity[3] is False for identity in trajectories),
+        "validation_trajectory_count": sum(identity[3] is True for identity in trajectories),
+        "trajectory_identity_sha256": trajectory_identity_sha256,
         "unique_seed_count": len(seed_identities),
         "base_seed": next(iter(base_seeds)) if base_seeds else None,
         "canonical_sha256": canonical_sha256,

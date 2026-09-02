@@ -11,6 +11,7 @@ from .calibration import (
 )
 from .finance import FinanceAdvantage, RiskComponents, finance_advantage
 from .step_credit import (
+    STEP_CREDIT_OUTPUT_SEMANTICS,
     CounterfactualInformationCredit,
     CreditEvidence,
     StateRegimeGroupCredit,
@@ -28,6 +29,7 @@ __all__ = [
     "FinanceAdvantage",
     "RewardCalibration",
     "RiskComponents",
+    "STEP_CREDIT_OUTPUT_SEMANTICS",
     "StateRegimeGroupCredit",
     "StepContext",
     "StepCredit",

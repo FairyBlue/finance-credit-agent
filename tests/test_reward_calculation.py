@@ -2,7 +2,13 @@
 
 import pytest
 
-from src.rewards import RiskComponents, StepContext, UniformBroadcastCredit, finance_advantage
+from src.rewards import (
+    STEP_CREDIT_OUTPUT_SEMANTICS,
+    RiskComponents,
+    StepContext,
+    UniformBroadcastCredit,
+    finance_advantage,
+)
 
 
 def test_finance_advantage_matches_pre_registered_formula() -> None:
@@ -55,3 +61,22 @@ def test_m1_uniform_broadcast_conserves_trajectory_advantage() -> None:
 
     assert [credit.credit for credit in credits] == pytest.approx([0.3, 0.3, 0.3])
     assert sum(credit.credit for credit in credits) == pytest.approx(0.9)
+    assert {credit.output_semantics for credit in credits} == {
+        STEP_CREDIT_OUTPUT_SEMANTICS
+    }
+
+
+@pytest.mark.parametrize("trajectory_advantage", [float("nan"), float("inf"), -float("inf")])
+def test_m1_uniform_broadcast_rejects_nonfinite_trajectory_signal(
+    trajectory_advantage: float,
+) -> None:
+    with pytest.raises(ValueError, match="must be finite"):
+        UniformBroadcastCredit().allocate(
+            trajectory_advantage=trajectory_advantage,
+            steps=[StepContext(step_id="s1", action="hold")],
+        )
+
+
+def test_m1_uniform_broadcast_rejects_empty_trajectory() -> None:
+    with pytest.raises(ValueError, match="empty trajectory"):
+        UniformBroadcastCredit().allocate(trajectory_advantage=0.0, steps=[])

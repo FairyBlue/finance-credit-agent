@@ -378,6 +378,15 @@ def test_finance_trajectory_mode_emits_a_fin_only_on_the_final_step() -> None:
         assert final_done
         assert final_reward == pytest.approx(-2.0)
         assert info["trajectory_reward"] == pytest.approx(-2.0)
+        assert env.episode_complete is True
+        assert env.reward_mode == "finance_trajectory"
+        trace = env.credit_step_trace
+        assert [record.action for record in trace] == ["hold", "hold"]
+        assert [record.decision_session_index for record in trace] == [0, 1]
+        assert [record.result_session_index for record in trace] == [1, 2]
+        assert [record.reward for record in trace] == pytest.approx([0.0, -2.0])
+        assert [record.done for record in trace] == [False, True]
+        assert all(record.invalid_action is False for record in trace)
 
     asyncio.run(episode())
 

@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import math
 from collections.abc import Mapping, Sequence
-from dataclasses import asdict
+from dataclasses import asdict, dataclass
 from datetime import date, datetime, time
 from functools import lru_cache
 from pathlib import Path
@@ -36,6 +36,20 @@ class _StrictArgs(BaseModel):
 
 class TradingDataIntegrityError(RuntimeError):
     """A required bar is absent or ambiguous for the exact replay session."""
+
+
+@dataclass(frozen=True, slots=True)
+class TradingStepTrace:
+    """Minimal causal step evidence retained after Agent-R1 drops env ``info``."""
+
+    step_index: int
+    action: str
+    decision_session_index: int
+    decision_at: str
+    result_session_index: int
+    reward: float
+    done: bool
+    invalid_action: bool
 
 
 MAX_RETRIEVE_QUERY_CHARS = 200
@@ -318,6 +332,8 @@ class TradingEnv(ToolEnv):
         self._maximum_position_weight = 0.0
         self._prompt_prefix: list[dict[str, Any]] = []
         self._recent_events: list[dict[str, object]] = []
+        self._credit_step_trace: list[TradingStepTrace] = []
+        self._active_decision_session_index = 0
 
     @staticmethod
     def _coefficient(value: float, *, name: str) -> float:
@@ -333,6 +349,18 @@ class TradingEnv(ToolEnv):
     @property
     def symbols(self) -> tuple[str, ...]:
         return self._symbols
+
+    @property
+    def credit_step_trace(self) -> tuple[TradingStepTrace, ...]:
+        return tuple(self._credit_step_trace)
+
+    @property
+    def episode_complete(self) -> bool:
+        return self._done
+
+    @property
+    def reward_mode(self) -> str:
+        return self._reward_mode
 
     def reset(self, **kwargs: Any) -> Observation:
         self.ledger = PortfolioLedger(
@@ -350,6 +378,8 @@ class TradingEnv(ToolEnv):
         self._turnovers = []
         self._maximum_position_weight = 0.0
         self._recent_events = []
+        self._credit_step_trace = []
+        self._active_decision_session_index = 0
         raw_prompt = list(kwargs.get("raw_prompt", self._base_raw_prompt))
         if not raw_prompt:
             raw_prompt = [
@@ -366,6 +396,7 @@ class TradingEnv(ToolEnv):
         return self._observation(self._state_text(), tool_response=False)
 
     async def step(self, action: Action) -> tuple[Observation, float, bool, dict[str, Any]]:
+        self._active_decision_session_index = self._index
         if self._done:
             return self._invalid("episode is already complete", terminal=True)
         if not isinstance(action, Action) or action.text is None:
@@ -775,8 +806,18 @@ class TradingEnv(ToolEnv):
         done: bool = False,
         info: dict[str, Any] | None = None,
     ) -> tuple[Observation, float, bool, dict[str, Any]]:
+        info_document = dict(info or {})
+        action = info_document.get("action") or info_document.get("tool")
+        if not isinstance(action, str) or not action:
+            raise RuntimeError("successful trading steps must identify their action")
+        self._record_credit_step(
+            action=action,
+            reward=reward,
+            done=done,
+            invalid_action=False,
+        )
         observation = self._observation(text)
-        return observation, float(reward), done, dict(info or {})
+        return observation, float(reward), done, info_document
 
     def _invalid(
         self, message: str, *, terminal: bool = False
@@ -785,10 +826,41 @@ class TradingEnv(ToolEnv):
         safe_message = self._bounded_ascii_text(message, limit=self.MAX_ERROR_CHARS)
         error = f"Error: {safe_message}"
         self._remember_event("invalid", {"error": safe_message})
+        self._record_credit_step(
+            action="invalid",
+            reward=0.0,
+            done=terminal,
+            invalid_action=True,
+        )
         observation = self._observation(self._state_text(extra={"error": error}))
         return (
             observation,
             0.0,
             terminal,
             {"error": safe_message, "invalid_action": True},
+        )
+
+    def _record_credit_step(
+        self,
+        *,
+        action: str,
+        reward: float,
+        done: bool,
+        invalid_action: bool,
+    ) -> None:
+        numeric_reward = float(reward)
+        if not math.isfinite(numeric_reward):
+            raise RuntimeError("trading step reward must be finite")
+        decision_session_index = self._active_decision_session_index
+        self._credit_step_trace.append(
+            TradingStepTrace(
+                step_index=len(self._credit_step_trace),
+                action=action,
+                decision_session_index=decision_session_index,
+                decision_at=self._dates[decision_session_index].isoformat(),
+                result_session_index=self._index,
+                reward=numeric_reward,
+                done=bool(done),
+                invalid_action=bool(invalid_action),
+            )
         )

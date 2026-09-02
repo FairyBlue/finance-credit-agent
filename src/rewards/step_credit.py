@@ -8,6 +8,8 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from typing import Any
 
+STEP_CREDIT_OUTPUT_SEMANTICS = "immediate_step_reward_v1"
+
 
 @dataclass(frozen=True, slots=True)
 class StepContext:
@@ -27,6 +29,7 @@ class StepCredit:
     step_id: str
     credit: float
     mechanism: str
+    output_semantics: str = STEP_CREDIT_OUTPUT_SEMANTICS
 
 
 @dataclass(frozen=True, slots=True)
@@ -49,6 +52,7 @@ class CreditEvidence:
 
 class StepCreditStrategy(ABC):
     name: str
+    output_semantics = STEP_CREDIT_OUTPUT_SEMANTICS
 
     @abstractmethod
     def allocate(
@@ -58,11 +62,16 @@ class StepCreditStrategy(ABC):
         steps: Sequence[StepContext],
         evidence: CreditEvidence | None = None,
     ) -> tuple[StepCredit, ...]:
-        """Allocate one finite trajectory advantage across observable steps."""
+        """Allocate a finite trajectory signal into immediate per-step rewards.
+
+        The returned values enter Agent-R1's reward timeline. They are not direct
+        optimizer advantages; the shared StepPO critic/GAE pipeline transforms them
+        after allocation.
+        """
 
 
 class UniformBroadcastCredit(StepCreditStrategy):
-    """M1 ablation: divide `A_fin` uniformly and conserve its total exactly."""
+    """M1 ablation: emit uniform immediate rewards that conserve `A_fin` exactly."""
 
     name = "m1_uniform"
 
@@ -83,7 +92,12 @@ class UniformBroadcastCredit(StepCreditStrategy):
         credits = [share] * len(steps)
         credits[-1] = value - sum(credits[:-1])
         return tuple(
-            StepCredit(step_id=step.step_id, credit=credit, mechanism=self.name)
+            StepCredit(
+                step_id=step.step_id,
+                credit=credit,
+                mechanism=self.name,
+                output_semantics=self.output_semantics,
+            )
             for step, credit in zip(steps, credits, strict=True)
         )
 

@@ -131,7 +131,9 @@ def test_proxy_copies_params_passes_request_through_and_records_seed(tmp_path: P
     assert proxy.request_seeds == (derive_request_seed(42, _identity(), 0),)
     evidence = summarize_rollout_seed_evidence(tmp_path)
     canonical_sha256 = evidence.pop("canonical_sha256")
+    trajectory_identity_sha256 = evidence.pop("trajectory_identity_sha256")
     assert len(str(canonical_sha256)) == 64
+    assert len(str(trajectory_identity_sha256)) == 64
     assert evidence == {
         "schema_version": ROLLOUT_SEED_EVIDENCE_SCHEMA_VERSION,
         "scheme": ROLLOUT_SEED_SCHEME,
@@ -139,6 +141,8 @@ def test_proxy_copies_params_passes_request_through_and_records_seed(tmp_path: P
         "trajectory_count": 1,
         "training_request_count": 1,
         "validation_request_count": 0,
+        "training_trajectory_count": 1,
+        "validation_trajectory_count": 0,
         "unique_seed_count": 1,
         "base_seed": 42,
         "worker_files": 1,

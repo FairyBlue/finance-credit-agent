@@ -3,3 +3,4 @@
   env_type: trading
   reward_mode: finance_trajectory
   credit_strategy: m1_uniform
+  credit_semantics: immediate_step_reward_v1

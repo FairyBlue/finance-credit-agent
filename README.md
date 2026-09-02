@@ -14,23 +14,45 @@ tool-using trading agent over outcome-only GRPO and generic StepPO. The project 
 [Agent-R1](https://github.com/AgentR1/Agent-R1) as a locked submodule, keeps every local change under
 `src/`, and treats look-ahead leakage prevention as the first executable requirement.
 
-The three experimental arms are:
+The three method classes use four formal configurations:
 
-| Arm | Upstream optimizer | Reward/credit signal |
+| Configuration | Upstream optimizer | Reward/credit signal and role |
 |---|---|---|
 | A1 | GRPO (`adv_estimator=grpo`) | Original episode return, emitted only at trajectory end |
 | A2 | Agent-R1 StepPO (`adv_estimator=gae`, critic + GSPO loss) | Generic per-environment-step reward |
-| A3 | StepPO | `A_fin` plus a strategy-selected step allocation |
+| A3-M1 | The same StepPO setup as A3-main | `A_fin` plus M1; required formal ablation, not an eligible main method |
+| A3-M2 or A3-M3 | The same StepPO setup as A2/A3-M1 | `A_fin` plus the preregistered finance-native allocation; A3 main method |
 
-A3's M1 uniform broadcast is implemented only as a smoke-test/ablation. M2 state×regime grouping and
-M3 sampled counterfactual information contribution have explicit interfaces and deliberately raise
-`NotImplementedError`; a final A3 scientific comparison must implement at least one of M2/M3.
+M1 is frozen as **uniform immediate-step reward v1**. For a completed trajectory with `T` realized
+Agent-R1 interaction steps, the terminal `A_fin` is retroactively assigned as immediate rewards
+`r_t = A_fin / T`; the final step absorbs floating-point residual so the rewards sum exactly to
+`A_fin`. These values are StepPO inputs, not direct or uniformly broadcast optimizer advantages;
+StepPO subsequently computes advantages with step-level GAE. A3-M1 must receive a formal,
+budget-matched run as the required reward-shaping ablation, but it cannot serve as A3-main. M2
+state×regime grouping and M3 sampled counterfactual information contribution retain explicit
+interfaces and deliberately raise `NotImplementedError`; A3-main must implement and preregister at
+least one of them.
+
+The A3 runtime fails closed on empty or truncated trajectories and records one JSONL credit record
+per completed trajectory. The launcher validates finite `A_fin`, the actual rewritten step rewards,
+exact conservation, non-zero Train/Valid signals, and one-to-one trajectory identity agreement with
+the deterministic rollout-seed evidence. This evidence contract is shared by M1 and future M2/M3;
+mechanism-specific checks remain separate.
+
+A finance-native credit-assignment claim additionally requires A3-main to pass a preregistered M1
+superiority gate under the same model, data, StepPO optimizer, seed set, hyperparameter-selection
+rules, and budget accounting as A3-M1. The exact superiority statistic remains to be frozen by the
+two collaborators before formal training; no value is selected here. Beating A1/A2 without beating
+A3-M1 supports at most an `A_fin`/reward-shaping result, not the credit-assignment claim.
 
 ## Reproducibility pins
 
 - Agent-R1 gitlink: `b124aa46534cbf2fb8bc8af11405774984c42ac7` (2026-07-21). This untagged
   default-branch commit contains StepPO and was explicitly approved in the 2026-08-24 protocol
   amendment; the only tag, `v0.1.0`, does not contain StepPO.
+- StepPO paper/specification pin: [arXiv:2604.18401v4](https://arxiv.org/abs/2604.18401v4)
+  (2026-06-21). This citation pin fixes the referenced method semantics; it does not replace the
+  executable Agent-R1 commit pin above.
 - verl: exactly `0.7.0`, following Agent-R1. Do not upgrade it independently.
 - StockBench OOS source: [`ChenYXxxx/stockbench`](https://github.com/ChenYXxxx/stockbench),
   repo commit `ce8b2b3483590646ad3b650ac8221f43f76fd091`, storage tree
@@ -264,8 +286,10 @@ The five-session tariff-crash metrics are descriptive only and must carry no sig
 
 ## Remaining required work
 
-1. **A3 scientific implementation:** implement and preregister M2 or M3 before using A3 for the main
-   scientific comparison; M1 remains smoke/ablation only.
+1. **A3 scientific implementation:** implement and preregister M2 or M3 as A3-main, retain A3-M1 as
+   the required formal budget-matched ablation, and freeze the M1 superiority statistic before any
+   formal training. M1 cannot be presented as the main method, and A3-main cannot support a
+   credit-assignment claim unless it passes that preregistered gate.
 2. **Disabled modalities:** keep current fundamentals and news disabled unless a later protocol
    amendment defines and reviews their point-in-time fields.
 3. **Human line review:** use the offline checklist in `docs/EXPERIMENT_HANDOFF.md` for future-split

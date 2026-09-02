@@ -33,7 +33,8 @@ G1 与 T2 的结果边界分别见
 
 ```text
 复核 G1 与 T2 v2 结果报告
-  → 完成 A3 的 M2 或 M3 实现与预注册
+  → 冻结 A3-M1 正式消融、A3-main 与 M1 superiority statistic
+  → 完成 A3-main 的 M2 或 M3 实现与预注册
   → 冻结干净的正式执行 commit 和数据/模型身份
   → 在 H100 重新核对 stack、tests 与完整 preflight
   → 获得明确运行授权后再进入正式实验
@@ -47,13 +48,25 @@ G1 与 T2 的结果边界分别见
 本项目研究的问题是：**金融领域原生的逐步 credit assignment，能否比只看最终收益或通用逐步
 奖励更可靠地训练工具型交易 Agent？**
 
-三条实验臂是：
+三类方法对应四个正式配置：
 
-| Arm | 方法 | 回答的问题 |
+| 配置 | 方法 | 回答的问题 |
 |---|---|---|
 | A1 | Outcome-only GRPO | 只给最终组合结果时，基准表现如何？ |
 | A2 | 通用 StepPO | 通用逐步奖励是否比最终奖励更好？ |
-| A3 | Finance-native credit | 按金融轨迹结构分配 credit 是否进一步改善训练？ |
+| A3-M1 | `A_fin` + M1 uniform immediate-step reward v1 | 均匀 finance reward shaping 的正式消融表现如何？ |
+| A3-M2 或 A3-M3 | `A_fin` + 预注册的 finance-native credit | 按金融轨迹结构分配 credit 是否进一步改善训练？这是 A3 主方法。 |
+
+M1 对一条实际含 `T` 个 Agent-R1 interaction steps 的完成轨迹，将终局 `A_fin` 回填为每步即时
+奖励 `r_t=A_fin/T`，最后一步吸收浮点余差以保证总和精确等于 `A_fin`。它是输入 StepPO 的
+immediate reward，不是直接或均匀的 optimizer advantage；实际 advantage 仍由 StepPO 的
+step-level GAE 计算。A3-M1 必须作为同预算正式消融运行，但不能作为 A3 主方法。A3 主方法还必须
+按预注册规则胜过 A3-M1，才能支持 finance-native credit-assignment 主张；只胜过 A1/A2 最多支持
+`A_fin` / reward-shaping 结果。
+
+StepPO 方法引用固定为 [`arXiv:2604.18401v4`](https://arxiv.org/abs/2604.18401v4)
+（2026-06-21）；可执行实现独立固定为 Agent-R1 commit
+`b124aa46534cbf2fb8bc8af11405774984c42ac7`。paper pin 不替代 executable commit pin。
 
 这里最重要的不是先跑出一个高收益数字，而是保证结论没有被未来数据、错误成交边界、不同账务
 引擎或不可复现的数据版本污染。金融回测中的这些错误往往不会让程序报错，反而会让结果看起来
@@ -67,24 +80,25 @@ G1 smoke 只证明训练链路接通：数据能加载、环境能推进、模�
 它不属于正式训练，不能用于：
 
 - 收益、Sharpe、显著性或论文结论；
-- A1/A2/A3 优劣比较；
+- A1/A2/A3-M1/A3-main 优劣比较；
 - 超参数、模型或 checkpoint 选择；
 - 调整 reward、Regime 或 T2 规则。
 
 G1 已经通过，但正式训练不会因此自动开始，当前还需满足：
 
 - T2 v2 与 formal reviewed manifest 已完成，但干净执行身份和完整 preflight 仍必须逐项完成。
-- A3 当前只有 M1 uniform broadcast 作为 smoke/ablation，支持科学主结论的 M2 或 M3 尚未实现。
+- A3-M1 的 uniform immediate-step reward v1 已实现，并已冻结为必需正式消融，但不能冒充主方法；
+  支持科学主结论的 M2 或 M3 尚未实现，M1 superiority statistic 也仍待正式训练前线下冻结。
 
-因此，G1 和 T2 通过后的正确动作是继续正式实验准备，不是顺手启动三臂训练。
+因此，G1 和 T2 通过后的正确动作是继续正式实验准备，不是顺手启动四配置正式比较。
 
 ## 3. 当前进度与真实阻塞
 
-状态截至 `2026-09-01`：
+状态截至 `2026-09-02`：
 
 | 项目 | 状态 | 证据或说明 |
 |---|---|---|
-| G0 协议与本地脚手架 | `PASSED` | 当前全量 221 tests；Ruff、mypy、lock 与 whitespace checks 通过 |
+| G0 协议与本地脚手架 | `PASSED` | 当前全量 241 tests；Ruff、mypy、lock 与 whitespace checks 通过 |
 | Prompt-budget P0 修复 | `H100 PASS` | 620 个真实 tokenizer cases，最大 prompt 3045/4096 tokens |
 | G1 P1 门禁 | `H100 PREFLIGHT PASS` | exact model/offline、4-row cap、增量证据、direct-only 与 expected-commit 已实测 |
 | G1 A1/Qwen3-1.7B smoke | `PASSED` | H100 实测完成；rollout、reward、backward、optimizer update 与 Final OOS 隔离证据齐全 |
@@ -101,6 +115,9 @@ G1 已经通过，但正式训练不会因此自动开始，当前还需满足�
 | Smoke processed Parquet | H100 已验证 | 实测 `train=4`、`valid=1`、`test=1`；文件不进入 GitHub |
 | Formal reviewed manifest | `PASSED` | 两位合作者已确认；raw SHA `4a8ff4f3...a5a54a3`，benchmark SHA `a8650738...b117b8` |
 | Formal processed Parquet | `PASSED` | 已生成并验证 `441/60/1` rows；文件保持 Git-ignored |
+| A3-M1 正式消融规范 | `FROZEN` | uniform immediate-step reward v1；必须正式运行但不具备主方法资格 |
+| A3-M1 本地实现与证据链 | `LOCAL PASS / H100 PENDING` | flow、真实 GAE、配置漂移和 JSONL 守恒/轨迹身份门禁已通过；1.7B wiring smoke 尚未完成 |
+| A3-main 与 M1 superiority gate | `BLOCKED` | M2/M3 尚未实现；superiority statistic 仍待两位合作者在正式训练前线下冻结 |
 
 本次 H100 移植以 `9e4bfe3c2d9d6ef36fbd684efcc78c2b1c600cfd` 为实际起点；精确移植
 commit 记录在 `docs/H100_COMPATIBILITY.md`。开发时先同步最新 `origin/main`；执行实验时必须
@@ -589,10 +606,13 @@ G1 与 T2 v2 均已通过，结果及限制已经提交为独立报告。接下�
 1. 复核 T2 artifact 的 protocol/raw-byte SHA 绑定，并保留旧 OOS probe 的永久禁用状态；
 2. formal reviewed manifest、benchmark 重放和 `441/60/1` processed rows 已完成；换执行主机时只需
    从仓库内 reviewed manifest 重新生成 Git-ignored Parquet；
-3. 为 A3 主结论实现并预注册 M2 或 M3，不能用 M1 冒充；
-4. 冻结干净的正式执行 commit，以及代码、数据和模型身份；
-5. 在 H100 重跑当前完整 tests、stack 核验和 formal preflight；
-6. 获得明确授权后才执行正式 A1/A2/A3，并保存完整 `runs/<run_id>/` 证据。
+3. 保留 A3-M1 作为同模型、数据、StepPO、seed 与预算的必需正式消融，同时为 A3-main 实现并
+   预注册 M2 或 M3；不能用 M1 冒充主方法；
+4. 两位合作者在线下冻结 M1 superiority statistic；A3-main 必须通过该 gate 才能支持
+   finance-native credit-assignment 主张；
+5. 冻结干净的正式执行 commit，以及代码、数据和模型身份；
+6. 在 H100 重跑当前完整 tests、stack 核验和 formal preflight；
+7. 获得明确授权后才执行正式 A1/A2/A3-M1/A3-main，并保存完整 `runs/<run_id>/` 证据。
 
 Final OOS 仍只在最终科学评测时开启。T2 的 real-pipeline non-detection 是“没有显著证据”，不是
 “证明不存在泄漏”。
@@ -657,5 +677,6 @@ Final OOS 仍只在最终科学评测时开启。T2 的 real-pipeline non-detect
 - 合作者无需依赖历史聊天、W&B、个人电脑路径或数字签名流程；
 - 合作者能够独立判断当前为何阻塞、下一步做什么、何时必须停止，以及什么证据才算实验通过。
 
-当前 readiness：`FORMAL_MANIFEST_REVIEWED`。G1、T2 v2、formal manifest 和本地 processed 绑定
-均已通过；A3 M2/M3、干净执行身份和正式 H100 preflight 尚未完成，因此仍不得启动正式三臂训练。
+当前 readiness：`FORMAL_MANIFEST_REVIEWED`。G1、T2 v2、formal manifest、本地 processed 绑定和
+A3-M1 正式消融定义均已完成；A3-main 的 M2/M3、M1 superiority statistic、干净执行身份和正式
+H100 preflight 尚未完成，因此仍不得启动 A1/A2/A3-M1/A3-main 四配置正式比较。

@@ -6,11 +6,15 @@ arm:
   optimizer: steppo
   credit_assignment: finance_native
   reward_signal: A_fin
-  mechanism: m1_uniform  # Smoke-only ablation; final A3 must use M2 or M3.
+  mechanism: m1_uniform
+  credit_semantics: immediate_step_reward_v1
+  scientific_role: formal_ablation
 
 finance_credit:
   m1_uniform:
     implemented: true
+    credit_semantics: immediate_step_reward_v1
+    scientific_role: formal_ablation
   m2_state_regime_group:
     implemented: false  # TODO: implement before the proposal's final A3 comparison.
   m3_counterfactual_information:

@@ -1,0 +1,29 @@
+extends: smoke_1p7b.yaml
+
+run:
+  name: smoke-a3-m1-qwen3-1p7b
+  kind: a3_m1_wiring_smoke_1p7b
+
+arm:
+  id: A3
+  name: finance_native
+  optimizer: steppo
+  credit_assignment: finance_native
+  reward_signal: A_fin
+  mechanism: m1_uniform
+  credit_semantics: immediate_step_reward_v1
+  scientific_role: formal_ablation
+
+finance_credit:
+  m1_uniform:
+    implemented: true
+    credit_semantics: immediate_step_reward_v1
+    scientific_role: formal_ablation
+  m2_state_regime_group:
+    implemented: false
+  m3_counterfactual_information:
+    implemented: false
+
+training:
+  # One trajectory per prompt is sufficient for the M1 wiring-only smoke.
+  rollout_n: 1
