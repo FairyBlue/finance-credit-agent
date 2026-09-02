@@ -1,6 +1,6 @@
 # Finance Credit Agent：实验接手与运行手册
 
-更新日期：`2026-09-01`
+更新日期：`2026-09-02`
 
 这是一份面向新合作者的单一入口文档。即使没有读过历史对话，只要拥有本仓库、冻结历史数据和
 一台 Linux x86_64 H100，就应当能够通过本文理解研究动机、判断当前进度、复核已经完成的 G1
@@ -11,17 +11,21 @@
 
 ## 0. 接手后先看这里
 
-当前结论只有五条：
+当前结论只有六条：
 
 1. 本地实验脚手架和协议门禁已经完成，状态为 `G0 PASSED`。
 2. A1/Qwen3-1.7B 的单卡 H100 wiring smoke 已在 commit
    `2d48bf6db8961998b1450644ef542a293ea8f95d` 上通过，真实 rollout、reward、backward 和两次
    optimizer update 均有结构化证据，且 `final_oos_accessed=false`。
-3. T2 v2 已在冻结 history Train/Valid 上通过：真实管道未显著检出，强、弱正控制均检出；聚合
+3. A3-M1/Qwen3-1.7B 的单卡 H100 wiring smoke 已在 commit
+   `fb07e727b8077c9f25684ad3bfa5222feef84035` 上通过：M1 即时奖励守恒、真实 GAE、critic 和
+   actor 非零参数更新以及 post-update validation 均有结构化证据，且 `final_oos_accessed=false`。
+   这只证明 wiring，不代表 A3-M1 正式消融已经运行。
+4. T2 v2 已在冻结 history Train/Valid 上通过：真实管道未显著检出，强、弱正控制均检出；聚合
    证据位于 `configs/t2_v2_result.json`，launcher 会复核字节哈希、协议身份和联合判定。
-4. Formal manifest 已由两位合作者按最小清单确认并晋级为 `reviewed`；`441/60/1` processed rows、
+5. Formal manifest 已由两位合作者按最小清单确认并晋级为 `reviewed`；`441/60/1` processed rows、
    manifest/row 绑定和 raw-bar benchmark 重放均已通过。正式运行还需干净身份和完整 preflight。
-5. StockBench Final OOS 继续关闭；旧 T2 OOS CLI 永久 fail closed。`scripts/run_queue.sh` 也保持
+6. StockBench Final OOS 继续关闭；旧 T2 OOS CLI 永久 fail closed。`scripts/run_queue.sh` 也保持
    fail closed，实际运行只使用带 `--expected-commit` 的 direct launcher。
 
 G1 与 T2 的结果边界分别见
@@ -33,8 +37,9 @@ G1 与 T2 的结果边界分别见
 
 ```text
 复核 G1 与 T2 v2 结果报告
-  → 冻结 A3-M1 正式消融、A3-main 与 M1 superiority statistic
+  → 复核 A3-M1 wiring smoke，并保持它与正式消融的证据边界
   → 完成 A3-main 的 M2 或 M3 实现与预注册
+  → 冻结 A3-main 与 M1 superiority statistic
   → 冻结干净的正式执行 commit 和数据/模型身份
   → 在 H100 重新核对 stack、tests 与完整 preflight
   → 获得明确运行授权后再进入正式实验
@@ -98,7 +103,7 @@ G1 已经通过，但正式训练不会因此自动开始，当前还需满足�
 
 | 项目 | 状态 | 证据或说明 |
 |---|---|---|
-| G0 协议与本地脚手架 | `PASSED` | 当前全量 241 tests；Ruff、mypy、lock 与 whitespace checks 通过 |
+| G0 协议与本地脚手架 | `PASSED` | 当前全量 246 tests；Ruff、mypy、lock 与 whitespace checks 通过 |
 | Prompt-budget P0 修复 | `H100 PASS` | 620 个真实 tokenizer cases，最大 prompt 3045/4096 tokens |
 | G1 P1 门禁 | `H100 PREFLIGHT PASS` | exact model/offline、4-row cap、增量证据、direct-only 与 expected-commit 已实测 |
 | G1 A1/Qwen3-1.7B smoke | `PASSED` | H100 实测完成；rollout、reward、backward、optimizer update 与 Final OOS 隔离证据齐全 |
@@ -116,8 +121,15 @@ G1 已经通过，但正式训练不会因此自动开始，当前还需满足�
 | Formal reviewed manifest | `PASSED` | 两位合作者已确认；raw SHA `4a8ff4f3...a5a54a3`，benchmark SHA `a8650738...b117b8` |
 | Formal processed Parquet | `PASSED` | 已生成并验证 `441/60/1` rows；文件保持 Git-ignored |
 | A3-M1 正式消融规范 | `FROZEN` | uniform immediate-step reward v1；必须正式运行但不具备主方法资格 |
-| A3-M1 本地实现与证据链 | `LOCAL PASS / H100 PENDING` | flow、真实 GAE、配置漂移和 JSONL 守恒/轨迹身份门禁已通过；1.7B wiring smoke 尚未完成 |
+| A3-M1 实现与证据链 | `H100 WIRING SMOKE PASS` | flow、真实 GAE、配置漂移、JSONL 守恒/轨迹身份及 critic/actor 双更新门禁均通过 |
 | A3-main 与 M1 superiority gate | `BLOCKED` | M2/M3 尚未实现；superiority statistic 仍待两位合作者在正式训练前线下冻结 |
+
+A3-M1 的 H100 状态只指 wiring smoke。精确证据为 commit
+`fb07e727b8077c9f25684ad3bfa5222feef84035`、run
+`20260902T070540291149Z-smoke-a3-m1-qwen3-1p7b-fb07e727`：1 条 20-step Train 轨迹和更新前后
+各 1 条 Valid 轨迹均完整且守恒误差为 0；critic、actor 各有 1 条有限非零参数更新；运行
+`status=PASSED`、`returncode=0`、`final_oos_accessed=false`。这不是正式 A3-M1 结果，不能用于收益、
+显著性或 A1/A2/A3 优劣比较，也不会解除 A3-main 的阻塞。
 
 本次 H100 移植以 `9e4bfe3c2d9d6ef36fbd684efcc78c2b1c600cfd` 为实际起点；精确移植
 commit 记录在 `docs/H100_COMPATIBILITY.md`。开发时先同步最新 `origin/main`；执行实验时必须
@@ -677,6 +689,7 @@ Final OOS 仍只在最终科学评测时开启。T2 的 real-pipeline non-detect
 - 合作者无需依赖历史聊天、W&B、个人电脑路径或数字签名流程；
 - 合作者能够独立判断当前为何阻塞、下一步做什么、何时必须停止，以及什么证据才算实验通过。
 
-当前 readiness：`FORMAL_MANIFEST_REVIEWED`。G1、T2 v2、formal manifest、本地 processed 绑定和
-A3-M1 正式消融定义均已完成；A3-main 的 M2/M3、M1 superiority statistic、干净执行身份和正式
-H100 preflight 尚未完成，因此仍不得启动 A1/A2/A3-M1/A3-main 四配置正式比较。
+当前 readiness：`FORMAL_MANIFEST_REVIEWED`。G1、T2 v2、formal manifest、本地 processed 绑定、
+A3-M1 正式消融定义和 H100 wiring smoke 均已完成；A3-main 的 M2/M3、M1 superiority statistic、
+干净执行身份和正式 H100 preflight 尚未完成，因此仍不得启动 A1/A2/A3-M1/A3-main 四配置正式
+比较。
