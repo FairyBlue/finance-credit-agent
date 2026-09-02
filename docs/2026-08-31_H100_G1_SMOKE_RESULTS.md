@@ -87,3 +87,10 @@ Ray actor 的序列化路径捕获了闭包式 patched 基类方法，导致 act
 上述“T2 v2 尚未通过”的表述是本报告生成时的状态。T2 v2 现已在冻结 history Train/Valid 上通过，
 详见 [`2026-09-01_T2_V2_RESULTS.md`](2026-09-01_T2_V2_RESULTS.md)。这只解除 T2 blocker，不改变
 本报告对 G1 的证据边界，也不自动授权正式训练。
+
+## A3-M1 后续状态更新（2026-09-02）
+
+协议定义中的 G1 仍严格指本报告记录的 A1/Qwen3-1.7B wiring smoke，并已独立通过。A3-M1 的
+后续单卡 H100 wiring smoke 也已单独通过，详见
+[`2026-09-02_H100_A3_M1_WIRING_SMOKE_RESULTS.md`](2026-09-02_H100_A3_M1_WIRING_SMOKE_RESULTS.md)。
+后者不属于 G1，也不改变本报告的代码身份；两项 smoke 都只证明接线，不是正式训练结果。

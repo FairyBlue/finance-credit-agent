@@ -68,6 +68,7 @@
 | 2026-09-01 | v0.9 execution record：T2 v2 实现、运行证据与门禁接线 | 自动化三条件通过；不改变 v0.3 预注册口径，不构成人工 reviewer 签字 |
 | 2026-09-01 | v1.0 formal manifest record：formal episode 采样、最小审核与 processed 绑定 | 两位合作者已确认；reviewed manifest、benchmark 重放和 `441/60/1` processed rows 均已验证 |
 | 2026-09-02 | v1.1 A3 formal comparison amendment：StepPO v4 pin、M1 immediate-reward 正式消融、三类四配置与 M1 superiority gate | M1、比较矩阵与引用 pin 按用户要求落盘；superiority statistic 仍待两位合作者在正式训练前线下冻结 |
+| 2026-09-02 | v1.2 execution record：A3-M1 实现、双角色证据门禁与 H100 wiring smoke | 自动化 wiring 验证通过；不改变 v1.1 科学定义，不构成人工 reviewer 签字或正式训练授权 |
 
 ## 8. v0.2 修订（2026-08-24，用户明确批准）
 
@@ -437,3 +438,40 @@ preflight 通过后启动唯一一次 A1/Qwen3-1.7B G1 wiring smoke。本授权�
   实现、测试、干净执行身份和完整 H100 preflight 前，正式比较继续 fail closed。
 - 所有四个配置的 checkpoint 必须在同一次 Final OOS 开启前冻结；A3-M1 的正式消融身份不构成提前
   查看 Final OOS、选择 A3-main 或追加调参的许可。
+
+## 18. v1.2 A3-M1 实现与 Wiring Smoke 执行记录（2026-09-02）
+
+> 本节只记录 v1.1 M1 定义的代码实现与 wiring-only H100 验证，不改变正式比较矩阵、预算、
+> superiority gate 或 Final OOS 边界。自动 agent 执行实现、测试和证据复算，不充当 v0.8 所定义的
+> 人工 reviewer；本记录也不批准正式训练。
+
+- A3-M1 已按 `immediate_step_reward_v1` 实现：完整轨迹结束后，把有限 `A_fin` 均匀分配到实际
+  Agent-R1 interaction steps，最后一步吸收浮点余差以保证精确守恒。该向量进入共享 StepPO
+  reward timeline，实际 optimizer advantage 继续由 step-level GAE 计算；M2/M3 仍显式
+  `NotImplementedError`，不能回退或伪装为 M1。
+- 完整轨迹会写入 step-credit JSONL；launcher 要求 Train/Valid 信号有限、非零、完整、精确守恒，
+  并要求与 deterministic rollout-seed evidence 的 trajectory identity SHA-256 一致。A3-M1 的
+  optimizer 门禁还要求分别存在 `role=critic` 和 `role=actor` 的有限非零参数更新记录，仅有退出码
+  或单一角色更新都不能通过。
+- 相关实现提交依次为 `dca22c5a317e1ce059f78255c544b031387feacf`、
+  `d99e7d64a63c0285217f6605e0cc54cd5208e704` 和
+  `fb07e727b8077c9f25684ad3bfa5222feef84035`。最终 wiring-only 配置固定
+  `rollout_n=1`、`train_batch_size=1`、`total_training_steps=1`，让 critic 参数常驻 H100、critic
+  optimizer 继续 offload，并把 forward-only reference 的存储 dtype 设为 BF16。这些资源项不作为
+  正式 A3-M1 超参数。
+- 单卡 H100 actual run
+  `20260902T070540291149Z-smoke-a3-m1-qwen3-1p7b-fb07e727` 在 exact clean commit
+  `fb07e727b8077c9f25684ad3bfa5222feef84035` 上得到 `status=PASSED`、
+  `exit_code=returncode=0`、`training/global_step=1`、`final_oos_accessed=false`。它记录 1 条
+  20-step Train 轨迹与更新前后各 1 条 Valid 轨迹，共 63 steps；三条 `A_fin`/credit 都有限非零且
+  `maximum_absolute_conservation_error=0.0`。
+- seed 与 credit 两侧的 trajectory identity SHA-256 同为
+  `526755cdbf85e401bbd02dce5ad87d9b13833652d9260a9e16aa9080fb4eed4d`；optimizer evidence 包含
+  critic、actor 各 1 条 finite non-zero update record，peak allocated GPU memory 为
+  `93,829,628,928` bytes。原始 `summary.json` SHA-256 为
+  `99329dbf4c624a611a06505af96164fbdbace5acf221b186ebcf5cb27d908fdf`；完整证据和限制见
+  [`docs/2026-09-02_H100_A3_M1_WIRING_SMOKE_RESULTS.md`](docs/2026-09-02_H100_A3_M1_WIRING_SMOKE_RESULTS.md)。
+- 协议定义的 G1 仍专指 A1/Qwen3-1.7B wiring smoke，并已于 2026-08-31 独立通过；本节的 A3-M1
+  run 是后续 method-specific wiring smoke，不能称为 G1，也不能解释为 A3-M1 正式消融、A3-main
+  或项目全部门禁已经通过。M2/M3、M1 superiority statistic、正式执行身份与 formal H100
+  preflight 仍须完成，Final OOS 继续关闭。

@@ -3,8 +3,8 @@
 更新日期：`2026-09-02`
 
 这是一份面向新合作者的单一入口文档。即使没有读过历史对话，只要拥有本仓库、冻结历史数据和
-一台 Linux x86_64 H100，就应当能够通过本文理解研究动机、判断当前进度、复核已经完成的 G1
-与 T2 v2，并知道哪些验证和正式实验现在允许或禁止运行。
+一台 Linux x86_64 H100，就应当能够通过本文理解研究动机、判断当前进度、复核已经完成的 G1、
+T2 v2 与 A3-M1 wiring smoke，并知道哪些验证和正式实验现在允许或禁止运行。
 
 仓库代码、配置、Git 状态和实际运行结果高于本文。如果出现冲突，立即停止实验，按第 16 节处理，
 不要自行放宽门禁。
@@ -28,10 +28,11 @@
 6. StockBench Final OOS 继续关闭；旧 T2 OOS CLI 永久 fail closed。`scripts/run_queue.sh` 也保持
    fail closed，实际运行只使用带 `--expected-commit` 的 direct launcher。
 
-G1 与 T2 的结果边界分别见
-[`docs/2026-08-31_H100_G1_SMOKE_RESULTS.md`](2026-08-31_H100_G1_SMOKE_RESULTS.md) 和
-[`docs/2026-09-01_T2_V2_RESULTS.md`](2026-09-01_T2_V2_RESULTS.md)。第 5～14 节保留为 G1 的历史
-运行与复核手册；当前状态以本节、第 3 节和第 15 节为准。
+G1、T2 v2 与 A3-M1 wiring smoke 的结果边界分别见
+[`docs/2026-08-31_H100_G1_SMOKE_RESULTS.md`](2026-08-31_H100_G1_SMOKE_RESULTS.md)、
+[`docs/2026-09-01_T2_V2_RESULTS.md`](2026-09-01_T2_V2_RESULTS.md) 和
+[`docs/2026-09-02_H100_A3_M1_WIRING_SMOKE_RESULTS.md`](2026-09-02_H100_A3_M1_WIRING_SMOKE_RESULTS.md)。
+第 5～14 节保留为 G1 的历史运行与复核手册；当前状态以本节、第 3 节和第 15 节为准。
 
 接手后的推荐顺序：
 
@@ -78,6 +79,10 @@ StepPO 方法引用固定为 [`arXiv:2604.18401v4`](https://arxiv.org/abs/2604.1
 更好，所以项目采用“先证明实验有效，再扩大训练”的顺序。
 
 ## 2. G1 smoke 的证据边界
+
+协议定义中的 G1 严格指 A1/Qwen3-1.7B wiring smoke；它已于 2026-08-31 独立通过。2026-09-02
+通过的 A3-M1 wiring smoke 是 G1 之后的单独验证，不应称为“让 G1 通过”，也不改变 G1 的
+exact validated commit。
 
 G1 smoke 只证明训练链路接通：数据能加载、环境能推进、模型能 rollout、reward 能产生、反向传播
 和 optimizer 能真实更新参数、运行证据能完整保存。
@@ -589,7 +594,7 @@ PY
 | missing reviewed manifest | reviewed 文件缺失或未同步 | formal 使用仓库内 reviewed 文件；smoke 回到第 8 节，不要把 draft 直接冒充 reviewed |
 | missing processed dataset | 三个 Parquet 尚未生成 | 从 reviewed manifest 重新运行 `prepare_episodes.py` |
 | raw manifest SHA mismatch | 数据不是冻结快照或同步损坏 | 停止，重新 rsync 原快照；不要修改冻结 SHA |
-| invalid T2 smoke exemption | smoke 配置漂移或启动了非批准配置 | 重新 checkout runbook 的 exact commit，只使用 `configs/smoke_1p7b.yaml` |
+| invalid T2 smoke exemption | smoke 配置漂移或启动了非批准配置 | 重新 checkout 目标 run 的 exact commit；G1 只用 `smoke_1p7b.yaml`，A3-M1 只用 `smoke_a3_m1_1p7b.yaml` |
 | Final OOS/StockBench rejection | smoke 输入污染了最终评测边界 | 删除错误输入并重新生成 history-only smoke 数据 |
 | 进程退出 0 但 update 未检出 | 没有证明发生真实训练 | G1 失败；保留 artifacts，检查梯度/optimizer/Ray hook |
 | reward collapse 或重复输出 | rollout 已失效 | G1 失败；保留 run 记录，不得挑选性删除失败 run |
@@ -613,7 +618,7 @@ W&B、API key、云端 logger、数字签名或加密签字流程都不需要。
 
 ## 15. G1 之后该做什么
 
-G1 与 T2 v2 均已通过，结果及限制已经提交为独立报告。接下来按以下顺序推进：
+G1、T2 v2 与 A3-M1 wiring smoke 均已通过，结果及限制已经提交为独立报告。接下来按以下顺序推进：
 
 1. 复核 T2 artifact 的 protocol/raw-byte SHA 绑定，并保留旧 OOS probe 的永久禁用状态；
 2. formal reviewed manifest、benchmark 重放和 `441/60/1` processed rows 已完成；换执行主机时只需
@@ -654,6 +659,7 @@ Final OOS 仍只在最终科学评测时开启。T2 的 real-pipeline non-detect
 |---|---|
 | `docs/EXPERIMENT_HANDOFF.md` | 本接手与运行手册 |
 | `docs/2026-08-31_H100_G1_SMOKE_RESULTS.md` | 已通过的 G1 smoke 结果、证据哈希与限制 |
+| `docs/2026-09-02_H100_A3_M1_WIRING_SMOKE_RESULTS.md` | A3-M1 实现变化、H100 wiring smoke 结果、证据哈希与限制 |
 | `docs/2026-09-01_T2_V2_RESULTS.md` | 已通过的 T2 v2 结果、统计身份与 artifact 门禁 |
 | `docs/2026-09-01_FORMAL_MANIFEST_RESULTS.md` | formal manifest 的审核、晋级、processed 与复算证据 |
 | `docs/2026-08-27_H100_G1_AUDIT_RESULTS.md` | 当前 H100 实测结果、P0/P1/P2 与复验顺序 |
@@ -662,6 +668,7 @@ Final OOS 仍只在最终科学评测时开启。T2 的 real-pipeline non-detect
 | `docs/H100_COMPATIBILITY.md` | H100 frozen stack、wheel 哈希、clean-clone 和证据边界 |
 | `EVAL_PROTOCOL.md` | 冻结协议与历次追加修订 |
 | `configs/smoke_1p7b.yaml` | 唯一批准的 G1 配置 |
+| `configs/smoke_a3_m1_1p7b.yaml` | hash-bound A3-M1 wiring-only 配置，不是正式训练配置 |
 | `configs/base.yaml` | 数据、reward、交易、Regime 与门禁基础配置 |
 | `configs/episode_manifest.smoke.candidate.yaml` | 已冻结并于 2026-08-30 线下审核通过；reviewed 副本保持本地 ignored |
 | `scripts/build_smoke_manifest.py` | 生成确定性 history-only smoke 草稿 |

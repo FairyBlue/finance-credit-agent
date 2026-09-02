@@ -2,8 +2,8 @@
 
 **New collaborator:** read
 [`docs/EXPERIMENT_HANDOFF.md`](docs/EXPERIMENT_HANDOFF.md) first. It is the self-contained handoff
-for the research motivation, current gate status, frozen inputs, clean-clone setup, H100 G1 smoke,
-acceptance evidence, troubleshooting, and the work that remains after G1.
+for the research motivation, current gate status, frozen inputs, clean-clone setup, H100 G1 and
+A3-M1 wiring smokes, acceptance evidence, troubleshooting, and the work that remains afterwards.
 
 For day-to-day work between the two maintainers, see
 [`docs/COLLABORATION.md`](docs/COLLABORATION.md). GitHub automatically publishes a readable report
@@ -38,6 +38,13 @@ per completed trajectory. The launcher validates finite `A_fin`, the actual rewr
 exact conservation, non-zero Train/Valid signals, and one-to-one trajectory identity agreement with
 the deterministic rollout-seed evidence. This evidence contract is shared by M1 and future M2/M3;
 mechanism-specific checks remain separate.
+
+The A3-M1 implementation and its single-H100 wiring smoke have now passed. The accepted run executed
+one real trainer step with a critic update, an actor update, and post-update validation; all three
+Train/Valid trajectories conserved `A_fin` exactly and Final OOS remained closed. See
+[`docs/2026-09-02_H100_A3_M1_WIRING_SMOKE_RESULTS.md`](docs/2026-09-02_H100_A3_M1_WIRING_SMOKE_RESULTS.md)
+for the exact code identity, implementation changes, evidence hashes, and limitations. This is not a
+formal A3-M1 result and does not unblock A3-main.
 
 A finance-native credit-assignment claim additionally requires A3-main to pass a preregistered M1
 superiority gate under the same model, data, StepPO optimizer, seed set, hyperparameter-selection
@@ -74,6 +81,7 @@ src/data/                 frozen daily-data adapters and mandatory as_of gate
 src/env/                  next-open ledger, BaseTool registrations, TradingEnv plugin
 src/rewards/              A_fin and M1/M2/M3 strategy interface
 src/agents/               three training entrypoints, hash capture, Agent-R1 flows
+src/agents/credit_evidence.py A3 step-credit persistence and fail-closed trajectory summary
 src/evaluation/           shared metrics/baselines and three standard figures
 tests/                    leakage, accounting, reward, environment, and metric specifications
 scripts/run_queue.sh      fail-closed disabled queue; G1 uses the direct launcher
@@ -83,6 +91,7 @@ scripts/build_smoke_manifest.py generate the deterministic history-only G1 manif
 scripts/build_formal_manifest.py generate the frozen 441/60/1 formal manifest draft
 scripts/freeze_benchmarks.py generate shared-ledger benchmark NAV + checksum
 configs/episode_manifest.smoke.candidate.yaml frozen G1 candidate; reviewed copy stays local/ignored
+configs/smoke_a3_m1_1p7b.yaml hash-bound A3-M1 wiring-only resource configuration
 configs/episode_manifest.reviewed.yaml collaborator-reviewed 441/60/1 formal manifest
 scripts/run_t2_probe.py   disabled legacy OOS entrypoint retained for audit history
 scripts/run_t2_v2_probe.py run the frozen history-only T2 v2 probe and write bound evidence
@@ -98,8 +107,10 @@ the train-only reward rule, event-anchored regimes, T2 v2, and the narrow G1 exe
 the old full-OOS smoke with the Valid-derived shadow test and requires structured local and direct
 optimizer-update evidence; v0.7 defines the exact-model, prompt, evidence and validation-identity
 gates used by G1 and was approved offline by both collaborators on 2026-08-30; v0.9 records the
-history-only T2 v2 implementation and its 2026-09-01 execution evidence. No agent or digital signature
-substitutes for human review. New protocol changes require another recorded amendment.
+history-only T2 v2 implementation and its 2026-09-01 execution evidence; v1.0 records the reviewed
+formal manifest, v1.1 freezes the four-configuration A3/M1 comparison, and v1.2 records the A3-M1
+implementation and successful wiring smoke without authorizing formal training. No agent or digital
+signature substitutes for human review. New protocol changes require another recorded amendment.
 
 ## CPU quick start
 
@@ -275,6 +286,10 @@ stage-aware process-group and signal semantics are redesigned and reviewed, use 
 launcher commands above. T2 v2 and the formal manifest gate have passed, but formal runs still
 require clean code/data identity, complete preflight, and the remaining arm-specific scientific work.
 
+The protocol-defined G1 is the A1/Qwen3-1.7B smoke and is already `PASSED` at commit `2d48bf6...`.
+The A3-M1 wiring smoke is a separate follow-up and is also `PASSED` at commit `fb07e727...`; neither
+run is formal scientific training.
+
 `src/evaluation/` computes cumulative/annualized return, Sharpe, Sortino, maximum drawdown, turnover,
 cost ratio, benchmark-adjusted return, tool-call count/success, invalid-call and abstain rates, token
 consumption, reasoning rounds, and regime columns. It also produces the three standard figures:
@@ -286,10 +301,11 @@ The five-session tariff-crash metrics are descriptive only and must carry no sig
 
 ## Remaining required work
 
-1. **A3 scientific implementation:** implement and preregister M2 or M3 as A3-main, retain A3-M1 as
-   the required formal budget-matched ablation, and freeze the M1 superiority statistic before any
-   formal training. M1 cannot be presented as the main method, and A3-main cannot support a
-   credit-assignment claim unless it passes that preregistered gate.
+1. **A3 scientific implementation:** A3-M1 implementation and wiring validation are complete.
+   Implement and preregister M2 or M3 as A3-main, retain A3-M1 as the required formal budget-matched
+   ablation, and freeze the M1 superiority statistic before any formal training. M1 cannot be
+   presented as the main method, and A3-main cannot support a credit-assignment claim unless it
+   passes that preregistered gate.
 2. **Disabled modalities:** keep current fundamentals and news disabled unless a later protocol
    amendment defines and reviews their point-in-time fields.
 3. **Human line review:** use the offline checklist in `docs/EXPERIMENT_HANDOFF.md` for future-split
