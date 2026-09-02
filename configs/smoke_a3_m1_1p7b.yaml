@@ -27,6 +27,10 @@ finance_credit:
 training:
   # One trajectory per prompt is sufficient for the M1 wiring-only smoke.
   rollout_n: 1
+  # A single deterministic training trajectory still exercises finance credit,
+  # critic update, actor update, and post-update rollout synchronization while
+  # avoiding 51 serial actor microbatches in this wiring-only run.
+  train_batch_size: 1
   # One complete critic -> actor update is sufficient to prove the shared
   # GAE/critic/GSPO wiring without a second train/update cycle.
   total_training_steps: 1
@@ -34,3 +38,6 @@ training:
   # them resident avoids crossing the 57.6 GiB host memory.high boundary once
   # the offloaded critic Adam state is materialized.
   critic_param_offload: false
+  # The reference model is forward-only. BF16 halves its offloaded host storage
+  # while matching the FSDP forward dtype, keeping this smoke below memory.high.
+  reference_model_dtype: bf16

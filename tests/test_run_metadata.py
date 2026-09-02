@@ -883,10 +883,13 @@ def test_a3_m1_smoke_command_locks_shared_steppo_pipeline(tmp_path: Path) -> Non
     assert "algorithm.adv_estimator=gae" in command
     assert "actor_rollout_ref.actor.policy_loss.loss_mode=gspo" in command
     assert "actor_rollout_ref.rollout.n=1" in command
+    assert "data.train_batch_size=1" in command
+    assert "actor_rollout_ref.actor.ppo_mini_batch_size=1" in command
     assert "trainer.total_training_steps=1" in command
     assert "critic.model.path=Qwen/Qwen3-1.7B" in command
     assert "critic.model.fsdp_config.param_offload=False" in command
     assert "critic.model.fsdp_config.optimizer_offload=True" in command
+    assert "actor_rollout_ref.ref.fsdp_config.model_dtype=bf16" in command
     assert (
         "actor_rollout_ref.rollout.agent.agent_flow_config_path="
         f"{root / 'configs/agent_flow_a3.yaml'}"
@@ -903,6 +906,7 @@ def test_a3_m1_smoke_command_locks_shared_steppo_pipeline(tmp_path: Path) -> Non
         ("total_training_steps", 0, "must be a positive integer"),
         ("total_training_steps", True, "must be a positive integer"),
         ("critic_param_offload", "false", "must be a boolean"),
+        ("reference_model_dtype", "float64", "must be 'bf16' or 'fp32'"),
     ],
 )
 def test_a3_m1_smoke_rejects_invalid_resource_controls(

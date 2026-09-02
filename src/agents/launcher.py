@@ -64,7 +64,7 @@ A1_WIRING_SMOKE_CURRENT_CONFIG_SHA256 = (
 )
 A3_M1_WIRING_SMOKE_KIND = "a3_m1_wiring_smoke_1p7b"
 A3_M1_WIRING_SMOKE_CONFIG_SHA256 = (
-    "b446c8dcf78dced95df4c6ac17758f1147a5685d7bc3b1eeb8290c2d5bb4437d"
+    "ed7237bbf4769095ec56095f017e88d3396509713af149269955a024248996a2"
 )
 DECLARED_SMOKE_CONFIG_SHA256 = {
     WIRING_SMOKE_KIND: A1_WIRING_SMOKE_CURRENT_CONFIG_SHA256,
@@ -877,6 +877,12 @@ def build_upstream_command(
     critic_param_offload = training.get("critic_param_offload", True)
     if not isinstance(critic_param_offload, bool):
         raise ValueError("training.critic_param_offload must be a boolean")
+    reference_model_dtype = training.get("reference_model_dtype")
+    if reference_model_dtype is not None and reference_model_dtype not in {
+        "bf16",
+        "fp32",
+    }:
+        raise ValueError("training.reference_model_dtype must be 'bf16' or 'fp32'")
 
     if update_probe_dir is not None:
         update_probe_dir = Path(update_probe_dir)
@@ -936,6 +942,16 @@ def build_upstream_command(
         _hydra("actor_rollout_ref.rollout.agent.num_workers", 1),
         _hydra("actor_rollout_ref.ref.log_prob_micro_batch_size_per_gpu", 1),
         _hydra("actor_rollout_ref.ref.fsdp_config.param_offload", True),
+        *(
+            [
+                _hydra(
+                    "actor_rollout_ref.ref.fsdp_config.model_dtype",
+                    reference_model_dtype,
+                )
+            ]
+            if reference_model_dtype is not None
+            else []
+        ),
         _hydra("reward_model.enable", False),
         _hydra("algorithm.use_kl_in_reward", False),
         _hydra("algorithm.rollout_correction.bypass_mode", False),
