@@ -69,6 +69,7 @@
 | 2026-09-01 | v1.0 formal manifest record：formal episode 采样、最小审核与 processed 绑定 | 两位合作者已确认；reviewed manifest、benchmark 重放和 `441/60/1` processed rows 均已验证 |
 | 2026-09-02 | v1.1 A3 formal comparison amendment：StepPO v4 pin、M1 immediate-reward 正式消融、三类四配置与 M1 superiority gate | M1、比较矩阵与引用 pin 按用户要求落盘；superiority statistic 仍待两位合作者在正式训练前线下冻结 |
 | 2026-09-02 | v1.2 execution record：A3-M1 实现、双角色证据门禁与 H100 wiring smoke | 自动化 wiring 验证通过；不改变 v1.1 科学定义，不构成人工 reviewer 签字或正式训练授权 |
+| 2026-09-03 | v1.3 draft comparison-identification amendment：terminal-outcome A2、A3-M0、五配置阶梯与统一执行契约 | 用户已批准设计方向；待两位合作者线下共同审核，代码、测试、配置 hash 与 formal H100 preflight 完成前不批准正式训练 |
 
 ## 8. v0.2 修订（2026-08-24，用户明确批准）
 
@@ -475,3 +476,261 @@ preflight 通过后启动唯一一次 A1/Qwen3-1.7B G1 wiring smoke。本授权�
   run 是后续 method-specific wiring smoke，不能称为 G1，也不能解释为 A3-M1 正式消融、A3-main
   或项目全部门禁已经通过。M2/M3、M1 superiority statistic、正式执行身份与 formal H100
   preflight 仍须完成，Final OOS 继续关闭。
+
+## 19. v1.3 五配置识别与统一执行契约修订草案（2026-09-03；DRAFT / NOT FROZEN）
+
+> 本节一旦按第 14 节完成两位合作者线下共同审核并明确标为 `FROZEN`，将以追加方式替代第 17 节中
+> “四配置”以及 A2 `generic step credit` 的未展开简写，不删除或改写历史记录。在此之前，第 17 节
+> 仍是最近一次已落盘设计记录，但其未决统计门禁与本节新增实现缺口共同阻止 formal training。本节
+> 记录的是 prospective scientific design 与实施门禁，不表示当前代码已经实现，也不批准 formal
+> training 或开放 Final OOS。本节新增的 M3 sham 要求只会加强、不会替代第 17 节既有的 M1
+> superiority 必要门槛。
+>
+> 用户已批准采用 A3-M0 与下述设计方向；按第 14 节流程，仍须两位合作者线下共同审核本节、方法
+> preregistration、固定实现 commit、resolved-config hashes、正式模型 revision 和资源授权，之后才能
+> 把状态改为 `FROZEN`。自动 agent 不充当 reviewer 或授权主体。
+
+### 19.1 五个核心配置
+
+令 $P_0$ 为任何交易发生前的初始组合权益，$P_T$ 为最终 session close 由同一 next-open 账务引擎
+得到的组合权益；$P_T$ 已反映冻结的 slippage 与 commission，因此下式整体是 net-of-cost return：
+
+$$
+R_{net}=\frac{P_T}{P_0}-1.
+$$
+
+对一条含 $T$ 个实际 Agent-R1 interaction steps、合法到达 environment terminal 的轨迹，A1 与 A2
+使用完全相同的 external reward timeline：
+
+$$
+r_t^{raw}=
+\begin{cases}
+0, & t<T,\\
+R_{net}, & t=T.
+\end{cases}
+$$
+
+$R_{net}$ 不做 benchmark subtraction、volatility normalization、drawdown/turnover/position penalty
+或 $A^{fin}$ 变换。StepPO 只消费该 $r_t$ 并估计 advantage，不生成 reward。
+
+M0/M1/M2 共用的 terminal scorer 必须严格复现第 8.3、9.1 节和已签字 calibration payload：
+
+$$
+A^{fin}
+=
+\frac{R_{net}-B}{\sigma+\epsilon}
+-\lambda_{risk}
+\max\!\left(
+D_{max},
+\max(0,\tau_{max}-1.0),
+\max(0,w_{max}-0.30)
+\right).
+$$
+
+$B$ 是同一 episode、同一成本/next-open 账务口径的冻结等权 buy-and-hold benchmark return；$\sigma$
+是 agent 组合净逐期收益的 population standard deviation（`ddof=0`）；$D_{max}$、$\tau_{max}$、
+$w_{max}$ 分别为最大回撤、最大单日双边换手和最大单票 close weight。数值继续为
+$\epsilon=0.0006887293802216064$、$\lambda_{risk}=0.9016432557217152$，并绑定已签字 calibration
+payload 的 `freeze_table_sha256=1b46a81268fe4b45e065c49fde8bf9c0641131676668c8e35e4f884747464430`。
+v1.3 不重标定或改变这些值。
+
+A1 对同一 sampled input-row/prompt occurrence、同一 pre-update policy snapshot 的四条 rollout replicas
+分别聚合完整 trajectory score，再执行 `norm_adv_by_std_in_grpo=true` 的 group-relative normalization。
+分母固定使用四个 trajectory scores 的 sample standard deviation（correction $=1$）与
+$\epsilon_{GRPO}=10^{-6}$；所得单一 trajectory advantage 广播到该轨迹全部 steps 的有效 response
+tokens。A1 不启用 critic 或 GAE。
+
+经两位合作者共同审核后，v1.3 formal 核心矩阵拟改为：
+
+| 配置 | External training reward | Post-GAE、pre-whitening 增量 | Advantage/optimizer 与科学角色 |
+|---|---|---|---|
+| A1 Outcome-only GRPO | terminal-only $R_{net}$ | 无 | trajectory-relative GRPO、无 critic/GAE、upstream vanilla token-level importance-ratio/clipped PPO actor loss；outcome-only reference |
+| A2 Terminal-outcome StepPO | 与 A1 完全相同的 terminal-only $R_{net}$ | 无 | critic + step-level GAE + GSPO；generic temporal-credit method-package control |
+| A3-M0 Finance-terminal control | terminal-only $A^{fin}$ | 无 | 与 A2 相同的 StepPO；terminal signal transformation control |
+| A3-M1 Uniform redistribution control | 总量守恒的 $A^{fin}/T$ immediate rewards | 无 | 与 M0/M2 相同的 StepPO；reward-timing control / M2 matched null |
+| A3-M2 Main | 与 M1 相同的 base reward | 待冻结 M2 preregistration 定义的 $\eta S_t$ | 同一 StepPO，只增加 M2 residual；finance-native main method |
+
+A3-M0 的 reward timeline 拟冻结为：
+
+$$
+r_t^{M0}=
+\begin{cases}
+0, & t<T,\\
+A^{fin}, & t=T.
+\end{cases}
+$$
+
+A3-M1 继续沿用第 17、18 节的 `uniform immediate-step reward v1`：前 $T-1$ 步写入
+$A^{fin}/T$，最后一步吸收 Python/binary64 证据向量的浮点余差，使普通求和精确等于 $A^{fin}$。
+M0、M1 与 M2 必须使用同一个 terminal scorer；$A^{fin}$ 是 terminal signal，不是 optimizer
+advantage。
+
+历史 `generic_step` A2 使用逐 session 的净组合收益减 benchmark、drawdown 与 turnover 罚项，属于
+hand-designed dense finance reward。第 9.1 节对该 reward 系数的冻结继续作为历史记录保留，但该实现
+不进入 v1.3 核心矩阵。若未来运行，必须另命名为 `A2-Dense` supplementary baseline，并另行冻结
+预算、统计层级和 multiplicity；不得用旧实现冒充 terminal-outcome A2。
+
+### 19.2 相邻对比与声明边界
+
+五配置形成以下 prospective staircase：
+
+1. `A2 − A1`：在相同 terminal $R_{net}$ 下比较完整 StepPO stack 与 GRPO stack；不能单独归因于
+   critic、GAE 或 GSPO 任一组件；
+2. `A3-M0 − A2`：在相同 StepPO 与 terminal-only placement 下比较
+   $R_{net}\rightarrow A^{fin}$ 的 terminal-objective effect；不能声称 step reward redistribution；
+3. `A3-M1 − A3-M0`：在相同 $A^{fin}$/StepPO 下比较 uniform redistribution 的 reward-timing
+   effect；不能声称 action-specific 或因果 credit；
+4. M2 的唯一 primary mechanism contrast 为 `A3-M2 − A3-M1`；
+5. A3-main 相对 A1/A2/M0 的比较只作为 whole-system secondary contrasts，不能替代 M1 gate。
+
+该设计不是完整 factorial design。RL 优化存在交互和路径依赖，以上相邻 contrasts 不能机械相加为
+总贡献。除 M2 的 matched-control primary gate 外，其余相邻 contrasts 默认只报告 effect size、区间和
+方向；若要宣称正式 superiority，必须在打开任何 Valid 结果前扩展检验层级和 multiplicity 规则。
+M2 的 coverage/support gate 只决定 M2 是否 feasible，不得反向使 A1/A2/M0/M1 的数值失效。
+
+### 19.3 共享 StepPO、rollout 与完整性规则
+
+A2、A3-M0、A3-M1 和 A3-M2 使用独立参数副本，但必须共享：
+
+- 相同 critic architecture、initial revision、initialization rule/seed、optimizer、target construction
+  rule、mask 与 update schedule；各 arm 因 reward timeline 不同而产生的 target 数值不要求相同；
+- 显式写入 resolved config 的 $\gamma=1$、$\lambda=1$，不得依赖上游默认值；
+- 相同 GSPO actor loss、clip/KL regularization、step ordering 与 trajectory-end bootstrap boundary；
+  未白化 GAE 与 M2 residual 必须在 PPO minibatch 切分前，对完整 logical on-policy rollout batch 中
+  `sample_mask=true` 的真实 step rows 做唯一一次 DP-global step whitening，使用 sample standard
+  deviation（correction $=1$）与 $10^{-8}$ epsilon；
+- reward model 关闭，training reward 与 reference-policy KL loss 分离。
+
+$\gamma=1$ 避免仅因 interaction depth 对同一有限期 finance outcome 施加额外时间折扣；$\lambda=1$
+使完整轨迹的 Monte-Carlo residual 成为共享主规格。二者是待线下共同审核的 prospective design
+choice，不是对 v1.2 smoke 实际超参数的新解释。
+
+给定该 arm 的 external step reward，统一 GAE 语义为：
+
+$$
+\delta_t=r_t+\gamma V(s_{t+1})-V(s_t),\qquad
+U_t=\delta_t+\gamma\lambda U_{t+1},
+$$
+
+其中 $V(s_t)$ 是生成当前 action 前的 critic value，terminal 后 $V(s_{T+1})=U_{T+1}=0$。critic
+target 使用 $U_t+V(s_t)$；actor 使用唯一一次 whitening 后的 step advantage。若
+$\gamma=\lambda=1$ 且 $V(s_t)=0$，terminal-only A2 的未白化 $U_t$ 在所有 steps 上均等于
+$R_{net}$；不得把 StepPO 描述为自动产生非均匀或因果 step credit。
+
+A1、A2、A3-M0、A3-M1 与 A3-M2 的 formal Train 拟统一为
+`actor_rollout_ref.rollout.n=4`。同一 episode occurrence 与同一 pre-update actor snapshot 必须先完整
+生成 IDs 恰为 `{0,1,2,3}` 的四条 sibling rollouts，再允许任何 critic/actor update；不得跨 optimizer
+version、attempt 或 resume boundary 拼组，也不得用重复 trajectory 伪造 siblings。A3-M1 已通过的
+`n=1` smoke 继续是有效历史 wiring evidence，但不满足 formal v1.3 contract。
+
+所有 arms 共享同一个 complete-trajectory predicate。可进入 scorer、GAE、critic 或 actor batch 的
+轨迹必须在最后一个保留 step 恰好一次返回 `done=true`，且精确到达 episode 的最后冻结 session。
+达到 agent/context/response 上限或异常退出而未终止时，可以保留已经产生的 raw environment/evidence
+记录，但整个 four-sibling block 必须在进入 scorer-derived training reward、GAE、critic/actor batch
+或 optimizer 前 hard fail；对应 formal attempt 标记 `INCOMPLETE` 并停止。不得记零、使用 partial
+NAV、强制虚构 terminal step、丢弃后补采或按性能选择 retry。单个 invalid action 是 policy outcome；
+只要之后完整终止便可保留。失败前已经消耗的 token、environment calls 与 GPU time 仍计入资源账本。
+任何 `finish_reason=length`、response truncation 或 context overflow 都视为不完整，即使截断文本碰巧能
+被 parser 解析为一个 action；不得按 arm 或 action 内容选择接受。基础设施 exact-resume 条件与每 seed
+允许的 attempt 上限仍须在 formal rollout 前唯一冻结，未冻结时不允许以 replacement attempt 继续。
+
+### 19.4 Reward-neutral observation 与共同评测
+
+Train、Valid 和 Final OOS 的 **main rollouts** 全部采用同一个 reward-neutral model-visible schema；
+条件性 M3 与 M3-sham 的 main rollouts 也必须满足本节全部可见性约束。给定相同 pre-action
+environment state、action history 与正常 tool results，下列字段只能写入 trainer-side evidence，不能
+进入 main-rollout 的下一 observation、prompt、tool result 或 recent-events context：
+
+- `last_reward`、`reward_mode`、arm/configuration identity；
+- $R_{net}$、$A^{fin}$、M0/M1/M2/M3/sham credit、counterfactual target/intervention/auxiliary
+  outcome；
+- critic value、return、raw/whitened advantage 或只供 scorer 使用的 latent finance state。
+
+共同初始 checkpoint 必须通过 main-rollout prompt-identity oracle：以相同 frozen states/actions/request
+seeds 重放时，五个 M2 核心 arms 每一步的 model-visible prompt IDs byte-for-byte 相同；若选择 M3，
+M3 与 M3-sham 的 main rollouts 也必须加入同一 oracle。训练后由策略导致的 state/action 分叉是实验
+结果，不是 schema 差异。
+
+M3 auxiliary branches 采用独立契约：real 与 sham 的 pre-intervention base context、target selection 和
+RNG derivation 必须相同，唯一允许的 model-visible 差异是独立 preregistration 明定的 masked
+intervention 与 identity/placebo intervention。auxiliary target、prompt、output、environment state 和 RNG
+均不得写回、推进或改变 main rollout；因此不要求 real/sham 的 post-intervention auxiliary prompt IDs
+相同，但必须由 evidence 精确定位并验证其唯一差异。
+
+五臂共享模型 revision、Train/Valid manifests、episode permutation、sampling 参数、seed set、
+update boundaries、checkpoint grid、decoding/evaluation policy 和 retry/completion 规则。Valid 与经授权
+后唯一一次 Final OOS 均在完整 rollout 后由同一 frozen scorer 计算 $A^{fin}$；不得使用各 arm 的
+training reward 作为跨臂评测纵轴。raw net return、benchmark-adjusted return、Sharpe、maximum
+drawdown、turnover、成本、completion/truncation/invalid rate 与 trajectory/token length 作为共同
+guardrails 报告。
+
+### 19.5 样本与资源预算
+
+每个核心 arm/seed 的主 Train schedule 拟采用同一 441-episode Train manifest、每 episode 四条 sibling
+rollouts、fixed one epoch，即每 arm/seed 计划 `441 × 4 = 1,764` 条完整 main trajectories。新增 M0
+后，五臂每 seed 的计划量从 `7,056` 增至 `8,820` 条（增加 `1,764`，即 sample schedule 增加 25%）；
+这不意味着 GPU/FLOP 成本恰好增加 25%。M0 不得挤占 M1/M2 的 seed、trajectory、Valid 或统计预算。
+成功的每个 arm/seed 必须恰好接受全部 `1,764` 条 main trajectories；任何 incomplete sibling block
+都会使该 attempt 标为 `INCOMPLETE`，不得以较少 accepted rows 生成结果。
+
+相同 sample schedule 不等于相同实际 compute。每个 arm/seed 必须累计 Train generated response
+tokens、prompt/prefill tokens、environment calls、main/auxiliary trajectories、interaction steps、
+optimizer updates、actor/critic forward-backward tokens、wall-clock、GPU-seconds 和峰值显存；任何已执行
+但 aborted/discarded 的工作也不得从账本删除。主学习曲线使用所有 arms 在 Train-only no-update pilot
+后都可覆盖的绝对 generated-response-token horizon；environment transitions 与 GPU-seconds 作为
+sensitivity axes。具体 grid、horizon、margin 与统计脚本 hash 仍须在方法 preregistration 中冻结。
+
+### 19.6 M3 条件性 schedule-matched、resource-accounted control
+
+五配置矩阵是当前 M2 路线的核心设计。若 A3-main 改为会生成额外 counterfactual branches 的 M3，
+则必须在任何 M3 rollout 前通过独立 preregistration 增加 `A3-M3-sham`：它与真实 M3 使用相同的
+$A^{fin}$、M1 backbone、StepPO、main-rollout schedule、target-step selection、auxiliary branch 数、
+generation/scorer schedule、RNG namespace、硬件与完整资源记账，但采用不会删除或加入语义信息的
+identity/no-op intervention，且不给 optimizer 提供有效 counterfactual residual。
+
+M3 与 sham 的 main-rollout RNG stream 必须相同且与 auxiliary RNG namespace 隔离，auxiliary branch
+的长度、失败或调度不得推进或改变 main request seeds。sham auxiliary outputs 只供资源和 identity
+审计；其 post-GAE residual 必须严格为零并从 optimizer input 排除，任何非零值都使 preflight 失败。
+
+本节只确立“若运行 M3，必须先有 auxiliary schedule 与资源记账一致的 sham”这一设计原则，不声称
+当前已经得到实际 token/FLOP 完全相同的可执行 control。M3/sham 必须遵守第 19.3～19.5 节的
+rollout、完整性、可见性与评测规则。资源横轴使用 $G_{total}=G_{main}+G_{aux}$，非 M3 arms 的
+$G_{aux}=0$。相同 schedule 不代表实际 token/FLOP 天然相等，因此还须报告 GPU-seconds
+sensitivity。
+
+M3 的 mechanism-specific primary contrast 必须是 `A3-M3 − A3-M3-sham`，且 M3 仍必须通过第 17
+节既有的 `A3-M3 − A3-M1` superiority gate；两项都是必要条件，前者不能替代后者。只有 M3 胜过
+普通 M1 不能排除额外 inference/scheduling 路径的影响，只胜过 sham 也不能证明优于 M1 matched
+null。具体 intervention、residual 公式、sham identity oracle、两道 gate 的层级/multiplicity、resource
+horizon 与统计规则仍由单独 M3 protocol 冻结；本节不授权一个尚未定义的 M3 或 sham run。
+若 M3 替代 M2，核心矩阵为 A1、A2、M0、M1、M3、M3-sham，共六个 main-training arms，即每 seed
+计划 `6 × 1,764 = 10,584` 条 main trajectories，另加 M3 与 sham 的 auxiliary branches；该预算及两道
+gate 的 multiplicity 必须单独授权。若 M2 与 M3 都运行，则为七个 main-training arms，不能沿用五臂
+或六臂预算。
+
+### 19.7 当前实现状态与 formal 门禁
+
+截至本修订记录时，以下事项尚未全部实现，因此科学定义与 executable state 必须明确区分：
+
+1. 当前 A2 仍为 `reward_mode=generic_step` dense finance reward，arm metadata 还把 reward 与
+   advantage 混写为 `generic_step_advantage`；A1 command 也尚未显式锁定
+   `norm_adv_by_std_in_grpo=true`、GRPO epsilon 与 vanilla actor-loss identity；
+2. A3-M0 尚无独立 arm/flow/config/evidence schema 或测试；
+3. launcher 仍对 StepPO arms 强制实际 `rollout.n=1`，且项目 formal config 未显式写入本节的
+   $\gamma,\lambda$/whitening contract；尚未实现 formal 全臂 `n=4` contract；
+4. A1/A2 尚未具备与 A3 相同的 complete-trajectory hard gate；
+5. environment model-visible state 仍含 `last_reward`，reward-neutral prompt identity 尚未实现；
+6. formal configs 仍缺 `training.episodes=441` 和 exact Qwen3-4B revision；
+7. 五臂 resource ledger、common token horizon、checkpoint mapper 与统一 evaluator 尚未实现；正式
+   seed 数、Valid rollout/eval seeds/decoding、grid、$G^*$、margin、统计脚本和 retry/attempt 规则仍待
+   两位合作者冻结；
+8. M2/M3 仍未完成 executable implementation，M3-sham 也未实现；
+9. `M2_V1_PREREGISTRATION.md` 仍是未冻结讨论稿，其中“四臂”、A2、M0、预算及相关 TBD 必须与
+   本节同步后再交由两位合作者审核；文中的“四条 sibling rollouts”仍保持为四，不得误改成五；
+10. 方法统计规则、fixed commit/config hashes、test-first acceptance suite、五个核心 arms 的 `n=4`
+    command/regression/wiring evidence 与完整 formal preflight 尚未完成；若走 M3，还须增加 M3/sham
+    的对应测试、wiring 和 resource-isolation evidence。
+
+上述任一门禁未完成时，不得启动 formal A1/A2/A3-M0/A3-M1/A3-M2 training；条件性 M3/M3-sham
+同样不得启动。已有 A1 G1 `n=2` smoke 与 A3-M1 `n=1` smoke 只保留为历史 wiring evidence，均不
+满足 formal `n=4` contract，也不解除 v1.3 门禁；Final OOS 继续关闭。
