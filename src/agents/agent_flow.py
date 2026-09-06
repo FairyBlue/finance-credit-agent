@@ -25,6 +25,7 @@ from .rollout_seed import (
 )
 
 SCREENING_EVIDENCE_DIR_ENV = "FINANCE_SCREENING_EVIDENCE_DIR"
+_MAX_SCREENING_FAILURE_TOKEN_IDS = 4096
 
 
 class ScreeningIncompleteError(RuntimeError):
@@ -108,6 +109,12 @@ class ScreeningResponseManager:
             or finish_reason in {"length", "abort", "aborted"}
         ):
             record["status"] = "RESPONSE_INCOMPLETE"
+            diagnostic_limit = min(self.response_limit, _MAX_SCREENING_FAILURE_TOKEN_IDS)
+            record["response_token_ids"] = tokens[:diagnostic_limit]
+            record["response_token_ids_truncated"] = len(tokens) > diagnostic_limit
+            # Preserve the actual boundary even if an upstream overrun exceeds
+            # the bounded diagnostic prefix. Successful responses remain hash-only.
+            record["response_last_token_id"] = tokens[-1] if tokens else None
             raise ScreeningIncompleteError("screening response truncated or aborted")
         if (
             not tokens

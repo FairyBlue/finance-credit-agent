@@ -311,6 +311,7 @@ def test_screening_arms_share_scorer_but_preserve_training_reward_timing(
     assert len(manager.calls) == 20
     assert len({call["sampling_params"]["seed"] for call in manager.calls}) == 20
     assert record["generated_response_tokens"] == 40
+    assert all("response_token_ids" not in request for request in record["requests"])
     assert all(
         step.extra_fields["finance_screening_group_uid"] == "fixed-upstream-uid"
         and step.extra_fields["finance_screening_terminal_score"] == record["terminal_score"]
@@ -337,7 +338,67 @@ def test_failed_response_never_reaches_environment_even_if_action_is_parseable(
     assert record["steps"] == []
     assert "terminal_score" not in record
     assert record["requests"][0]["response_cap"] == 32
+    request = record["requests"][0]
+    assert request["response_token_ids"] == list(range(32 if failure == "cap" else 2))
+    assert request["response_token_ids_truncated"] is False
+    assert request["response_last_token_id"] == request["response_token_ids"][-1]
     assert record["generated_response_tokens"] > 0
+
+
+@pytest.mark.parametrize("response_cap", [2048, 4096])
+@pytest.mark.parametrize("overrun", [0, 7])
+def test_real_response_cap_preserves_bounded_failure_tokens_even_with_eos(
+    screening_module, response_cap, overrun
+):
+    tokens = [1] * (response_cap + overrun - 1) + [151645]
+
+    async def generate(*args, **kwargs):
+        assert kwargs["sampling_params"]["max_tokens"] == response_cap
+        return SimpleNamespace(token_ids=tokens, stop_reason="completed", finish_reason=None)
+
+    proxy = screening_module.ScreeningResponseManager(
+        SimpleNamespace(generate=generate),
+        prompt_limit=4096,
+        response_limit=response_cap,
+        context_limit=4096 + response_cap,
+    )
+    with pytest.raises(screening_module.ScreeningIncompleteError, match="truncated or aborted"):
+        asyncio.run(proxy.generate("request", prompt_ids=[1] * 2259, sampling_params={}))
+    (record,) = proxy.requests
+    assert record["status"] == "RESPONSE_INCOMPLETE"
+    assert record["response_token_count"] == response_cap + overrun
+    assert record["response_token_ids"] == tokens[:response_cap]
+    assert record["response_token_ids_truncated"] is (overrun > 0)
+    assert record["response_last_token_id"] == 151645
+    assert record["stop_reason"] == "completed"
+    assert record["finish_reason"] is None
+
+
+@pytest.mark.parametrize("response_cap", [2048, 4096])
+def test_response_below_real_cap_remains_hash_only(screening_module, response_cap):
+    output = SimpleNamespace(
+        token_ids=[1] * (response_cap - 2) + [151645],
+        stop_reason="completed",
+        finish_reason="stop",
+    )
+
+    async def generate(*args, **kwargs):
+        return output
+
+    proxy = screening_module.ScreeningResponseManager(
+        SimpleNamespace(generate=generate),
+        prompt_limit=4096,
+        response_limit=response_cap,
+        context_limit=4096 + response_cap,
+    )
+    assert asyncio.run(proxy.generate("request", prompt_ids=[1], sampling_params={})) is output
+    (record,) = proxy.requests
+    assert record["status"] == "COMPLETE"
+    assert record["response_token_count"] == response_cap - 1
+    assert "response_sha256" in record
+    assert "response_token_ids" not in record
+    assert "response_token_ids_truncated" not in record
+    assert "response_last_token_id" not in record
 
 
 def test_agent_limit_retains_raw_evidence_without_partial_score(

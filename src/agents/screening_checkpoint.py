@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import os
 import re
+from dataclasses import dataclass
 from functools import wraps
 from pathlib import Path
 from typing import Any
@@ -19,6 +20,20 @@ from uuid import uuid4
 SCREENING_IDENTITY_ENV = "FINANCE_SCREENING_IDENTITY_SHA256"
 COMPLETION_MARKER = "screening_complete.json"
 _CONTENTS = frozenset({"model", "optimizer", "extra"})
+
+
+@dataclass(frozen=True, slots=True)
+class _FinalCheckpoint:
+    """A save made by this trainer immediately before its final evaluation."""
+
+    directory: Path
+    identity: str
+    step: int
+    world_size: int
+    actor_worker: Any
+    critic_worker: Any
+    document: dict[str, Any]
+    result: Any
 
 
 def _identity() -> str:
@@ -130,6 +145,7 @@ def install_checkpoint_hooks(trainer_class: type[Any]) -> bool:
         return False
     original_save = trainer_class._save_checkpoint
     original_load = trainer_class._load_checkpoint
+    original_validate = trainer_class._validate
 
     @wraps(original_save)
     def save_checkpoint(trainer: Any, *args: Any, **kwargs: Any) -> Any:
@@ -142,6 +158,23 @@ def install_checkpoint_hooks(trainer_class: type[Any]) -> bool:
             Path(trainer.config.trainer.default_local_dir).expanduser().resolve()
             / f"global_step_{step}"
         )
+        saved = getattr(trainer, "_finance_screening_final_checkpoint", None)
+        if (
+            isinstance(saved, _FinalCheckpoint)
+            and (saved.directory, saved.identity, saved.step, saved.world_size)
+            == (directory, identity, step, world_size)
+            and saved.actor_worker is trainer.actor_rollout_wg
+            and saved.critic_worker is trainer.critic_wg
+        ):
+            # The pinned fit performs no update between final evaluation and
+            # its subsequent save. Keep the pre-evaluation RNG/data boundary.
+            document = validate_checkpoint(
+                directory, identity_sha256=identity, world_size=world_size
+            )
+            if document != saved.document:
+                raise RuntimeError("screening final checkpoint marker changed after saving")
+            return saved.result
+        trainer._finance_screening_final_checkpoint = None
         # A failed rewrite of this step must not retain an earlier success mark.
         (directory / COMPLETION_MARKER).unlink(missing_ok=True)
         result = original_save(trainer, *args, **kwargs)
@@ -160,6 +193,7 @@ def install_checkpoint_hooks(trainer_class: type[Any]) -> bool:
 
     @wraps(original_load)
     def load_checkpoint(trainer: Any, *args: Any, **kwargs: Any) -> Any:
+        trainer._finance_screening_final_checkpoint = None
         identity = _identity()
         world_size = _configuration(trainer)
         mode = trainer.config.trainer.get("resume_mode", "disable")
@@ -175,7 +209,42 @@ def install_checkpoint_hooks(trainer_class: type[Any]) -> bool:
         validate_checkpoint(path, identity_sha256=identity, world_size=world_size)
         return original_load(trainer, *args, **kwargs)
 
+    @wraps(original_validate)
+    def validate(trainer: Any, *args: Any, **kwargs: Any) -> Any:
+        step = trainer.global_steps
+        if (
+            type(step) is int
+            and step > 0
+            and step == trainer.total_training_steps
+            and not trainer.config.trainer.get("val_only", False)
+        ):
+            # Upstream evaluates before saving. Preserve both updated model
+            # roles before a strict final rollout can fail or be interrupted.
+            # This is a diagnostic/recovery artifact, not proof of exact resume.
+            identity = _identity()
+            world_size = _configuration(trainer)
+            directory = (
+                Path(trainer.config.trainer.default_local_dir).expanduser().resolve()
+                / f"global_step_{step}"
+            )
+            result = trainer._save_checkpoint()
+            document = validate_checkpoint(
+                directory, identity_sha256=identity, world_size=world_size
+            )
+            trainer._finance_screening_final_checkpoint = _FinalCheckpoint(
+                directory=directory,
+                identity=identity,
+                step=step,
+                world_size=world_size,
+                actor_worker=trainer.actor_rollout_wg,
+                critic_worker=trainer.critic_wg,
+                document=document,
+                result=result,
+            )
+        return original_validate(trainer, *args, **kwargs)
+
     trainer_class._save_checkpoint = save_checkpoint
     trainer_class._load_checkpoint = load_checkpoint
+    trainer_class._validate = validate
     trainer_class._finance_screening_checkpoint_hooks = True
     return True

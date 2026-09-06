@@ -202,6 +202,7 @@ def test_real_postprocess_driver_keeps_upstream_critic_returns(
     trainer_class = ray_trainer.RayAgentTrainer
     monkeypatch.setattr(trainer_class, "_save_checkpoint", trainer_class._save_checkpoint)
     monkeypatch.setattr(trainer_class, "_load_checkpoint", trainer_class._load_checkpoint)
+    monkeypatch.setattr(trainer_class, "_validate", trainer_class._validate)
     monkeypatch.setattr(trainer_class, "_finance_screening_checkpoint_hooks", False, raising=False)
     settings = ScreeningRuntimeSettings(arm, tmp_path.resolve(), 42)
     assert patch_trainer_module(ray_trainer, settings)

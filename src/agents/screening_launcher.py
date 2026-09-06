@@ -108,6 +108,13 @@ def build_cell_config(
         "reference_model_dtype": settings["resources"]["reference_model_dtype"],
         "critic_param_offload": settings["resources"]["critic_param_offload"],
     })
+    if stage == "pilot":
+        pilot = settings["engineering_pilot"]
+        if pilot["train_episodes"] != episodes:
+            raise ValueError("resource pilot must retain the same first two Train episodes")
+        config["training"].update({
+            key: pilot[key] for key in ("total_epochs", "total_training_steps", "save_freq")
+        })
     train_key = "pilot_train" if small else "train"
     eval_key = "pilot_eval" if small else "dev"
     config["data"] = {
@@ -145,6 +152,11 @@ def build_cell_command(
     )
     r = settings["resources"]
     t = settings["training"]
+    optimizer_options = r["optimizer_overrides"]
+    if optimizer_options != {"foreach": False, "fused": False}:
+        raise ValueError("screening requires the registered scalar AdamW resource settings")
+    # Hydra's dictionary grammar requires unquoted keys; JSON is not valid here.
+    optimizer_override = "{foreach:false,fused:false}"
     steps = config["training"]["total_training_steps"]
     overrides = {
         "data.shuffle": False,
@@ -167,6 +179,12 @@ def build_cell_command(
             config["training"]["max_prompt_length"] + config["training"]["max_response_length"]
         ),
         "actor_rollout_ref.rollout.gpu_memory_utilization": r["rollout_gpu_memory_utilization"],
+        # Pinned verl overwrites rollout.max_model_len with the HF capacity;
+        # engine_kwargs is merged last and preserves our actual engine limit.
+        "+actor_rollout_ref.rollout.engine_kwargs.vllm.max_model_len": (
+            config["training"]["max_prompt_length"] + config["training"]["max_response_length"]
+        ),
+        "+actor_rollout_ref.rollout.engine_kwargs.vllm.max_num_seqs": 8,
         "actor_rollout_ref.actor.ppo_epochs": 1,
         "actor_rollout_ref.actor.ppo_mini_batch_size": 2,
         "actor_rollout_ref.actor.shuffle": False,
@@ -174,6 +192,8 @@ def build_cell_command(
         "actor_rollout_ref.actor.fsdp_config.optimizer_offload": r["actor_optimizer_offload"],
         "critic.ppo_epochs": 1, "critic.ppo_mini_batch_size": 2,
         "critic.shuffle": False, "critic.optim.lr": t["critic_learning_rate"],
+        "actor_rollout_ref.actor.optim.override_optimizer_config": optimizer_override,
+        "critic.optim.override_optimizer_config": optimizer_override,
         "critic.model.fsdp_config.param_offload": r["critic_param_offload"],
         "critic.model.fsdp_config.optimizer_offload": r["critic_optimizer_offload"],
         "actor_rollout_ref.actor.checkpoint.async_save": False,
@@ -182,7 +202,7 @@ def build_cell_command(
         "trainer.val_only": stage == "zero-shot",
         # Upstream also evaluates on the last step: no intermediate dev access.
         "trainer.test_freq": steps,
-        "trainer.save_freq": t["save_freq"],
+        "trainer.save_freq": config["training"]["save_freq"],
         "trainer.default_local_dir": str(cell_dir / "checkpoints"),
         "trainer.max_actor_ckpt_to_keep": t["max_checkpoints"],
         "trainer.max_critic_ckpt_to_keep": t["max_checkpoints"],
@@ -257,8 +277,9 @@ def validate_cell_evidence(
     identities: set[str] = set()
     counts: Counter[str] = Counter()
     expected_grid = {
-        (index // 2 + 1, index, sibling, False): episode_id
-        for index, episode_id in enumerate(train_episode_ids)
+        (step, index, sibling, False): train_episode_ids[index]
+        for step in range(1, expected_rounds + 1)
+        for index in (((step - 1) * 2 + offset) % len(train_episode_ids) for offset in (0, 1))
         for sibling in range(4)
     } if stage != "zero-shot" else {}
     eval_step = 0 if stage == "zero-shot" else expected_rounds

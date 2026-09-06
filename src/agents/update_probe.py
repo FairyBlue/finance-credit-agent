@@ -101,6 +101,10 @@ def install_from_environment() -> None:
 
         @wraps(original)
         def probed_step(instance: Any, *args: Any, **kwargs: Any) -> Any:
+            host_before = (
+                dict(torch.cuda.memory.host_memory_stats())
+                if os.environ.get("FINANCE_SCREENING_ARM") else None
+            )
             selected = sample_parameter(getattr(instance, module_attribute))
             result = original(instance, *args, **kwargs)
             state["optimizer_step_count"] += 1
@@ -113,6 +117,11 @@ def install_from_environment() -> None:
                 "detected": False,
                 "peak_gpu_memory_bytes": int(torch.cuda.max_memory_allocated()),
             }
+            if host_before is not None:
+                record["host_pinned_memory_before_optimizer_step"] = host_before
+                record["host_pinned_memory_after_optimizer_step"] = dict(
+                    torch.cuda.memory.host_memory_stats()
+                )
             try:
                 record["grad_norm"] = float(result.detach().float().cpu().item())
             except (AttributeError, RuntimeError, TypeError, ValueError):

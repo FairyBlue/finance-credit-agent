@@ -755,3 +755,10 @@ gate 的 multiplicity 必须单独授权。若 M2 与 M3 都运行，则为七�
   终止服务；服务异常保留结果并停止，不默认无限重采。策略截断与基础设施恢复分开处理。
 - 此授权不启动第 19 节的 formal 五配置实验，也不解除其余 formal gate。旧 smoke 仅保留历史
   wiring 结论；新实验的代码、scorer/manifest/config/model 身份与完成证据另行记录。
+
+执行 R1 记录：[生成限制与预算修订](docs/2026-09-06_M2_SCREENING_EXECUTION_AMENDMENT_R1.md)。
+原 1.7B A2 wiring 的 post-update Train greedy 输出触及 2048-token cap，维持 INCOMPLETE。
+依计划 §5.2，在任何主 screening/dev 前统一改用 response=4096、context=8192，并重做必要验证。
+所有臂和 zero-shot 同边界；不改变 scorer、episode/seed 网格或失败处理规则。该执行调整由 agent
+在已授权范围内记录，不表示新增人工签署。完整更新的 checkpoint 在最终 evaluator 前保存，便于
+保留评测失败时的模型证据；保存仍须含 actor/critic/optimizer/scheduler/data/RNG 完成标记。

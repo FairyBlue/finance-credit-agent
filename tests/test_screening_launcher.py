@@ -53,12 +53,20 @@ def test_screening_commands_have_shared_exact_contract(tmp_path: Path, arm: str,
     options = dict(argument.lstrip("+").split("=", 1) for argument in command[3:])
     assert options["actor_rollout_ref.rollout.n"] == "4"
     assert options["actor_rollout_ref.rollout.agent.num_workers"] == "1"
-    assert options["actor_rollout_ref.rollout.max_model_len"] == "6144"
+    assert options["actor_rollout_ref.rollout.max_model_len"] == "8192"
+    assert options["actor_rollout_ref.rollout.engine_kwargs.vllm.max_model_len"] == "8192"
+    assert options["actor_rollout_ref.rollout.engine_kwargs.vllm.max_num_seqs"] == "8"
     assert options["algorithm.gamma"] == options["algorithm.lam"] == "1.0"
     assert options["critic.ppo_mini_batch_size"] == "2"
     assert options["actor_rollout_ref.actor.ppo_mini_batch_size"] == "2"
     assert options["actor_rollout_ref.actor.policy_loss.loss_mode"] == "gspo"
-    assert options["trainer.test_freq"] == ("1" if stage in {"wiring", "pilot"} else "16")
+    assert options["trainer.test_freq"] == (
+        "1" if stage == "wiring" else "2" if stage == "pilot" else "16"
+    )
+    assert options["trainer.total_epochs"] == ("2" if stage == "pilot" else "1")
+    assert options["trainer.save_freq"] == ("1" if stage == "pilot" else "4")
+    for role in ("actor_rollout_ref.actor", "critic"):
+        assert options[f"{role}.optim.override_optimizer_config"] == "{foreach:false,fused:false}"
     assert options["trainer.val_before_train"] == ("True" if stage == "zero-shot" else "False")
     assert options["trainer.val_only"] == ("True" if stage == "zero-shot" else "False")
     assert options["data.shuffle"] == "False"
@@ -107,6 +115,10 @@ def test_real_hydra_compose_produces_ray_compatible_string_environment(tmp_path:
     config_directory = REPO_ROOT / "third_party/agent-r1/agent_r1/config"
     with initialize_config_dir(config_dir=str(config_directory), version_base=None):
         resolved = compose(config_name="agent_ppo_trainer", overrides=command[3:])
+    for optimizer in (resolved.actor_rollout_ref.actor.optim, resolved.critic.optim):
+        assert OmegaConf.to_container(optimizer.override_optimizer_config) == {
+            "foreach": False, "fused": False,
+        }
     env_vars = OmegaConf.to_container(
         resolved.ray_kwargs.ray_init.runtime_env.env_vars,
         resolve=True,

@@ -1,4 +1,6 @@
 version: 2
+execution_revision: 1
+execution_amendment: docs/2026-09-06_M2_SCREENING_EXECUTION_AMENDMENT_R1.md
 stage: m2_screening
 authorization:
   date: '2026-09-06'
@@ -16,6 +18,11 @@ models:
   screening:
     name: Qwen/Qwen3-4B
     revision: 1cfa9a7208912126459214e8b04321603b3df60c
+engineering_pilot:
+  train_episodes: 2
+  total_epochs: 2
+  total_training_steps: 2
+  save_freq: 1
 training:
   episodes: 32
   train_batch_size: 2
@@ -24,7 +31,7 @@ training:
   learning_rate: 1.0e-6
   critic_learning_rate: 1.0e-5
   max_prompt_length: 4096
-  max_response_length: 2048
+  max_response_length: 4096
   max_agent_steps: 256
   temperature: 1.0
   top_p: 1.0
@@ -47,6 +54,7 @@ resources:
   agent_workers: 1
   ray_num_cpus: 8
   ray_object_store_memory: 1073741824
+  optimizer_overrides: {foreach: false, fused: false}
 evaluation:
   rollout_n: 1
   do_sample: false

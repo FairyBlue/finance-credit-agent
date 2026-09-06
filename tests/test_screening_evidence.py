@@ -47,8 +47,8 @@ def _case(tmp_path, monkeypatch, *, stage="screening", arm="M2", seed=42) -> Evi
     from agent_r1.agent_flow.agent_flow import get_trajectory_info
 
     small = stage in {"wiring", "pilot"}
-    rounds = 1 if small else 16
-    train_ids = [f"formal-train-{1 + 4 * i:04d}" for i in range(rounds * 2)]
+    rounds = {"wiring": 1, "pilot": 2}.get(stage, 16)
+    train_ids = [f"formal-train-{1 + 4 * i:04d}" for i in range(2 if small else rounds * 2)]
     eval_ids = train_ids[:2] if small else [f"formal-train-{210 + 21 * i:04d}" for i in range(12)]
     options = {
         "stage": stage,
@@ -85,7 +85,7 @@ def _case(tmp_path, monkeypatch, *, stage="screening", arm="M2", seed=42) -> Evi
 
     if stage != "zero-shot":
         for step in range(1, rounds + 1):
-            first_index = (step - 1) * 2
+            first_index = ((step - 1) * 2) % len(train_ids)
             indices = [first_index] * 4 + [first_index + 1] * 4
             # Exercise the actual upstream meaning of rollout_n (sibling ID).
             identities = asyncio.run(get_trajectory_info(step, indices, False))
@@ -191,7 +191,9 @@ def test_accepts_only_complete_registered_stage_grid(tmp_path, monkeypatch, stag
     ]
     if first_group:
         assert {row["identity"]["rollout_n"] for row in first_group} == {0, 1, 2, 3}
-        assert {row["identity"]["step"] for row in first_group} == {1}
+        assert {row["identity"]["step"] for row in first_group} == (
+            {1, 2} if stage == "pilot" else {1}
+        )
     assert {row["identity"]["step"] for row in case.records if row["identity"]["validate"]} == {
         0 if stage == "zero-shot" else rounds
     }
@@ -227,6 +229,45 @@ def test_final_evaluation_must_be_after_update_16(tmp_path, monkeypatch, replace
             row["identity"]["step"] = replacement
     with pytest.raises(RuntimeError, match="frozen episode/checkpoint grid"):
         case.validate()
+
+
+def test_pilot_two_updates_repeat_only_the_first_two_training_episodes(tmp_path, monkeypatch):
+    case = _case(tmp_path, monkeypatch, stage="pilot")
+    result = case.validate()
+    assert result["trajectories"] == {"train": 16, "eval": 2}
+    expected_episodes = {"formal-train-0001", "formal-train-0005"}
+    assert set(case.options["train_episode_ids"]) == expected_episodes
+    for step in (1, 2):
+        training = [
+            row
+            for row in case.records
+            if not row["identity"]["validate"] and row["identity"]["step"] == step
+        ]
+        assert len(training) == 8
+        assert {row["episode_id"] for row in training} == expected_episodes
+        assert {row["identity"]["sample_index"] for row in training} == {0, 1}
+    assert case.updates["detected_role_counts"] == {"actor": 2, "critic": 2}
+    assert case.checkpoint_calls == [(tmp_path / "checkpoints/global_step_2", EXECUTION)]
+
+
+def test_pilot_missing_second_training_round_is_rejected(tmp_path, monkeypatch):
+    case = _case(tmp_path, monkeypatch, stage="pilot")
+    case.records = [
+        row for row in case.records if row["identity"]["validate"] or row["identity"]["step"] != 2
+    ]
+    with pytest.raises(RuntimeError, match="count mismatch|frozen episode/checkpoint grid"):
+        case.validate()
+    assert not case.checkpoint_calls
+
+
+def test_pilot_final_evaluation_at_update_one_is_rejected(tmp_path, monkeypatch):
+    case = _case(tmp_path, monkeypatch, stage="pilot")
+    for row in case.records:
+        if row["identity"]["validate"]:
+            row["identity"]["step"] = 1
+    with pytest.raises(RuntimeError, match="frozen episode/checkpoint grid"):
+        case.validate()
+    assert not case.checkpoint_calls
 
 
 def test_zero_shot_must_evaluate_step_zero(tmp_path, monkeypatch):

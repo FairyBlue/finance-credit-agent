@@ -3,6 +3,11 @@
 本轮依据用户确认的线下讨论与执行授权，见 EVAL_PROTOCOL §20。只有 history/Train 参与运行，
 正式 Valid/Final OOS 保持关闭。运行状态以对应目录的 JSON 和实际进程为准，不以本文宣称成功。
 
+当前生成边界采用 [执行修订 R1](2026-09-06_M2_SCREENING_EXECUTION_AMENDMENT_R1.md)：
+首轮 2048-token wiring 发生 post-update greedy 截断，因此共同 response cap 改为 4096、
+入口 context cap 8192，重做必要验证。4B 工程 pilot 使用相同两个 Train episodes 做两轮更新，
+检验两套 Adam 状态均已存在时的内存峰值。原失败保留，尚不能据此宣称 screening 跑通。
+
 ## 输入和实现
 
 - 计划：`docs/2026-09-05_M2_EXPERIMENT_PLAN_V2.md`；实际共享设置：`configs/m2_screening.yaml`。

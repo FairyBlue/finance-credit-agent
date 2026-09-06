@@ -29,6 +29,12 @@ def trainer(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
         omitted: str | None
         fail_save: bool
         use_critic: bool
+        total_training_steps: int
+        actor_rollout_wg: object
+        critic_wg: object
+        validate_calls: int
+        fail_validate: bool
+        marker_seen_by_validation: dict[str, Any] | None
 
         def _save_checkpoint(self):
             self.save_calls += 1
@@ -50,6 +56,20 @@ def trainer(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
         def _load_checkpoint(self):
             self.load_calls += 1
             return "loaded"
+
+        def _validate(self):
+            self.validate_calls += 1
+            if self.global_steps > 0 and self.global_steps == self.total_training_steps:
+                directory = (
+                    Path(self.config.trainer.default_local_dir) / f"global_step_{self.global_steps}"
+                )
+                if (directory / COMPLETION_MARKER).exists():
+                    self.marker_seen_by_validation = validate_checkpoint(
+                        directory, identity_sha256="a" * 64
+                    )
+            if self.fail_validate:
+                raise RuntimeError("strict final evaluation failed")
+            return {"validation": "complete"}
 
     class ScreeningTrainer(BaseTrainer):
         pass
@@ -80,6 +100,12 @@ def trainer(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     instance.load_calls = 0
     instance.omitted = None
     instance.fail_save = False
+    instance.total_training_steps = 4
+    instance.actor_rollout_wg = object()
+    instance.critic_wg = object()
+    instance.validate_calls = 0
+    instance.fail_validate = False
+    instance.marker_seen_by_validation = None
     original = BaseTrainer._save_checkpoint
     assert install_checkpoint_hooks(ScreeningTrainer)
     assert BaseTrainer._save_checkpoint is original
@@ -199,3 +225,86 @@ def test_missing_run_identity_never_writes_a_checkpoint(trainer, monkeypatch):
     with pytest.raises(RuntimeError, match=SCREENING_IDENTITY_ENV):
         trainer._save_checkpoint()
     assert trainer.save_calls == 0
+
+
+def test_final_validation_sees_complete_actor_critic_and_data_checkpoint(trainer):
+    assert trainer._validate() == {"validation": "complete"}
+    assert trainer.save_calls == trainer.validate_calls == 1
+    assert trainer.marker_seen_by_validation == validate_checkpoint(
+        _directory(trainer), identity_sha256="a" * 64
+    )
+    assert len(trainer.marker_seen_by_validation["files"]) == 7
+
+
+def test_failed_final_validation_preserves_updated_checkpoint(trainer):
+    trainer.fail_validate = True
+    with pytest.raises(RuntimeError, match="strict final evaluation failed"):
+        trainer._validate()
+    assert trainer.save_calls == trainer.validate_calls == 1
+    assert validate_checkpoint(_directory(trainer), identity_sha256="a" * 64)
+
+
+def test_upstream_save_after_final_validation_is_idempotent(trainer):
+    trainer._validate()
+    directory = _directory(trainer)
+    before = {
+        p: (p.stat().st_mtime_ns, p.read_bytes()) for p in directory.rglob("*") if p.is_file()
+    }
+    trainer.fail_save = True  # A second expensive upstream save must not execute.
+    assert trainer._save_checkpoint() == "saved"
+    assert trainer._save_checkpoint() == "saved"
+    assert trainer.save_calls == 1
+    assert before == {
+        p: (p.stat().st_mtime_ns, p.read_bytes()) for p in directory.rglob("*") if p.is_file()
+    }
+
+
+@pytest.mark.parametrize("step", [0, 2, 5])
+def test_zero_shot_intermediate_and_over_budget_validation_do_not_save(trainer, step):
+    trainer.global_steps = step
+    assert trainer._validate() == {"validation": "complete"}
+    assert trainer.save_calls == 0 and trainer.validate_calls == 1
+    assert not _directory(trainer).exists()
+
+
+def test_validation_only_mode_does_not_save_even_at_positive_final_step(trainer):
+    trainer.config.trainer.val_only = True
+    trainer._validate()
+    assert trainer.save_calls == 0
+
+
+@pytest.mark.parametrize("damage", ["marker", "data.pt", "critic/optim_world_size_1_rank_0.pt"])
+def test_final_checkpoint_damage_cannot_be_hidden_by_idempotence(trainer, damage):
+    trainer._validate()
+    target = COMPLETION_MARKER if damage == "marker" else damage
+    (_directory(trainer) / target).unlink()
+    with pytest.raises(RuntimeError, match="missing"):
+        trainer._save_checkpoint()
+    assert trainer.save_calls == 1  # Fail closed; do not overwrite the damaged evidence.
+
+
+def test_incomplete_save_blocks_final_evaluation(trainer):
+    trainer.omitted = "data.pt"
+    with pytest.raises(RuntimeError, match="incomplete screening checkpoint"):
+        trainer._validate()
+    assert trainer.save_calls == 1 and trainer.validate_calls == 0
+
+
+def test_resume_clears_final_save_idempotence_even_at_same_step(trainer):
+    trainer._validate()
+    assert _resume(trainer) == "loaded"
+    assert trainer._save_checkpoint() == "saved"
+    assert trainer.save_calls == 2
+
+
+@pytest.mark.parametrize("changed", ["step", "identity", "worker"])
+def test_final_save_idempotence_requires_same_live_state_identity(trainer, monkeypatch, changed):
+    trainer._validate()
+    if changed == "step":
+        trainer.global_steps += 1
+    elif changed == "identity":
+        monkeypatch.setenv(SCREENING_IDENTITY_ENV, "b" * 64)
+    else:
+        trainer.actor_rollout_wg = object()
+    assert trainer._save_checkpoint() == "saved"
+    assert trainer.save_calls == 2
