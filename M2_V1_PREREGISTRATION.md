@@ -1,5 +1,8 @@
 # M2 v1 MVP Specification（精简讨论稿）
 
+> 新版实验安排讨论稿见 [M2 实验计划 v2（2026-09-05）](docs/2026-09-05_M2_EXPERIMENT_PLAN_V2.md)。
+> 新稿含 scorer 候选、same-gate plain 对照与新的抽样/判读提案，尚未冻结；本文保留原 v1 定义供对照。
+
 > **状态：算法筛选规格，不是最终 preregistration。**
 >
 > 本文件刻意替换此前的论文级详细草案。当前目标只有一个：尽快判断 M2 是否比 A3-M1 和 A2
