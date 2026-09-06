@@ -734,3 +734,24 @@ gate 的 multiplicity 必须单独授权。若 M2 与 M3 都运行，则为七�
 上述任一门禁未完成时，不得启动 formal A1/A2/A3-M0/A3-M1/A3-M2 training；条件性 M3/M3-sham
 同样不得启动。已有 A1 G1 `n=2` smoke 与 A3-M1 `n=1` smoke 只保留为历史 wiring evidence，均不
 满足 formal `n=4` contract，也不解除 v1.3 门禁；Final OOS 继续关闭。
+
+## 20. v1.4 M2 screening 执行修订（2026-09-06，用户确认线下讨论并授权）
+
+用户确认两位合作者已线下讨论 [M2 实验计划 v2](docs/2026-09-05_M2_EXPERIMENT_PLAN_V2.md)，
+认为方案可行，并明确要求实现、尝试跑通及保证 H100 进程不受 SSH 网络中断影响。以下记录该授权，
+自动 agent 不作为人工 reviewer 或签字人。
+
+- 采用计划的推荐 D1–D5：独立的 `benchmark_scale_v2` scorer、same-gate plain 四臂、32/12
+  Train 内窗口、两 seeds、greedy 最终评测与以 `M2−M1` 为主要研发判断的规则。
+- 新 floor/λ 仅由指定 32 个 screen-train episodes 的 44 条/窗 CPU 代理标定；新版本独立存储，
+  不修改 `configs/reward_calibration.pending.yaml` 的旧已签 payload。全部四臂统一使用新 evaluator。
+- 本阶段独立入口及 artifact bindings 必须限制为 history/Train。新原始数据核验也限定到 Train，
+  不以完整历史快照核验为由读取正式 Valid；Final OOS 不读取、不用于探针或调参。
+- 按顺序完成 CPU 契约测试、四臂 1.7B `n=4` wiring、4B M1/M2 pilot，再尝试八个主训练 cells。
+  生成限制、资源布局、模型 revision 与实测调整写入配置和运行记录，pilot 不作方法效果判据。
+- 主 matrix 每 cell 为 32×4 trajectories、16 critic→actor rounds；仅最终 checkpoint 评测 dev。
+  截断和异常不能补零或剔除后改判成功；不可把 wiring/pilot 或不完整网格称为 screening 通过。
+- H100 使用独立的 systemd user service、linger、文件日志及完整 update checkpoint。网络断开不
+  终止服务；服务异常保留结果并停止，不默认无限重采。策略截断与基础设施恢复分开处理。
+- 此授权不启动第 19 节的 formal 五配置实验，也不解除其余 formal gate。旧 smoke 仅保留历史
+  wiring 结论；新实验的代码、scorer/manifest/config/model 身份与完成证据另行记录。

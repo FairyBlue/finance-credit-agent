@@ -14,6 +14,13 @@ def _install_runtime_hooks() -> None:
         install_update_probe()
         install_vllm_compat()
         install_rollout_seed()
+        # Keep the legacy startup path free of screening imports and changes.
+        import os
+
+        if os.environ.get("FINANCE_SCREENING_ARM"):
+            from src.agents.screening_runtime import install_from_environment as install_screening
+
+            install_screening()
     except Exception as exc:
         # CPython deliberately swallows ordinary ``sitecustomize`` exceptions.
         # SystemExit is outside that handler and keeps required G1 hooks fail-closed.

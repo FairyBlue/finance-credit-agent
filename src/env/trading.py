@@ -189,6 +189,10 @@ class TradingEnv(ToolEnv):
         risk_lambda: float | None = None,
         turnover_limit: float | None = None,
         position_limit: float | None = None,
+        screening: bool = False,
+        finance_scorer_id: str | None = None,
+        finance_volatility_floor: float | None = None,
+        screening_calibration_sha256: str | None = None,
         adapter: StockBenchAdapter | None = None,
         manifest_root: str | Path | None = None,
         storage_root: str | Path | None = None,
@@ -206,6 +210,38 @@ class TradingEnv(ToolEnv):
     ) -> None:
         super().__init__(tools=list(self.TOOL_NAMES), tool_format=tool_format)
         self._dates = tuple(_parse_datetime(value) for value in episode_dates)
+        if not isinstance(screening, bool):
+            raise ValueError("screening must be a boolean")
+        self._screening = screening
+        self._finance_scorer_id = finance_scorer_id
+        self._screening_calibration_sha256 = screening_calibration_sha256
+        self._finance_volatility_floor = finance_volatility_floor
+        if screening:
+            if finance_scorer_id != "benchmark_scale_v2":
+                raise ValueError("screening requires finance_scorer_id=benchmark_scale_v2")
+            if (
+                finance_volatility_floor is None
+                or not math.isfinite(finance_volatility_floor)
+                or finance_volatility_floor <= 0
+            ):
+                raise ValueError("screening finance_volatility_floor must be finite and positive")
+            if (
+                not isinstance(screening_calibration_sha256, str)
+                or len(screening_calibration_sha256) != 64
+                or any(char not in "0123456789abcdef" for char in screening_calibration_sha256)
+            ):
+                raise ValueError("screening requires its calibration SHA-256")
+            if not self._dates or any(
+                not date(2023, 1, 3) <= timestamp.date() <= date(2024, 10, 31)
+                for timestamp in self._dates
+            ):
+                raise ValueError("screening episode dates must remain inside historical Train")
+            if adapter is None and (
+                str(data_start) != "2023-01-03" or str(data_end) != "2024-10-31"
+            ):
+                raise ValueError("screening storage ingestion must use the Train-only snapshot")
+            if reward_mode not in {"outcome_only", "finance_trajectory"}:
+                raise ValueError("screening forbids historical dense rewards")
         if len(self._dates) < 2:
             raise ValueError("an episode needs at least two strictly ordered market dates")
         if any(
@@ -297,11 +333,19 @@ class TradingEnv(ToolEnv):
             )
         self._reward_mode = reward_mode
         finance_values = (finance_epsilon, risk_lambda, turnover_limit, position_limit)
-        if reward_mode == "finance_trajectory" and any(value is None for value in finance_values):
+        if (
+            not screening
+            and reward_mode == "finance_trajectory"
+            and any(value is None for value in finance_values)
+        ):
             raise ValueError(
                 "finance_trajectory requires finance_epsilon, risk_lambda, turnover_limit, "
                 "and position_limit"
             )
+        if screening and any(
+            value is None for value in (risk_lambda, turnover_limit, position_limit)
+        ):
+            raise ValueError("screening requires risk_lambda, turnover_limit and position_limit")
         self._finance_epsilon = None if finance_epsilon is None else float(finance_epsilon)
         self._risk_lambda = None if risk_lambda is None else float(risk_lambda)
         self._turnover_limit = None if turnover_limit is None else float(turnover_limit)
@@ -361,6 +405,85 @@ class TradingEnv(ToolEnv):
     @property
     def reward_mode(self) -> str:
         return self._reward_mode
+
+    @property
+    def screening(self) -> bool:
+        return self._screening
+
+    @property
+    def episode_session_count(self) -> int:
+        return len(self._dates)
+
+    @property
+    def current_session_index(self) -> int:
+        return self._index
+
+    def screening_terminal_metrics(self) -> dict[str, Any]:
+        """Common scorer and ledger outcomes; never a model-visible observation."""
+        if not self._screening or not self._done or self._index != len(self._dates) - 1:
+            raise RuntimeError("screening metrics require a complete screening trajectory")
+        from src.rewards.screening import score_benchmark_scaled
+
+        assert self._risk_lambda is not None
+        assert self._turnover_limit is not None
+        assert self._position_limit is not None
+        assert self._finance_volatility_floor is not None
+        episode_return = self._equity_curve[-1] / self._initial_cash - 1.0
+        benchmark_return = self._benchmark_closes[-1] / self._benchmark_closes[0] - 1.0
+        benchmark_returns = [
+            following / current - 1.0
+            for current, following in zip(
+                self._benchmark_closes[:-1], self._benchmark_closes[1:], strict=True
+            )
+        ]
+        peak = self._equity_curve[0]
+        maximum_drawdown = 0.0
+        for equity in self._equity_curve:
+            peak = max(peak, equity)
+            maximum_drawdown = max(maximum_drawdown, (peak - equity) / peak)
+        maximum_turnover = max(self._turnovers, default=0.0)
+        risk = RiskComponents(
+            max_drawdown=maximum_drawdown,
+            turnover_excess=max(0.0, maximum_turnover - self._turnover_limit),
+            position_excess=max(0.0, self._maximum_position_weight - self._position_limit),
+        )
+        benchmark_volatility = float(np.std(benchmark_returns, ddof=0))
+        result = score_benchmark_scaled(
+            episode_return=episode_return,
+            benchmark_return=benchmark_return,
+            benchmark_volatility=benchmark_volatility,
+            volatility_floor=self._finance_volatility_floor,
+            risk_lambda=self._risk_lambda,
+            risk=risk,
+        )
+        metrics: dict[str, Any] = {
+            "scorer_id": self._finance_scorer_id,
+            "calibration_sha256": self._screening_calibration_sha256,
+            "terminal_score": result.advantage,
+            "raw_net_return": episode_return,
+            "benchmark_return": benchmark_return,
+            "benchmark_excess": episode_return - benchmark_return,
+            "agent_volatility": float(np.std(self._net_returns, ddof=0)),
+            "benchmark_volatility": benchmark_volatility,
+            "score_denominator": max(benchmark_volatility, self._finance_volatility_floor),
+            "max_drawdown": maximum_drawdown,
+            "turnover": math.fsum(self._turnovers),
+            "max_daily_turnover": maximum_turnover,
+            "maximum_position_weight": self._maximum_position_weight,
+            "risk_penalty": max(risk.max_drawdown, risk.turnover_excess, risk.position_excess),
+            "transaction_cost": math.fsum(fill.total_cost for fill in self.ledger.fills),
+            "commission": math.fsum(fill.commission for fill in self.ledger.fills),
+            "slippage_cost": math.fsum(fill.slippage_cost for fill in self.ledger.fills),
+            "invalid_count": self._invalid_calls,
+            "step_count": len(self._credit_step_trace),
+            "session_count": len(self._dates),
+        }
+        if any(
+            isinstance(value, (int, float)) and not math.isfinite(value)
+            for value in metrics.values()
+        ):
+            raise RuntimeError("non-finite screening terminal metrics")
+        return metrics
 
     def reset(self, **kwargs: Any) -> Observation:
         self.ledger = PortfolioLedger(
@@ -674,6 +797,8 @@ class TradingEnv(ToolEnv):
         episode_return = self._equity_curve[-1] / self._initial_cash - 1.0
         if self._reward_mode == "outcome_only":
             return episode_return
+        if self._screening:
+            return float(self.screening_terminal_metrics()["terminal_score"])
 
         assert self._finance_epsilon is not None
         assert self._risk_lambda is not None
@@ -781,7 +906,11 @@ class TradingEnv(ToolEnv):
             "sessions_remaining": len(self._dates) - self._index - 1,
         }
         if extra:
-            state.update(extra)
+            state.update(
+                {key: value for key, value in extra.items() if key != "last_reward"}
+                if self._screening
+                else extra
+            )
         return json.dumps(
             state,
             allow_nan=False,

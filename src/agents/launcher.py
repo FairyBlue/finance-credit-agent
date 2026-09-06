@@ -849,9 +849,14 @@ def build_upstream_command(
     hashes: RunHashes,
     *,
     update_probe_dir: str | Path | None = None,
+    flow_config_path: str | Path | None = None,
 ) -> list[str]:
     arm_id = str(_required(config, "arm", "id"))
-    flow_config = resolve_agent_flow_config(config)
+    flow_config = (
+        resolve_agent_flow_config(config)
+        if flow_config_path is None
+        else Path(flow_config_path).resolve()
+    )
     training = _required(config, "training")
     data = _required(config, "data")
     processed = _required(data, "processed")

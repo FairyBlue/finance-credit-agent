@@ -1,5 +1,10 @@
 # M2 实验计划 v2（2026-09-05，讨论稿）
 
+> **2026-09-06 执行授权更新：** 用户确认两位合作者已线下讨论并认为本计划可行，授权按推荐方案
+> 实现、验证并尝试 H100 screening，且要求服务不受 SSH 网络中断影响。具体执行值与代码证据见
+> [screening 配置](../configs/m2_screening.yaml) 和 [运行手册](2026-09-06_M2_SCREENING_RUNBOOK.md)。
+> 下文 DRAFT 描述保留讨论稿历史；本次授权只覆盖 screening，未开放 formal 或 Final OOS。
+
 > **状态：DRAFT / NOT FROZEN。** 本文给出下一轮 M2 screening 的推荐讨论基线，供两位合作者修改。
 > 表中的推荐值是提案，尚未执行、标定或获批；本文不改变已经签署的 reward payload，不启动训练。
 > 涉及 scorer、训练契约或正式协议的变更，在实施前按 [EVAL_PROTOCOL §14、§19](../EVAL_PROTOCOL.md)
