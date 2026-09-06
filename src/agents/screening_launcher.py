@@ -193,7 +193,9 @@ def build_cell_command(
     }
     env_flags = {
         "FINANCE_SCREENING_ARM": arm,
-        "FINANCE_SCREENING_RUN_SEED": str(config["run"]["seed"]),
+        # Hydra otherwise coerces numeric-looking strings into ints; Ray's
+        # runtime_env requires every environment value to remain a string.
+        "FINANCE_SCREENING_RUN_SEED": json.dumps(str(config["run"]["seed"])),
         "FINANCE_SCREENING_DIAGNOSTICS_DIR": str(cell_dir / "artifacts/sibling_diagnostics"),
         "FINANCE_SCREENING_EVIDENCE_DIR": str(cell_dir / "artifacts/screening_evidence"),
         "FINANCE_SCREENING_IDENTITY_SHA256": sha256(json.dumps({
