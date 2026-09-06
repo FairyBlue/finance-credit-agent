@@ -370,11 +370,20 @@ def launch_cell(
             require_clean_repo=not dry_run,
         )
         if not dry_run:
+            # This pre-existing, ignored M1 smoke manifest is not an executable
+            # overlay or an input to screening. Preserve it and record its bytes.
+            legacy_manifest = REPO_ROOT / "configs/episode_manifest.smoke.reviewed.yaml"
+            summary["unused_legacy_artifacts"] = [{
+                "path": str(legacy_manifest.relative_to(REPO_ROOT)),
+                "sha256": sha256(legacy_manifest.read_bytes()).hexdigest(),
+                "used_by_screening": False,
+            }] if legacy_manifest.is_file() else []
             summary["identity"] = verify_validation_identity(
                 repo_root=REPO_ROOT, agent_r1_path=agent_path,
                 expected_repo_commit=expected_commit,
                 expected_agent_r1_commit=config["framework"]["agent_r1_commit"],
                 required_tracked_paths=(settings_path,),
+                allowed_untracked_paths=(legacy_manifest,),
             )
         atomic_json(cell_dir / "resolved_config.json", config)
         atomic_json(cell_dir / "settings.json", settings)
