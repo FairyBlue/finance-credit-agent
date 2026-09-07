@@ -85,6 +85,28 @@ def _get(config: Any, key: str, default: Any = None) -> Any:
     return config.get(key, default) if hasattr(config, "get") else getattr(config, key, default)
 
 
+def admit_host_transfer(cgroup_root: Path, size: int, reserve: int) -> None:
+    """Check actual charged memory against the hard cgroup capacity, without cache credit.
+
+    memory.high is a reclaim/throttling threshold and remains in phase telemetry.
+    It is not a second hard allocation ceiling. Keep a reserve below memory.max.
+    """
+    if size < 0 or reserve < 0:
+        raise ExchangeError("transfer size and reserve must be nonnegative")
+    current = int((cgroup_root / "memory.current").read_text())
+    maximum = (cgroup_root / "memory.max").read_text().strip()
+    if maximum == "max":
+        raise ExchangeError("a finite cgroup hard memory limit is required")
+    limit = int(maximum)
+    if current < 0 or limit <= 0:
+        raise ExchangeError("invalid cgroup memory accounting")
+    if limit - current < size + reserve:
+        raise MemoryError(
+            "CPU destination cannot admit next moment plus host reserve: "
+            f"current={current}, hard_limit={limit}, transfer={size}, reserve={reserve}"
+        )
+
+
 class Evidence:
     def __init__(self, directory: Path, identity: str):
         self.directory, self.identity = directory, identity
@@ -160,15 +182,7 @@ class TorchBackend:
         # allocator cache before comparing driver free bytes to the next copy.
         self.synchronize()
         if destination == "cpu":
-            root = Path("/sys/fs/cgroup")
-            current = int((root / "memory.current").read_text())
-            limits = [
-                int(value)
-                for name in ("memory.high", "memory.max")
-                if (value := (root / name).read_text().strip()) != "max"
-            ]
-            if not limits or min(limits) - current < size + self.host_reserve_bytes:
-                raise MemoryError("CPU destination cannot admit next moment plus host reserve")
+            admit_host_transfer(Path("/sys/fs/cgroup"), size, self.host_reserve_bytes)
         else:
             free, _ = self.torch.cuda.mem_get_info(self.gpu_device)
             if free < size + self.gpu_reserve_bytes:
@@ -297,7 +311,13 @@ class TorchBackend:
             gpu_allocated_bytes=self.torch.cuda.memory_allocated(self.gpu_device),
             gpu_reserved_bytes=self.torch.cuda.memory_reserved(self.gpu_device),
         )
-        for filename in ("memory.current", "memory.events", "memory.stat"):
+        for filename in (
+            "memory.current",
+            "memory.high",
+            "memory.max",
+            "memory.events",
+            "memory.stat",
+        ):
             row[filename] = (Path("/sys/fs/cgroup") / filename).read_text().strip()
         return row
 

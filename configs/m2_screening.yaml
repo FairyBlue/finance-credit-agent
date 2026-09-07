@@ -1,6 +1,6 @@
 version: 2
-execution_revision: 3
-execution_amendment: docs/2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R3.md
+execution_revision: 4
+execution_amendment: docs/2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R4.md
 stage: m2_screening
 authorization:
   date: '2026-09-06'

@@ -49,3 +49,14 @@ R3先通过以下组件验证，再进入实际4B容量验证：
 GPU证据、源文件SHA和隔离日志在 `runs/reference_candidate/`、`runs/optimizer_candidate/`。
 reference原型与生产模块仅docstrings不同，已校验其余AST相同。组件验证未使用交易数据或真实
 4B权重，未覆盖完整Ray/vLLM、checkpoint容量和主筛选效果；这些仍由新的两轮Train-only pilot验收。
+
+## 13:32 UTC：R3首批进展与R4容量检查修正
+
+R3/v6实际4B首批8条完整，reference30.29秒及critic一次参数更新均成功；actor更新前，
+按soft limit预留2 GiB的CPU准入规则拒绝最后几块Adam状态。整轮FAILED，无actor更新、checkpoint
+或评估；没有OOM、memory.high增量或GPU监控错误。失败状态及全部证据保留。
+
+[R4](2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R4.md)仅将CPU容量检查改为实际charged bytes
+对64 GiB hard limit，继续留2 GiB、继续观察soft pressure，不提前抵扣缓存。38项CPU测试及
+137个subtests、Ruff、mypy通过；独立审阅支持受监测两轮pilot，未承诺后续阶段的容量。
+新身份从相同base重跑，不恢复半交换状态，不自动启动主筛选。最新服务和目录见本机LATEST记录。

@@ -1,6 +1,6 @@
 # M2 screening 实现与运行手册（2026-09-06）
 
-**2026-09-07：用户已授权恢复；R2 定位 reference 内存压力，现验证 R3 共同资源布局。主 screening 仍为 0/8。**
+**2026-09-07：已恢复；R3通过reference和critic更新，R4修正CPU容量检查后继续pilot。主 screening 仍为 0/8。**
 执行范围见 [恢复记录](2026-09-07_M2_SCREENING_RESUMPTION.md)；此前暂停时结果见
 [实验报告](2026-09-07_M2_SCREENING_EXPERIMENT_REPORT.md)。
 
@@ -16,6 +16,8 @@
 `artifacts/resource_phases/`命名阶段日志，并采用 [R3](2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R3.md)
 的pageable reference/Adam交换布局。R2实测监控超时后继续运行，但reference阶段持续主机内存限流，
 已记录原因并主动停止。R3须从新base初始化验证两次更新及保存；该profile尚不支持checkpoint restore。
+R3首actor更新前被按soft limit计算的reserve检查拒绝；[R4](2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R4.md)
+改按hard limit保留相同2 GiB余量，继续监测soft pressure。没有通过完整pilot前不进入主筛选。
 最新实际状态见本机 `runs/M2_SCREENING_LATEST.md`，下方示例命令不代表已启动主筛选。
 
 ## 输入和实现
