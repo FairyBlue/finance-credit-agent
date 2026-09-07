@@ -99,3 +99,17 @@ FAILED状态未改动。在 `runs/m2-screening-20260907-v8/diagnostics/PROTOCOL.
 固定请求：base及导出actor各一次greedy，同一原prompt、tokenizer、EOS规则和4096 cap，
 不改变thinking或采样。使用独立systemd服务、新的standalone V1进程；与历史训练worker和两条
 并发评测存在执行差异，故不承诺历史逐token复现，也不把单响应成功当作完整接线通过。
+
+## 14:28 UTC：固定prompt未复现，验收当前R4下的1.7B完整接线
+
+两个预定诊断请求均自然结束：base 1014 tokens，step-1 actor 636 tokens；均闭合think，
+生成一个tool call并以有效EOS结束，有效停止集合均为[151643,151645]。没有修改prompt、thinking
+或4096 cap。原4096-token循环未在本次standalone条件下复现，不能据此归因为M2更新，也不能
+宣称历史错误已消失。两进程资源参数相同，但实际KV容量和原两并发执行不同，保留该限制。
+
+下一次只运行 **一次 fresh R4 1.7B M2完整wiring**：相同两个Train windows、seed42、n4、
+8条训练、critic/actor各一次更新、完整checkpoint及同worker最终2条Train greedy。
+这是当前共同R4 reference/Adam/CUDA graph资源执行方式在1.7B上的首次完整门禁验收；
+旧1.7B失败来自R1，standalone诊断不替代这项门禁。算法、scorer、generation和样本边界不变。
+新目录新身份，不恢复旧checkpoint，不拼接样本。若相同截断再现，停止该候选并保留证据，
+不以重复同配置直到成功的方式消除失败；主screening仍待全部必要门禁。
