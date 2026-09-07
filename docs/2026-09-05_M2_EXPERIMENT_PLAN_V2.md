@@ -8,6 +8,8 @@
 > 依据 §5.2，在主 screening/dev 前将所有臂 response 上限统一改为 4096，调整共同资源设置，
 > 并将 4B 工程 pilot 增为两次更新以检验第二轮内存峰值；
 > 原运行维持 INCOMPLETE。依据、预算与复核规则见 [R1 修订](2026-09-06_M2_SCREENING_EXECUTION_AMENDMENT_R1.md)。
+> **工程修订 R2：** 4B 首轮 rollout 完整后因 GPU 遥测超时被启动器终止，已登记
+> [监控与阶段诊断修复](2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R2.md)，科学契约沿用 R1。
 
 > **状态：DRAFT / NOT FROZEN。** 本文给出下一轮 M2 screening 的推荐讨论基线，供两位合作者修改。
 > 表中的推荐值是提案，尚未执行、标定或获批；本文不改变已经签署的 reward payload，不启动训练。

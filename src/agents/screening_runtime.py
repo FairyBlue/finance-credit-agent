@@ -350,8 +350,12 @@ def patch_trainer_module(module: ModuleType, settings: ScreeningRuntimeSettings)
     ):
         raise RuntimeError("pinned Agent-R1 compute_advantage signature changed")
     from src.agents.screening_checkpoint import install_checkpoint_hooks
+    from src.agents.screening_resources import install_resource_phase_hooks
 
     install_checkpoint_hooks(module.RayAgentTrainer)
+    install_resource_phase_hooks(
+        module.RayAgentTrainer, diagnostics_dir=settings.diagnostics_dir, enabled=True
+    )
 
     @wraps(original)
     def screening_advantage(

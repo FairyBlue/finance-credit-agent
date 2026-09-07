@@ -762,3 +762,8 @@ gate 的 multiplicity 必须单独授权。若 M2 与 M3 都运行，则为七�
 所有臂和 zero-shot 同边界；不改变 scorer、episode/seed 网格或失败处理规则。该执行调整由 agent
 在已授权范围内记录，不表示新增人工签署。完整更新的 checkpoint 在最终 evaluator 前保存，便于
 保留评测失败时的模型证据；保存仍须含 actor/critic/optimizer/scheduler/data/RNG 完成标记。
+
+执行 R2 记录：[监控与资源诊断修订](docs/2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R2.md)。
+R1 的 4B 诊断 pilot 首轮 8/8 Train 完整，但 GPU 遥测超时错误地终止 trainer；无实际更新，
+不能认定 4B 容量通过。R2 修复非关键遥测的异常传播，增加命名阶段日志并显式限制 CUDA graph
+形状；科学契约沿用 R1，工程重试另目录、另计成本。主 screening/dev 仍未开放运行。

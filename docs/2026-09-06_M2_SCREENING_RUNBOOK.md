@@ -8,6 +8,11 @@
 入口 context cap 8192，重做必要验证。4B 工程 pilot 使用相同两个 Train episodes 做两轮更新，
 检验两套 Adam 状态均已存在时的内存峰值。原失败保留，尚不能据此宣称 screening 跑通。
 
+当前工程修复采用 [R2](2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R2.md)：GPU 遥测失败写入
+`gpu_error` 后继续训练；`artifacts/resource_phases/` 记录各命名阶段，用于定位主机内存限流。
+4B pilot 先前在完整首轮 rollout 后被监控超时终止，没有验证更新容量。最新实际运行入口和状态见
+本机 `runs/M2_SCREENING_LATEST.md`，不要把下方示例命令当成当前已启动的主筛选。
+
 ## 输入和实现
 
 - 计划：`docs/2026-09-05_M2_EXPERIMENT_PLAN_V2.md`；实际共享设置：`configs/m2_screening.yaml`。

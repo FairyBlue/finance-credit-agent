@@ -157,6 +157,8 @@ def build_cell_command(
         raise ValueError("screening requires the registered scalar AdamW resource settings")
     # Hydra's dictionary grammar requires unquoted keys; JSON is not valid here.
     optimizer_override = "{foreach:false,fused:false}"
+    if r["rollout_cudagraph_capture_sizes"] != [1, 2, 4, 8]:
+        raise ValueError("screening requires the registered CUDA graph capture sizes")
     steps = config["training"]["total_training_steps"]
     overrides = {
         "data.shuffle": False,
@@ -185,6 +187,9 @@ def build_cell_command(
             config["training"]["max_prompt_length"] + config["training"]["max_response_length"]
         ),
         "+actor_rollout_ref.rollout.engine_kwargs.vllm.max_num_seqs": 8,
+        "+actor_rollout_ref.rollout.engine_kwargs.vllm.compilation_config": (
+            "{cudagraph_capture_sizes:[1,2,4,8]}"
+        ),
         "actor_rollout_ref.actor.ppo_epochs": 1,
         "actor_rollout_ref.actor.ppo_mini_batch_size": 2,
         "actor_rollout_ref.actor.shuffle": False,
@@ -246,11 +251,23 @@ def capture_process(command: list[str], *, environment: dict[str, str], cell_dir
                         path = Path("/sys/fs/cgroup") / filename
                         if path.exists():
                             measurement[filename] = path.read_text().strip()
-                    gpu = subprocess.run([
-                        "nvidia-smi", "--query-gpu=memory.used,utilization.gpu",
-                        "--format=csv,noheader,nounits",
-                    ], capture_output=True, text=True, timeout=15, check=False)
-                    measurement["gpu"] = gpu.stdout.strip()
+                    try:
+                        gpu = subprocess.run([
+                            "nvidia-smi", "--query-gpu=memory.used,utilization.gpu",
+                            "--format=csv,noheader,nounits",
+                        ], capture_output=True, text=True, timeout=15, check=False)
+                    except (subprocess.TimeoutExpired, OSError) as error:
+                        measurement["gpu_error"] = {
+                            "type": type(error).__name__, "message": str(error),
+                        }
+                    else:
+                        if gpu.returncode == 0:
+                            measurement["gpu"] = gpu.stdout.strip()
+                        else:
+                            measurement["gpu_error"] = {
+                                "type": "NonzeroExit", "returncode": gpu.returncode,
+                                "message": gpu.stderr.strip() or gpu.stdout.strip(),
+                            }
                     resources.write(json.dumps(measurement, sort_keys=True) + "\n")
                     resources.flush()
                     with suppress(subprocess.TimeoutExpired):

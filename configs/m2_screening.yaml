@@ -1,6 +1,6 @@
 version: 2
-execution_revision: 1
-execution_amendment: docs/2026-09-06_M2_SCREENING_EXECUTION_AMENDMENT_R1.md
+execution_revision: 2
+execution_amendment: docs/2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R2.md
 stage: m2_screening
 authorization:
   date: '2026-09-06'
@@ -51,6 +51,7 @@ resources:
   critic_optimizer_offload: true
   reference_model_dtype: bf16
   rollout_gpu_memory_utilization: 0.28
+  rollout_cudagraph_capture_sizes: [1, 2, 4, 8]
   agent_workers: 1
   ray_num_cpus: 8
   ray_object_store_memory: 1073741824

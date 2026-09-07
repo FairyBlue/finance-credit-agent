@@ -3,8 +3,11 @@
 from __future__ import annotations
 
 import json
+import signal
+import subprocess
 from pathlib import Path
 from typing import cast
+from unittest.mock import Mock
 
 import pytest
 import yaml
@@ -12,15 +15,103 @@ from hydra import compose, initialize_config_dir
 from omegaconf import OmegaConf
 from ray.runtime_env import RuntimeEnv
 
+from src.agents import screening_launcher
 from src.agents.metadata import RunHashes
 from src.agents.screening_launcher import (
     ARMS,
     REPO_ROOT,
     build_cell_command,
     build_cell_config,
+    capture_process,
     set_overrides,
 )
 from src.evaluation.screening import paired_summary
+
+
+@pytest.mark.parametrize("trainer_exitcode", (0, 17))
+@pytest.mark.parametrize(
+    ("gpu_result", "error_type"),
+    (
+        (subprocess.TimeoutExpired("nvidia-smi", 15), "TimeoutExpired"),
+        (subprocess.CompletedProcess("nvidia-smi", 9, "", "NVML unavailable"), "NonzeroExit"),
+        (subprocess.CompletedProcess("nvidia-smi", 9, "NVML unavailable", ""), "NonzeroExit"),
+        (FileNotFoundError("nvidia-smi is missing"), "FileNotFoundError"),
+        (OSError("NVML access failed"), "OSError"),
+    ),
+)
+def test_gpu_telemetry_failure_keeps_trainer_running_and_preserves_its_exitcode(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+    gpu_result: subprocess.CompletedProcess[str] | Exception,
+    error_type: str, trainer_exitcode: int,
+):
+    """A failed sample must survive a still-running trainer and a later good sample."""
+    command = ["fake-trainer"]
+
+    class Trainer:
+        pid = 12345
+        returncode: int | None = None
+
+        def __init__(self) -> None:
+            self.wait_timeouts: list[float | None] = []
+
+        def poll(self) -> int | None:
+            return self.returncode
+
+        def wait(self, timeout: float | None = None) -> int:
+            self.wait_timeouts.append(timeout)
+            if len(self.wait_timeouts) == 1:
+                assert timeout is not None
+                raise subprocess.TimeoutExpired(command, timeout)
+            self.returncode = trainer_exitcode
+            return self.returncode
+
+    trainer = Trainer()
+    popen = Mock(return_value=trainer)
+    gpu_query = Mock(side_effect=[
+        gpu_result,
+        subprocess.CompletedProcess("nvidia-smi", 0, "24000, 97\n", ""),
+    ])
+    killpg = Mock()
+    monkeypatch.setattr(screening_launcher.subprocess, "Popen", popen)
+    monkeypatch.setattr(screening_launcher.subprocess, "run", gpu_query)
+    monkeypatch.setattr(screening_launcher.os, "killpg", killpg)
+    monkeypatch.setattr(screening_launcher, "utc_now", lambda: "fake-clock")
+
+    assert capture_process(command, environment={}, cell_dir=tmp_path) == trainer_exitcode
+    assert trainer.wait_timeouts == [10, 10]
+    assert gpu_query.call_count == 2
+    killpg.assert_not_called()
+    rows = [json.loads(line) for line in (tmp_path / "resources.jsonl").read_text().splitlines()]
+    assert len(rows) == 2
+    assert rows[0]["gpu_error"]["type"] == error_type
+    assert rows[0]["gpu_error"]["message"]
+    assert "gpu" not in rows[0]
+    if isinstance(gpu_result, subprocess.CompletedProcess):
+        assert rows[0]["gpu_error"]["returncode"] == 9
+        assert rows[0]["gpu_error"]["message"] == "NVML unavailable"
+    assert rows[1]["gpu"] == "24000, 97"
+    assert "gpu_error" not in rows[1]
+    assert all(row["pid"] == trainer.pid and row["time"] == "fake-clock" for row in rows)
+
+
+def test_unexpected_capture_error_still_stops_trainer_and_propagates(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+):
+    trainer = Mock(pid=12345)
+    trainer.poll.return_value = None
+    trainer.wait.return_value = -signal.SIGTERM
+    killpg = Mock()
+    monkeypatch.setattr(screening_launcher.subprocess, "Popen", Mock(return_value=trainer))
+    monkeypatch.setattr(
+        screening_launcher.subprocess, "run", Mock(side_effect=RuntimeError("unexpected bug")),
+    )
+    monkeypatch.setattr(screening_launcher.os, "killpg", killpg)
+    monkeypatch.setattr(screening_launcher, "utc_now", lambda: "fake-clock")
+
+    with pytest.raises(RuntimeError, match="unexpected bug"):
+        capture_process(["fake-trainer"], environment={}, cell_dir=tmp_path)
+    killpg.assert_called_once_with(trainer.pid, signal.SIGTERM)
+    trainer.wait.assert_called_once_with(timeout=30)
 
 
 @pytest.mark.parametrize("arm", ARMS)
@@ -56,6 +147,9 @@ def test_screening_commands_have_shared_exact_contract(tmp_path: Path, arm: str,
     assert options["actor_rollout_ref.rollout.max_model_len"] == "8192"
     assert options["actor_rollout_ref.rollout.engine_kwargs.vllm.max_model_len"] == "8192"
     assert options["actor_rollout_ref.rollout.engine_kwargs.vllm.max_num_seqs"] == "8"
+    assert options["actor_rollout_ref.rollout.engine_kwargs.vllm.compilation_config"] == (
+        "{cudagraph_capture_sizes:[1,2,4,8]}"
+    )
     assert options["algorithm.gamma"] == options["algorithm.lam"] == "1.0"
     assert options["critic.ppo_mini_batch_size"] == "2"
     assert options["actor_rollout_ref.actor.ppo_mini_batch_size"] == "2"
@@ -119,6 +213,9 @@ def test_real_hydra_compose_produces_ray_compatible_string_environment(tmp_path:
         assert OmegaConf.to_container(optimizer.override_optimizer_config) == {
             "foreach": False, "fused": False,
         }
+    assert OmegaConf.to_container(
+        resolved.actor_rollout_ref.rollout.engine_kwargs.vllm.compilation_config
+    ) == {"cudagraph_capture_sizes": [1, 2, 4, 8]}
     env_vars = OmegaConf.to_container(
         resolved.ray_kwargs.ray_init.runtime_env.env_vars,
         resolve=True,
