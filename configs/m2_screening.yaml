@@ -1,6 +1,6 @@
 version: 2
-execution_revision: 2
-execution_amendment: docs/2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R2.md
+execution_revision: 3
+execution_amendment: docs/2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R3.md
 stage: m2_screening
 authorization:
   date: '2026-09-06'
@@ -44,13 +44,15 @@ training:
   max_checkpoints: 1
   max_infrastructure_resumes: 2
 resources:
-  # Keep critic parameters and actor Adam on GPU; full CPU offload exceeds 64 GiB.
-  actor_param_offload: true
+  # Both training models stay on GPU; only active Adam moments reside there.
+  # The opt-in adapter swaps inactive moments and the reference to pageable CPU.
+  profile: pageable_adam_v1
+  actor_param_offload: false
   actor_optimizer_offload: false
   critic_param_offload: false
-  critic_optimizer_offload: true
+  critic_optimizer_offload: false
   reference_model_dtype: bf16
-  rollout_gpu_memory_utilization: 0.28
+  rollout_gpu_memory_utilization: 0.20
   rollout_cudagraph_capture_sizes: [1, 2, 4, 8]
   agent_workers: 1
   ray_num_cpus: 8

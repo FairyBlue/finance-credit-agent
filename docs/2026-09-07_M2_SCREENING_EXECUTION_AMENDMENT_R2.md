@@ -1,6 +1,6 @@
 # M2 screening 工程执行修订 R2（2026-09-07）
 
-**当前状态：用户已授权恢复，首先验证 R2 的 4B M2 工程 pilot。**
+**当前状态：R2 诊断已结束，结果及后续资源修订见 [R3](2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R3.md)。**
 顺序与范围见 [恢复记录](2026-09-07_M2_SCREENING_RESUMPTION.md)；暂停时的实际结果见
 [实验报告](2026-09-07_M2_SCREENING_EXPERIMENT_REPORT.md)。
 

@@ -150,6 +150,15 @@ def test_screening_commands_have_shared_exact_contract(tmp_path: Path, arm: str,
     assert options["actor_rollout_ref.rollout.engine_kwargs.vllm.compilation_config"] == (
         "{cudagraph_capture_sizes:[1,2,4,8]}"
     )
+    assert options["actor_rollout_ref.rollout.gpu_memory_utilization"] == "0.2"
+    for role in ("actor_rollout_ref.actor.fsdp_config", "critic.model.fsdp_config"):
+        assert options[f"{role}.param_offload"] == "False"
+        assert options[f"{role}.optimizer_offload"] == "False"
+    env_prefix = "ray_kwargs.ray_init.runtime_env.env_vars."
+    assert options[env_prefix + "FINANCE_SCREENING_RESOURCE_PROFILE"] == "pageable_adam_v1"
+    assert options[env_prefix + "FINANCE_SCREENING_PLACEMENT_DIR"] == str(
+        tmp_path / "artifacts/placement"
+    )
     assert options["algorithm.gamma"] == options["algorithm.lam"] == "1.0"
     assert options["critic.ppo_mini_batch_size"] == "2"
     assert options["actor_rollout_ref.actor.ppo_mini_batch_size"] == "2"
@@ -236,6 +245,37 @@ def test_override_replacement_preserves_literal_add_and_rejects_duplicates():
     assert set_overrides(["x=1", "+y=a"], {"x": 4, "y": "b"}) == ["x=4", "+y=b"]
     with pytest.raises(ValueError, match="duplicate"):
         set_overrides(["x=1", "+x=2"], {"x": 3})
+
+
+@pytest.mark.parametrize("invalid", (
+    "actor_param_offload", "actor_optimizer_offload",
+    "critic_param_offload", "critic_optimizer_offload",
+    "rollout_gpu_memory_utilization", "profile", "resume",
+))
+def test_placement_profile_rejects_partial_layout_or_unvalidated_restore(
+    tmp_path: Path, invalid: str,
+):
+    settings = yaml.safe_load((REPO_ROOT / "configs/m2_screening.yaml").read_text())
+    manifest = {
+        "hashes": {"payload_sha256": "a" * 64},
+        "datasets": {key: {"path": key + ".parquet"} for key in ("pilot_train", "pilot_eval")},
+        "calibration": {"path": "calibration.json", "sha256": "b" * 64},
+    }
+    config = build_cell_config(
+        settings=settings, manifest=manifest, prepared_dir=tmp_path, arm="M2", stage="pilot",
+        seed=42, cell_dir=tmp_path,
+    )
+    if invalid.endswith("offload"):
+        settings["resources"][invalid] = True
+    elif invalid == "profile":
+        settings["resources"][invalid] = "unknown"
+    elif invalid == "rollout_gpu_memory_utilization":
+        settings["resources"][invalid] = 0.28
+    with pytest.raises(ValueError, match="resource profile|registered placement|restore"):
+        build_cell_command(
+            config=config, settings=settings, hashes=RunHashes("c" * 40, "d" * 40, "test", False),
+            cell_dir=tmp_path, resume_path=tmp_path / "checkpoint" if invalid == "resume" else None,
+        )
 
 
 def test_paired_readout_rejects_complete_case_selection():

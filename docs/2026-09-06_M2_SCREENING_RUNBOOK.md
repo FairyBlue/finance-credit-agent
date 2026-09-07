@@ -1,6 +1,6 @@
 # M2 screening 实现与运行手册（2026-09-06）
 
-**2026-09-07：用户已授权恢复，首先运行 R2 的 4B M2 工程 pilot；主 screening 仍为 0/8。**
+**2026-09-07：用户已授权恢复；R2 定位 reference 内存压力，现验证 R3 共同资源布局。主 screening 仍为 0/8。**
 执行范围见 [恢复记录](2026-09-07_M2_SCREENING_RESUMPTION.md)；此前暂停时结果见
 [实验报告](2026-09-07_M2_SCREENING_EXPERIMENT_REPORT.md)。
 
@@ -12,10 +12,11 @@
 入口 context cap 8192，重做必要验证。4B 工程 pilot 使用相同两个 Train episodes 做两轮更新，
 检验两套 Adam 状态均已存在时的内存峰值。原失败保留，尚不能据此宣称 screening 跑通。
 
-当前工程修复采用 [R2](2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R2.md)：GPU 遥测失败写入
-`gpu_error` 后继续训练；`artifacts/resource_phases/` 记录各命名阶段，用于定位主机内存限流。
-4B pilot 先前在完整首轮 rollout 后被监控超时终止，没有验证更新容量。最新实际运行入口和状态见
-本机 `runs/M2_SCREENING_LATEST.md`，不要把下方示例命令当成当前已启动的主筛选。
+工程修复保留 [R2](2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R2.md) 的非致命GPU遥测和
+`artifacts/resource_phases/`命名阶段日志，并采用 [R3](2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R3.md)
+的pageable reference/Adam交换布局。R2实测监控超时后继续运行，但reference阶段持续主机内存限流，
+已记录原因并主动停止。R3须从新base初始化验证两次更新及保存；该profile尚不支持checkpoint restore。
+最新实际状态见本机 `runs/M2_SCREENING_LATEST.md`，下方示例命令不代表已启动主筛选。
 
 ## 输入和实现
 

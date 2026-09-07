@@ -152,6 +152,17 @@ def build_cell_command(
     )
     r = settings["resources"]
     t = settings["training"]
+    profile = r.get("profile", "native")
+    if profile not in {"native", "pageable_adam_v1"}:
+        raise ValueError("unregistered screening resource profile")
+    if profile == "pageable_adam_v1":
+        if any(r[key] is not False for key in (
+            "actor_param_offload", "actor_optimizer_offload",
+            "critic_param_offload", "critic_optimizer_offload",
+        )) or r["rollout_gpu_memory_utilization"] != 0.20:
+            raise ValueError("pageable_adam_v1 requires the complete registered placement")
+        if resume_path is not None:
+            raise ValueError("pageable_adam_v1 checkpoint restore has not been validated")
     optimizer_options = r["optimizer_overrides"]
     if optimizer_options != {"foreach": False, "fused": False}:
         raise ValueError("screening requires the registered scalar AdamW resource settings")
@@ -227,6 +238,11 @@ def build_cell_command(
             "commit": hashes.repo_commit, "config": config, "settings": settings,
         }, sort_keys=True).encode()).hexdigest(),
     }
+    if profile == "pageable_adam_v1":
+        env_flags.update({
+            "FINANCE_SCREENING_RESOURCE_PROFILE": profile,
+            "FINANCE_SCREENING_PLACEMENT_DIR": str(cell_dir / "artifacts/placement"),
+        })
     for key, value in env_flags.items():
         overrides["+ray_kwargs.ray_init.runtime_env.env_vars." + key] = value
     return set_overrides(command, overrides)

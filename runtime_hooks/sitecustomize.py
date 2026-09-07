@@ -21,6 +21,17 @@ def _install_runtime_hooks() -> None:
             from src.agents.screening_runtime import install_from_environment as install_screening
 
             install_screening()
+            if os.environ.get("FINANCE_SCREENING_RESOURCE_PROFILE"):
+                from src.agents.screening_placement import (
+                    install_from_environment as install_placement,
+                )
+
+                from src.agents.screening_reference import (
+                    install_from_environment as install_reference,
+                )
+
+                install_reference()
+                install_placement()
     except Exception as exc:
         # CPython deliberately swallows ordinary ``sitecustomize`` exceptions.
         # SystemExit is outside that handler and keeps required G1 hooks fail-closed.

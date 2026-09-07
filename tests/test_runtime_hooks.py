@@ -90,6 +90,36 @@ def test_sitecustomize_hook_failure_stops_interpreter(
     assert "finance runtime hook installation failed: instrumentation exploded" in completed.stderr
 
 
+@pytest.mark.parametrize("failed", (None, "screening_reference", "screening_placement"))
+def test_screening_placement_installs_reference_first_and_fails_before_user_code(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, failed: str | None,
+) -> None:
+    silent = "def install_from_environment():\n    pass\n"
+    _write_fake_hooks(tmp_path, update_body=silent, compat_body=silent, rollout_seed_body=silent)
+    for name in ("screening_runtime", "screening_reference", "screening_placement"):
+        body = (
+            '    raise RuntimeError("placement failure")\n' if name == failed
+            else f'    print("{name}")\n'
+        )
+        (tmp_path / "src/agents" / f"{name}.py").write_text(
+            "def install_from_environment():\n" + body, encoding="utf-8",
+        )
+    monkeypatch.setenv("FINANCE_SCREENING_ARM", "M2")
+    monkeypatch.setenv("FINANCE_SCREENING_RESOURCE_PROFILE", "pageable_adam_v1")
+    completed = _start_python(tmp_path)
+    if failed is None:
+        assert completed.returncode == 0, completed.stderr
+        assert completed.stdout.splitlines() == [
+            "screening_runtime", "screening_reference", "screening_placement", "BODY_RAN",
+        ]
+    else:
+        assert completed.returncode != 0
+        assert "BODY_RAN" not in completed.stdout
+        assert "placement failure" in completed.stderr
+        if failed == "screening_reference":
+            assert "screening_placement" not in completed.stdout
+
+
 @pytest.mark.integration
 def test_nested_ray_actor_uses_live_agent_flow_registry(tmp_path: Path) -> None:
     if importlib.util.find_spec("ray") is None:
