@@ -1,7 +1,8 @@
 # M2 screening 工程执行修订 R2（2026-09-07）
 
-**当前状态：用户已要求停止实验并整理报告。R2 代码及相关测试已完成，但没有启动 GPU 重跑。**
-实际结果见 [当前实验报告](2026-09-07_M2_SCREENING_EXPERIMENT_REPORT.md)。
+**当前状态：用户已授权恢复，首先验证 R2 的 4B M2 工程 pilot。**
+顺序与范围见 [恢复记录](2026-09-07_M2_SCREENING_RESUMPTION.md)；暂停时的实际结果见
+[实验报告](2026-09-07_M2_SCREENING_EXPERIMENT_REPORT.md)。
 
 R1 的科学契约继续生效：四臂、scorer、数据、seeds、模型 revisions、dtype、学习率、n=4、
 逻辑 batch、4096 response cap、greedy evaluator 及严格完成性均不变。本修订属于计划 §5.2
@@ -33,8 +34,8 @@ R1 的科学契约继续生效：四臂、scorer、数据、seeds、模型 revis
    R1 的 `max_num_seqs=8` 未减少 V1 默认 67 个 graph shapes；本修订修复这一未兑现的资源优化，
    实际启动日志仍需复核。不得将 graph 数量减少本身当成 4B 容量通过。
 
-原失败及完整轨迹证据保留。恢复后，R2 计划使用新的运行目录，从相同 base model 开始一次
-4B M2 工程重试；目前尚未执行。
+原失败及完整轨迹证据保留。恢复后，R2 使用新的运行目录，从相同 base model 开始一次
+4B M2 工程重试；实际执行状态以运行目录记录为准。
 这不是已证明的 exact resume，也不复用旧 siblings 或补齐旧结果。该重试属于额外工程成本，
 不能混入原主筛选的 1024 条训练预算。主筛选仍需全部必要门禁通过后另行启动。
 
