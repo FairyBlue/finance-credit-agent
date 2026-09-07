@@ -60,3 +60,42 @@ R3/v6实际4B首批8条完整，reference30.29秒及critic一次参数更新均�
 对64 GiB hard limit，继续留2 GiB、继续观察soft pressure，不提前抵扣缓存。38项CPU测试及
 137个subtests、Ruff、mypy通过；独立审阅支持受监测两轮pilot，未承诺后续阶段的容量。
 新身份从相同base重跑，不恢复半交换状态，不自动启动主筛选。最新服务和目录见本机LATEST记录。
+
+## 14:10 UTC：R4 的 4B M2 工程 pilot 通过
+
+`runs/m2-screening-20260907-v7/pilot-m2-s42` 使用冻结版本 `3828a97`，launcher于
+14:10:29 UTC记录PASSED，supervisor于14:10:33 UTC记录PASSED，退出码为0。两个Train窗口、
+seed 42、每窗口n=4的两批共16条轨迹完整；actor和critic各完成两次有实际参数变化的更新。
+两批共385 steps、460,344 response tokens，M2实际诊断与完整sibling分组复算一致。
+
+随后在同一worker中完成最终两条Train greedy评估（step 2、n=1、temperature=0）。
+共48个请求、52,367 response tokens，invalid为0；最长响应2,626 tokens，均低于4096上限，
+两条轨迹均到达规定终局。这里确认的是本次工程pilot完成，不能据此判断M2效果或整个主筛选
+的生成完成率。详细证据在该run root的 `two_round_audit.json` 和 `final_pilot_audit.json`。
+
+两轮均完成checkpoint写入；最终checkpoint通过完成标记、身份、必要文件及尺寸校验后，
+按预登记的pilot权重丢弃策略归档。模型、Adam、RNG及data.pt已删除，保留完成标记、文件清单和
+模型/tokenizer元数据。当前归档目录不支持恢复，本轮也未证明exact恢复重放。
+
+主screening仍为 **0/8**；**1.7B四臂接线门禁和4B M1 pilot仍未通过**，不因本次M2成功自动
+启动主筛选。Dev/正式Valid及Final OOS未访问。
+
+资源审计随后确认：两套Adam完整物化后的两次双向交换各有148个storage完成同步copy/release；
+第二次checkpoint保存97.74秒。device-wide NVML物理显存采样峰95,292 MiB，CPU采样峰约57.23 GiB，
+memory.high新增6次，max/OOM/oom_kill无新增。保存边界CUDA driver-free最低约27.44 MiB，
+rollout模式切换成功后回升约13.43 GiB；现有记账无法精确拆分峰值中的可回收缓存。
+GPU数值为整卡使用量，不能全归因于trainer；Torch含vLLM分配池的统计不作为物理峰值。
+这次两轮完整通过仍不保证主筛选所有batch/保存峰值均能容纳。
+证据在v7下 `resource_two_round_audit.json`、`final_pilot_audit.json` 和归档清单。
+
+## 14:21 UTC：进入1.7B固定输入诊断
+
+旧R1失败请求44的prompt已由原环境重建：初始prompt和失败prompt均匹配原SHA；后者为2282 tokens，
+SHA为 `674fc0ab8636f599ecc6e386291bd22e4d52ecde557cd683b3b4307efcf81a76`。
+重建的是等价可见状态，不声称恢复全部未知的历史tool参数。只使用原Train episode。
+
+单独将保留的step-1 actor离线导出为BF16，311个权重键和shape校验通过，原7个checkpoint文件和
+FAILED状态未改动。在 `runs/m2-screening-20260907-v8/diagnostics/PROTOCOL.md` 中预先登记两个
+固定请求：base及导出actor各一次greedy，同一原prompt、tokenizer、EOS规则和4096 cap，
+不改变thinking或采样。使用独立systemd服务、新的standalone V1进程；与历史训练worker和两条
+并发评测存在执行差异，故不承诺历史逐token复现，也不把单响应成功当作完整接线通过。

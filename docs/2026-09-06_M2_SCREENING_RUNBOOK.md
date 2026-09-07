@@ -1,6 +1,6 @@
 # M2 screening 实现与运行手册（2026-09-06）
 
-**2026-09-07：已恢复；R3通过reference和critic更新，R4修正CPU容量检查后继续pilot。主 screening 仍为 0/8。**
+**2026-09-07 14:10 UTC：R4 的 4B M2 两轮 pilot 已完整通过；继续诊断 1.7B greedy 截断。主 screening 仍为 0/8。**
 执行范围见 [恢复记录](2026-09-07_M2_SCREENING_RESUMPTION.md)；此前暂停时结果见
 [实验报告](2026-09-07_M2_SCREENING_EXPERIMENT_REPORT.md)。
 
@@ -17,7 +17,10 @@
 的pageable reference/Adam交换布局。R2实测监控超时后继续运行，但reference阶段持续主机内存限流，
 已记录原因并主动停止。R3须从新base初始化验证两次更新及保存；该profile尚不支持checkpoint restore。
 R3首actor更新前被按soft limit计算的reserve检查拒绝；[R4](2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R4.md)
-改按hard limit保留相同2 GiB余量，继续监测soft pressure。没有通过完整pilot前不进入主筛选。
+改按hard limit保留相同2 GiB余量，继续监测soft pressure。v7已完成16条Train轨迹、两轮
+critic/actor更新、逐轮checkpoint及同worker最终2条Train greedy；1.7B四臂接线和4B M1 pilot
+仍需验收。v7物理GPU采样峰95,292 MiB，保存阶段余量很小；CPU采样峰约57.23 GiB，
+memory.high新增6次、OOM为0。两轮通过不保证主筛选每个batch和保存峰值均有足够余量。
 最新实际状态见本机 `runs/M2_SCREENING_LATEST.md`，下方示例命令不代表已启动主筛选。
 
 ## 输入和实现
@@ -85,3 +88,8 @@ vLLM memory utilization。主机仅 64 GiB RAM、没有可用 swap；实际容�
 统一设置 `max_checkpoints=1`。每 4 rounds 保存规则不变；完成 cell 的最终 actor 导出为推理使用的
 BF16 HF 权重，校验后才删除该 cell 的恢复状态。保存失败可能失去上一恢复点，此时停止并保留
 失败证据，不自动重采样。此选择仅影响恢复能力和磁盘峰值，不改变训练或评测预算。
+
+上面的最终actor导出适用于主screening cell。接线/工程pilot权重按计划丢弃：只有其完整验收、
+trainer退出且checkpoint完成标记及文件清单核对后，才清理重型恢复文件，保留诊断、配置、
+完成标记和归档清单。v7的完整pilot checkpoint已这样归档，不能再称其全量状态仍可恢复；
+此前FAILED的1.7B checkpoint保留，单独导出actor用于诊断不会改变该失败状态。
