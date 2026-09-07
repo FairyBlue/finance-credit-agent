@@ -1,5 +1,8 @@
 # M2 screening 实现与运行手册（2026-09-06）
 
+**2026-09-07：按用户要求停止实验。R2 尚未进行 GPU 重跑，主 screening 为 0/8。**
+完整现状见 [当前实验报告](2026-09-07_M2_SCREENING_EXPERIMENT_REPORT.md)。
+
 本轮依据用户确认的线下讨论与执行授权，见 EVAL_PROTOCOL §20。只有 history/Train 参与运行，
 正式 Valid/Final OOS 保持关闭。运行状态以对应目录的 JSON 和实际进程为准，不以本文宣称成功。
 
