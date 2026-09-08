@@ -363,6 +363,9 @@ class ScreeningTradingAgentEnvLoop(TradingAgentEnvLoop):
             "group_uid": group_uid,
             "identity": identity.as_dict(),
             "rollout_count": rollout_n,
+            "chat_template_kwargs": dict(
+                self.config.data.get("apply_chat_template_kwargs", {})
+            ),
             "pid": os.getpid(),
             "complete": False,
         }

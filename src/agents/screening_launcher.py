@@ -82,6 +82,24 @@ def set_overrides(command: list[str], overrides: dict[str, Any]) -> list[str]:
     return result
 
 
+def generation_template_kwargs(settings: dict[str, Any]) -> dict[str, bool]:
+    """A single explicit template mode shared by training and final evaluation.
+
+    Omitted generation settings preserve historical tokenizer defaults. Reject
+    string booleans and unknown controls instead of silently changing the prompt.
+    """
+    if "generation" not in settings:
+        return {}
+    generation = settings["generation"]
+    if (
+        not isinstance(generation, dict)
+        or set(generation) != {"enable_thinking"}
+        or type(generation["enable_thinking"]) is not bool
+    ):
+        raise ValueError("screening generation requires exactly one boolean enable_thinking")
+    return {"enable_thinking": generation["enable_thinking"]}
+
+
 def build_cell_config(
     *, settings: dict[str, Any], manifest: dict[str, Any], prepared_dir: Path,
     arm: str, stage: str, seed: int, cell_dir: Path,
@@ -126,6 +144,9 @@ def build_cell_config(
             "valid_file": str(prepared_dir / manifest["datasets"][eval_key]["path"]),
         },
     }
+    template_kwargs = generation_template_kwargs(settings)
+    if template_kwargs:
+        config["data"]["apply_chat_template_kwargs"] = template_kwargs
     config["tracking"]["log_root"] = str(cell_dir)
     config["reward"] = {
         "scorer_id": "benchmark_scale_v2",
@@ -152,6 +173,9 @@ def build_cell_command(
     )
     r = settings["resources"]
     t = settings["training"]
+    template_kwargs = generation_template_kwargs(settings)
+    if config["data"].get("apply_chat_template_kwargs", {}) != template_kwargs:
+        raise ValueError("resolved chat template mode differs from screening settings")
     profile = r.get("profile", "native")
     if profile not in {"native", "pageable_adam_v1"}:
         raise ValueError("unregistered screening resource profile")
@@ -227,6 +251,12 @@ def build_cell_command(
         "ray_kwargs.ray_init.num_cpus": r["ray_num_cpus"],
         "+ray_kwargs.ray_init.object_store_memory": r["ray_object_store_memory"],
     }
+    if template_kwargs:
+        # This shared dataset setting is used by the real Agent-R1 environment
+        # loop for both sampled Train and final greedy/zero-shot observations.
+        overrides["+data.apply_chat_template_kwargs.enable_thinking"] = (
+            template_kwargs["enable_thinking"]
+        )
     env_flags = {
         "FINANCE_SCREENING_ARM": arm,
         # Hydra otherwise coerces numeric-looking strings into ints; Ray's

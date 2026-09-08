@@ -116,8 +116,14 @@ def test_unexpected_capture_error_still_stops_trainer_and_propagates(
 
 @pytest.mark.parametrize("arm", ARMS)
 @pytest.mark.parametrize("stage", ("wiring", "pilot", "screening", "zero-shot"))
-def test_screening_commands_have_shared_exact_contract(tmp_path: Path, arm: str, stage: str):
+@pytest.mark.parametrize("enable_thinking", (None, False, True))
+def test_screening_commands_have_shared_exact_contract(
+    tmp_path: Path, arm: str, stage: str, enable_thinking: bool | None,
+):
     settings = yaml.safe_load((REPO_ROOT / "configs/m2_screening.yaml").read_text())
+    settings.pop("generation", None)
+    if enable_thinking is not None:
+        settings["generation"] = {"enable_thinking": enable_thinking}
     manifest = {
         "hashes": {"payload_sha256": "a" * 64},
         "datasets": {
@@ -142,6 +148,15 @@ def test_screening_commands_have_shared_exact_contract(tmp_path: Path, arm: str,
         cell_dir=tmp_path,
     )
     options = dict(argument.lstrip("+").split("=", 1) for argument in command[3:])
+    template_key = "data.apply_chat_template_kwargs.enable_thinking"
+    if enable_thinking is None:
+        assert template_key not in options
+        assert "apply_chat_template_kwargs" not in config["data"]
+    else:
+        assert options[template_key] == str(enable_thinking)
+        assert config["data"]["apply_chat_template_kwargs"] == {
+            "enable_thinking": enable_thinking,
+        }
     assert options["actor_rollout_ref.rollout.n"] == "4"
     assert options["actor_rollout_ref.rollout.agent.num_workers"] == "1"
     assert options["actor_rollout_ref.rollout.max_model_len"] == "8192"
@@ -189,9 +204,15 @@ def test_screening_commands_have_shared_exact_contract(tmp_path: Path, arm: str,
     assert flow["screening_arm"] == arm
 
 
-def test_real_hydra_compose_produces_ray_compatible_string_environment(tmp_path: Path):
+@pytest.mark.parametrize("enable_thinking", (None, False, True))
+def test_real_hydra_compose_produces_ray_compatible_string_environment(
+    tmp_path: Path, enable_thinking: bool | None,
+):
     """Numeric-looking argv strings must survive Hydra before Ray validates them."""
     settings = yaml.safe_load((REPO_ROOT / "configs/m2_screening.yaml").read_text())
+    settings.pop("generation", None)
+    if enable_thinking is not None:
+        settings["generation"] = {"enable_thinking": enable_thinking}
     manifest = {
         "hashes": {"payload_sha256": "a" * 64},
         "datasets": {
@@ -218,6 +239,10 @@ def test_real_hydra_compose_produces_ray_compatible_string_environment(tmp_path:
     config_directory = REPO_ROOT / "third_party/agent-r1/agent_r1/config"
     with initialize_config_dir(config_dir=str(config_directory), version_base=None):
         resolved = compose(config_name="agent_ppo_trainer", overrides=command[3:])
+    expected_template = {} if enable_thinking is None else {"enable_thinking": enable_thinking}
+    assert OmegaConf.to_container(resolved.data.apply_chat_template_kwargs) == expected_template
+    if enable_thinking is not None:
+        assert type(resolved.data.apply_chat_template_kwargs.enable_thinking) is bool
     for optimizer in (resolved.actor_rollout_ref.actor.optim, resolved.critic.optim):
         assert OmegaConf.to_container(optimizer.override_optimizer_config) == {
             "foreach": False, "fused": False,
@@ -239,6 +264,15 @@ def test_real_hydra_compose_produces_ray_compatible_string_environment(tmp_path:
     # This is the real Ray schema validation, without starting Ray or loading a model.
     runtime_environment = RuntimeEnv(env_vars=cast(dict[str, str], env_vars))
     assert runtime_environment["env_vars"] == env_vars
+
+
+@pytest.mark.parametrize("generation", (
+    None, {}, {"enable_thinking": "false"}, {"enable_thinking": 0},
+    {"enable_thinking": False, "temperature": 0.7},
+))
+def test_generation_settings_reject_ambiguous_or_unregistered_modes(generation):
+    with pytest.raises(ValueError, match="boolean enable_thinking"):
+        screening_launcher.generation_template_kwargs({"generation": generation})
 
 
 def test_override_replacement_preserves_literal_add_and_rejects_duplicates():
