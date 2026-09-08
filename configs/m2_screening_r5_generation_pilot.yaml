@@ -1,0 +1,68 @@
+version: 2
+execution_revision: 5
+execution_amendment: docs/2026-09-08_M2_SCREENING_EXECUTION_AMENDMENT_R5.md
+stage: m2_screening
+authorization:
+  date: '2026-09-06'
+  basis: user_confirmed_offline_collaborator_agreement
+  scope: implement_wiring_pilot_and_train_only_screening
+  formal_training: false
+  final_oos: false
+plan: docs/2026-09-05_M2_EXPERIMENT_PLAN_V2.md
+arms: [A2, M1, M2-plain, M2]
+seeds: [42, 43]
+models:
+  wiring:
+    name: Qwen/Qwen3-1.7B
+    revision: 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e
+  screening:
+    name: Qwen/Qwen3-4B
+    revision: 1cfa9a7208912126459214e8b04321603b3df60c
+engineering_pilot:
+  train_episodes: 2
+  total_epochs: 2
+  total_training_steps: 2
+  save_freq: 1
+training:
+  episodes: 32
+  train_batch_size: 2
+  rollout_n: 4
+  total_epochs: 1
+  learning_rate: 1.0e-6
+  critic_learning_rate: 1.0e-5
+  max_prompt_length: 4096
+  max_response_length: 4096
+  max_agent_steps: 256
+  temperature: 1.0
+  top_p: 1.0
+  top_k: -1
+  gamma: 1.0
+  lam: 1.0
+  eta: 1.0
+  save_freq: 4
+  # 289 GB volume: retain one complete recovery point plus each finished actor export.
+  max_checkpoints: 1
+  max_infrastructure_resumes: 2
+resources:
+  # Both training models stay on GPU; only active Adam moments reside there.
+  # The opt-in adapter swaps inactive moments and the reference to pageable CPU.
+  profile: pageable_adam_v1
+  actor_param_offload: false
+  actor_optimizer_offload: false
+  critic_param_offload: false
+  critic_optimizer_offload: false
+  reference_model_dtype: bf16
+  rollout_gpu_memory_utilization: 0.20
+  rollout_cudagraph_capture_sizes: [1, 2, 4, 8]
+  agent_workers: 1
+  ray_num_cpus: 8
+  ray_object_store_memory: 1073741824
+  optimizer_overrides: {foreach: false, fused: false}
+evaluation:
+  rollout_n: 1
+  do_sample: false
+  temperature: 0.0
+  primary: mean_paired_m2_minus_m1_both_seeds_positive
+generation:
+  enable_thinking: false
+action_protocol: single_tool_v1

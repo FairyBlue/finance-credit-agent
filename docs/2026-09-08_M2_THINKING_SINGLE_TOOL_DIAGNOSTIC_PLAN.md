@@ -124,3 +124,20 @@ rollout_n/validate 与实际 env_step。使用真实原环境与 PIT 数据、�
 当前磁盘约99GiB，生产新cell要求至少112GiB。用户申请额外100GB仍待反馈；本次诊断
 不降低该门槛，不删除原FAILED证据。完成上述检查后再决定共同生成修订，并按原计划从
 相同base重新做四臂1.7B wiring及4B M1/M2 pilot。正式screening还须门禁及资源检查通过。
+
+## 观测后追加记录：G3 未通过，扩展未启动
+
+原预登记不变。两模型固定 18 请求均已完成观测，base 8/9、actor 9/9 完整且格式合格。
+base request5 / seed46 输出4096tokens，原始 `finish_reason=length`、末token330非EOS；
+thinking已闭合，但工具调用JSON未完成。对应原token SHA256 为
+`eeaa0e22769569be1832192662f8f57d2a01884224e3d97a606f151ab21e85fe`。
+
+新 `acceptance/acceptance.json` SHA256
+`e44e63321053bb4045df885ae9b06050b85b1bc5fadb04a72bedebc5ed78597d`，
+`eligible_for_multi_train_validation=false`。**条件式320轨迹新增为0**，对应runner/controller
+只有准备及CPU验证，没有启动G3轨迹服务，也没有用G2通过结果替代本门禁。
+
+原token独立复核收据 `fixed_response_cpu_audit_v2.json` SHA256
+`722adf23591a1365f824e8809b7226332ab2defc51e26f8a469067e868ea05c1`：55个来源文件一致、
+两种解码及格式判定一致；审计PASSED与候选门禁false分别记录。首次CPU审计对原生
+greedy top_k=0归一化的误判已保留并修正，未更改模型参数或增加请求。
