@@ -63,8 +63,12 @@ finish/stop reason、seed、工具解析及 thinking 结构；记录原始信息
 `prompt.json` 文件 SHA256 为
 `8891a9138ea0c593ed43cc9bbe890a2bd5d7b0be9237207577f0001683eb8641`。
 39 项 CPU 测试及 Ruff 通过；保存后重新分词与 2360 个预期 IDs 完全一致。
-启动还需实际旧 G2 receipt/新 prompt/生产方法链的 CPU 复核通过。启动命令、环境、
-commit、文件 SHA 和服务属性落盘；本段登记先于任何新 G3 模型请求。
+实际旧 G2 receipt/新 prompt/生产方法链的 CPU 复核均通过，证据分别为
+`probe_readiness_cpu.json`（SHA `9e20abad14349d88129a4e420a1bebad55d9530b2cc3d2c6c086a3a5a793f987`）
+和 `production_prompt_cpu_audit.json`（SHA `54b8b978afa143cb8ac0aa93aad3c307075e0af7b31d130492b8658f3ba8d4e8`）。
+9 个共同生产 prompt 案例与预期 IDs 一致，4 轮合成反馈不累积指令；这是 CPU 接口复核，
+没有实际训练。候选及请求预算已在 commit `ae2d567` 登记后启动；命令、环境、commit、
+文件 SHA 和服务属性见新目录 `base_service.json`。
 
 ## 条件式完整 Train 轨迹：预定最多 320 条
 
@@ -91,6 +95,25 @@ rollout_n/validate 与实际 env_step。使用真实原环境与 PIT 数据、�
 单独报告完成性、token长度、invalid、buy/sell/hold/abstain/compute/retrieve分布及实际
 交易覆盖，不把这些动作统计变成新增硬门槛。两模型各160全部完成只是后续新执行修订的
 工程依据；它仍不替代真实更新及同worker训练后评估，也不证明原截断从此不会出现。
+
+### 条件式轨迹执行冻结
+
+新目录 `run_train_trajectories.py` SHA256
+`a1fed28324dcdd91485bedf42b9db46e71e214e0f9dfef88837f3024ff8a3a8c`；
+`continue_train_trajectories.py` SHA256
+`f121c9cc7cc49cc17f667629d2822a68d0090ab9ff243d722aaf607033cb7608`。
+64 项 CPU 测试、Ruff 及独立代码审阅通过。真实 frozen 环境 parser 的合成数据测试确认
+完整 thinking 加单工具可执行、thinking 中额外调用仍报 invalid，不剥离原 action；
+21 steps、20 次推进，模型请求为 0，不计入 Train 轨迹。证据
+`environment_parser_cpu_audit.json` SHA256
+`344add868f4c68a72ea9dd07256939d24d990c897a702ed63126bd2fb3ae46c9`。
+
+启动前须用实际新 18 请求结果生成并重新核验 acceptance，同时从原 token 独立重解码
+核对原始批输出。controller 必填实际 `--expected-acceptance-sha256`，将这份收据及其绑定的
+两模型结果冻结；不使用占位 hash 或 G2 门禁替代 G3。base 服务为
+`fca-m2-g3-trajectory-base-v10.service`。controller 等待该服务及进程结束、完整审计 base160
+后才启动一次 actor，最终重新核对 base/actor 证据。诊断文件改变、非零退出或轨迹不完整
+均停止；不重试、不自动进入训练。
 
 ## 持久运行与后续
 
