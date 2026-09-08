@@ -1,6 +1,9 @@
 # M2 R5：单工具、non-thinking 的有限训练工程候选（2026-09-08）
 
-**状态：CPU 准备完成，等待资源准入；尚未启动 R5 训练，不是主 screening 通过或已恢复。**
+**状态：CPU 准备完成；9月8日获准清理后磁盘已达113.64GiB，通过112GiB磁盘门槛。**
+尚未启动R5训练，启动前仍需核对当时GPU/主机资源及冻结身份；不是主screening通过或已恢复。
+下文99GiB/BLOCKED数字为清理前的准备记录，执行更新见
+[空间清理记录](2026-09-08_DISK_CLEANUP_AUDIT.md)。
 本修订登记 G2 候选的真实训练门禁，配置为 `configs/m2_screening_r5_generation_pilot.yaml`。
 默认 `configs/m2_screening.yaml` 继续保留 R4，所有新运行必须明确指定本候选配置。
 本次执行只到下表规定的工程检查结束；不使用 `--stage all`，不自动启动主筛选或 Dev。
