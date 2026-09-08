@@ -1,6 +1,7 @@
 # M2 生成完整性诊断报告（2026-09-08）
 
-**当前结论：修复候选通过了固定提示检查，完整轨迹验证正在进行；尚不能宣布截断问题解决。**
+**当前结论：关闭 thinking + 单工具指令的候选已完成 320 条轨迹、6619 次请求，没有截断或非法动作；
+但没有任何买卖，暂不将它设为正式默认值。下一步单独检查保留 thinking 的相同工具指令。**
 原 R4 主筛选仍为 0/8 完整 cells，没有开始 screen-dev 评估。生产配置尚未切换到新候选。
 本报告随当前诊断更新；原失败及历史报告保留。
 
@@ -50,14 +51,32 @@
 及 20 次固定 hold，终局和 42 个保存 prompt 经最终代码复核通过；这是 CPU 接口测试，
 模型请求为 0，不计入生成轨迹预算。
 
-**当前阶段：4B base 的 160 条完整 Train 诊断已启动。** 计划为每模型原 32 个 Train
-窗口 ×（4 条采样 + 1 条 greedy），base 全部完成后才可运行 actor，总上限 320 条。
+**完整轨迹检查及最终证据复核已完成，controller 为 COMPLETE320，actor 退出码为 0。**
+每模型运行原 32 个 Train 窗口 ×（4 条采样 + 1 条 greedy），base 全部完成后才运行 actor。
+两模型的 submitted / returned / applied 数量一致，没有响应截断或终局失败。
+
+| 模型 | 完整轨迹 | 请求数 | 响应长度：最短 / 中位 / 最长 | buy / sell | hold / abstain / compute | invalid |
+| --- | ---: | ---: | --- | --- | --- | ---: |
+| 4B base | 160/160 | 3309 | 15 / 15 / 35 | 0 / 0 | 3102 / 98 / 109 | 0 |
+| step-8 actor | 160/160 | 3310 | 15 / 15 / 35 | 0 / 0 | 3116 / 84 / 110 | 0 |
+
+所有轨迹均有 21 个 ledger sessions、20 次合法推进；所有响应自然 EOS，输入最长 2526 tokens。
+两模型均没有 retrieve。320 条执行覆盖了空仓路径，尚未覆盖实际买卖与持仓路径。
 使用真实环境、PIT 边界、原 seed 推导及 4096/8192/256 上限；任何响应或轨迹不完整就停止
 候选，保留同批已生成输出及未执行网格，不补抽、不替换动作、不更新参数。
 
 此阶段不替代新配置下从 base 开始的训练 wiring/pilot，也不访问 screen-dev/正式 Valid/
 Final OOS 做评估。详细边界及启动 SHA 见
 [单工具协议诊断登记](2026-09-08_M2_SINGLE_TOOL_DIAGNOSTIC_PLAN.md)。
+
+作为历史背景，原 R4 的 88 条完整训练轨迹都有买卖，总计 buy 131、sell 36；它们跨不同
+prompt 和持续更新的 policy，因此不能把差异全部归因于关闭 thinking。G2 原先登记的
+完成性门禁已经通过，不事后增加交易数量门槛，也不据此裁定正式 M2 的 residual exposure。
+不过，当前证据不足以支持立即采用该设置进行 M2。
+
+新 [G3 诊断登记](2026-09-08_M2_THINKING_SINGLE_TOOL_DIAGNOSTIC_PLAN.md) 保持完全相同的
+单工具指令，明确启用 thinking。新增固定 18 请求全部通过后，才执行该候选自己的条件式
+320 条 Train 检查；旧对照保留，不重新抽样，不使用收益或 Dev 结果选择候选。
 
 ## 资源及后续
 
@@ -68,11 +87,12 @@ Final OOS 做评估。详细边界及启动 SHA 见
 pilot、主筛选和 zero-shot。用户将向管理员申请增加 100 GB，结果待通知；不能认为已扩容。
 现有空间可完成当前独立推理诊断，后续训练须等待实际空间检查通过。
 
-若完整 320 条通过，再登记共同 R5 并重新执行必要的四臂 1.7B wiring、4B M1/M2 pilot，
+待 G3 结果及交互覆盖评估后，再决定并登记共同 R5，重新执行必要的四臂 1.7B wiring、4B M1/M2 pilot，
 每个新 cell 从对应的相同 base 初始化，并验证同 worker 的训练后 greedy。通过必要门禁后才能以新身份重启
 主筛选；旧 R4 失败不会改写为成功。
 
 证据根目录：`runs/m2-screening-20260908-v10/diagnostics/`。原对照详见
 `fixed_matrix_readout.json`；新候选见 `single_tool_v1/acceptance_v2/acceptance.json`；
-逐轨迹进度见 `single_tool_v1/trajectories_base/state.json`；运行入口和最新服务见
+完整 320 条统计见 `single_tool_v1/full_trajectory_readout.json`，历史动作背景见
+`single_tool_v1/original_r4_action_context.json`；运行入口和最新服务见
 本机 `runs/M2_SCREENING_LATEST.md`。
