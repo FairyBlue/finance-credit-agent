@@ -51,6 +51,26 @@ SHA256 为 `4f8dbd6ee0bed1041da7a024749e03eac7c26c163cf63845be003a8542754170`。
 probe 脚本 SHA256 `2a85274ae1d77706067f503c1f6e4f151a8ceaadf76ee5524070c8a8c1316ccd`。
 新 probe 的 11 项 CPU 测试通过；共同生产路径相关 196 项测试、Ruff 和三文件 mypy 通过。
 
+### 启动准备修正：保留工具 schema 的字段顺序
+
+08:56 UTC 首次服务在 `LLM.generate` 前停止，未写入任何 group-start/request 记录，**新增模型
+响应为 0**。原因是诊断 JSON writer 使用 `sort_keys=True`，改变 tools 的字段顺序；Qwen 模板
+把工具对象序列化到提示，因而重读后得到 2353 tokens / SHA256
+`2ecd111adb0ef978bf3a6ceaf32a0d21b9658a2388e4d0f400aefdb9d22ecb37`，与已冻结的 2364 tokens
+不符。字典逐值相等无法检测这一顺序变化，运行时 token 一致性检查正确拦截了它。
+
+真实生产方法链及 tokenizer 的 CPU 检查仍得到 2364 / `aa5b8ad0…`，原工具顺序也独立复核
+相同。修正只涉及诊断 prompt 保序落盘和保存后重读/启动前渲染校验；候选规则、工具内容、
+目标 token IDs、18 请求计划及验收规则不变。旧失败目录、脚本和 JSON 全部保留，新脚本
+使用 `run_single_tool_probe_v2.py`，新输出目录 `base_v2` / `actor_v2`；不是重抽失败模型响应。
+原 36 请求直接使用其已验证 token IDs，不经过这条新 prompt writer，因此不受此问题影响。
+
+修正后脚本 SHA256 `297af58a65273c1762144678c701e38baf065e60f51cd8e5f68a1df09c3bbe40`，
+`prompt_v2.json` SHA256 `2455436dcb9208db106d5d6f5ac401b4933f84e9ae638aa94dfc7a9723c48d07`。
+13 项 CPU 测试通过，包含真实 tokenizer 保序往返、排序负例、vLLM cached tokenizer 方法
+与原 tokenizer 一致；保存后校验为 EXACT_SERIALIZED_PROMPT_MATCH。新推理仍须在发送前
+以 live tokenizer 核对全部 token IDs。
+
 - 模型仍为 exact Qwen3-4B base `1cfa9a7208912126459214e8b04321603b3df60c`，及已完成
   399/399 权重键、全部 FP32→BF16 bitwise 校验的 step-8 actor 导出。它不是失败时的 step-11
   policy；原 FAILED checkpoint 和证据保留。
