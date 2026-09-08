@@ -120,6 +120,26 @@ invalid/malformed action 交给原环境反馈，记录后继续，不合成 hol
 独立推理没有真实更新和常驻 Adam，不替代同 worker 的训练后评估，也不能证明后续训练
 不会再截断。若失败，保留全部证据，另行登记下一步。
 
+### 扩展启动依据
+
+09:07 UTC，新 `base_v2` / `actor_v2` 固定请求均已观察，新 acceptance 为
+**18/18 完整、18/18 单工具及参数格式合格、18/18 无额外文字**；最长响应 34 tokens。
+两模型各产生 8 个 hold、1 个 compute。这是初始状态行为记录，不据此判断策略收益。
+验收文件 `single_tool_v1/acceptance_v2/acceptance.json`，旧候选的负结果继续保留。
+
+完整轨迹 runner 为 `single_tool_v1/run_train_trajectories.py`，启动冻结 SHA256
+`a845eb9fe2e8a3fbe5289d7cbbbeb9eecbb2bdb7559e0c7d9867e12bea9855a2`。它在模型初始化前重核
+新 gate、模型导出和 Train 源身份；actor 阶段还要求同 runner 的 base 160 条全部完整，
+并核对全部逐请求证据清单。环境使用原 `a549c6d3…` 源及 pinned Agent-R1 `b124aa46…`，
+单工具 helper 单独绑定上述版本；输出保存实际 token IDs 及保留字段顺序的消息/工具。
+
+CPU 真实环境 fixture 使用 row0 和 row22，各固定一次非法动作及 20 次 hold；两条均按
+真实环境规则完成 20 次推进、21 个 ledger sessions，row22 首提示精确匹配候选，最大
+prompt 2433 tokens。这 42 次固定动作用于验证 runner/环境接口，**模型请求和生成轨迹均为 0**，
+不计入新增 320 条预算。实际 18-request gate 及 actor 文件 SHA 的 CPU 准入也已通过。
+最终冻结 runner 的 40 项 CPU 测试和相关脚本 Ruff 通过；42/42 保存 prompt 经真实 tokenizer
+重读复算与原 token IDs 一致，真实终局也用最终检查函数复核通过。
+
 ## 资源与后续执行边界
 
 诊断通过服务器独立 systemd user service、Linger=yes、stdin=null 和文件日志运行，断开
