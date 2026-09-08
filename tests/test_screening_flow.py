@@ -6,16 +6,22 @@ import asyncio
 import importlib
 import json
 import sys
+from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
 from types import ModuleType, SimpleNamespace
 from typing import Any
 
 import pytest
-from agent_r1.env.base import Action
+from agent_r1.env.base import Action, Observation
 from omegaconf import OmegaConf
 
 from src.agents import rollout_seed
+from src.agents.screening_prompt import (
+    SINGLE_TOOL_V1_RULES,
+    action_protocol_sha256,
+    apply_screening_action_protocol,
+)
 from src.data import MarketObservation, StockBenchAdapter
 from src.env.trading import TradingEnv
 
@@ -223,19 +229,28 @@ def _run_flow(
     max_steps=32,
     invalid_first=False,
     trade_first=False,
+    action_protocol="legacy",
+    prompt_length=4096,
 ):
     monkeypatch.setenv(module.SCREENING_EVIDENCE_DIR_ENV, str(tmp_path / "evidence"))
     monkeypatch.setattr(rollout_seed, "_configured_evidence_root", tmp_path / "seeds")
     config = OmegaConf.create(
         {
-            "data": {"seed": 42},
+            "data": {
+                "seed": 42,
+                **(
+                    {"screening_action_protocol": action_protocol}
+                    if action_protocol != "legacy"
+                    else {}
+                ),
+            },
             "actor_rollout_ref": {
                 "rollout": {
                     "n": 4,
                     "val_kwargs": {"n": 1},
-                    "prompt_length": 4096,
+                    "prompt_length": prompt_length,
                     "response_length": 32,
-                    "max_model_len": 4128,
+                    "max_model_len": prompt_length + 32,
                     "agent": {"max_steps": max_steps},
                 }
             },
@@ -279,6 +294,7 @@ def _records(root: Path):
 
 @pytest.mark.parametrize("arm", ["A2", "M1", "M2", "M2-plain"])
 @pytest.mark.parametrize("validate", [False, True])
+@pytest.mark.parametrize("action_protocol", ["legacy", "single_tool_v1"])
 def test_screening_arms_share_scorer_but_preserve_training_reward_timing(
     screening_module,
     monkeypatch,
@@ -286,6 +302,7 @@ def test_screening_arms_share_scorer_but_preserve_training_reward_timing(
     environment_kwargs,
     arm,
     validate,
+    action_protocol,
 ):
     output, manager = _run_flow(
         screening_module,
@@ -294,6 +311,7 @@ def test_screening_arms_share_scorer_but_preserve_training_reward_timing(
         environment_kwargs,
         arm=arm,
         validate=validate,
+        action_protocol=action_protocol,
     )
     (record,) = _records(tmp_path)
     assert record["complete"] and record["status"] == "COMPLETE"
@@ -311,6 +329,15 @@ def test_screening_arms_share_scorer_but_preserve_training_reward_timing(
     assert len(manager.calls) == 20
     assert len({call["sampling_params"]["seed"] for call in manager.calls}) == 20
     assert record["generated_response_tokens"] == 40
+    assert record["action_protocol"] == action_protocol
+    assert record["action_protocol_sha256"] == action_protocol_sha256(action_protocol)
+    assert record["identity"]["validate"] is validate
+    for call in manager.calls:
+        messages = json.loads(bytes(call["prompt_ids"]).decode("ascii"))
+        assert sum(SINGLE_TOOL_V1_RULES in message["content"] for message in messages) == (
+            0 if action_protocol == "legacy" else 1
+        )
+        assert call["sampling_params"]["temperature"] == (0.0 if validate else 1.0)
     assert all("response_token_ids" not in request for request in record["requests"])
     assert all(
         step.extra_fields["finance_screening_group_uid"] == "fixed-upstream-uid"
@@ -469,3 +496,95 @@ def test_historical_observation_keeps_its_registered_schema(environment_kwargs):
     env.reset()
     obs, _, _, _ = asyncio.run(env.step(_action("hold")))
     assert "last_reward" in json.dumps(obs.messages)
+
+
+def test_protocol_copies_observation_before_parent_template_and_preserves_environment(
+    screening_module, monkeypatch, tmp_path, environment_kwargs
+):
+    received = []
+    original = screening_module.TradingAgentEnvLoop._obs_to_prompt
+
+    async def observe_parent(self, obs, tools=None):
+        env_messages = self._active_trading_env._messages
+        assert all(SINGLE_TOOL_V1_RULES not in message["content"] for message in env_messages)
+        assert obs.messages == apply_screening_action_protocol(env_messages, "single_tool_v1")
+        assert obs.messages is not env_messages
+        before = deepcopy(env_messages)
+        result = await original(self, obs, tools=tools)
+        assert env_messages == before
+        received.append(obs)
+        return result
+
+    monkeypatch.setattr(screening_module.TradingAgentEnvLoop, "_obs_to_prompt", observe_parent)
+    output, manager = _run_flow(
+        screening_module,
+        monkeypatch,
+        tmp_path,
+        environment_kwargs,
+        action_protocol="single_tool_v1",
+    )
+    assert len(received) == len(output.steps) == len(manager.calls) == 20
+
+
+@pytest.mark.parametrize(
+    "obs",
+    [
+        Observation(text="Already rendered"),
+        Observation(token_ids=[1, 2, 3]),
+        Observation(messages=[{"role": "user", "content": "state"}], token_ids=[1]),
+        Observation(),
+    ],
+)
+def test_enabled_protocol_rejects_non_message_observations_before_tokenization(
+    screening_module, obs
+):
+    flow = object.__new__(screening_module.ScreeningTradingAgentEnvLoop)
+    flow._action_protocol = "single_tool_v1"
+    with pytest.raises(RuntimeError, match="requires message observations"):
+        asyncio.run(flow._obs_to_prompt(obs))
+
+
+@pytest.mark.parametrize("protocol", [True, False, 1, "unregistered"])
+def test_flow_rejects_invalid_shared_protocol_before_generation(
+    screening_module, monkeypatch, tmp_path, environment_kwargs, protocol
+):
+    with pytest.raises(ValueError, match="action protocol"):
+        _run_flow(
+            screening_module,
+            monkeypatch,
+            tmp_path,
+            environment_kwargs,
+            action_protocol=protocol,
+        )
+    assert _records(tmp_path) == []
+
+
+def test_added_protocol_text_cannot_bypass_the_parent_prompt_length_guard(
+    screening_module, monkeypatch, tmp_path, environment_kwargs
+):
+    obs = TradingEnv(**environment_kwargs, reward_mode="outcome_only").reset()
+    original_messages = deepcopy(obs.messages)
+    legacy_length = len(json.dumps(obs.messages).encode("ascii"))
+    flow = object.__new__(screening_module.ScreeningTradingAgentEnvLoop)
+    flow._action_protocol = "legacy"
+    flow.prompt_length = legacy_length
+    assert len(asyncio.run(flow._obs_to_prompt(obs))) == legacy_length
+    flow._action_protocol = "single_tool_v1"
+    with pytest.raises(screening_module.ScreeningIncompleteError, match="prompt limit"):
+        asyncio.run(flow._obs_to_prompt(obs))
+    assert obs.messages == original_messages
+
+    with pytest.raises(screening_module.ScreeningIncompleteError, match="prompt limit"):
+        _run_flow(
+            screening_module,
+            monkeypatch,
+            tmp_path,
+            environment_kwargs,
+            action_protocol="single_tool_v1",
+            prompt_length=legacy_length,
+        )
+    (record,) = _records(tmp_path)
+    assert record["status"] == "INCOMPLETE" and record["complete"] is False
+    assert record["requests"] == [] and record["steps"] == []
+    assert "terminal_score" not in record
+    assert record["action_protocol_sha256"] == action_protocol_sha256("single_tool_v1")

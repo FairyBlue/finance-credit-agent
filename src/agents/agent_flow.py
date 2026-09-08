@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import math
 import os
-from dataclasses import asdict
+from dataclasses import asdict, replace
 from hashlib import sha256
 from pathlib import Path
 from typing import Any
@@ -22,6 +22,11 @@ from .rollout_seed import (
     ROLLOUT_SEED_SCHEME,
     build_seeded_server_manager,
     normalize_rollout_identity,
+)
+from .screening_prompt import (
+    action_protocol_sha256,
+    apply_screening_action_protocol,
+    validate_action_protocol,
 )
 
 SCREENING_EVIDENCE_DIR_ENV = "FINANCE_SCREENING_EVIDENCE_DIR"
@@ -281,6 +286,9 @@ class ScreeningTradingAgentEnvLoop(TradingAgentEnvLoop):
         kwargs["finance_scorer_id"] = "benchmark_scale_v2"
         kwargs["reward_mode"] = "outcome_only" if screening_arm == "A2" else "finance_trajectory"
         super().__init__(*args, **kwargs)
+        self._action_protocol = validate_action_protocol(
+            self.config.data.get("screening_action_protocol", "legacy")
+        )
 
     def _create_env(self, **kwargs: Any) -> _TradingEnv:
         supplied = kwargs.get("env_kwargs", {})
@@ -311,6 +319,13 @@ class ScreeningTradingAgentEnvLoop(TradingAgentEnvLoop):
     async def _obs_to_prompt(
         self, obs: Any, tools: list[dict[str, Any]] | None = None
     ) -> list[int]:
+        if self._action_protocol != "legacy":
+            if obs.messages is None or obs.text is not None or obs.token_ids is not None:
+                raise RuntimeError("screening action protocol requires message observations")
+            obs = replace(
+                obs,
+                messages=apply_screening_action_protocol(obs.messages, self._action_protocol),
+            )
         try:
             return await super()._obs_to_prompt(obs, tools=tools)
         except RuntimeError as error:
@@ -366,6 +381,8 @@ class ScreeningTradingAgentEnvLoop(TradingAgentEnvLoop):
             "chat_template_kwargs": dict(
                 self.config.data.get("apply_chat_template_kwargs", {})
             ),
+            "action_protocol": self._action_protocol,
+            "action_protocol_sha256": action_protocol_sha256(self._action_protocol),
             "pid": os.getpid(),
             "complete": False,
         }

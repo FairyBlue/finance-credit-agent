@@ -32,6 +32,7 @@ from .launcher import (
 from .metadata import collect_run_hashes, verify_validation_identity
 from .rollout_seed import normalize_rollout_identity
 from .screening_checkpoint import validate_checkpoint
+from .screening_prompt import validate_action_protocol
 from .update_probe import summarize_update_evidence
 
 ARMS = ("A2", "M1", "M2-plain", "M2")
@@ -147,6 +148,9 @@ def build_cell_config(
     template_kwargs = generation_template_kwargs(settings)
     if template_kwargs:
         config["data"]["apply_chat_template_kwargs"] = template_kwargs
+    protocol = validate_action_protocol(settings.get("action_protocol", "legacy"))
+    if protocol != "legacy":
+        config["data"]["screening_action_protocol"] = protocol
     config["tracking"]["log_root"] = str(cell_dir)
     config["reward"] = {
         "scorer_id": "benchmark_scale_v2",
@@ -176,6 +180,9 @@ def build_cell_command(
     template_kwargs = generation_template_kwargs(settings)
     if config["data"].get("apply_chat_template_kwargs", {}) != template_kwargs:
         raise ValueError("resolved chat template mode differs from screening settings")
+    protocol = validate_action_protocol(settings.get("action_protocol", "legacy"))
+    if config["data"].get("screening_action_protocol", "legacy") != protocol:
+        raise ValueError("resolved action protocol differs from screening settings")
     profile = r.get("profile", "native")
     if profile not in {"native", "pageable_adam_v1"}:
         raise ValueError("unregistered screening resource profile")
@@ -257,6 +264,8 @@ def build_cell_command(
         overrides["+data.apply_chat_template_kwargs.enable_thinking"] = (
             template_kwargs["enable_thinking"]
         )
+    if protocol != "legacy":
+        overrides["+data.screening_action_protocol"] = protocol
     env_flags = {
         "FINANCE_SCREENING_ARM": arm,
         # Hydra otherwise coerces numeric-looking strings into ints; Ray's

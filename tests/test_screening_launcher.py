@@ -117,10 +117,12 @@ def test_unexpected_capture_error_still_stops_trainer_and_propagates(
 @pytest.mark.parametrize("arm", ARMS)
 @pytest.mark.parametrize("stage", ("wiring", "pilot", "screening", "zero-shot"))
 @pytest.mark.parametrize("enable_thinking", (None, False, True))
+@pytest.mark.parametrize("action_protocol", ("legacy", "single_tool_v1"))
 def test_screening_commands_have_shared_exact_contract(
-    tmp_path: Path, arm: str, stage: str, enable_thinking: bool | None,
+    tmp_path: Path, arm: str, stage: str, enable_thinking: bool | None, action_protocol: str,
 ):
     settings = yaml.safe_load((REPO_ROOT / "configs/m2_screening.yaml").read_text())
+    settings["action_protocol"] = action_protocol
     settings.pop("generation", None)
     if enable_thinking is not None:
         settings["generation"] = {"enable_thinking": enable_thinking}
@@ -148,6 +150,12 @@ def test_screening_commands_have_shared_exact_contract(
         cell_dir=tmp_path,
     )
     options = dict(argument.lstrip("+").split("=", 1) for argument in command[3:])
+    if action_protocol == "legacy":
+        assert "data.screening_action_protocol" not in options
+        assert "screening_action_protocol" not in config["data"]
+    else:
+        assert options["data.screening_action_protocol"] == action_protocol
+        assert config["data"]["screening_action_protocol"] == action_protocol
     template_key = "data.apply_chat_template_kwargs.enable_thinking"
     if enable_thinking is None:
         assert template_key not in options
@@ -205,11 +213,13 @@ def test_screening_commands_have_shared_exact_contract(
 
 
 @pytest.mark.parametrize("enable_thinking", (None, False, True))
+@pytest.mark.parametrize("action_protocol", ("legacy", "single_tool_v1"))
 def test_real_hydra_compose_produces_ray_compatible_string_environment(
-    tmp_path: Path, enable_thinking: bool | None,
+    tmp_path: Path, enable_thinking: bool | None, action_protocol: str,
 ):
     """Numeric-looking argv strings must survive Hydra before Ray validates them."""
     settings = yaml.safe_load((REPO_ROOT / "configs/m2_screening.yaml").read_text())
+    settings["action_protocol"] = action_protocol
     settings.pop("generation", None)
     if enable_thinking is not None:
         settings["generation"] = {"enable_thinking": enable_thinking}
@@ -243,6 +253,7 @@ def test_real_hydra_compose_produces_ray_compatible_string_environment(
     assert OmegaConf.to_container(resolved.data.apply_chat_template_kwargs) == expected_template
     if enable_thinking is not None:
         assert type(resolved.data.apply_chat_template_kwargs.enable_thinking) is bool
+    assert resolved.data.get("screening_action_protocol", "legacy") == action_protocol
     for optimizer in (resolved.actor_rollout_ref.actor.optim, resolved.critic.optim):
         assert OmegaConf.to_container(optimizer.override_optimizer_config) == {
             "foreach": False, "fused": False,
