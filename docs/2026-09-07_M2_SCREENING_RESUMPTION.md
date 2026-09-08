@@ -1,5 +1,11 @@
 # M2 screening 恢复执行记录（2026-09-07）
 
+> **2026-09-08 更新：** 下文按时间保留历史进度。v9 四臂 1.7B wiring 与 4B M1 pilot 随后均已
+> 通过，必要门禁于 9 月 7 日 16:54 UTC 验收后进入主 screening。首个 4B A2 / seed42 cell
+> 完成 11 轮更新，第 12 轮的一条 Train 响应触及 4096 cap，18:54 UTC 自动停止。
+> 当前不是仍在跑 M1 pilot；主筛选未完成，原失败和 step-8 完整 checkpoint 保留。
+> 新修复工作见 [9 月 8 日生成诊断计划](2026-09-08_M2_GENERATION_DIAGNOSTIC_PLAN.md)。
+
 用户阅读当前报告并认可“先处理 4B 工程问题，再判断生成完整性问题”的顺序，现明确授权恢复。
 本记录更新此前暂停状态；[05:53 UTC 实验报告](2026-09-07_M2_SCREENING_EXPERIMENT_REPORT.md)
 仍作为暂停时的历史快照保留。
