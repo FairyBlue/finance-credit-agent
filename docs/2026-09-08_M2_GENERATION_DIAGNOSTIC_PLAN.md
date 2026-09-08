@@ -49,6 +49,24 @@ prompt SHA。模型为 exact Qwen3-4B base `1cfa9a7208912126459214e8b04321603b3d
 
 ## 后续验收原则
 
+### 条件式完整 Train 轨迹检查（固定请求矩阵产生结果前登记）
+
+只有上述两模型 non-thinking 共 18/18 请求完整且工具参数格式合格时，才允许使用候选模式
+做这一扩展：base 与 step-8 actor 各执行全部 32 个 screen-train 窗口，保持原顺序；每窗口
+4 条采样轨迹及 1 条 greedy 轨迹，共 160/model、320 条完整轨迹。模型不更新参数。
+共同 template=`enable_thinking=False`，采样与 greedy 参数、4096 cap/8192 context/256
+agent steps 均沿用上文，run seed=42。请求 seed 由现有 `finance-rollout-seed-v1` 推导，
+诊断 identity 固定 `step=0`、原 sample_index 0..31、rollout_n 和 validate；不冒充训练轮次。
+
+采样按相邻两个窗口×4 siblings 的 batch8 运行；greedy 按相邻两个窗口的 batch2 运行。
+一个 batch 完成前不补入新轨迹；先全部采样，再全部 greedy。使用真实 TradingEnv 的
+reset/step/terminal 检查和实际 tokenizer；每次产生自然结束响应后才交给环境执行。
+invalid actions 按原环境处理并记录，不能合成 hold、跳过动作或补抽。任一响应/轨迹不完整
+即停止候选，保留失败及未运行网格。此扩展不使用 Dev、不恢复训练，也不根据回报筛选配置。
+
+它用于检查跨窗口和连续工具交互的完整性，不替代真实训练更新、保留 Adam 状态后评测的
+wiring/pilot；若单请求矩阵未通过，本扩展不启动。原320条为预定上限，不追加成功样本。
+
 若诊断支持更改生成模式，须对四臂的训练、最终评测及 zero-shot 采用同一明确模式，记录
 新的共同 execution amendment、输入模板和预算检查；学习率、scorer、residual、样本/seed
 预算不因某个臂失败单独改变。必要的新 wiring/pilot 从相同 base 开始，旧失败不改名为通过。
