@@ -140,6 +140,16 @@ prompt 2433 tokens。这 42 次固定动作用于验证 runner/环境接口，**
 最终冻结 runner 的 40 项 CPU 测试和相关脚本 Ruff 通过；42/42 保存 prompt 经真实 tokenizer
 重读复算与原 token IDs 一致，真实终局也用最终检查函数复核通过。
 
+两模型之间的条件接续由独立服务器 controller 执行，源码
+`single_tool_v1/continue_train_trajectories.py`，SHA256
+`e6562e552b22c8c855e018ec86d193ba181df33eca09441943baeb305dfcda67`；19 项 CPU 测试及
+Ruff 通过。它等待已启动 base 服务结束，核对真实 160 条完整证据后，只启动一次 actor；
+任一失败、输入变动或 actor 输出目录已存在均停止。两模型结果再经复核才写 COMPLETE320，
+不接续任何训练或 Dev。base unit 若已被 systemd collect，则明确记录 OS exit status
+不可用，以对应进程消失和完整轨迹证据作为准入依据，不把 systemd 默认值当作退出证据。
+controller 自身使用 Restart=no、KillMode=control-group、RemainAfterExit=yes，actor 的
+实际 returncode 和日志单独落盘。
+
 ## 资源与后续执行边界
 
 诊断通过服务器独立 systemd user service、Linger=yes、stdin=null 和文件日志运行，断开
