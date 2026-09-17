@@ -1,0 +1,41 @@
+{
+  "profile": "qwen_nonthinking_sampling_comparison_v1",
+  "cell_ids": [
+    "sft0",
+    "m1",
+    "m2_eta1",
+    "m2_eta025"
+  ],
+  "trajectories_per_model": 96,
+  "planned_trajectories": 384,
+  "contexts": 12,
+  "siblings_per_profile": 4,
+  "profiles": {
+    "current": {
+      "temperature": 1.0,
+      "top_p": 1.0,
+      "top_k": -1,
+      "min_p": 0.0
+    },
+    "qwen_recommended": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0.0
+    }
+  },
+  "enable_thinking": false,
+  "seed": 42,
+  "request_limit": 128,
+  "response_limit": 4096,
+  "prompt_limit": 8192,
+  "repetition_penalty": 1.0,
+  "presence_penalty": 0.0,
+  "frequency_penalty": 0.0,
+  "training_updates": 0,
+  "new_model_exports": 0,
+  "automatic_retry": false,
+  "request_cap_policy": "retain_incomplete_and_continue",
+  "other_failure_policy": "stop",
+  "original_reference": "/home/tianming/projects/finance-credit-agent/runs/m2-policy-transfer-eval-20260914"
+}

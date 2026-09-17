@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "status": "WAITING_FOR_GPU",
+  "started_at_SGT": "2026-09-17T15:22:41+08:00",
+  "directory": "/home/tianming/projects/finance-credit-agent/runs/m2-common-validity-penalty-20260917",
+  "maximum_wait_seconds": 43200,
+  "poll_seconds": 45,
+  "free_below_MiB": 1024,
+  "memory_used_MiB": 17103,
+  "waited_seconds": 20436.11,
+  "automatic_retry": false,
+  "stops_other_processes": false,
+  "telemetry_error_count": 0,
+  "at_SGT": "2026-09-17T21:03:17+08:00"
+}

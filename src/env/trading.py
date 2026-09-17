@@ -5,9 +5,11 @@ from __future__ import annotations
 import json
 import math
 from collections.abc import Mapping, Sequence
+from copy import deepcopy
 from dataclasses import asdict, dataclass
 from datetime import date, datetime, time
 from functools import lru_cache
+from hashlib import sha256
 from pathlib import Path
 from typing import Any, Literal
 
@@ -28,6 +30,12 @@ from src.rewards import RiskComponents, finance_advantage
 
 from . import tools as _registered_tools  # noqa: F401  # registry side effects
 from .accounting import ExecutionPolicy, PortfolioLedger, _aware_utc
+from .observation_features import compute_close_metrics, render_decision_features
+from .observation_memory import (
+    MEMORY_OBSERVATION_PROFILES,
+    ToolResultMemory,
+    validate_observation_profile,
+)
 
 
 class _StrictArgs(BaseModel):
@@ -170,6 +178,7 @@ class TradingEnv(ToolEnv):
     MAX_RECENT_EVENTS = 3
     MAX_EVENT_TEXT_CHARS = 80
     MAX_ERROR_CHARS = 240
+    MAX_DIAGNOSTIC_TEXT_CHARS = 65536
     MARKET_STATE_FIELDS = ("open", "high", "low", "close", "volume")
 
     def __init__(
@@ -206,9 +215,17 @@ class TradingEnv(ToolEnv):
         market_timezone: str | None = None,
         market_close_time: str | None = None,
         tool_format: str = "hermes",
+        capture_interactions: bool = False,
+        observation_profile: str = "legacy",
         **kwargs: Any,
     ) -> None:
         super().__init__(tools=list(self.TOOL_NAMES), tool_format=tool_format)
+        if not isinstance(capture_interactions, bool):
+            raise ValueError("capture_interactions must be a boolean")
+        self._capture_interactions = capture_interactions
+        self._interaction_trace: list[dict[str, Any]] = []
+        self._observation_profile = validate_observation_profile(observation_profile)
+        self._tool_result_memory = ToolResultMemory()
         self._dates = tuple(_parse_datetime(value) for value in episode_dates)
         if not isinstance(screening, bool):
             raise ValueError("screening must be a boolean")
@@ -486,6 +503,7 @@ class TradingEnv(ToolEnv):
         return metrics
 
     def reset(self, **kwargs: Any) -> Observation:
+        self._tool_result_memory = ToolResultMemory()
         self.ledger = PortfolioLedger(
             initial_cash=self._initial_cash,
             policy=self._execution_policy,
@@ -502,6 +520,7 @@ class TradingEnv(ToolEnv):
         self._maximum_position_weight = 0.0
         self._recent_events = []
         self._credit_step_trace = []
+        self._interaction_trace = []
         self._active_decision_session_index = 0
         raw_prompt = list(kwargs.get("raw_prompt", self._base_raw_prompt))
         if not raw_prompt:
@@ -519,6 +538,62 @@ class TradingEnv(ToolEnv):
         return self._observation(self._state_text(), tool_response=False)
 
     async def step(self, action: Action) -> tuple[Observation, float, bool, dict[str, Any]]:
+        decision_index = self._index
+        result = await self._step(action)
+        if self._capture_interactions:
+            observation, reward, done, info = result
+            raw_text = action.text if isinstance(action, Action) else None
+            observation_text = (
+                json.dumps(observation.messages, ensure_ascii=True, sort_keys=True, allow_nan=False)
+                if observation.messages is not None
+                else observation.text
+            )
+            # Keep diagnostics separate from observations and credit traces. In
+            # particular, neither rewards nor this audit history enter prompts.
+            self._interaction_trace.append(
+                {
+                    "step_index": len(self._interaction_trace),
+                    "decision_session_index": decision_index,
+                    "result_session_index": self._index,
+                    "response": self._diagnostic_text(raw_text),
+                    "observation": self._diagnostic_text(observation_text),
+                    "reward": reward,
+                    "done": done,
+                    "info": json.loads(json.dumps(
+                        info, default=self._diagnostic_json_default, allow_nan=False,
+                    )),
+                }
+            )
+        return result
+
+    @property
+    def interaction_trace(self) -> list[dict[str, Any]]:
+        """Detached, bounded diagnostic records; empty unless explicitly enabled."""
+        return deepcopy(self._interaction_trace)
+
+    @classmethod
+    def _diagnostic_text(cls, text: Any) -> dict[str, Any]:
+        if text is not None and not isinstance(text, str):
+            # Action is an unvalidated upstream dataclass. A non-text action
+            # remains an ordinary invalid step, even with evidence enabled.
+            return {
+                "text": None, "char_count": None, "truncated": False, "sha256": None,
+                "unavailable_reason": "non_text_value", "value_type": type(text).__name__,
+            }
+        return {
+            "text": None if text is None else text[:cls.MAX_DIAGNOSTIC_TEXT_CHARS],
+            "char_count": 0 if text is None else len(text),
+            "truncated": text is not None and len(text) > cls.MAX_DIAGNOSTIC_TEXT_CHARS,
+            "sha256": None if text is None else sha256(text.encode("utf-8")).hexdigest(),
+        }
+
+    @staticmethod
+    def _diagnostic_json_default(value: Any) -> str:
+        if isinstance(value, (datetime, date)):
+            return value.isoformat()
+        raise TypeError(f"unsupported diagnostic value: {type(value).__name__}")
+
+    async def _step(self, action: Action) -> tuple[Observation, float, bool, dict[str, Any]]:
         self._active_decision_session_index = self._index
         if self._done:
             return self._invalid("episode is already complete", terminal=True)
@@ -542,6 +617,8 @@ class TradingEnv(ToolEnv):
 
             if call.name == "retrieve":
                 result = self._retrieve(validated)
+                if self._observation_profile in MEMORY_OBSERVATION_PROFILES:
+                    self._tool_result_memory.remember(call.name, normalized_args, result)
                 self._remember_event(call.name, normalized_args)
                 return self._success(
                     self._state_text(extra={"last_tool_result": result}),
@@ -549,6 +626,8 @@ class TradingEnv(ToolEnv):
                 )
             if call.name == "compute":
                 result = self._compute(validated)
+                if self._observation_profile in MEMORY_OBSERVATION_PROFILES:
+                    self._tool_result_memory.remember(call.name, normalized_args, result)
                 self._remember_event(call.name, normalized_args)
                 return self._success(
                     self._state_text(extra={"last_tool_result": result}),
@@ -676,25 +755,30 @@ class TradingEnv(ToolEnv):
 
         return value.encode("unicode_escape").decode("ascii")[:limit]
 
-    def _compute(self, args: _StrictArgs) -> dict[str, object]:
-        assert isinstance(args, ComputeArgs)
-        symbol = args.symbol.strip().upper()
-        closes = [
+    @property
+    def observation_profile(self) -> str:
+        return self._observation_profile
+
+    def _visible_close_prices(
+        self, symbol: str, snapshot: ObservationSnapshot | None = None,
+    ) -> list[float]:
+        # Preserve the existing PIT-record order and selection semantics. This
+        # counts records, not distinct dates or sessions since episode reset.
+        return [
             float(observation.payload["close"])
-            for observation in self._snapshot()
+            for observation in (self._snapshot() if snapshot is None else snapshot)
             if observation.kind == "market"
             and observation.symbol == symbol
             and "close" in observation.payload
-        ][-args.lookback :]
+        ]
+
+    def _compute(self, args: _StrictArgs) -> dict[str, object]:
+        assert isinstance(args, ComputeArgs)
+        symbol = args.symbol.strip().upper()
+        closes = self._visible_close_prices(symbol)[-args.lookback :]
         if len(closes) < 2:
             raise ValueError(f"compute needs at least two visible close prices for {symbol}")
-        array = np.asarray(closes, dtype=np.float64)
-        returns = array[1:] / array[:-1] - 1.0
-        values = {
-            "price_change": float(array[-1] / array[0] - 1.0),
-            "mean_return": float(returns.mean()),
-            "volatility": float(returns.std(ddof=0)),
-        }
+        values = compute_close_metrics(closes)
         return {
             "as_of": self.current_date.isoformat(),
             "lookback_used": len(closes),
@@ -704,6 +788,8 @@ class TradingEnv(ToolEnv):
         }
 
     def _queue_directional_target(self, action_name: str, args: TargetArgs) -> None:
+        if action_name not in ("buy", "sell"):
+            raise ValueError("directional target action must be buy or sell")
         symbol = args.symbol.strip().upper()
         if symbol not in self._symbols:
             raise ValueError(f"symbol {symbol!r} is outside the frozen episode universe")
@@ -716,6 +802,7 @@ class TradingEnv(ToolEnv):
             symbol,
             target_weight=args.target_weight,
             decision_at=self.current_date,
+            direction="buy" if action_name == "buy" else "sell",
         )
 
     def _advance(self, action_name: str) -> tuple[Observation, float, bool, dict[str, Any]]:
@@ -734,6 +821,14 @@ class TradingEnv(ToolEnv):
         )
         self._index = next_index
         fills = self.ledger.execute_next_open(self._open_times[self._index], next_opens)
+        skipped_orders = [
+            {
+                **asdict(order),
+                "decision_at": order.decision_at.isoformat(),
+                "executed_at": order.executed_at.isoformat(),
+            }
+            for order in self.ledger.last_execution_skips
+        ]
         equity_after = self.ledger.equity(next_closes)
 
         transaction_cost = sum(fill.total_cost for fill in fills)
@@ -774,6 +869,7 @@ class TradingEnv(ToolEnv):
             "drawdown": drawdown,
             "equity": equity_after,
             "fills": [asdict(fill) for fill in fills],
+            "skipped_orders": skipped_orders,
             "invalid_action": False,
             "portfolio_return_net": portfolio_return_net,
             "reward_mode": self._reward_mode,
@@ -782,8 +878,11 @@ class TradingEnv(ToolEnv):
         if self._done:
             info["episode_return"] = equity_after / self._initial_cash - 1.0
             info["trajectory_reward"] = emitted_reward
+        extra: dict[str, Any] = {"last_action": action_name, "last_reward": emitted_reward}
+        if skipped_orders:
+            extra["skipped_orders"] = skipped_orders
         return self._success(
-            self._state_text(extra={"last_action": action_name, "last_reward": emitted_reward}),
+            self._state_text(extra=extra),
             reward=emitted_reward,
             done=self._done,
             info=info,
@@ -905,6 +1004,25 @@ class TradingEnv(ToolEnv):
             "session_index": self._index,
             "sessions_remaining": len(self._dates) - self._index - 1,
         }
+        if self._observation_profile in MEMORY_OBSERVATION_PROFILES:
+            visible_closes = {
+                symbol: self._visible_close_prices(symbol, snapshot) for symbol in self._symbols
+            }
+            state["compute_history"] = {
+                "minimum_closes": 2,
+                "max_lookback": 60,
+                "available_close_records": {
+                    symbol: len(history) for symbol, history in visible_closes.items()
+                },
+            }
+            current_result = extra.get("last_tool_result") if extra else None
+            state["tool_result_memory"] = self._tool_result_memory.render(
+                current_result if isinstance(current_result, Mapping) else None,
+            )
+            if self._observation_profile == "history_features_v1":
+                state["decision_features"] = render_decision_features(
+                    visible_closes, as_of=self.current_date.isoformat(),
+                )
         if extra:
             state.update(
                 {key: value for key, value in extra.items() if key != "last_reward"}

@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "at_SGT": "2026-09-17T15:21:52+08:00",
+  "tests": [
+    {
+      "command": ".venv/bin/python -m pytest tests/test_common_validity_penalty.py tests/test_screening_runtime.py tests/test_actor_update_probe.py -q",
+      "passed": 101,
+      "verified_by": "validity_reward_runtime agent"
+    },
+    {
+      "command": ".venv/bin/python -m pytest tests/test_common_validity_penalty_runner.py tests/test_common_validity_penalty_run.py -q",
+      "passed": 28,
+      "verified_by": "validity_bounded_runner agent",
+      "note": "27 initial tests plus one added near-zero critic-return rounding regression passed"
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q tests/test_common_validity_penalty_queue.py",
+      "passed": 4,
+      "verified_by": "parent"
+    },
+    {
+      "command": ".venv/bin/pytest -q tests/test_m2_common_validity_penalty_readout.py tests/test_m2_common_validity_penalty_monitor.py",
+      "passed": 25,
+      "verified_by": "training_decline_analysis agent"
+    }
+  ],
+  "additional_checks": {
+    "runtime_output_to_runner_and_readout_actual_batch_smoke": "M1/M2/SFT0 PASS, performed by independent runtime agent",
+    "cpu_complete_windows": 12,
+    "maximum_prompt_tokens": 4589,
+    "input_equivalence": "8 training rows identical to historical first four rounds except run role; eval parquet byte-identical",
+    "lint": "All modified runtime, new runner/readout/monitor/queue and associated tests PASS",
+    "prerun_readout": "PASS: NOT_STARTED, 0/164 observed, 0 problems; prior successful history available at steps 0/2/4 only",
+    "service_launch_plan": "same independent systemd pattern; Type=exec, Restart=no, KillMode=control-group, stdin=null, file logs; compiler available"
+  },
+  "input_preflight_sha256": "f1cd894d7c98a2b2c96219bd2fd42d1417e77c03c61a913aa2672fe26eae91db",
+  "input_equivalence_sha256": "a63639f141cec6d9e250102d15019698a4b156d754498aec6c081b63e59941c6",
+  "cleanup_receipt_sha256": "63704c99bc9863f462c01002ba186b2aa7adc0cdb102577bf7e927e021044b3e",
+  "gpu_training_started": false,
+  "total_test_cases_passed": 158,
+  "validated_source_sha256": {
+    "src/agents/screening_runtime.py": "72583db1f45a8d264c229776ca87ff49b99a27f2bd597c6031d685c08fb47087",
+    "src/agents/actor_update_probe.py": "9cabd5a58ae1857ccb042ef34c969815b043620d883d9831ff8463bb9ee746a1",
+    "src/agents/common_validity_penalty.py": "9e126b5e13ee5b466e94e06dde7937b335e0f09f2d0879db4601a01ea1453ff0",
+    "scripts/diagnostics/m2_common_validity_penalty_monitor.py": "949caf8dcf5cb60bb27e09f4fab25dbbac1c7ca71412b79df10fa3aad529bdc0",
+    "scripts/diagnostics/m2_common_validity_penalty_queue.py": "765ea2fcf3166c8259d068d36411d62e2e0f66440724871188a359152fab2b91",
+    "scripts/diagnostics/m2_common_validity_penalty_readout.py": "2ced3fc94a5a23ff55a626cfcd8797bfc2cd42e1beab94331e158cb95529f8d6",
+    "scripts/diagnostics/run_m2_common_validity_penalty.py": "251c198fa672691f69e6128e55c9913b9cfdc8cac43b87709731fd3399c8721a"
+  }
+}

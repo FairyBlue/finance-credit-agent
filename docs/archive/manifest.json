@@ -1,0 +1,363 @@
+{
+  "scope": "Snapshot before consolidating pre-2026-09-13 documents; includes uncommitted and untracked local text. Original filenames inside ZIP are repository-relative.",
+  "protected_2026_09_13_and_14": {
+    "docs/2026-09-13_M2_TRAIN_PRACTICE_REPORT.md": "c19fe221af2e9883c3df38cda204255763bbac88e0984514c7011f798e004fc5",
+    "docs/2026-09-14_M2_COMMON_SFT_SHORT_RL_REPORT.md": "72f5ce982247ce02f8fc7217a26d46bb321420dbe3b13c260e0f6fabea3fdf0b",
+    "docs/2026-09-13_M2_COLDSTART_V2_PLAN.md": "3e0526f10962d050f105d10fd04a0b11804b936d1f3a007f7496b660c047aad0",
+    "docs/2026-09-13_M2_COLDSTART_PLAN.md": "30462522bd3bbbfdb3812a8b8083cd22432439241bf3715b386d6cd006fcfb02",
+    "docs/2026-09-14_M2_COLDSTART_V3_PLAN.md": "f1bfeb8e2f334e886fc112413d13e7c89248a6342eaab7ee78fe30476a84d356",
+    "docs/2026-09-13_M2_COLDSTART_V2_REPORT.md": "474457843e3653934c392f446ebad6ea8726fd5614f092eac121cfe9df8d6f10",
+    "docs/2026-09-14_M2_COMMON_SFT_SHORT_RL_PLAN.md": "d89f75ad9ef767c779207dd1aa388e4be6efa50e1387cf137b011fd6d9069d70",
+    "docs/2026-09-13_M2_LEARNING_RESTART_PLAN.md": "82b1f6fc4bd609c641f202f39e8dc4de137b5a971ac5d196ca810c2e9f13f121",
+    "docs/2026-09-13_M2_COLDSTART_REPORT.md": "32c4212ba7b9111470b1e78fd473218d337be87c476de3eed25de784532f1573",
+    "docs/2026-09-13_M2_LEARNING_RESTART_REPORT.md": "6b7e5c1c33dc2fb47da400ce73c5bd8582aba52437003a7a8360552cfbc49496",
+    "docs/2026-09-14_M2_COLDSTART_V3_REPORT.md": "843847d68121457dd8dc83e18b43f9b22eeb45299fa2463734674dc3acae7c06",
+    "docs/2026-09-13_TRADING_AGENT_TRAINING_LESSONS.md": "12edb89f283cf807c099671f01e9e4cc6667dc87cd6fd18385c759539c894624"
+  },
+  "files": [
+    {
+      "original_path": "docs/2026-08-27_H100_G1_AUDIT_RESULTS.md",
+      "sha256": "2639091f43095438da6ad3cfe74ad77158f10549460dd6984735b3a1964c7a6b",
+      "bytes": 15964,
+      "disposition": "consolidated",
+      "summary": "docs/history/01_H100_AND_M1.md"
+    },
+    {
+      "original_path": "docs/2026-08-27_H100_G1_VALIDATION_RUNBOOK.md",
+      "sha256": "79bdc14be021f9010f86f7ef826541c2e247fbc40b7e64a9cbb5e07abc8c8e07",
+      "bytes": 7826,
+      "disposition": "consolidated",
+      "summary": "docs/history/01_H100_AND_M1.md"
+    },
+    {
+      "original_path": "docs/2026-08-30_H100_G1_P1_INTEGRATION_HANDOFF.md",
+      "sha256": "de819b841803076881ac160806c09014ac14013d0c46aa0eb7216e24d4db3bf4",
+      "bytes": 14434,
+      "disposition": "consolidated",
+      "summary": "docs/history/01_H100_AND_M1.md"
+    },
+    {
+      "original_path": "docs/2026-08-30_H100_G1_P1_VALIDATION_RUNBOOK.md",
+      "sha256": "a2ed9fbc683733c840614e9534b0277582ad5074deb9bf91302cbfac6a2af5e5",
+      "bytes": 5519,
+      "disposition": "consolidated",
+      "summary": "docs/history/01_H100_AND_M1.md"
+    },
+    {
+      "original_path": "docs/2026-08-30_H100_G1_PRE_SMOKE_VALIDATION_RESULTS.md",
+      "sha256": "b18fe0080d986ec425dd931e5c0936fb66a0a0038137818d750a1cd04247ed5e",
+      "bytes": 11239,
+      "disposition": "consolidated",
+      "summary": "docs/history/01_H100_AND_M1.md"
+    },
+    {
+      "original_path": "docs/2026-08-31_H100_G1_SMOKE_RESULTS.md",
+      "sha256": "55ef007d1b0ded39210bc60fcab49f15eb4d1e7d8f953d262cdc38356deb34aa",
+      "bytes": 5921,
+      "disposition": "retained_path",
+      "summary": "docs/history/01_H100_AND_M1.md"
+    },
+    {
+      "original_path": "docs/2026-09-01_FORMAL_MANIFEST_RESULTS.md",
+      "sha256": "5a229e038c17057ee8de7aa97293d2844bb9ed999392719df9e0ce42ae7a663f",
+      "bytes": 3304,
+      "disposition": "retained_path",
+      "summary": "docs/history/01_H100_AND_M1.md"
+    },
+    {
+      "original_path": "docs/2026-09-01_T2_V2_RESULTS.md",
+      "sha256": "4bc25826af59cf9772d50204faea695403cb5e3adcd963535eee2a1cd5aab64f",
+      "bytes": 2517,
+      "disposition": "retained_path",
+      "summary": "docs/history/01_H100_AND_M1.md"
+    },
+    {
+      "original_path": "docs/2026-09-02_H100_A3_M1_WIRING_SMOKE_RESULTS.md",
+      "sha256": "ce010ea80053635f34d32f9ab55ab1c920f351cd354c2b0fabbe7a3aab4d5bbd",
+      "bytes": 11663,
+      "disposition": "retained_path",
+      "summary": "docs/history/01_H100_AND_M1.md"
+    },
+    {
+      "original_path": "docs/2026-09-04_M2_M3_LADDER_REVIEW.md",
+      "sha256": "f55da3e3ba679159c8e90803c925f3da1ed86ddf4cd65b2531cbd046fab3624d",
+      "bytes": 11318,
+      "disposition": "retained_path",
+      "summary": "docs/2026-09-04_M2_M3_LADDER_REVIEW.md"
+    },
+    {
+      "original_path": "docs/2026-09-05_M2_EXPERIMENT_PLAN_V2.md",
+      "sha256": "6afbde6f0f783a135c370bd18f02ae776a9fdd3b25e4c21b35c2197bc203c155",
+      "bytes": 29983,
+      "disposition": "retained_path",
+      "summary": "docs/2026-09-05_M2_EXPERIMENT_PLAN_V2.md"
+    },
+    {
+      "original_path": "docs/2026-09-06_M2_SCREENING_EXECUTION_AMENDMENT_R1.md",
+      "sha256": "c2b7a889c36641c06238e677bfd6e1d0845377daa3c8f2247acb2827936c029c",
+      "bytes": 4782,
+      "disposition": "retained_path",
+      "summary": "docs/history/02_M2_SCREENING_ENGINEERING.md"
+    },
+    {
+      "original_path": "docs/2026-09-06_M2_SCREENING_RUNBOOK.md",
+      "sha256": "0b36d93089ab8f85dd0d618d538a549c9e8eb7a7ba97cec5e71792040727dc36",
+      "bytes": 6978,
+      "disposition": "consolidated",
+      "summary": "docs/history/02_M2_SCREENING_ENGINEERING.md"
+    },
+    {
+      "original_path": "docs/2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R2.md",
+      "sha256": "3ad0fa031d843f9ff490f30ab1928e307488c1fcfe0c7eb60d566e69ff23b89a",
+      "bytes": 3585,
+      "disposition": "retained_path",
+      "summary": "docs/history/02_M2_SCREENING_ENGINEERING.md"
+    },
+    {
+      "original_path": "docs/2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R3.md",
+      "sha256": "320ccbb86428464c1c40c2c3cf430c642cc0390391f48fb909c780de5ac014b5",
+      "bytes": 6539,
+      "disposition": "retained_path",
+      "summary": "docs/history/02_M2_SCREENING_ENGINEERING.md"
+    },
+    {
+      "original_path": "docs/2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R4.md",
+      "sha256": "808cff2c9a73141a6ef9350cd897189fbb16e9ebee35966daa21030eae3bf1cb",
+      "bytes": 4060,
+      "disposition": "retained_path",
+      "summary": "docs/history/02_M2_SCREENING_ENGINEERING.md"
+    },
+    {
+      "original_path": "docs/2026-09-07_M2_SCREENING_EXPERIMENT_REPORT.md",
+      "sha256": "c2bb25a18d8ef1269c8bedb5f15b5d2e933a7583d78b8c3c235fa18007e9bffa",
+      "bytes": 10579,
+      "disposition": "consolidated",
+      "summary": "docs/history/02_M2_SCREENING_ENGINEERING.md"
+    },
+    {
+      "original_path": "docs/2026-09-07_M2_SCREENING_RESUMPTION.md",
+      "sha256": "4742926679ad3ea2ce3a09f25e737e54a98f6c11c2ec014091e0f70cbbfc5e2b",
+      "bytes": 10893,
+      "disposition": "consolidated",
+      "summary": "docs/history/02_M2_SCREENING_ENGINEERING.md"
+    },
+    {
+      "original_path": "docs/2026-09-08_DISK_CLEANUP_AUDIT.md",
+      "sha256": "fd6c58ad4229b61932e7ac58068362b76231d4d496d62f59061976d3c3f37d05",
+      "bytes": 7039,
+      "disposition": "consolidated",
+      "summary": "docs/history/02_M2_SCREENING_ENGINEERING.md"
+    },
+    {
+      "original_path": "docs/2026-09-08_M2_GENERATION_DIAGNOSTIC_PLAN.md",
+      "sha256": "a6b5ef7e83a188a65cb5991c14735e619b6bb8a21819a2b81558676af84ab50e",
+      "bytes": 6205,
+      "disposition": "consolidated",
+      "summary": "docs/history/02_M2_SCREENING_ENGINEERING.md"
+    },
+    {
+      "original_path": "docs/2026-09-08_M2_GENERATION_DIAGNOSTIC_REPORT.md",
+      "sha256": "51a8a181bdf9698bbacfc0582290b955cfa5e43abde02241823d927506e48414",
+      "bytes": 10749,
+      "disposition": "consolidated",
+      "summary": "docs/history/02_M2_SCREENING_ENGINEERING.md"
+    },
+    {
+      "original_path": "docs/2026-09-08_M2_SCREENING_EXECUTION_AMENDMENT_R5.md",
+      "sha256": "136509f421e037c125d7ea6f0d182b08faf693df02f1188a14c547701573dbf2",
+      "bytes": 9008,
+      "disposition": "retained_path",
+      "summary": "docs/history/02_M2_SCREENING_ENGINEERING.md"
+    },
+    {
+      "original_path": "docs/2026-09-08_M2_SINGLE_TOOL_DIAGNOSTIC_PLAN.md",
+      "sha256": "fc54ce835299e50d2dfcd0d47dbf0927fa2df3ffac039999e9f08a785a239594",
+      "bytes": 12433,
+      "disposition": "consolidated",
+      "summary": "docs/history/02_M2_SCREENING_ENGINEERING.md"
+    },
+    {
+      "original_path": "docs/2026-09-08_M2_THINKING_SINGLE_TOOL_DIAGNOSTIC_PLAN.md",
+      "sha256": "f2f128f4b2b9f6c7a200f969706e146ce304f2e3bc2fd92507cf225ea3f77a90",
+      "bytes": 10053,
+      "disposition": "consolidated",
+      "summary": "docs/history/02_M2_SCREENING_ENGINEERING.md"
+    },
+    {
+      "original_path": "docs/2026-09-09_M2_DECISION_DIAGNOSTIC_PLAN.md",
+      "sha256": "2870656a66edf82325fd3fd9de4b561777913de56ae888f01496d3c11693a1b5",
+      "bytes": 8140,
+      "disposition": "consolidated",
+      "summary": "docs/history/03_M2_BEHAVIOR_DIAGNOSTICS.md"
+    },
+    {
+      "original_path": "docs/2026-09-09_M2_DECISION_DIAGNOSTIC_REPORT.md",
+      "sha256": "38e11d9a4608ec74224b656ea4d0adea53aca69c6e9f27846a854481896283ed",
+      "bytes": 10975,
+      "disposition": "consolidated",
+      "summary": "docs/history/03_M2_BEHAVIOR_DIAGNOSTICS.md"
+    },
+    {
+      "original_path": "docs/2026-09-09_M2_HOLD_DIAGNOSTIC_PLAN.md",
+      "sha256": "8302d4880d93fd97983110c3e59d08871febb6431ecb1cfef5a6f7cba145d483",
+      "bytes": 7459,
+      "disposition": "consolidated",
+      "summary": "docs/history/03_M2_BEHAVIOR_DIAGNOSTICS.md"
+    },
+    {
+      "original_path": "docs/2026-09-09_M2_HOLD_DIAGNOSTIC_REPORT.md",
+      "sha256": "c335a0f51d57260c69c9fffb64bb1d53a169bb94c1e0f811f81c906e3e922ad0",
+      "bytes": 10325,
+      "disposition": "consolidated",
+      "summary": "docs/history/03_M2_BEHAVIOR_DIAGNOSTICS.md"
+    },
+    {
+      "original_path": "docs/2026-09-09_M2_OBSERVATION_DIAGNOSTIC_PLAN.md",
+      "sha256": "3f4d4d3f2a81d811f91e9b54acc89cb7e5990c67c97d78eed573fc28c575c397",
+      "bytes": 8109,
+      "disposition": "consolidated",
+      "summary": "docs/history/03_M2_BEHAVIOR_DIAGNOSTICS.md"
+    },
+    {
+      "original_path": "docs/2026-09-09_M2_OBSERVATION_DIAGNOSTIC_REPORT.md",
+      "sha256": "a8510d51a4fd400dedf7b99abf7d80dc956553e9cc3f25bedcf7eb7b1cb3670e",
+      "bytes": 8847,
+      "disposition": "consolidated",
+      "summary": "docs/history/03_M2_BEHAVIOR_DIAGNOSTICS.md"
+    },
+    {
+      "original_path": "docs/2026-09-09_M2_R5_ENGINEERING_REPORT.md",
+      "sha256": "a842951e1537539a335bdfc99801a0e5e3d672010bf449380eed99be2d49f88a",
+      "bytes": 7899,
+      "disposition": "consolidated",
+      "summary": "docs/history/02_M2_SCREENING_ENGINEERING.md"
+    },
+    {
+      "original_path": "docs/2026-09-12_M2_ACTION_SUPPORT_DIAGNOSTIC_PLAN.md",
+      "sha256": "61164b88d9670e70f285446d59e7b914451d814439c888478572139ecf97ccfa",
+      "bytes": 4984,
+      "disposition": "consolidated",
+      "summary": "docs/history/03_M2_BEHAVIOR_DIAGNOSTICS.md"
+    },
+    {
+      "original_path": "docs/2026-09-12_M2_ACTION_SUPPORT_DIAGNOSTIC_REPORT.md",
+      "sha256": "5f10d6a2416754e896f8cc9d382b9c77a3f7028c13129f3b6fefe74c935fd6ff",
+      "bytes": 8358,
+      "disposition": "consolidated",
+      "summary": "docs/history/03_M2_BEHAVIOR_DIAGNOSTICS.md"
+    },
+    {
+      "original_path": "docs/2026-09-12_M2_DECODE_IMPORT_ATTRIBUTION_CORRECTION.md",
+      "sha256": "4d7baa5ca651c91240e2d6dc76a70f44a69150355c4655490ab498644d8dd943",
+      "bytes": 859,
+      "disposition": "consolidated",
+      "summary": "docs/history/04_INFERENCE_PROBABILITY.md"
+    },
+    {
+      "original_path": "docs/2026-09-12_M2_DECODE_PAIRED_PLAN.md",
+      "sha256": "88bbe5b8e12d166ffdcd54f34cef1afb149e3e1b0096b3df8dee622c5f161256",
+      "bytes": 3344,
+      "disposition": "consolidated",
+      "summary": "docs/history/04_INFERENCE_PROBABILITY.md"
+    },
+    {
+      "original_path": "docs/2026-09-12_M2_DECODE_PAIRED_REPORT.md",
+      "sha256": "72b21c3f31d4f098c30b3a4caa6c6e4d853561d928cc322f01f4dd6cb5f484bc",
+      "bytes": 8970,
+      "disposition": "consolidated",
+      "summary": "docs/history/04_INFERENCE_PROBABILITY.md"
+    },
+    {
+      "original_path": "docs/2026-09-12_M2_DECODE_PAIRED_V2_AMENDMENT.md",
+      "sha256": "939a5ba0f12eab1470854ccaaccb1aec02f524b4de01340cf1782ef81e4270dd",
+      "bytes": 1201,
+      "disposition": "consolidated",
+      "summary": "docs/history/04_INFERENCE_PROBABILITY.md"
+    },
+    {
+      "original_path": "docs/2026-09-12_M2_DECODE_PAIRED_V3_AMENDMENT.md",
+      "sha256": "ec2f70bb707e2d7f7029141c5585dc6f001ec6de734636028f6765da7192e731",
+      "bytes": 1521,
+      "disposition": "consolidated",
+      "summary": "docs/history/04_INFERENCE_PROBABILITY.md"
+    },
+    {
+      "original_path": "docs/2026-09-12_M2_DECODE_RECOVERY_AMENDMENT.md",
+      "sha256": "b3eabacd8ff7e68a22c07126dfd87db85a96e1f132685c88e7fb0b7d4125d8f7",
+      "bytes": 1436,
+      "disposition": "consolidated",
+      "summary": "docs/history/04_INFERENCE_PROBABILITY.md"
+    },
+    {
+      "original_path": "docs/2026-09-12_M2_LOGPROB_ALIGNMENT_PLAN.md",
+      "sha256": "ee128e79447c6eacfd0f602e275b868eb818088fcb2f4db4dde472d0b7c1517c",
+      "bytes": 3445,
+      "disposition": "consolidated",
+      "summary": "docs/history/04_INFERENCE_PROBABILITY.md"
+    },
+    {
+      "original_path": "docs/2026-09-12_M2_LOGPROB_ALIGNMENT_REPORT.md",
+      "sha256": "5d83f146d89849c7d33f77e5a016700efb57cdf99050fdf5afec826330f5a27c",
+      "bytes": 8903,
+      "disposition": "consolidated",
+      "summary": "docs/history/04_INFERENCE_PROBABILITY.md"
+    },
+    {
+      "original_path": "docs/2026-09-12_M2_SEMANTICS_DIAGNOSTIC_PLAN.md",
+      "sha256": "92a6d95bb5d807c65c8422ac2e748bacd40ee1e0ce343f04ab04e0b4b85f53c1",
+      "bytes": 9637,
+      "disposition": "consolidated",
+      "summary": "docs/history/03_M2_BEHAVIOR_DIAGNOSTICS.md"
+    },
+    {
+      "original_path": "docs/2026-09-12_M2_SEMANTICS_DIAGNOSTIC_REPORT.md",
+      "sha256": "ec9d18d0709a3936e3dd748d7d9d79a2d48274cef03bcb618b675a4f392f3e08",
+      "bytes": 11283,
+      "disposition": "consolidated",
+      "summary": "docs/history/03_M2_BEHAVIOR_DIAGNOSTICS.md"
+    },
+    {
+      "original_path": "docs/2026-09-12_M2_TRAIN_PRACTICE_PLAN.md",
+      "sha256": "b491dffb719947d0f53e83616cbff38f327385f3d08a7f30e8649023ecdbdae9",
+      "bytes": 1990,
+      "disposition": "retained_path",
+      "summary": "docs/history/03_M2_BEHAVIOR_DIAGNOSTICS.md"
+    },
+    {
+      "original_path": "docs/2026-09-12_M2_TRANSFER_DIAGNOSTIC_PLAN.md",
+      "sha256": "91425a397277d951bb18f88ace3f4b940af8ffeacbc6b8d7818a7141fda156d5",
+      "bytes": 5740,
+      "disposition": "consolidated",
+      "summary": "docs/history/03_M2_BEHAVIOR_DIAGNOSTICS.md"
+    },
+    {
+      "original_path": "docs/2026-09-12_M2_TRANSFER_DIAGNOSTIC_REPORT.md",
+      "sha256": "11ce632e59587fa37b24fd1f92a946a23d1de74ff31193a4dbf230faca9dfe11",
+      "bytes": 9048,
+      "disposition": "consolidated",
+      "summary": "docs/history/03_M2_BEHAVIOR_DIAGNOSTICS.md"
+    },
+    {
+      "original_path": "docs/claude/2026-09-04_EXPERIMENT_PLAN.md",
+      "sha256": "338b444e47907da9336a7cc3978e8dad9e3d89e626029bf5f45269a2b8a3e6bc",
+      "bytes": 9712,
+      "disposition": "retained_path",
+      "summary": "docs/claude/2026-09-04_EXPERIMENT_PLAN.md"
+    },
+    {
+      "original_path": "docs/EXPERIMENT_HANDOFF.md",
+      "sha256": "7d54399e34ae6bfe0a722eb6965d7f80c61b9f1fa4633a25e39702e2f978a99d",
+      "bytes": 32925,
+      "disposition": "retained_path",
+      "summary": "docs/README.md"
+    },
+    {
+      "original_path": "docs/H100_COMPATIBILITY.md",
+      "sha256": "d14dd07011c7aac79976b538f021ce1d856f7ab9809fce0baf69304ab97e0923",
+      "bytes": 11872,
+      "disposition": "retained_path",
+      "summary": "docs/README.md"
+    }
+  ],
+  "archive_sha256": "bade6136e537aed598d6f625adb976c19ba95d5b198b5e0190b05b40b9eb1e97"
+}

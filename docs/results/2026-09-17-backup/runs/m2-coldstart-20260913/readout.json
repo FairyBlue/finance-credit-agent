@@ -1,0 +1,489 @@
+{
+  "status": "COMPLETE_WITH_STARTUP_RECOVERY",
+  "experiment_finished_at_SGT": "2026-09-13T15:38:21.244178+08:00",
+  "report_updated_at_SGT": "2026-09-13T20:50:04.125884+08:00",
+  "original_controller_status": "FAILED",
+  "startup_recovery": "Explicit existing CC, no policy requests submitted by failed attempt, no retraining",
+  "evaluation": {
+    "base_eval": {
+      "trajectories": 100,
+      "complete": 100,
+      "requests": 645,
+      "response_tokens": 10576,
+      "max_response_tokens": 34,
+      "model_fills": 0,
+      "invalid": 0
+    },
+    "sft_eval_r2": {
+      "trajectories": 100,
+      "complete": 99,
+      "requests": 846,
+      "response_tokens": 18116,
+      "max_response_tokens": 29,
+      "model_fills": 594,
+      "invalid": 207
+    }
+  },
+  "invalid_causes": {
+    "buy target_weight must be above the current weight": 187,
+    "symbol 'HSBC' is outside the frozen episode universe": 1,
+    "sell target_weight must be below the current weight": 16,
+    "unknown tool 'absent'; available tools: retrieve, compute, buy, sell, hold, abstain": 1,
+    "symbol 'ASML' is outside the frozen episode universe": 1,
+    "symbol 'HSI' is outside the frozen episode universe": 1
+  },
+  "dataset": {
+    "status": "COMPLETE",
+    "created_at_SGT": "2026-09-13T14:43:52.782932+08:00",
+    "source_train_sha256": "10c4265418681421d572a30e529f00c957086ddadaa4657f62ec83f594ff78fa",
+    "source_manifest_sha256": "6208c7b5ac8ecaa24022daeef464c3099a95d84538e1ccb4a86a86b045fc22d7",
+    "source_calibration_sha256": "9538c46673ee25cbc984331e1bc91d484fa6527efae7071910bf92d90ec3a1bd",
+    "generator_sha256": "110e66f66acbe7f67821f3bc7a4e04a553603db6933d4227a1ba65c96f59b1f3",
+    "tokenizer_snapshot": "/home/tianming/.cache/huggingface/hub/models--Qwen--Qwen3-4B/snapshots/1cfa9a7208912126459214e8b04321603b3df60c",
+    "train_jsonl_sha256": "1d00df317d85c5f1fdda20fcc1aafa6928618db51e3918ba50f91904e49502ff",
+    "eval_contexts_sha256": "02b8c6981eec83ed3d5bfbe59162f49ae9e239cedf37719b22b5832b9b6fcecb",
+    "source_train_ids": [
+      "formal-train-0001",
+      "formal-train-0005",
+      "formal-train-0009",
+      "formal-train-0013",
+      "formal-train-0017",
+      "formal-train-0021",
+      "formal-train-0025",
+      "formal-train-0029",
+      "formal-train-0033",
+      "formal-train-0037",
+      "formal-train-0041",
+      "formal-train-0045",
+      "formal-train-0049",
+      "formal-train-0053",
+      "formal-train-0057",
+      "formal-train-0061",
+      "formal-train-0065",
+      "formal-train-0069",
+      "formal-train-0073",
+      "formal-train-0077"
+    ],
+    "reserved_train_eval_ids": [
+      "formal-train-0113",
+      "formal-train-0117",
+      "formal-train-0121",
+      "formal-train-0125"
+    ],
+    "source_dates_min": "2023-01-03T21:00:00+00:00",
+    "source_dates_max": "2023-05-22T20:00:00+00:00",
+    "eval_dates_min": "2023-06-14T20:00:00+00:00",
+    "eval_dates_max": "2023-08-01T20:00:00+00:00",
+    "train_eval_dates_disjoint": true,
+    "row_count": 468,
+    "decision_rows": 372,
+    "api_rows": 96,
+    "unique_decision_dates": 93,
+    "label_distribution": {
+      "decision": {
+        "buy": 260,
+        "sell": 75,
+        "hold": 37
+      },
+      "api": {
+        "buy": 17,
+        "hold": 17,
+        "abstain": 17,
+        "compute": 17,
+        "retrieve": 16,
+        "sell": 12
+      }
+    },
+    "max_prompt_tokens": 4424,
+    "teacher_priors": {
+      "symbols": [
+        "GS",
+        "MSFT",
+        "HD"
+      ],
+      "buy_targets": [
+        0.1,
+        0.2
+      ],
+      "sell_targets": [
+        0,
+        0.1
+      ],
+      "prefix": "one fixed hold or 20% buy, independent of future; no oracle chaining",
+      "lookahead_sessions": 3,
+      "objective": "terminal net wealth; distinct from RL scorer",
+      "ties": "hold first, then declared action order; one target per state",
+      "risk": "hindsight targets may favor maximum grid exposure; no predictive claim",
+      "api": "explicit given intent, separately tagged; not autonomous trading examples"
+    },
+    "selection": "source episode order, deduplicate date, chronological date/state order; no score or class balancing",
+    "is_on_policy": false,
+    "future_information_in_prompt": false,
+    "observation_profile": "history_features_v1",
+    "non_thinking": true
+  },
+  "sft": {
+    "optimizer_steps": 90,
+    "expected_optimizer_steps": 90,
+    "epochs": 3,
+    "examples_per_epoch": 468,
+    "example_presentations": 1404,
+    "trainable_parameters": 33030144,
+    "trainable_sha256_before": "b933f713e6da2a53d2c564379bc62faba52abad39cd71ec7366dc144dbdd804c",
+    "trainable_sha256_after": "53a4844e16a7c8f7349f4e6e88fce306c1b08728fa211d335def826c85a10731",
+    "probe_changed_steps": 90,
+    "elapsed_training_seconds": 1711.3367399685085,
+    "status": "COMPLETE",
+    "started_at_SGT": "2026-09-13T14:54:25.573912+08:00",
+    "completed_at_SGT": "2026-09-13T15:23:08.226567+08:00",
+    "adapter": "/home/tianming/projects/finance-credit-agent/runs/m2-coldstart-20260913/sft/adapter",
+    "data_sha256": "1d00df317d85c5f1fdda20fcc1aafa6928618db51e3918ba50f91904e49502ff",
+    "artifacts": {
+      "adapter/README.md": "c23a0cd7332a1a013fa658213d4ab4cd2bc2208549e2ab58122eaf3cd7fe4e3b",
+      "adapter/adapter_config.json": "b72efc0f38b2774d4088f814a223d9597ba723541af74a9bbb529a7865058e8f",
+      "adapter/adapter_model.safetensors": "ff9dd6167ce27746db4ca236aa71c0da49d2b81c39bc6afdacc5e13c3917d6e7",
+      "adapter/added_tokens.json": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680",
+      "adapter/chat_template.jinja": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8",
+      "adapter/merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+      "adapter/special_tokens_map.json": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd",
+      "adapter/tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+      "adapter/tokenizer_config.json": "443bfa629eb16387a12edbf92a76f6a6f10b2af3b53d87ba1550adfcf45f7fa0",
+      "adapter/vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+      "optimizer_rng.pt": "d423daff2f95ef4c53c6d3e100bff11249f26c1c29a742cefbb69b88ef15f009"
+    }
+  },
+  "epoch_token_weighted_loss": {
+    "1": 0.2304577956732829,
+    "2": 0.05826892913483155,
+    "3": 0.05407197922008388
+  },
+  "base": {
+    "short_greedy": {
+      "planned": 16,
+      "complete": 16,
+      "statuses": {
+        "COMPLETE": 16
+      },
+      "requests": 48,
+      "actions": {
+        "hold": 48
+      },
+      "invalid": 0,
+      "trajectories_with_model_fills": 0,
+      "fill_sides": {},
+      "fill_symbols": {},
+      "model_transaction_cost": 0,
+      "mean_takeover_net_return_complete_only": 0.000393516824196756,
+      "min_takeover_net_return": -0.007757689646492261,
+      "max_takeover_net_return": 0.00771478180393026,
+      "mean_terminal_score_complete_only": -1.407079440041355,
+      "max_position_weight": 0.20754771,
+      "max_drawdown_complete_only": 0.01009764985993225,
+      "sibling_return_range": {
+        "formal-train-0113-cash": 0.0,
+        "formal-train-0113-GS": 0.0,
+        "formal-train-0113-MSFT": 0.0,
+        "formal-train-0113-HD": 0.0,
+        "formal-train-0117-cash": 0.0,
+        "formal-train-0117-GS": 0.0,
+        "formal-train-0117-MSFT": 0.0,
+        "formal-train-0117-HD": 0.0,
+        "formal-train-0121-cash": 0.0,
+        "formal-train-0121-GS": 0.0,
+        "formal-train-0121-MSFT": 0.0,
+        "formal-train-0121-HD": 0.0,
+        "formal-train-0125-cash": 0.0,
+        "formal-train-0125-GS": 0.0,
+        "formal-train-0125-MSFT": 0.0,
+        "formal-train-0125-HD": 0.0
+      },
+      "contexts_with_distinct_completed_outcomes": 0
+    },
+    "short_sample": {
+      "planned": 64,
+      "complete": 64,
+      "statuses": {
+        "COMPLETE": 64
+      },
+      "requests": 195,
+      "actions": {
+        "hold": 183,
+        "abstain": 9,
+        "compute": 3
+      },
+      "invalid": 0,
+      "trajectories_with_model_fills": 0,
+      "fill_sides": {},
+      "fill_symbols": {},
+      "model_transaction_cost": 0,
+      "mean_takeover_net_return_complete_only": 0.000393516824196756,
+      "min_takeover_net_return": -0.007757689646492261,
+      "max_takeover_net_return": 0.00771478180393026,
+      "mean_terminal_score_complete_only": -1.4070794400413549,
+      "max_position_weight": 0.20754771,
+      "max_drawdown_complete_only": 0.01009764985993225,
+      "sibling_return_range": {
+        "formal-train-0113-cash": 0.0,
+        "formal-train-0113-GS": 0.0,
+        "formal-train-0113-MSFT": 0.0,
+        "formal-train-0113-HD": 0.0,
+        "formal-train-0117-cash": 0.0,
+        "formal-train-0117-GS": 0.0,
+        "formal-train-0117-MSFT": 0.0,
+        "formal-train-0117-HD": 0.0,
+        "formal-train-0121-cash": 0.0,
+        "formal-train-0121-GS": 0.0,
+        "formal-train-0121-MSFT": 0.0,
+        "formal-train-0121-HD": 0.0,
+        "formal-train-0125-cash": 0.0,
+        "formal-train-0125-GS": 0.0,
+        "formal-train-0125-MSFT": 0.0,
+        "formal-train-0125-HD": 0.0
+      },
+      "contexts_with_distinct_completed_outcomes": 0
+    },
+    "full_greedy": {
+      "planned": 4,
+      "complete": 4,
+      "statuses": {
+        "COMPLETE": 4
+      },
+      "requests": 80,
+      "actions": {
+        "hold": 80
+      },
+      "invalid": 0,
+      "trajectories_with_model_fills": 0,
+      "fill_sides": {},
+      "fill_symbols": {},
+      "model_transaction_cost": 0,
+      "mean_takeover_net_return_complete_only": 0.0,
+      "min_takeover_net_return": 0.0,
+      "max_takeover_net_return": 0.0,
+      "mean_terminal_score_complete_only": -8.15227358919224,
+      "max_position_weight": 0,
+      "max_drawdown_complete_only": 0.0,
+      "sibling_return_range": {
+        "formal-train-0113": 0.0,
+        "formal-train-0117": 0.0,
+        "formal-train-0121": 0.0,
+        "formal-train-0125": 0.0
+      },
+      "contexts_with_distinct_completed_outcomes": 0
+    },
+    "full_sample": {
+      "planned": 16,
+      "complete": 16,
+      "statuses": {
+        "COMPLETE": 16
+      },
+      "requests": 322,
+      "actions": {
+        "hold": 271,
+        "abstain": 49,
+        "compute": 2
+      },
+      "invalid": 0,
+      "trajectories_with_model_fills": 0,
+      "fill_sides": {},
+      "fill_symbols": {},
+      "model_transaction_cost": 0,
+      "mean_takeover_net_return_complete_only": 0.0,
+      "min_takeover_net_return": 0.0,
+      "max_takeover_net_return": 0.0,
+      "mean_terminal_score_complete_only": -8.152273589192243,
+      "max_position_weight": 0,
+      "max_drawdown_complete_only": 0.0,
+      "sibling_return_range": {
+        "formal-train-0113": 0.0,
+        "formal-train-0117": 0.0,
+        "formal-train-0121": 0.0,
+        "formal-train-0125": 0.0
+      },
+      "contexts_with_distinct_completed_outcomes": 0
+    }
+  },
+  "after_sft": {
+    "short_greedy": {
+      "planned": 16,
+      "complete": 15,
+      "statuses": {
+        "COMPLETE": 15,
+        "INCOMPLETE": 1
+      },
+      "requests": 87,
+      "actions": {
+        "buy": 47,
+        "invalid": 40
+      },
+      "invalid": 40,
+      "trajectories_with_model_fills": 16,
+      "fill_sides": {
+        "buy": 45
+      },
+      "fill_symbols": {
+        "MSFT": 16,
+        "HD": 15,
+        "GS": 14
+      },
+      "model_transaction_cost": 10858.746516386016,
+      "mean_takeover_net_return_complete_only": 0.0009377557081184632,
+      "min_takeover_net_return": -0.012652845387951084,
+      "max_takeover_net_return": 0.011819745355687639,
+      "mean_terminal_score_complete_only": -0.6764443821732838,
+      "max_position_weight": 0.21166006,
+      "max_drawdown_complete_only": 0.012652845387951788,
+      "sibling_return_range": {
+        "formal-train-0113-cash": 0.0,
+        "formal-train-0113-GS": 0.0,
+        "formal-train-0113-MSFT": 0.0,
+        "formal-train-0113-HD": 0.0,
+        "formal-train-0117-cash": 0.0,
+        "formal-train-0117-GS": 0.0,
+        "formal-train-0117-MSFT": 0.0,
+        "formal-train-0117-HD": 0.0,
+        "formal-train-0121-cash": 0.0,
+        "formal-train-0121-GS": 0.0,
+        "formal-train-0121-MSFT": 0.0,
+        "formal-train-0121-HD": 0.0,
+        "formal-train-0125-cash": 0.0,
+        "formal-train-0125-GS": 0.0,
+        "formal-train-0125-HD": 0.0
+      },
+      "contexts_with_distinct_completed_outcomes": 0
+    },
+    "short_sample": {
+      "planned": 64,
+      "complete": 64,
+      "statuses": {
+        "COMPLETE": 64
+      },
+      "requests": 213,
+      "actions": {
+        "buy": 139,
+        "sell": 43,
+        "invalid": 21,
+        "hold": 10
+      },
+      "invalid": 21,
+      "trajectories_with_model_fills": 64,
+      "fill_sides": {
+        "buy": 137,
+        "sell": 43
+      },
+      "fill_symbols": {
+        "GS": 63,
+        "HD": 59,
+        "MSFT": 57,
+        "V": 1
+      },
+      "model_transaction_cost": 49958.382524634864,
+      "mean_takeover_net_return_complete_only": 0.00017790879742544258,
+      "min_takeover_net_return": -0.010157837197081299,
+      "max_takeover_net_return": 0.01425119983060541,
+      "mean_terminal_score_complete_only": -1.5064230742643068,
+      "max_position_weight": 0.20698191,
+      "max_drawdown_complete_only": 0.010488541056007728,
+      "sibling_return_range": {
+        "formal-train-0113-cash": 0.006528646672602445,
+        "formal-train-0113-GS": 0.004974618113627871,
+        "formal-train-0113-MSFT": 0.0065526375890264665,
+        "formal-train-0113-HD": 0.006766398846664967,
+        "formal-train-0117-cash": 0.013539775121579667,
+        "formal-train-0117-GS": 0.009340519491081056,
+        "formal-train-0117-MSFT": 0.01117251451904644,
+        "formal-train-0117-HD": 0.00269842987961022,
+        "formal-train-0121-cash": 0.009155877448224325,
+        "formal-train-0121-GS": 0.004992927997099494,
+        "formal-train-0121-MSFT": 0.006175211776928036,
+        "formal-train-0121-HD": 0.005658210202193925,
+        "formal-train-0125-cash": 0.001881390724771892,
+        "formal-train-0125-GS": 0.010554399194252051,
+        "formal-train-0125-MSFT": 0.012759818977803317,
+        "formal-train-0125-HD": 0.012897527674635145
+      },
+      "contexts_with_distinct_completed_outcomes": 16
+    },
+    "full_greedy": {
+      "planned": 4,
+      "complete": 4,
+      "statuses": {
+        "COMPLETE": 4
+      },
+      "requests": 122,
+      "actions": {
+        "buy": 70,
+        "invalid": 42,
+        "sell": 10
+      },
+      "invalid": 42,
+      "trajectories_with_model_fills": 4,
+      "fill_sides": {
+        "buy": 66,
+        "sell": 10
+      },
+      "fill_symbols": {
+        "MSFT": 35,
+        "HD": 22,
+        "GS": 19
+      },
+      "model_transaction_cost": 10198.942813274041,
+      "mean_takeover_net_return_complete_only": 0.033264342798017266,
+      "min_takeover_net_return": 0.006217424376280922,
+      "max_takeover_net_return": 0.04775852243310341,
+      "mean_terminal_score_complete_only": -1.591092071856852,
+      "max_position_weight": 0.26187914,
+      "max_drawdown_complete_only": 0.02383372360540066,
+      "sibling_return_range": {
+        "formal-train-0113": 0.0,
+        "formal-train-0117": 0.0,
+        "formal-train-0121": 0.0,
+        "formal-train-0125": 0.0
+      },
+      "contexts_with_distinct_completed_outcomes": 0
+    },
+    "full_sample": {
+      "planned": 16,
+      "complete": 16,
+      "statuses": {
+        "COMPLETE": 16
+      },
+      "requests": 424,
+      "actions": {
+        "buy": 194,
+        "sell": 104,
+        "invalid": 104,
+        "hold": 22
+      },
+      "invalid": 104,
+      "trajectories_with_model_fills": 16,
+      "fill_sides": {
+        "buy": 189,
+        "sell": 104
+      },
+      "fill_symbols": {
+        "HD": 109,
+        "GS": 69,
+        "MSFT": 110,
+        "SHW": 4,
+        "V": 1
+      },
+      "model_transaction_cost": 69894.06469955196,
+      "mean_takeover_net_return_complete_only": 0.02448214194364535,
+      "min_takeover_net_return": -0.023306492618502483,
+      "max_takeover_net_return": 0.049359081354374945,
+      "mean_terminal_score_complete_only": -3.3056084201898006,
+      "max_position_weight": 0.40057991,
+      "max_drawdown_complete_only": 0.024438556806382572,
+      "sibling_return_range": {
+        "formal-train-0113": 0.03371257929918525,
+        "formal-train-0117": 0.0024084775976511708,
+        "formal-train-0121": 0.027146901770195964,
+        "formal-train-0125": 0.03183921978262294
+      },
+      "contexts_with_distinct_completed_outcomes": 4
+    }
+  },
+  "gate": "Exploration improved; not ready for main M1/M2 screening due invalid rate and incomplete greedy trajectory.",
+  "is_m2_reward_result": false
+}

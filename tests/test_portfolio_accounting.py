@@ -1,6 +1,7 @@
 """Behavioral tests for the shared next-open portfolio ledger."""
 
 from datetime import datetime, timezone
+from typing import Literal
 
 import pytest
 
@@ -107,3 +108,88 @@ def test_exact_full_weight_target_tolerates_only_cash_roundoff_at_large_notional
 
     assert ledger.cash == 0.0
     assert ledger.equity({"AAA": 98.375}) < 1_000_000.0
+
+
+@pytest.mark.parametrize(
+    ("direction", "target", "next_price", "should_skip"),
+    [
+        ("buy", 0.55, 200.0, True),
+        ("sell", 0.45, 50.0, True),
+        ("buy", 0.55, 80.0, False),
+        ("sell", 0.45, 120.0, False),
+    ],
+)
+def test_directional_target_never_fills_the_opposite_side_after_a_price_gap(
+    direction: Literal["buy", "sell"], target: float, next_price: float, should_skip: bool,
+) -> None:
+    ledger = PortfolioLedger(initial_cash=1000.0, policy=ExecutionPolicy(10.0, 5.0))
+    ledger.queue_target_order(
+        "AAA", target_weight=0.5, decision_at=datetime(2025, 1, 2, 21, tzinfo=UTC),
+    )
+    ledger.execute_next_open(datetime(2025, 1, 3, 14, 30, tzinfo=UTC), {"AAA": 100.0})
+    cash_before = ledger.cash
+    positions_before = dict(ledger.positions)
+    fills_before = ledger.fills
+    equity_at_open = ledger.equity({"AAA": next_price})
+    order = ledger.queue_target_order(
+        "AAA", target_weight=target, decision_at=datetime(2025, 1, 3, 21, tzinfo=UTC),
+        direction=direction,
+    )
+    assert order.direction == direction
+
+    fills = ledger.execute_next_open(
+        datetime(2025, 1, 6, 14, 30, tzinfo=UTC), {"AAA": next_price},
+    )
+
+    assert ledger.pending_orders == ()
+    if should_skip:
+        assert fills == ()
+        assert ledger.fills == fills_before
+        assert ledger.cash == cash_before
+        assert dict(ledger.positions) == positions_before
+        assert ledger.equity({"AAA": next_price}) == equity_at_open
+        skip, = ledger.last_execution_skips
+        assert skip.requested_side == direction
+        assert skip.implied_side == ("sell" if direction == "buy" else "buy")
+        assert skip.reason == "opposite_direction_at_next_open"
+        assert skip.current_weight_at_open == pytest.approx(
+            positions_before["AAA"] * next_price / equity_at_open
+        )
+        # It is a consumed one-open order, never a delayed opposite-side fill.
+        assert ledger.execute_next_open(
+            datetime(2025, 1, 7, 14, 30, tzinfo=UTC), {"AAA": 100.0},
+        ) == ()
+        assert ledger.last_execution_skips == ()
+    else:
+        fill, = fills
+        assert fill.side == direction
+        assert fill.total_cost > 0
+        assert ledger.last_execution_skips == ()
+        assert equity_at_open - ledger.equity({"AAA": next_price}) == pytest.approx(
+            fill.total_cost
+        )
+
+
+@pytest.mark.parametrize(
+    ("target", "next_price", "expected_side"),
+    [(0.55, 200.0, "sell"), (0.45, 50.0, "buy")],
+)
+def test_generic_baseline_targets_keep_bidirectional_rebalancing(
+    target: float, next_price: float, expected_side: str,
+) -> None:
+    ledger = PortfolioLedger(initial_cash=1000.0, policy=ExecutionPolicy(10.0, 5.0))
+    ledger.queue_target_order(
+        "AAA", target_weight=0.5, decision_at=datetime(2025, 1, 2, 21, tzinfo=UTC),
+    )
+    ledger.execute_next_open(datetime(2025, 1, 3, 14, 30, tzinfo=UTC), {"AAA": 100.0})
+    order = ledger.queue_target_order(
+        "AAA", target_weight=target, decision_at=datetime(2025, 1, 3, 21, tzinfo=UTC),
+    )
+
+    fill, = ledger.execute_next_open(
+        datetime(2025, 1, 6, 14, 30, tzinfo=UTC), {"AAA": next_price},
+    )
+
+    assert order.direction is None
+    assert fill.side == expected_side
+    assert ledger.last_execution_skips == ()

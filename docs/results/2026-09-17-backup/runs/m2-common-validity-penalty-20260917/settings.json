@@ -1,0 +1,144 @@
+{
+  "action_protocol": "single_tool_portfolio_v1",
+  "arms": [
+    "M1",
+    "M2"
+  ],
+  "artifact_profile": "actor_bf16_hf_v1",
+  "authorization": {
+    "basis": "user_confirmed_offline_collaborator_agreement",
+    "date": "2026-09-06",
+    "final_oos": false,
+    "formal_training": false,
+    "scope": "implement_wiring_pilot_and_train_only_screening"
+  },
+  "capture_interactions": true,
+  "common_validity_penalty": {
+    "applies_to": "training_only",
+    "coefficient": 0.05,
+    "financial_terminal_score_unchanged": true,
+    "profile": "environment_rejection_v1"
+  },
+  "critic_initialization": "cpu_seed_v1",
+  "engineering_pilot": {
+    "save_freq": 1,
+    "total_epochs": 2,
+    "total_training_steps": 2,
+    "train_episodes": 2
+  },
+  "evaluation": {
+    "do_sample": true,
+    "primary": "same_worker_separate_sampled_and_greedy",
+    "rollout_n": 5,
+    "temperature": 1.0
+  },
+  "execution_amendment": "docs/2026-09-08_M2_SCREENING_EXECUTION_AMENDMENT_R5.md",
+  "execution_revision": 5,
+  "generation": {
+    "enable_thinking": false
+  },
+  "m2_residual_eta": 0.0,
+  "models": {
+    "screening": {
+      "merge_receipt_sha256": "cf3b8e5a4e2e45708943f4c71c822d41d60cfae13170e760cb5979e1df2356db",
+      "name": "/home/tianming/projects/finance-credit-agent/runs/m2-coldstart-v3-20260914/merged_model",
+      "source": "local_export"
+    },
+    "wiring": {
+      "name": "Qwen/Qwen3-1.7B",
+      "revision": "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e"
+    }
+  },
+  "observation_profile": "history_features_v1",
+  "plan": "docs/2026-09-17_M2_COMMON_VALIDITY_PENALTY_PLAN.md",
+  "resources": {
+    "actor_optimizer_offload": false,
+    "actor_param_offload": false,
+    "agent_workers": 1,
+    "critic_optimizer_offload": false,
+    "critic_param_offload": false,
+    "optimizer_overrides": {
+      "foreach": false,
+      "fused": false
+    },
+    "profile": "pageable_adam_v1",
+    "ray_num_cpus": 8,
+    "ray_object_store_memory": 1073741824,
+    "reference_model_dtype": "bf16",
+    "rollout_cudagraph_capture_sizes": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "rollout_gpu_memory_utilization": 0.2
+  },
+  "seeds": [
+    42
+  ],
+  "stage": "m2_screening",
+  "training": {
+    "critic_learning_rate": 1e-06,
+    "episodes": 8,
+    "eta": 1.0,
+    "gamma": 1.0,
+    "lam": 1.0,
+    "learning_rate": 2e-07,
+    "max_agent_steps": 256,
+    "max_checkpoints": 1,
+    "max_infrastructure_resumes": 0,
+    "max_prompt_length": 8192,
+    "max_response_length": 4096,
+    "rollout_n": 4,
+    "save_freq": 4,
+    "temperature": 1.0,
+    "test_freq": 2,
+    "top_k": -1,
+    "top_p": 1.0,
+    "total_epochs": 1,
+    "total_training_steps": 4,
+    "train_batch_size": 2
+  },
+  "training_coverage": {
+    "actor_learning_rate": 2e-07,
+    "adaptive_gate": false,
+    "automatic_retry": false,
+    "critic_learning_rate": 1e-06,
+    "evaluation_episode_ids": [
+      "formal-train-0113",
+      "formal-train-0117",
+      "formal-train-0121",
+      "formal-train-0125"
+    ],
+    "evaluation_lanes": {
+      "greedy": [
+        0
+      ],
+      "sampled": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "evaluation_steps": [
+      2,
+      4
+    ],
+    "planned_trajectories": 164,
+    "profile": "common_sft_validity_penalty_v1",
+    "resume_supported": false,
+    "training_episode_ids": [
+      "formal-train-0001",
+      "formal-train-0065",
+      "formal-train-0009",
+      "formal-train-0073",
+      "formal-train-0017",
+      "formal-train-0149",
+      "formal-train-0025",
+      "formal-train-0157"
+    ],
+    "training_trajectories_per_arm": 32
+  },
+  "version": 2
+}

@@ -1,0 +1,1529 @@
+{
+  "status": "COMPLETE",
+  "finished_at_SGT": "2026-09-14T00:13:23.706924+08:00",
+  "action_protocol": "single_tool_portfolio_v1",
+  "inputs_sha256": {
+    "dataset/regression_eval_contexts.json": "02b8c6981eec83ed3d5bfbe59162f49ae9e239cedf37719b22b5832b9b6fcecb",
+    "before_regression/result.json": "5d8b19212432d79bd4231b36ae74f86f1d11728b9a96907bca95053d4e6d0d49",
+    "before_regression/requests.jsonl": "7c63cf31a9b6d8497e54063a4944061c6ccb339aca4d15019ad87bc9110f0f50",
+    "after_regression/result.json": "736864f3a60e821f0338355b433f76ad30375f923cbf5d80dd8146886bf854cb",
+    "after_regression/requests.jsonl": "024b616bead29715134cb468ad288bc101c60a00b150d62ee8a1f2820c828ca5",
+    "dataset/eval_contexts.json": "c0cc37d27c94e4840d860fc7abff3923a9574e3905359eb3084b53292aae049d",
+    "before_fresh/result.json": "c06eb37b3f31fac3dfa61870c7be5f45acc132a117c905b54bf58da469addb48",
+    "before_fresh/requests.jsonl": "51cc82b822a495a5380959f49ae138b297fdbbbdc5752e6d4ea22a4a02201377",
+    "after_fresh/result.json": "89a89c12db1eb2ee3463d265c67c8680b70f22e2c76702ecb220d708031898fd",
+    "after_fresh/requests.jsonl": "f205d9f21e1da3991abb84cad34ac02b0b8de68d32c9aab2ac44c6e5c00e83ed"
+  },
+  "gates": {
+    "status": "FAIL",
+    "criteria": {
+      "regression_complete": {
+        "pass": true,
+        "complete": 100,
+        "planned": 100
+      },
+      "regression_invalid": {
+        "pass": false,
+        "invalid_per_request": 0.1292517006802721,
+        "maximum": 0.05
+      },
+      "regression_siblings": {
+        "pass": true,
+        "distinct_complete_four_sibling_contexts": 20,
+        "planned_sample_contexts": 20,
+        "fraction": 1.0,
+        "minimum": 0.5,
+        "strict_return_range_threshold": 1e-08
+      },
+      "fresh_complete": {
+        "pass": true,
+        "complete": 85,
+        "planned": 85
+      },
+      "fresh_invalid": {
+        "pass": false,
+        "invalid_per_request": 0.11428571428571428,
+        "maximum": 0.05
+      },
+      "fresh_siblings": {
+        "pass": true,
+        "distinct_complete_four_sibling_contexts": 17,
+        "planned_sample_contexts": 17,
+        "fraction": 1.0,
+        "minimum": 0.5,
+        "strict_return_range_threshold": 1e-08
+      },
+      "fresh_error_recovery": {
+        "pass": false,
+        "expected_trajectories": 40,
+        "planned": 40,
+        "complete": 40,
+        "scenario_counts": {
+          "cash": 10,
+          "single_high": 10,
+          "triple_above": 10,
+          "triple_mixed": 10
+        },
+        "invalid_per_request": 0.1366906474820144,
+        "maximum": 0.05,
+        "prefix_errors_excluded_from_model_counts": true
+      },
+      "full_sample_sustained_trading": {
+        "pass": true,
+        "complete_full_sample_trajectories": 20,
+        "trading_on_at_least_two_dates": 20,
+        "fraction": 1.0,
+        "minimum": 0.5
+      }
+    },
+    "interpretation": "Practical common-initialization readiness only; not M2 superiority.",
+    "automatic_rl_launch": false
+  },
+  "limits": [
+    "Train diagnostics only; no independent OOS or M2 reward-gain claim.",
+    "Shared portfolio protocol is applied to both before and after models.",
+    "Fixed prefix fills and errors are excluded from model behavior counts.",
+    "Drawdown and terminal scorer include prefixes; short net return starts at takeover.",
+    "Same context/seed identities do not imply identical generated trajectories.",
+    "Return changes require both sides complete; failures are never zero returns.",
+    "Readiness gates are fixed practical checks; returns and risk do not choose prompts."
+  ],
+  "by_suite_horizon_sampling": {
+    "regression": {
+      "before": {
+        "short_greedy": {
+          "planned": 16,
+          "complete": 16,
+          "statuses": {
+            "COMPLETE": 16
+          },
+          "model_requests": 62,
+          "executed_model_calls": 62,
+          "unexecuted_generation_requests": 0,
+          "legal_model_calls": 48,
+          "invalid_model_calls": 14,
+          "invalid_per_model_request": 0.22580645161290322,
+          "actions": {
+            "buy": 39,
+            "invalid": 14,
+            "sell": 8,
+            "hold": 1
+          },
+          "model_fill_count": 45,
+          "trajectories_with_model_fills": 16,
+          "complete_trajectories_trading_at_least_two_dates": 16,
+          "fill_sides": {
+            "buy": 37,
+            "sell": 8
+          },
+          "fill_symbols": {
+            "MSFT": 16,
+            "HD": 12,
+            "GS": 17
+          },
+          "model_transaction_cost": 12944.887588885184,
+          "mean_takeover_return_complete_only": 0.001647387198188563,
+          "min_takeover_return_complete_only": -0.009302157374270537,
+          "max_takeover_return_complete_only": 0.010856248258144019,
+          "mean_terminal_score_complete_only": -0.9755287609554322,
+          "mean_final_cash_fraction_complete_only": 0.5099623083113098,
+          "mean_final_position_count_complete_only": 2.4375,
+          "max_position_weight_since_takeover": 0.21026233,
+          "max_drawdown_including_prefix_complete_only": 0.01030045904314972,
+          "siblings": {
+            "sample_contexts": 0,
+            "contexts_with_four_complete_siblings": 0,
+            "contexts_with_distinct_outcomes": 0,
+            "distinct_fraction_of_planned_contexts": null,
+            "details": []
+          }
+        },
+        "short_sample": {
+          "planned": 64,
+          "complete": 64,
+          "statuses": {
+            "COMPLETE": 64
+          },
+          "model_requests": 225,
+          "executed_model_calls": 225,
+          "unexecuted_generation_requests": 0,
+          "legal_model_calls": 192,
+          "invalid_model_calls": 33,
+          "invalid_per_model_request": 0.14666666666666667,
+          "actions": {
+            "buy": 131,
+            "hold": 20,
+            "sell": 41,
+            "invalid": 33
+          },
+          "model_fill_count": 171,
+          "trajectories_with_model_fills": 64,
+          "complete_trajectories_trading_at_least_two_dates": 62,
+          "fill_sides": {
+            "buy": 130,
+            "sell": 41
+          },
+          "fill_symbols": {
+            "GS": 46,
+            "HD": 53,
+            "MSFT": 71,
+            "TRV": 1
+          },
+          "model_transaction_cost": 46494.84570973789,
+          "mean_takeover_return_complete_only": 0.000542822402607411,
+          "min_takeover_return_complete_only": -0.010157837197081299,
+          "max_takeover_return_complete_only": 0.014300441061815494,
+          "mean_terminal_score_complete_only": -1.3630041400201998,
+          "mean_final_cash_fraction_complete_only": 0.6052250174072085,
+          "mean_final_position_count_complete_only": 2.0,
+          "max_position_weight_since_takeover": 0.25086621,
+          "max_drawdown_including_prefix_complete_only": 0.011744141511581837,
+          "siblings": {
+            "sample_contexts": 16,
+            "contexts_with_four_complete_siblings": 16,
+            "contexts_with_distinct_outcomes": 16,
+            "distinct_fraction_of_planned_contexts": 1.0,
+            "details": [
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0113-GS",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.002591342022328358,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0113-HD",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.009276137893544534,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0113-MSFT",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.006902668415080582,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0113-cash",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.00632607956205733,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0117-GS",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.008855847167229092,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0117-HD",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.00269842987961022,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0117-MSFT",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.013325939304651868,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0117-cash",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.004967321404401925,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0121-GS",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.006953449736299633,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0121-HD",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.004037689480890894,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0121-MSFT",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.008675677100853707,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0121-cash",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.010769052342062824,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0125-GS",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.003258913322013335,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0125-HD",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.012883438628646604,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0125-MSFT",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.012759818977803317,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0125-cash",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.0029465125610368403,
+                "distinct_outcomes": true
+              }
+            ]
+          }
+        },
+        "full_greedy": {
+          "planned": 4,
+          "complete": 4,
+          "statuses": {
+            "COMPLETE": 4
+          },
+          "model_requests": 113,
+          "executed_model_calls": 113,
+          "unexecuted_generation_requests": 0,
+          "legal_model_calls": 80,
+          "invalid_model_calls": 33,
+          "invalid_per_model_request": 0.2920353982300885,
+          "actions": {
+            "buy": 62,
+            "invalid": 33,
+            "sell": 17,
+            "hold": 1
+          },
+          "model_fill_count": 77,
+          "trajectories_with_model_fills": 4,
+          "complete_trajectories_trading_at_least_two_dates": 4,
+          "fill_sides": {
+            "buy": 60,
+            "sell": 17
+          },
+          "fill_symbols": {
+            "MSFT": 43,
+            "HD": 18,
+            "GS": 16
+          },
+          "model_transaction_cost": 8478.537392353595,
+          "mean_takeover_return_complete_only": 0.03191401037280572,
+          "min_takeover_return_complete_only": 0.004054260723636016,
+          "max_takeover_return_complete_only": 0.04727291041626236,
+          "mean_terminal_score_complete_only": -1.8332366050639692,
+          "mean_final_cash_fraction_complete_only": 0.3497665207521964,
+          "mean_final_position_count_complete_only": 3.0,
+          "max_position_weight_since_takeover": 0.30998118,
+          "max_drawdown_including_prefix_complete_only": 0.017489729450116707,
+          "siblings": {
+            "sample_contexts": 0,
+            "contexts_with_four_complete_siblings": 0,
+            "contexts_with_distinct_outcomes": 0,
+            "distinct_fraction_of_planned_contexts": null,
+            "details": []
+          }
+        },
+        "full_sample": {
+          "planned": 16,
+          "complete": 16,
+          "statuses": {
+            "COMPLETE": 16
+          },
+          "model_requests": 408,
+          "executed_model_calls": 408,
+          "unexecuted_generation_requests": 0,
+          "legal_model_calls": 320,
+          "invalid_model_calls": 88,
+          "invalid_per_model_request": 0.21568627450980393,
+          "actions": {
+            "buy": 170,
+            "sell": 92,
+            "invalid": 88,
+            "hold": 56,
+            "abstain": 2
+          },
+          "model_fill_count": 248,
+          "trajectories_with_model_fills": 16,
+          "complete_trajectories_trading_at_least_two_dates": 16,
+          "fill_sides": {
+            "buy": 162,
+            "sell": 86
+          },
+          "fill_symbols": {
+            "HD": 75,
+            "MSFT": 114,
+            "GS": 59
+          },
+          "model_transaction_cost": 39522.28754681455,
+          "mean_takeover_return_complete_only": 0.02642353050775456,
+          "min_takeover_return_complete_only": -0.00497118487698045,
+          "max_takeover_return_complete_only": 0.05003201086665565,
+          "mean_terminal_score_complete_only": -3.0126760986542407,
+          "mean_final_cash_fraction_complete_only": 0.5394858816224146,
+          "mean_final_position_count_complete_only": 2.1875,
+          "max_position_weight_since_takeover": 0.31111733,
+          "max_drawdown_including_prefix_complete_only": 0.027706226311334032,
+          "siblings": {
+            "sample_contexts": 4,
+            "contexts_with_four_complete_siblings": 4,
+            "contexts_with_distinct_outcomes": 4,
+            "distinct_fraction_of_planned_contexts": 1.0,
+            "details": [
+              {
+                "horizon": "full",
+                "context_id": "formal-train-0113",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.018373622036588433,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "full",
+                "context_id": "formal-train-0117",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.021149562012225953,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "full",
+                "context_id": "formal-train-0121",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.029257010217201396,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "full",
+                "context_id": "formal-train-0125",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.026032066074076043,
+                "distinct_outcomes": true
+              }
+            ]
+          }
+        }
+      },
+      "after": {
+        "short_greedy": {
+          "planned": 16,
+          "complete": 16,
+          "statuses": {
+            "COMPLETE": 16
+          },
+          "model_requests": 48,
+          "executed_model_calls": 48,
+          "unexecuted_generation_requests": 0,
+          "legal_model_calls": 48,
+          "invalid_model_calls": 0,
+          "invalid_per_model_request": 0.0,
+          "actions": {
+            "buy": 35,
+            "sell": 13
+          },
+          "model_fill_count": 48,
+          "trajectories_with_model_fills": 16,
+          "complete_trajectories_trading_at_least_two_dates": 16,
+          "fill_sides": {
+            "buy": 35,
+            "sell": 13
+          },
+          "fill_symbols": {
+            "MSFT": 14,
+            "HD": 11,
+            "GS": 23
+          },
+          "model_transaction_cost": 14104.368857315067,
+          "mean_takeover_return_complete_only": 8.426222679940726e-05,
+          "min_takeover_return_complete_only": -0.013857727903109684,
+          "max_takeover_return_complete_only": 0.010906546990184118,
+          "mean_terminal_score_complete_only": -1.3468098485965652,
+          "mean_final_cash_fraction_complete_only": 0.5861381034715053,
+          "mean_final_position_count_complete_only": 2.0625,
+          "max_position_weight_since_takeover": 0.20661964,
+          "max_drawdown_including_prefix_complete_only": 0.014203454662021187,
+          "siblings": {
+            "sample_contexts": 0,
+            "contexts_with_four_complete_siblings": 0,
+            "contexts_with_distinct_outcomes": 0,
+            "distinct_fraction_of_planned_contexts": null,
+            "details": []
+          }
+        },
+        "short_sample": {
+          "planned": 64,
+          "complete": 64,
+          "statuses": {
+            "COMPLETE": 64
+          },
+          "model_requests": 204,
+          "executed_model_calls": 204,
+          "unexecuted_generation_requests": 0,
+          "legal_model_calls": 192,
+          "invalid_model_calls": 12,
+          "invalid_per_model_request": 0.058823529411764705,
+          "actions": {
+            "buy": 124,
+            "sell": 58,
+            "hold": 10,
+            "invalid": 12
+          },
+          "model_fill_count": 182,
+          "trajectories_with_model_fills": 64,
+          "complete_trajectories_trading_at_least_two_dates": 64,
+          "fill_sides": {
+            "buy": 124,
+            "sell": 58
+          },
+          "fill_symbols": {
+            "GS": 71,
+            "HD": 61,
+            "MSFT": 50
+          },
+          "model_transaction_cost": 53423.908843881574,
+          "mean_takeover_return_complete_only": -0.00131775154943203,
+          "min_takeover_return_complete_only": -0.012230133776204855,
+          "max_takeover_return_complete_only": 0.011889387826313769,
+          "mean_terminal_score_complete_only": -1.9444231809587724,
+          "mean_final_cash_fraction_complete_only": 0.655809988140664,
+          "mean_final_position_count_complete_only": 1.71875,
+          "max_position_weight_since_takeover": 0.20698191,
+          "max_drawdown_including_prefix_complete_only": 0.012735170892094262,
+          "siblings": {
+            "sample_contexts": 16,
+            "contexts_with_four_complete_siblings": 16,
+            "contexts_with_distinct_outcomes": 16,
+            "distinct_fraction_of_planned_contexts": 1.0,
+            "details": [
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0113-GS",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.008665149735822664,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0113-HD",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.005459004682006441,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0113-MSFT",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.005182584826455727,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0113-cash",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.009837083010195924,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0117-GS",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.0036659239689634804,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0117-HD",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.0023136798550191795,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0117-MSFT",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.00633264766357633,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0117-cash",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.016902942508127183,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0121-GS",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.006828669921257191,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0121-HD",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.006477659576188177,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0121-MSFT",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.010834465650789826,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0121-cash",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.006131863931691073,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0125-GS",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.010554399194252051,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0125-HD",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.00820666979235296,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0125-MSFT",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.014691118684286408,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "formal-train-0125-cash",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.004538013897540605,
+                "distinct_outcomes": true
+              }
+            ]
+          }
+        },
+        "full_greedy": {
+          "planned": 4,
+          "complete": 4,
+          "statuses": {
+            "COMPLETE": 4
+          },
+          "model_requests": 97,
+          "executed_model_calls": 97,
+          "unexecuted_generation_requests": 0,
+          "legal_model_calls": 80,
+          "invalid_model_calls": 17,
+          "invalid_per_model_request": 0.17525773195876287,
+          "actions": {
+            "buy": 48,
+            "sell": 32,
+            "invalid": 17
+          },
+          "model_fill_count": 79,
+          "trajectories_with_model_fills": 4,
+          "complete_trajectories_trading_at_least_two_dates": 4,
+          "fill_sides": {
+            "buy": 47,
+            "sell": 32
+          },
+          "fill_symbols": {
+            "HD": 17,
+            "GS": 51,
+            "MSFT": 11
+          },
+          "model_transaction_cost": 22323.51507814491,
+          "mean_takeover_return_complete_only": 0.009972926794764914,
+          "min_takeover_return_complete_only": 0.0013108287161240906,
+          "max_takeover_return_complete_only": 0.0200016252731976,
+          "mean_terminal_score_complete_only": -6.152718136829185,
+          "mean_final_cash_fraction_complete_only": 0.49510080335112316,
+          "mean_final_position_count_complete_only": 2.5,
+          "max_position_weight_since_takeover": 0.21132904,
+          "max_drawdown_including_prefix_complete_only": 0.014018099103387822,
+          "siblings": {
+            "sample_contexts": 0,
+            "contexts_with_four_complete_siblings": 0,
+            "contexts_with_distinct_outcomes": 0,
+            "distinct_fraction_of_planned_contexts": null,
+            "details": []
+          }
+        },
+        "full_sample": {
+          "planned": 16,
+          "complete": 16,
+          "statuses": {
+            "COMPLETE": 16
+          },
+          "model_requests": 386,
+          "executed_model_calls": 386,
+          "unexecuted_generation_requests": 0,
+          "legal_model_calls": 320,
+          "invalid_model_calls": 66,
+          "invalid_per_model_request": 0.17098445595854922,
+          "actions": {
+            "buy": 178,
+            "sell": 116,
+            "invalid": 66,
+            "hold": 26
+          },
+          "model_fill_count": 289,
+          "trajectories_with_model_fills": 16,
+          "complete_trajectories_trading_at_least_two_dates": 16,
+          "fill_sides": {
+            "buy": 173,
+            "sell": 116
+          },
+          "fill_symbols": {
+            "HD": 100,
+            "GS": 113,
+            "MSFT": 74,
+            "CAT": 2
+          },
+          "model_transaction_cost": 81911.11767092512,
+          "mean_takeover_return_complete_only": 0.01819559284274485,
+          "min_takeover_return_complete_only": -0.007748104951542989,
+          "max_takeover_return_complete_only": 0.038253096682707044,
+          "mean_terminal_score_complete_only": -4.5898007433512475,
+          "mean_final_cash_fraction_complete_only": 0.5329329293258539,
+          "mean_final_position_count_complete_only": 2.25,
+          "max_position_weight_since_takeover": 0.30986036,
+          "max_drawdown_including_prefix_complete_only": 0.02079815925959035,
+          "siblings": {
+            "sample_contexts": 4,
+            "contexts_with_four_complete_siblings": 4,
+            "contexts_with_distinct_outcomes": 4,
+            "distinct_fraction_of_planned_contexts": 1.0,
+            "details": [
+              {
+                "horizon": "full",
+                "context_id": "formal-train-0113",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.02010180404402695,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "full",
+                "context_id": "formal-train-0117",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.02281612911728481,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "full",
+                "context_id": "formal-train-0121",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.006963793070757118,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "full",
+                "context_id": "formal-train-0125",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.019452231129687636,
+                "distinct_outcomes": true
+              }
+            ]
+          }
+        }
+      }
+    },
+    "fresh": {
+      "before": {
+        "short_greedy": {
+          "planned": 16,
+          "complete": 16,
+          "statuses": {
+            "COMPLETE": 16
+          },
+          "model_requests": 65,
+          "executed_model_calls": 65,
+          "unexecuted_generation_requests": 0,
+          "legal_model_calls": 48,
+          "invalid_model_calls": 17,
+          "invalid_per_model_request": 0.26153846153846155,
+          "actions": {
+            "buy": 40,
+            "invalid": 17,
+            "sell": 8
+          },
+          "model_fill_count": 46,
+          "trajectories_with_model_fills": 16,
+          "complete_trajectories_trading_at_least_two_dates": 16,
+          "fill_sides": {
+            "buy": 38,
+            "sell": 8
+          },
+          "fill_symbols": {
+            "MSFT": 27,
+            "HD": 13,
+            "GS": 6
+          },
+          "model_transaction_cost": 6744.227700701182,
+          "mean_takeover_return_complete_only": -0.0025067941465588134,
+          "min_takeover_return_complete_only": -0.015796419469218947,
+          "max_takeover_return_complete_only": 0.00751408433672851,
+          "mean_terminal_score_complete_only": -1.5853012848721875,
+          "mean_final_cash_fraction_complete_only": 0.4834421589587488,
+          "mean_final_position_count_complete_only": 2.625,
+          "max_position_weight_since_takeover": 0.3129754,
+          "max_drawdown_including_prefix_complete_only": 0.015932384660740245,
+          "siblings": {
+            "sample_contexts": 0,
+            "contexts_with_four_complete_siblings": 0,
+            "contexts_with_distinct_outcomes": 0,
+            "distinct_fraction_of_planned_contexts": null,
+            "details": []
+          }
+        },
+        "short_sample": {
+          "planned": 64,
+          "complete": 64,
+          "statuses": {
+            "COMPLETE": 64
+          },
+          "model_requests": 219,
+          "executed_model_calls": 219,
+          "unexecuted_generation_requests": 0,
+          "legal_model_calls": 192,
+          "invalid_model_calls": 27,
+          "invalid_per_model_request": 0.1232876712328767,
+          "actions": {
+            "buy": 119,
+            "hold": 28,
+            "sell": 44,
+            "invalid": 27,
+            "abstain": 1
+          },
+          "model_fill_count": 163,
+          "trajectories_with_model_fills": 64,
+          "complete_trajectories_trading_at_least_two_dates": 60,
+          "fill_sides": {
+            "buy": 119,
+            "sell": 44
+          },
+          "fill_symbols": {
+            "GS": 38,
+            "HD": 47,
+            "MSFT": 78
+          },
+          "model_transaction_cost": 27876.729380521738,
+          "mean_takeover_return_complete_only": -0.002194015884345967,
+          "min_takeover_return_complete_only": -0.014902069278531771,
+          "max_takeover_return_complete_only": 0.008179806426602765,
+          "mean_terminal_score_complete_only": -1.5687798541194895,
+          "mean_final_cash_fraction_complete_only": 0.5270907942528267,
+          "mean_final_position_count_complete_only": 2.375,
+          "max_position_weight_since_takeover": 0.40255302,
+          "max_drawdown_including_prefix_complete_only": 0.015317281612293211,
+          "siblings": {
+            "sample_contexts": 16,
+            "contexts_with_four_complete_siblings": 16,
+            "contexts_with_distinct_outcomes": 16,
+            "distinct_fraction_of_planned_contexts": 1.0,
+            "details": [
+              {
+                "horizon": "short",
+                "context_id": "2023-05-26-cash-post-error",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.01357736466584858,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-05-26-pair_low",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.0053537325328160135,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-05-26-pair_mixed",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.0036638314001600225,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-05-26-single_high-post-error",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.011159057889312374,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-05-26-single_low",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.008177512624849781,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-05-26-triple_above-post-error",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.010065125910885486,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-05-26-triple_below",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.00011812081611839442,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-05-26-triple_mixed-post-error",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.004072592939772579,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-06-07-cash-post-error",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.005394995185800111,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-06-07-pair_low",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.0015285872376415988,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-06-07-pair_mixed",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.0058913301960250575,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-06-07-single_high-post-error",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.005546032015338431,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-06-07-single_low",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.008034003743745632,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-06-07-triple_above-post-error",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.0037973414393870364,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-06-07-triple_below",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.00249673041026921,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-06-07-triple_mixed-post-error",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.002956444943016834,
+                "distinct_outcomes": true
+              }
+            ]
+          }
+        },
+        "full_greedy": {
+          "planned": 1,
+          "complete": 1,
+          "statuses": {
+            "COMPLETE": 1
+          },
+          "model_requests": 20,
+          "executed_model_calls": 20,
+          "unexecuted_generation_requests": 0,
+          "legal_model_calls": 14,
+          "invalid_model_calls": 6,
+          "invalid_per_model_request": 0.3,
+          "actions": {
+            "buy": 12,
+            "invalid": 6,
+            "sell": 2
+          },
+          "model_fill_count": 14,
+          "trajectories_with_model_fills": 1,
+          "complete_trajectories_trading_at_least_two_dates": 1,
+          "fill_sides": {
+            "buy": 12,
+            "sell": 2
+          },
+          "fill_symbols": {
+            "MSFT": 9,
+            "HD": 2,
+            "GS": 3
+          },
+          "model_transaction_cost": 956.6800810088823,
+          "mean_takeover_return_complete_only": 0.028374819695178743,
+          "min_takeover_return_complete_only": 0.028374819695178743,
+          "max_takeover_return_complete_only": 0.028374819695178743,
+          "mean_terminal_score_complete_only": -2.7583668000561303,
+          "mean_final_cash_fraction_complete_only": 0.3887283957814741,
+          "mean_final_position_count_complete_only": 3.0,
+          "max_position_weight_since_takeover": 0.21619151,
+          "max_drawdown_including_prefix_complete_only": 0.014120230856503276,
+          "siblings": {
+            "sample_contexts": 0,
+            "contexts_with_four_complete_siblings": 0,
+            "contexts_with_distinct_outcomes": 0,
+            "distinct_fraction_of_planned_contexts": null,
+            "details": []
+          }
+        },
+        "full_sample": {
+          "planned": 4,
+          "complete": 4,
+          "statuses": {
+            "COMPLETE": 4
+          },
+          "model_requests": 72,
+          "executed_model_calls": 72,
+          "unexecuted_generation_requests": 0,
+          "legal_model_calls": 56,
+          "invalid_model_calls": 16,
+          "invalid_per_model_request": 0.2222222222222222,
+          "actions": {
+            "buy": 35,
+            "sell": 11,
+            "invalid": 16,
+            "hold": 10
+          },
+          "model_fill_count": 46,
+          "trajectories_with_model_fills": 4,
+          "complete_trajectories_trading_at_least_two_dates": 4,
+          "fill_sides": {
+            "buy": 35,
+            "sell": 11
+          },
+          "fill_symbols": {
+            "HD": 14,
+            "MSFT": 23,
+            "GS": 9
+          },
+          "model_transaction_cost": 6735.716055738907,
+          "mean_takeover_return_complete_only": 0.01871152228103229,
+          "min_takeover_return_complete_only": -0.0009402254890671369,
+          "max_takeover_return_complete_only": 0.03595439516877397,
+          "mean_terminal_score_complete_only": -4.100740286055899,
+          "mean_final_cash_fraction_complete_only": 0.40619783178363433,
+          "mean_final_position_count_complete_only": 2.75,
+          "max_position_weight_since_takeover": 0.30114353,
+          "max_drawdown_including_prefix_complete_only": 0.015736767906896848,
+          "siblings": {
+            "sample_contexts": 1,
+            "contexts_with_four_complete_siblings": 1,
+            "contexts_with_distinct_outcomes": 1,
+            "distinct_fraction_of_planned_contexts": 1.0,
+            "details": [
+              {
+                "horizon": "full",
+                "context_id": "gap-2023-05-23-2023-06-13-15sessions",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.036894620657841104,
+                "distinct_outcomes": true
+              }
+            ]
+          }
+        }
+      },
+      "after": {
+        "short_greedy": {
+          "planned": 16,
+          "complete": 16,
+          "statuses": {
+            "COMPLETE": 16
+          },
+          "model_requests": 51,
+          "executed_model_calls": 51,
+          "unexecuted_generation_requests": 0,
+          "legal_model_calls": 48,
+          "invalid_model_calls": 3,
+          "invalid_per_model_request": 0.058823529411764705,
+          "actions": {
+            "buy": 32,
+            "sell": 16,
+            "invalid": 3
+          },
+          "model_fill_count": 48,
+          "trajectories_with_model_fills": 16,
+          "complete_trajectories_trading_at_least_two_dates": 16,
+          "fill_sides": {
+            "buy": 32,
+            "sell": 16
+          },
+          "fill_symbols": {
+            "GS": 36,
+            "HD": 9,
+            "MSFT": 3
+          },
+          "model_transaction_cost": 12881.592104078029,
+          "mean_takeover_return_complete_only": -0.0020586970889221803,
+          "min_takeover_return_complete_only": -0.01395343675625249,
+          "max_takeover_return_complete_only": 0.008519215479535491,
+          "mean_terminal_score_complete_only": -1.4951494950427893,
+          "mean_final_cash_fraction_complete_only": 0.49387819895217566,
+          "mean_final_position_count_complete_only": 2.5,
+          "max_position_weight_since_takeover": 0.31482966,
+          "max_drawdown_including_prefix_complete_only": 0.01417379060301212,
+          "siblings": {
+            "sample_contexts": 0,
+            "contexts_with_four_complete_siblings": 0,
+            "contexts_with_distinct_outcomes": 0,
+            "distinct_fraction_of_planned_contexts": null,
+            "details": []
+          }
+        },
+        "short_sample": {
+          "planned": 64,
+          "complete": 64,
+          "statuses": {
+            "COMPLETE": 64
+          },
+          "model_requests": 211,
+          "executed_model_calls": 211,
+          "unexecuted_generation_requests": 0,
+          "legal_model_calls": 192,
+          "invalid_model_calls": 19,
+          "invalid_per_model_request": 0.09004739336492891,
+          "actions": {
+            "buy": 114,
+            "sell": 70,
+            "invalid": 19,
+            "hold": 8
+          },
+          "model_fill_count": 184,
+          "trajectories_with_model_fills": 64,
+          "complete_trajectories_trading_at_least_two_dates": 63,
+          "fill_sides": {
+            "buy": 114,
+            "sell": 70
+          },
+          "fill_symbols": {
+            "GS": 94,
+            "HD": 51,
+            "MSFT": 38,
+            "AMGN": 1
+          },
+          "model_transaction_cost": 48218.98888607995,
+          "mean_takeover_return_complete_only": -0.0018233009708513853,
+          "min_takeover_return_complete_only": -0.01395343675625249,
+          "max_takeover_return_complete_only": 0.011278801558513907,
+          "mean_terminal_score_complete_only": -1.5161804056952293,
+          "mean_final_cash_fraction_complete_only": 0.555830270238216,
+          "mean_final_position_count_complete_only": 2.140625,
+          "max_position_weight_since_takeover": 0.3152917,
+          "max_drawdown_including_prefix_complete_only": 0.01417379060301212,
+          "siblings": {
+            "sample_contexts": 16,
+            "contexts_with_four_complete_siblings": 16,
+            "contexts_with_distinct_outcomes": 16,
+            "distinct_fraction_of_planned_contexts": 1.0,
+            "details": [
+              {
+                "horizon": "short",
+                "context_id": "2023-05-26-cash-post-error",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.00466456929289194,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-05-26-pair_low",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.006481591817728005,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-05-26-pair_mixed",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.009996927377665998,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-05-26-single_high-post-error",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.009418728386345387,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-05-26-single_low",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.002001953184279537,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-05-26-triple_above-post-error",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.003746491813931163,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-05-26-triple_below",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.009964553879683313,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-05-26-triple_mixed-post-error",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.00886591638964096,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-06-07-cash-post-error",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.009123472398598231,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-06-07-pair_low",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.005342557928967651,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-06-07-pair_mixed",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.004684070091650727,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-06-07-single_high-post-error",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.004446255074731287,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-06-07-single_low",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.00934250485277588,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-06-07-triple_above-post-error",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.005336831006774401,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-06-07-triple_below",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.005442641303457174,
+                "distinct_outcomes": true
+              },
+              {
+                "horizon": "short",
+                "context_id": "2023-06-07-triple_mixed-post-error",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.000454064509781249,
+                "distinct_outcomes": true
+              }
+            ]
+          }
+        },
+        "full_greedy": {
+          "planned": 1,
+          "complete": 1,
+          "statuses": {
+            "COMPLETE": 1
+          },
+          "model_requests": 22,
+          "executed_model_calls": 22,
+          "unexecuted_generation_requests": 0,
+          "legal_model_calls": 14,
+          "invalid_model_calls": 8,
+          "invalid_per_model_request": 0.36363636363636365,
+          "actions": {
+            "buy": 9,
+            "sell": 5,
+            "invalid": 8
+          },
+          "model_fill_count": 14,
+          "trajectories_with_model_fills": 1,
+          "complete_trajectories_trading_at_least_two_dates": 1,
+          "fill_sides": {
+            "buy": 9,
+            "sell": 5
+          },
+          "fill_symbols": {
+            "MSFT": 1,
+            "GS": 11,
+            "HD": 2
+          },
+          "model_transaction_cost": 3964.1458294251074,
+          "mean_takeover_return_complete_only": 0.023700103444982634,
+          "min_takeover_return_complete_only": 0.023700103444982634,
+          "max_takeover_return_complete_only": 0.023700103444982634,
+          "mean_terminal_score_complete_only": -3.40492033409386,
+          "mean_final_cash_fraction_complete_only": 0.3869896753897536,
+          "mean_final_position_count_complete_only": 3.0,
+          "max_position_weight_since_takeover": 0.2106927,
+          "max_drawdown_including_prefix_complete_only": 0.011459060437787254,
+          "siblings": {
+            "sample_contexts": 0,
+            "contexts_with_four_complete_siblings": 0,
+            "contexts_with_distinct_outcomes": 0,
+            "distinct_fraction_of_planned_contexts": null,
+            "details": []
+          }
+        },
+        "full_sample": {
+          "planned": 4,
+          "complete": 4,
+          "statuses": {
+            "COMPLETE": 4
+          },
+          "model_requests": 66,
+          "executed_model_calls": 66,
+          "unexecuted_generation_requests": 0,
+          "legal_model_calls": 56,
+          "invalid_model_calls": 10,
+          "invalid_per_model_request": 0.15151515151515152,
+          "actions": {
+            "buy": 33,
+            "sell": 19,
+            "invalid": 10,
+            "hold": 4
+          },
+          "model_fill_count": 52,
+          "trajectories_with_model_fills": 4,
+          "complete_trajectories_trading_at_least_two_dates": 4,
+          "fill_sides": {
+            "buy": 33,
+            "sell": 19
+          },
+          "fill_symbols": {
+            "HD": 18,
+            "GS": 22,
+            "MSFT": 12
+          },
+          "model_transaction_cost": 14302.250530153204,
+          "mean_takeover_return_complete_only": 0.016375376536232777,
+          "min_takeover_return_complete_only": 0.0026500853579030093,
+          "max_takeover_return_complete_only": 0.03982336603525005,
+          "mean_terminal_score_complete_only": -4.422716347396651,
+          "mean_final_cash_fraction_complete_only": 0.545423553810515,
+          "mean_final_position_count_complete_only": 2.25,
+          "max_position_weight_since_takeover": 0.20999827,
+          "max_drawdown_including_prefix_complete_only": 0.014906566610392247,
+          "siblings": {
+            "sample_contexts": 1,
+            "contexts_with_four_complete_siblings": 1,
+            "contexts_with_distinct_outcomes": 1,
+            "distinct_fraction_of_planned_contexts": 1.0,
+            "details": [
+              {
+                "horizon": "full",
+                "context_id": "gap-2023-05-23-2023-06-13-15sessions",
+                "planned_siblings": 4,
+                "complete_siblings": 4,
+                "all_four_complete": true,
+                "takeover_return_range": 0.03717328067734704,
+                "distinct_outcomes": true
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

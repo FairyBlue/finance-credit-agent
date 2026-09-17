@@ -1,0 +1,592 @@
+{
+  "status": "PASS",
+  "at_SGT": "2026-09-17T13:39:09.714949+08:00",
+  "source_run": "/home/tianming/projects/finance-credit-agent/runs/m2-train-coverage-20260916-v2",
+  "source_sha256": {
+    "readout.json": "18761565ad14401dbe53d491032cf86b6581eb7e1e9481fcd8e7dda14dd73b4f",
+    "raw_trajectory_audit.json": "c327f1259ffdbbafd21e0c7792836ef85994b07d57ee48e42c1d1498bd76a975",
+    "sft0/artifacts/rollout_seed/request-seeds-838327.jsonl": "674f1002f511497d8d8a2766080290485b17365f4b0fc4b2880420bf50b66ce8",
+    "m1/artifacts/rollout_seed/request-seeds-840741.jsonl": "e90ab0fe388fdc3b18dc748c1a9a385a2d22aa6c0dbe69d129d29bee3bc2573c",
+    "m2_eta025/artifacts/rollout_seed/request-seeds-849035.jsonl": "79933d18a5530152f894c937e84c8b53644792f31e8e3cdde3ee6270e55780a4"
+  },
+  "script_sha256": "be0d6c36fdd9597b49c0e8898278fdb2259f0bb7a168c599f1a0a4470dcaf8ca",
+  "sampled_trajectories": 144,
+  "seed_checks": {
+    "shared_M1_M2_eval_request_identity_count": 1629,
+    "all_shared_request_seeds_equal": true,
+    "common_episode_to_sample_index": {
+      "formal-train-0113": 0,
+      "formal-train-0117": 1,
+      "formal-train-0121": 2,
+      "formal-train-0125": 3
+    },
+    "sampled_cell_window_lanes_with_changed_seeds_across_checkpoints": 32,
+    "note": "Same-step M1/M2 lane pairing is justified by equal request seeds at shared indices, not identical states/actions. Seeds change with policy step, so checkpoint contrasts resample independently."
+  },
+  "groups": [
+    {
+      "group": "sft0:step0",
+      "mean_net_return_pct": 1.4267674505942365,
+      "conditional_monte_carlo_standard_error_pp": 0.2528112930679608,
+      "scope": "SD of the estimated equal-window mean from finite independent sampled siblings, conditional on fixed windows and policy; not market or training uncertainty."
+    },
+    {
+      "group": "m1:step2",
+      "mean_net_return_pct": 1.6334419958946098,
+      "conditional_monte_carlo_standard_error_pp": 0.3206626009993816,
+      "scope": "SD of the estimated equal-window mean from finite independent sampled siblings, conditional on fixed windows and policy; not market or training uncertainty."
+    },
+    {
+      "group": "m1:step4",
+      "mean_net_return_pct": 2.0338708818993454,
+      "conditional_monte_carlo_standard_error_pp": 0.21438007751685292,
+      "scope": "SD of the estimated equal-window mean from finite independent sampled siblings, conditional on fixed windows and policy; not market or training uncertainty."
+    },
+    {
+      "group": "m1:step6",
+      "mean_net_return_pct": 1.233602624579848,
+      "conditional_monte_carlo_standard_error_pp": 0.3071620290387576,
+      "scope": "SD of the estimated equal-window mean from finite independent sampled siblings, conditional on fixed windows and policy; not market or training uncertainty."
+    },
+    {
+      "group": "m1:step8",
+      "mean_net_return_pct": 1.2637382464159983,
+      "conditional_monte_carlo_standard_error_pp": 0.30119377019473487,
+      "scope": "SD of the estimated equal-window mean from finite independent sampled siblings, conditional on fixed windows and policy; not market or training uncertainty."
+    },
+    {
+      "group": "m2_eta025:step2",
+      "mean_net_return_pct": 1.7539411117437378,
+      "conditional_monte_carlo_standard_error_pp": 0.34813125155957714,
+      "scope": "SD of the estimated equal-window mean from finite independent sampled siblings, conditional on fixed windows and policy; not market or training uncertainty."
+    },
+    {
+      "group": "m2_eta025:step4",
+      "mean_net_return_pct": 1.7025400262509962,
+      "conditional_monte_carlo_standard_error_pp": 0.22543797637603857,
+      "scope": "SD of the estimated equal-window mean from finite independent sampled siblings, conditional on fixed windows and policy; not market or training uncertainty."
+    },
+    {
+      "group": "m2_eta025:step6",
+      "mean_net_return_pct": 1.1062737251682344,
+      "conditional_monte_carlo_standard_error_pp": 0.2778040660227013,
+      "scope": "SD of the estimated equal-window mean from finite independent sampled siblings, conditional on fixed windows and policy; not market or training uncertainty."
+    },
+    {
+      "group": "m2_eta025:step8",
+      "mean_net_return_pct": 1.2878281543091452,
+      "conditional_monte_carlo_standard_error_pp": 0.29647754219788125,
+      "scope": "SD of the estimated equal-window mean from finite independent sampled siblings, conditional on fixed windows and policy; not market or training uncertainty."
+    }
+  ],
+  "within_window_spread": [
+    {
+      "cell": "sft0",
+      "policy_step": 0,
+      "window": "formal-train-0113",
+      "n": 4,
+      "mean_net_return_pct": 0.06905587227841736,
+      "sample_sd_pp": 0.2304897458936276,
+      "min_net_return_pct": -0.1314218828388003,
+      "max_net_return_pct": 0.3619154444602479
+    },
+    {
+      "cell": "sft0",
+      "policy_step": 0,
+      "window": "formal-train-0117",
+      "n": 4,
+      "mean_net_return_pct": 1.8812706717074856,
+      "sample_sd_pp": 0.5564948947359952,
+      "min_net_return_pct": 1.1474684282042347,
+      "max_net_return_pct": 2.4462841879976827
+    },
+    {
+      "cell": "sft0",
+      "policy_step": 0,
+      "window": "formal-train-0121",
+      "n": 4,
+      "mean_net_return_pct": 1.9444898810780153,
+      "sample_sd_pp": 1.6754681652367223,
+      "min_net_return_pct": -0.06339845108642717,
+      "max_net_return_pct": 3.874238803870478
+    },
+    {
+      "cell": "sft0",
+      "policy_step": 0,
+      "window": "formal-train-0125",
+      "n": 4,
+      "mean_net_return_pct": 1.8122533773130278,
+      "sample_sd_pp": 0.9594068637556205,
+      "min_net_return_pct": 0.8771135999577906,
+      "max_net_return_pct": 3.154427093936163
+    },
+    {
+      "cell": "m1",
+      "policy_step": 2,
+      "window": "formal-train-0113",
+      "n": 4,
+      "mean_net_return_pct": -0.9365450513870138,
+      "sample_sd_pp": 1.1084022589240468,
+      "min_net_return_pct": -1.9800454578946525,
+      "max_net_return_pct": 0.06506119500844232
+    },
+    {
+      "cell": "m1",
+      "policy_step": 2,
+      "window": "formal-train-0117",
+      "n": 4,
+      "mean_net_return_pct": 2.4217480068177477,
+      "sample_sd_pp": 0.9272209234901388,
+      "min_net_return_pct": 1.6634744027448578,
+      "max_net_return_pct": 3.770647954498041
+    },
+    {
+      "cell": "m1",
+      "policy_step": 2,
+      "window": "formal-train-0121",
+      "n": 4,
+      "mean_net_return_pct": 1.8645427444324791,
+      "sample_sd_pp": 1.719248537039589,
+      "min_net_return_pct": -0.13929776572207953,
+      "max_net_return_pct": 3.9014448666476076
+    },
+    {
+      "cell": "m1",
+      "policy_step": 2,
+      "window": "formal-train-0125",
+      "n": 4,
+      "mean_net_return_pct": 3.1840222837152266,
+      "sample_sd_pp": 1.2396203026900887,
+      "min_net_return_pct": 1.9326718767074258,
+      "max_net_return_pct": 4.842693302491341
+    },
+    {
+      "cell": "m1",
+      "policy_step": 4,
+      "window": "formal-train-0113",
+      "n": 4,
+      "mean_net_return_pct": 0.306673671744756,
+      "sample_sd_pp": 0.9416111006166729,
+      "min_net_return_pct": -0.5904621297917689,
+      "max_net_return_pct": 1.6033951158685555
+    },
+    {
+      "cell": "m1",
+      "policy_step": 4,
+      "window": "formal-train-0117",
+      "n": 4,
+      "mean_net_return_pct": 2.0924883921708326,
+      "sample_sd_pp": 0.8655262274525544,
+      "min_net_return_pct": 1.0797902647799784,
+      "max_net_return_pct": 3.172462432279488
+    },
+    {
+      "cell": "m1",
+      "policy_step": 4,
+      "window": "formal-train-0121",
+      "n": 4,
+      "mean_net_return_pct": 2.843875138887031,
+      "sample_sd_pp": 0.8992184261698847,
+      "min_net_return_pct": 1.6564739650591909,
+      "max_net_return_pct": 3.608773055638026
+    },
+    {
+      "cell": "m1",
+      "policy_step": 4,
+      "window": "formal-train-0125",
+      "n": 4,
+      "mean_net_return_pct": 2.892446324794762,
+      "sample_sd_pp": 0.7049847058881504,
+      "min_net_return_pct": 2.0248307132456844,
+      "max_net_return_pct": 3.7043779374865693
+    },
+    {
+      "cell": "m1",
+      "policy_step": 6,
+      "window": "formal-train-0113",
+      "n": 4,
+      "mean_net_return_pct": -0.15306697168671335,
+      "sample_sd_pp": 0.8922623215090842,
+      "min_net_return_pct": -1.4541616628181653,
+      "max_net_return_pct": 0.563295612286363
+    },
+    {
+      "cell": "m1",
+      "policy_step": 6,
+      "window": "formal-train-0117",
+      "n": 4,
+      "mean_net_return_pct": 1.2188881753259273,
+      "sample_sd_pp": 0.9997278038570335,
+      "min_net_return_pct": 0.347028366320945,
+      "max_net_return_pct": 2.5510474854737675
+    },
+    {
+      "cell": "m1",
+      "policy_step": 6,
+      "window": "formal-train-0121",
+      "n": 4,
+      "mean_net_return_pct": 1.4031324720741507,
+      "sample_sd_pp": 1.5998696419956004,
+      "min_net_return_pct": -0.587940455192737,
+      "max_net_return_pct": 3.0065486176153122
+    },
+    {
+      "cell": "m1",
+      "policy_step": 6,
+      "window": "formal-train-0125",
+      "n": 4,
+      "mean_net_return_pct": 2.465456822606027,
+      "sample_sd_pp": 1.297356608553139,
+      "min_net_return_pct": 0.7308745292122332,
+      "max_net_return_pct": 3.8249606037265904
+    },
+    {
+      "cell": "m1",
+      "policy_step": 8,
+      "window": "formal-train-0113",
+      "n": 4,
+      "mean_net_return_pct": -0.6408300124131738,
+      "sample_sd_pp": 0.8911544008303709,
+      "min_net_return_pct": -1.9444203311274721,
+      "max_net_return_pct": -0.0312508701904024
+    },
+    {
+      "cell": "m1",
+      "policy_step": 8,
+      "window": "formal-train-0117",
+      "n": 4,
+      "mean_net_return_pct": 1.6245510177486322,
+      "sample_sd_pp": 0.6771366293716545,
+      "min_net_return_pct": 0.6823217525130154,
+      "max_net_return_pct": 2.2059619358628435
+    },
+    {
+      "cell": "m1",
+      "policy_step": 8,
+      "window": "formal-train-0121",
+      "n": 4,
+      "mean_net_return_pct": 2.087619716031741,
+      "sample_sd_pp": 0.9045389263362923,
+      "min_net_return_pct": 0.9864196253247748,
+      "max_net_return_pct": 3.096165595655065
+    },
+    {
+      "cell": "m1",
+      "policy_step": 8,
+      "window": "formal-train-0125",
+      "n": 4,
+      "mean_net_return_pct": 1.9836122642967942,
+      "sample_sd_pp": 1.932633211669986,
+      "min_net_return_pct": -0.040433186451205305,
+      "max_net_return_pct": 4.156286046249402
+    },
+    {
+      "cell": "m2_eta025",
+      "policy_step": 2,
+      "window": "formal-train-0113",
+      "n": 4,
+      "mean_net_return_pct": -0.600928240619189,
+      "sample_sd_pp": 0.9482602495717467,
+      "min_net_return_pct": -1.9800454578946525,
+      "max_net_return_pct": 0.06506119500844232
+    },
+    {
+      "cell": "m2_eta025",
+      "policy_step": 2,
+      "window": "formal-train-0117",
+      "n": 4,
+      "mean_net_return_pct": 2.512605602767154,
+      "sample_sd_pp": 1.0671557555635174,
+      "min_net_return_pct": 1.5908057227947747,
+      "max_net_return_pct": 3.770647954498041
+    },
+    {
+      "cell": "m2_eta025",
+      "policy_step": 2,
+      "window": "formal-train-0121",
+      "n": 4,
+      "mean_net_return_pct": 2.0694942227046043,
+      "sample_sd_pp": 1.9361147313978884,
+      "min_net_return_pct": 0.4686342713354996,
+      "max_net_return_pct": 4.440232804113253
+    },
+    {
+      "cell": "m2_eta025",
+      "policy_step": 2,
+      "window": "formal-train-0125",
+      "n": 4,
+      "mean_net_return_pct": 3.0345928621223814,
+      "sample_sd_pp": 1.4035470819712008,
+      "min_net_return_pct": 1.9143553450801098,
+      "max_net_return_pct": 4.842693302491341
+    },
+    {
+      "cell": "m2_eta025",
+      "policy_step": 4,
+      "window": "formal-train-0113",
+      "n": 4,
+      "mean_net_return_pct": -0.09818439164982762,
+      "sample_sd_pp": 1.2505480287351312,
+      "min_net_return_pct": -1.1297273436316368,
+      "max_net_return_pct": 1.6649685924118307
+    },
+    {
+      "cell": "m2_eta025",
+      "policy_step": 4,
+      "window": "formal-train-0117",
+      "n": 4,
+      "mean_net_return_pct": 1.6392761836379166,
+      "sample_sd_pp": 0.6033875046899124,
+      "min_net_return_pct": 1.0797902647799784,
+      "max_net_return_pct": 2.4956533396123914
+    },
+    {
+      "cell": "m2_eta025",
+      "policy_step": 4,
+      "window": "formal-train-0121",
+      "n": 4,
+      "mean_net_return_pct": 3.091603905186985,
+      "sample_sd_pp": 0.5752590116433632,
+      "min_net_return_pct": 2.3414908971201687,
+      "max_net_return_pct": 3.608773055638026
+    },
+    {
+      "cell": "m2_eta025",
+      "policy_step": 4,
+      "window": "formal-train-0125",
+      "n": 4,
+      "mean_net_return_pct": 2.1774644078289107,
+      "sample_sd_pp": 0.996873218044979,
+      "min_net_return_pct": 0.8444502696231648,
+      "max_net_return_pct": 3.1171006201454743
+    },
+    {
+      "cell": "m2_eta025",
+      "policy_step": 6,
+      "window": "formal-train-0113",
+      "n": 4,
+      "mean_net_return_pct": -0.15306697168671335,
+      "sample_sd_pp": 0.8922623215090842,
+      "min_net_return_pct": -1.4541616628181653,
+      "max_net_return_pct": 0.563295612286363
+    },
+    {
+      "cell": "m2_eta025",
+      "policy_step": 6,
+      "window": "formal-train-0117",
+      "n": 4,
+      "mean_net_return_pct": 0.9210131422972667,
+      "sample_sd_pp": 0.35404379877014963,
+      "min_net_return_pct": 0.5658665317026745,
+      "max_net_return_pct": 1.4116103178063222
+    },
+    {
+      "cell": "m2_eta025",
+      "policy_step": 6,
+      "window": "formal-train-0121",
+      "n": 4,
+      "mean_net_return_pct": 1.3990645386739082,
+      "sample_sd_pp": 1.5967524147216225,
+      "min_net_return_pct": -0.587940455192737,
+      "max_net_return_pct": 3.0065486176153122
+    },
+    {
+      "cell": "m2_eta025",
+      "policy_step": 6,
+      "window": "formal-train-0125",
+      "n": 4,
+      "mean_net_return_pct": 2.2580841913884764,
+      "sample_sd_pp": 1.2116554817966998,
+      "min_net_return_pct": 0.9226129863777466,
+      "max_net_return_pct": 3.8249606037265904
+    },
+    {
+      "cell": "m2_eta025",
+      "policy_step": 8,
+      "window": "formal-train-0113",
+      "n": 4,
+      "mean_net_return_pct": -0.15128607350967105,
+      "sample_sd_pp": 1.4186452898271606,
+      "min_net_return_pct": -1.9444203311274721,
+      "max_net_return_pct": 1.517043840535237
+    },
+    {
+      "cell": "m2_eta025",
+      "policy_step": 8,
+      "window": "formal-train-0117",
+      "n": 4,
+      "mean_net_return_pct": 1.8126255212088493,
+      "sample_sd_pp": 0.9442448179325701,
+      "min_net_return_pct": 0.6823217525130154,
+      "max_net_return_pct": 2.958259949703712
+    },
+    {
+      "cell": "m2_eta025",
+      "policy_step": 8,
+      "window": "formal-train-0121",
+      "n": 4,
+      "mean_net_return_pct": 2.375440931589723,
+      "sample_sd_pp": 0.9645101046930227,
+      "min_net_return_pct": 0.9864196253247748,
+      "max_net_return_pct": 3.096165595655065
+    },
+    {
+      "cell": "m2_eta025",
+      "policy_step": 8,
+      "window": "formal-train-0125",
+      "n": 4,
+      "mean_net_return_pct": 1.1145322379476796,
+      "sample_sd_pp": 1.338319557197132,
+      "min_net_return_pct": -0.040082806302699225,
+      "max_net_return_pct": 2.9994579155684375
+    }
+  ],
+  "contrasts": [
+    {
+      "target": "m1:step8",
+      "reference": "m1:step2",
+      "mean_delta_pp": -0.3697037494786115,
+      "window_delta_pp": {
+        "formal-train-0113": 0.29571503897384,
+        "formal-train-0117": -0.7971969890691155,
+        "formal-train-0121": 0.223076971599262,
+        "formal-train-0125": -1.2004100194184324
+      },
+      "resampling": "independent groups within window",
+      "bootstrap_repetitions": 20000,
+      "bootstrap_seed": 20260917,
+      "conditional_percentile_95_interval_pp": [
+        -1.116657849819596,
+        0.36295472597369616
+      ],
+      "bootstrap_fraction_positive_descriptive_only": 0.16815,
+      "interval_scope": "Fixed four windows, observed policies and four recorded siblings per window; no market/window or training-seed resampling. Small-sample descriptive interval, not a formal method-performance test."
+    },
+    {
+      "target": "m1:step8",
+      "reference": "m1:step4",
+      "mean_delta_pp": -0.7701326354833469,
+      "window_delta_pp": {
+        "formal-train-0113": -0.9475036841579298,
+        "formal-train-0117": -0.4679373744222004,
+        "formal-train-0121": -0.7562554228552898,
+        "formal-train-0125": -0.9088340604979677
+      },
+      "resampling": "independent groups within window",
+      "bootstrap_repetitions": 20000,
+      "bootstrap_seed": 20260917,
+      "conditional_percentile_95_interval_pp": [
+        -1.3915130657980426,
+        -0.14530498146051266
+      ],
+      "bootstrap_fraction_positive_descriptive_only": 0.0072,
+      "interval_scope": "Fixed four windows, observed policies and four recorded siblings per window; no market/window or training-seed resampling. Small-sample descriptive interval, not a formal method-performance test."
+    },
+    {
+      "target": "m1:step8",
+      "reference": "sft0:step0",
+      "mean_delta_pp": -0.16302920417823813,
+      "window_delta_pp": {
+        "formal-train-0113": -0.7098858846915912,
+        "formal-train-0117": -0.25671965395885343,
+        "formal-train-0121": 0.14312983495372578,
+        "formal-train-0125": 0.17135888698376633
+      },
+      "resampling": "independent groups within window",
+      "bootstrap_repetitions": 20000,
+      "bootstrap_seed": 20260917,
+      "conditional_percentile_95_interval_pp": [
+        -0.8351270210067786,
+        0.5026267961228325
+      ],
+      "bootstrap_fraction_positive_descriptive_only": 0.3185,
+      "interval_scope": "Fixed four windows, observed policies and four recorded siblings per window; no market/window or training-seed resampling. Small-sample descriptive interval, not a formal method-performance test."
+    },
+    {
+      "target": "m2_eta025:step8",
+      "reference": "m2_eta025:step2",
+      "mean_delta_pp": -0.46611295743459247,
+      "window_delta_pp": {
+        "formal-train-0113": 0.449642167109518,
+        "formal-train-0117": -0.6999800815583048,
+        "formal-train-0121": 0.30594670888511866,
+        "formal-train-0125": -1.9200606241747018
+      },
+      "resampling": "independent groups within window",
+      "bootstrap_repetitions": 20000,
+      "bootstrap_seed": 20260917,
+      "conditional_percentile_95_interval_pp": [
+        -1.2453152887179832,
+        0.29500147308838626
+      ],
+      "bootstrap_fraction_positive_descriptive_only": 0.12115,
+      "interval_scope": "Fixed four windows, observed policies and four recorded siblings per window; no market/window or training-seed resampling. Small-sample descriptive interval, not a formal method-performance test."
+    },
+    {
+      "target": "m2_eta025:step8",
+      "reference": "m2_eta025:step4",
+      "mean_delta_pp": -0.414711871941851,
+      "window_delta_pp": {
+        "formal-train-0113": -0.05310168185984343,
+        "formal-train-0117": 0.17334933757093274,
+        "formal-train-0121": -0.7161629735972621,
+        "formal-train-0125": -1.062932169881231
+      },
+      "resampling": "independent groups within window",
+      "bootstrap_repetitions": 20000,
+      "bootstrap_seed": 20260917,
+      "conditional_percentile_95_interval_pp": [
+        -1.0411002516978827,
+        0.21049019736135147
+      ],
+      "bootstrap_fraction_positive_descriptive_only": 0.0985,
+      "interval_scope": "Fixed four windows, observed policies and four recorded siblings per window; no market/window or training-seed resampling. Small-sample descriptive interval, not a formal method-performance test."
+    },
+    {
+      "target": "m2_eta025:step8",
+      "reference": "sft0:step0",
+      "mean_delta_pp": -0.13893929628509133,
+      "window_delta_pp": {
+        "formal-train-0113": -0.2203419457880884,
+        "formal-train-0117": -0.06864515049863629,
+        "formal-train-0121": 0.43095105051170757,
+        "formal-train-0125": -0.6977211393653482
+      },
+      "resampling": "independent groups within window",
+      "bootstrap_repetitions": 20000,
+      "bootstrap_seed": 20260917,
+      "conditional_percentile_95_interval_pp": [
+        -0.8037444322968973,
+        0.524172632387738
+      ],
+      "bootstrap_fraction_positive_descriptive_only": 0.34095,
+      "interval_scope": "Fixed four windows, observed policies and four recorded siblings per window; no market/window or training-seed resampling. Small-sample descriptive interval, not a formal method-performance test."
+    },
+    {
+      "target": "m2_eta025:step8",
+      "reference": "m1:step8",
+      "mean_delta_pp": 0.0240899078931468,
+      "window_delta_pp": {
+        "formal-train-0113": 0.4895439389035028,
+        "formal-train-0117": 0.18807450346021715,
+        "formal-train-0121": 0.2878212155579818,
+        "formal-train-0125": -0.8690800263491145
+      },
+      "resampling": "paired lanes within window",
+      "bootstrap_repetitions": 20000,
+      "bootstrap_seed": 20260917,
+      "conditional_percentile_95_interval_pp": [
+        -0.38216980605540607,
+        0.36826136438782214
+      ],
+      "bootstrap_fraction_positive_descriptive_only": 0.5647,
+      "interval_scope": "Fixed four windows, observed policies and four recorded siblings per window; no market/window or training-seed resampling. Small-sample descriptive interval, not a formal method-performance test."
+    }
+  ],
+  "limits": [
+    "Only four sampled siblings per window; bootstrap support is small and tails may be underestimated.",
+    "Intervals condition on the same four, partly overlapping windows; they do not measure out-of-sample performance or training-seed robustness.",
+    "Changing policy and evaluation seed together prevents attributing the observed checkpoint difference solely to learning.",
+    "No new GPU trajectories; source outcomes are taken from the completed readout verified against its independent raw audit."
+  ]
+}

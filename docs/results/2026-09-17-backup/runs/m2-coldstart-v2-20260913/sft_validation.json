@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "at_SGT": "2026-09-14T00:05:42.466215+08:00",
+  "optimizer_updates": 94,
+  "all_updates_changed_parameters": true,
+  "each_id_exactly_once_per_epoch": true,
+  "epochs": {
+    "1": {
+      "updates": 47,
+      "presentations": 740,
+      "supervised_tokens": 13696,
+      "mean_target_token_weighted_loss": 0.04543603378595058
+    },
+    "2": {
+      "updates": 47,
+      "presentations": 740,
+      "supervised_tokens": 13696,
+      "mean_target_token_weighted_loss": 0.036125879096744994
+    }
+  },
+  "artifact_hashes_verified": true,
+  "optimizer_parameter_states": 504,
+  "all_saved_adam_step_counters": 94,
+  "rng_keys": [
+    "cuda",
+    "numpy",
+    "python",
+    "sampler",
+    "torch_cpu"
+  ],
+  "cuda_rng_states": 1,
+  "trainable_parameters": 33030144,
+  "summary_sha256": "5827c3240b51dab515c775acbf2713f601bbe818f0d08fa717ae5bb8a041d8d1",
+  "steps_sha256": "8ff303ef24e3851d0b3ea6e3726d49d824e0fe17066344805ab2b2f04a2ea99b"
+}

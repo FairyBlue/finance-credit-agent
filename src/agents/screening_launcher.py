@@ -20,6 +20,8 @@ from typing import Any
 
 import yaml
 
+from src.env.observation_memory import validate_observation_profile
+
 from .config import load_experiment_config
 from .launcher import (
     REPO_ROOT,
@@ -31,8 +33,9 @@ from .launcher import (
 )
 from .metadata import collect_run_hashes, verify_validation_identity
 from .rollout_seed import normalize_rollout_identity
-from .screening_checkpoint import validate_checkpoint
+from .screening_checkpoint import RESEARCH_PROFILE, validate_checkpoint, validate_research_artifact
 from .screening_prompt import validate_action_protocol
+from .screening_runtime import validate_residual_eta
 from .update_probe import summarize_update_evidence
 
 ARMS = ("A2", "M1", "M2-plain", "M2")
@@ -101,6 +104,24 @@ def generation_template_kwargs(settings: dict[str, Any]) -> dict[str, bool]:
     return {"enable_thinking": generation["enable_thinking"]}
 
 
+def interaction_capture_enabled(settings: dict[str, Any]) -> bool:
+    """Explicit evidence-only option, included in the resolved run identity."""
+    value = settings.get("capture_interactions", False)
+    if type(value) is not bool:
+        raise ValueError("screening capture_interactions must be a boolean")
+    return value
+
+
+def checkpoint_artifact_profile(settings: dict[str, Any]) -> str:
+    """Keep the original full-save contract unless research artifacts are explicit."""
+    value = settings.get("artifact_profile", "full")
+    if type(value) is not str or value not in {
+        "full", RESEARCH_PROFILE, "actor_bf16_hf_v1", "critic_fit_diagnostic_v1",
+    }:
+        raise ValueError("unregistered screening artifact profile")
+    return value
+
+
 def build_cell_config(
     *, settings: dict[str, Any], manifest: dict[str, Any], prepared_dir: Path,
     arm: str, stage: str, seed: int, cell_dir: Path,
@@ -115,6 +136,11 @@ def build_cell_config(
         "kind": "m2_screening_v2", "smoke": False,
     }
     config["screening"] = {"arm": arm, "stage": stage, "authorized": True}
+    if "m2_residual_eta" in settings:
+        config["screening"]["residual_eta"] = validate_residual_eta(settings["m2_residual_eta"])
+    artifact_profile = checkpoint_artifact_profile(settings)
+    if artifact_profile != "full":
+        config["screening"]["artifact_profile"] = artifact_profile
     config["arm"] = {"id": "A2" if arm == "A2" else "A3", "name": arm}
     config["model"] = copy.deepcopy(
         settings["models"]["wiring" if stage == "wiring" else "screening"]
@@ -151,6 +177,13 @@ def build_cell_config(
     protocol = validate_action_protocol(settings.get("action_protocol", "legacy"))
     if protocol != "legacy":
         config["data"]["screening_action_protocol"] = protocol
+    observation_profile = validate_observation_profile(
+        settings.get("observation_profile", "legacy")
+    )
+    if observation_profile != "legacy":
+        config["data"]["screening_observation_profile"] = observation_profile
+    if interaction_capture_enabled(settings):
+        config["data"]["screening_capture_interactions"] = True
     config["tracking"]["log_root"] = str(cell_dir)
     config["reward"] = {
         "scorer_id": "benchmark_scale_v2",
@@ -177,12 +210,28 @@ def build_cell_command(
     )
     r = settings["resources"]
     t = settings["training"]
+    eta = validate_residual_eta(settings.get("m2_residual_eta", 1.0))
+    if config["screening"].get("residual_eta", 1.0) != eta:
+        raise ValueError("resolved residual eta differs from screening settings")
     template_kwargs = generation_template_kwargs(settings)
     if config["data"].get("apply_chat_template_kwargs", {}) != template_kwargs:
         raise ValueError("resolved chat template mode differs from screening settings")
     protocol = validate_action_protocol(settings.get("action_protocol", "legacy"))
     if config["data"].get("screening_action_protocol", "legacy") != protocol:
         raise ValueError("resolved action protocol differs from screening settings")
+    observation_profile = validate_observation_profile(
+        settings.get("observation_profile", "legacy")
+    )
+    if config["data"].get("screening_observation_profile", "legacy") != observation_profile:
+        raise ValueError("resolved observation profile differs from screening settings")
+    capture_interactions = interaction_capture_enabled(settings)
+    if config["data"].get("screening_capture_interactions", False) is not capture_interactions:
+        raise ValueError("resolved interaction capture differs from screening settings")
+    artifact_profile = checkpoint_artifact_profile(settings)
+    if config["screening"].get("artifact_profile", "full") != artifact_profile:
+        raise ValueError("resolved artifact profile differs from screening settings")
+    if artifact_profile != "full" and resume_path is not None:
+        raise ValueError("research artifacts cannot resume training")
     profile = r.get("profile", "native")
     if profile not in {"native", "pageable_adam_v1"}:
         raise ValueError("unregistered screening resource profile")
@@ -202,6 +251,9 @@ def build_cell_command(
     if r["rollout_cudagraph_capture_sizes"] != [1, 2, 4, 8]:
         raise ValueError("screening requires the registered CUDA graph capture sizes")
     steps = config["training"]["total_training_steps"]
+    test_freq = config["training"].get("test_freq", steps)
+    if type(test_freq) is not int or test_freq <= 0 or steps % test_freq != 0:
+        raise ValueError("test_freq must be a positive divisor of the training budget")
     overrides = {
         "data.shuffle": False,
         "data.dataloader_num_workers": 0,
@@ -247,8 +299,8 @@ def build_cell_command(
         "critic.checkpoint.async_save": False,
         "trainer.val_before_train": stage == "zero-shot",
         "trainer.val_only": stage == "zero-shot",
-        # Upstream also evaluates on the last step: no intermediate dev access.
-        "trainer.test_freq": steps,
+        # Historical runs keep final-only evaluation; Train tuning opts in to curves.
+        "trainer.test_freq": test_freq,
         "trainer.save_freq": config["training"]["save_freq"],
         "trainer.default_local_dir": str(cell_dir / "checkpoints"),
         "trainer.max_actor_ckpt_to_keep": t["max_checkpoints"],
@@ -258,6 +310,22 @@ def build_cell_command(
         "ray_kwargs.ray_init.num_cpus": r["ray_num_cpus"],
         "+ray_kwargs.ray_init.object_store_memory": r["ray_object_store_memory"],
     }
+    if artifact_profile == RESEARCH_PROFILE:
+        overrides["+trainer.finance_artifact_profile"] = artifact_profile
+        # Hydra parses Python's "None" as a string; the fresh-only profile needs null.
+        overrides["trainer.resume_from_path"] = "null"
+        for role in ("actor_rollout_ref.actor", "critic"):
+            overrides[f"{role}.checkpoint.save_contents"] = ["model", "extra"]
+            overrides[f"{role}.checkpoint.load_contents"] = ["model", "extra"]
+    elif artifact_profile in {"actor_bf16_hf_v1", "critic_fit_diagnostic_v1"}:
+        overrides["+trainer.finance_artifact_profile"] = artifact_profile
+        overrides["trainer.resume_from_path"] = "null"
+        overrides["actor_rollout_ref.actor.checkpoint.save_contents"] = (
+            ["finance_actor_bf16_hf"] if artifact_profile == "actor_bf16_hf_v1" else []
+        )
+        overrides["actor_rollout_ref.actor.checkpoint.load_contents"] = []
+        overrides["critic.checkpoint.save_contents"] = []
+        overrides["critic.checkpoint.load_contents"] = []
     if template_kwargs:
         # This shared dataset setting is used by the real Agent-R1 environment
         # loop for both sampled Train and final greedy/zero-shot observations.
@@ -266,6 +334,10 @@ def build_cell_command(
         )
     if protocol != "legacy":
         overrides["+data.screening_action_protocol"] = protocol
+    if observation_profile != "legacy":
+        overrides["+data.screening_observation_profile"] = observation_profile
+    if capture_interactions:
+        overrides["+data.screening_capture_interactions"] = True
     env_flags = {
         "FINANCE_SCREENING_ARM": arm,
         # Hydra otherwise coerces numeric-looking strings into ints; Ray's
@@ -282,6 +354,10 @@ def build_cell_command(
             "FINANCE_SCREENING_RESOURCE_PROFILE": profile,
             "FINANCE_SCREENING_PLACEMENT_DIR": str(cell_dir / "artifacts/placement"),
         })
+    if "m2_residual_eta" in settings:
+        env_flags["FINANCE_SCREENING_RESIDUAL_ETA"] = json.dumps(str(eta))
+    if artifact_profile in {"actor_bf16_hf_v1", "critic_fit_diagnostic_v1"}:
+        env_flags["FINANCE_SCREENING_ARTIFACT_PROFILE"] = artifact_profile
     for key, value in env_flags.items():
         overrides["+ray_kwargs.ray_init.runtime_env.env_vars." + key] = value
     return set_overrides(command, overrides)
@@ -342,8 +418,16 @@ def validate_cell_evidence(
     cell_dir: Path, *, stage: str, expected_rounds: int, arm: str, seed: int,
     train_episode_ids: list[str], eval_episode_ids: list[str],
     execution_identity_sha256: str, calibration_payload_sha256: str,
+    expected_eval_count: int | None = None,
+    artifact_profile: str = "full",
+    expected_eval_steps: list[int] | None = None,
+    expected_eta: float | None = None,
+    eval_rollout_n: int = 1,
 ) -> dict[str, Any]:
     """Count semantic trajectory identities and optimizer evidence, never infer from exit 0."""
+    checkpoint_artifact_profile({"artifact_profile": artifact_profile})
+    if type(eval_rollout_n) is not int or eval_rollout_n <= 0:
+        raise ValueError("evaluation sibling count must be a positive integer")
     records = read_jsonl(cell_dir / "artifacts/screening_evidence")
     # Flow schema is normalized here; repeated identities from recovery are not accepted silently.
     identities: set[str] = set()
@@ -355,9 +439,22 @@ def validate_cell_evidence(
         for sibling in range(4)
     } if stage != "zero-shot" else {}
     eval_step = 0 if stage == "zero-shot" else expected_rounds
+    eval_steps = [eval_step] if expected_eval_steps is None else expected_eval_steps
+    if (
+        not eval_steps
+        or any(type(step) is not int for step in eval_steps)
+        or sorted(set(eval_steps)) != eval_steps
+        or eval_steps[-1] != eval_step
+        or any(step < (0 if stage == "zero-shot" else 1) for step in eval_steps)
+    ):
+        raise ValueError("invalid frozen evaluation steps")
+    if expected_eta is not None:
+        expected_eta = validate_residual_eta(expected_eta)
     expected_grid.update({
-        (eval_step, index, 0, True): episode_id
+        (step, index, sibling, True): episode_id
+        for step in eval_steps
         for index, episode_id in enumerate(eval_episode_ids)
+        for sibling in range(eval_rollout_n)
     })
     observed_grid = set()
     for record in records:
@@ -395,7 +492,11 @@ def validate_cell_evidence(
             raise RuntimeError("common terminal score differs from the ledger metrics")
         counts["eval" if identity["validate"] else "train"] += 1
     expected_train = 0 if stage == "zero-shot" else expected_rounds * 8
-    expected_eval = 2 if stage in {"wiring", "pilot"} else 12
+    expected_eval = (
+        expected_eval_count if expected_eval_count is not None
+        else (len(eval_steps) * len(eval_episode_ids) if expected_eval_steps is not None
+              else (2 if stage in {"wiring", "pilot"} else 12)) * eval_rollout_n
+    )
     if counts["train"] != expected_train or counts["eval"] != expected_eval:
         raise RuntimeError(f"trajectory count mismatch: {dict(counts)}")
     if observed_grid != set(expected_grid):
@@ -417,6 +518,7 @@ def validate_cell_evidence(
                 or row.get("whitening_scope") != "logical_rollout_batch_real_step_rows"
                 or row.get("whitening_epsilon") != 1e-8
                 or row.get("whitening_correction") != 1
+                or (expected_eta is not None and row.get("eta") != expected_eta)
             ):
                 raise RuntimeError("screening advantage hook contract mismatch")
         roles = updates["detected_role_counts"]
@@ -427,7 +529,13 @@ def validate_cell_evidence(
         ):
             raise RuntimeError(f"optimizer update mismatch: {roles}")
         final = cell_dir / "checkpoints" / f"global_step_{expected_rounds}"
-        validate_checkpoint(final, identity_sha256=execution_identity_sha256)
+        if artifact_profile in {"actor_bf16_hf_v1", "critic_fit_diagnostic_v1"}:
+            from src.agents.actor_export import validate_export_artifact
+            validator = validate_export_artifact
+        else:
+            validator = (validate_research_artifact if artifact_profile == RESEARCH_PROFILE
+                         else validate_checkpoint)
+        validator(final, identity_sha256=execution_identity_sha256)
     elif updates["optimizer_step_count"] != 0 or read_jsonl(
         cell_dir / "artifacts/sibling_diagnostics"
     ):
@@ -537,6 +645,7 @@ def launch_cell(
             arm=arm, seed=seed, train_episode_ids=train_ids, eval_episode_ids=eval_ids,
             execution_identity_sha256=summary["execution_identity_sha256"],
             calibration_payload_sha256=summary["calibration_payload_sha256"],
+            artifact_profile=checkpoint_artifact_profile(settings),
         )
         summary["status"] = "PASSED"
         return summary

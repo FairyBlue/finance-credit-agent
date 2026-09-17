@@ -1,0 +1,10 @@
+{
+  "status": "COMPLETE",
+  "at_SGT": "2026-09-14T03:12:14.941298+08:00",
+  "controller_status": "COMPLETE",
+  "readout_sha256": "c2744ed61ceccd37c7895d8e1045a7ac494bd6d199d27b062bfebb350fc06de1",
+  "summarizer_sha256": "0881a253795be9da4e25f3201ccabf9c21ba5387c465f6b703ae77494b2a3e54",
+  "remaining_or_failed_checks": [],
+  "raw_evidence_preserved": true,
+  "new_sampling_or_training_started": false
+}

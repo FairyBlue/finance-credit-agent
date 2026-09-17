@@ -2,7 +2,7 @@
 
 > **2026-09-06 执行授权更新：** 用户确认两位合作者已线下讨论并认为本计划可行，授权按推荐方案
 > 实现、验证并尝试 H100 screening，且要求服务不受 SSH 网络中断影响。具体执行值与代码证据见
-> [screening 配置](../configs/m2_screening.yaml) 和 [运行手册](2026-09-06_M2_SCREENING_RUNBOOK.md)。
+> [screening 配置](../configs/m2_screening.yaml) 和 [运行手册](history/02_M2_SCREENING_ENGINEERING.md)。
 > 下文 DRAFT 描述保留讨论稿历史；本次授权只覆盖 screening，未开放 formal 或 Final OOS。
 > **执行修订 R1：** 首次 1.7B 接线的 post-update Train greedy rollout 触及 response=2048 上限。
 > 依据 §5.2，在主 screening/dev 前将所有臂 response 上限统一改为 4096，调整共同资源设置，

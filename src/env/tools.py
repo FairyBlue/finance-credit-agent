@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 from typing import Any
 
 from agent_r1.tool import BaseTool, ToolResponse
@@ -10,10 +11,52 @@ from agent_r1.tool import BaseTool, ToolResponse
 class _IntentTool(BaseTool):
     """Schema-bearing tool; `TradingEnv` performs stateful execution serially."""
 
+    parameters: dict[str, Any] | None
+
+    def __init__(self) -> None:
+        descriptions = deepcopy(self.parameters)
+        super().__init__()
+
+        # TradingEnv imports these registrations before defining its argument
+        # models. Resolve them when a tool is instantiated, after registration.
+        from .trading import _ARG_MODELS
+
+        parameters = _without_titles(_ARG_MODELS[self.name].model_json_schema())
+        parameters.setdefault("required", [])
+        for name, declared in (descriptions or {}).get("properties", {}).items():
+            if "description" in declared:
+                parameters["properties"][name]["description"] = declared["description"]
+        self.parameters = deepcopy(parameters)
+        self._exact_function_schema = {
+            "name": self.name,
+            "description": self.description or "",
+            "parameters": parameters,
+        }
+
+    @property
+    def function_schema(self) -> dict[str, Any]:
+        # The pinned BaseTool normalizer discards bounds, defaults, nullable
+        # alternatives, and additionalProperties. Export the complete runtime
+        # contract directly; ToolEnv and the chat template consume these dicts.
+        return deepcopy(self._exact_function_schema)
+
+    @property
+    def tool_schema(self) -> dict[str, Any]:
+        return {"type": "function", "function": self.function_schema}
+
     async def execute(
         self, args: dict[str, Any], **kwargs: Any
     ) -> tuple[ToolResponse, float | None, dict]:
         return ToolResponse(text=f"{self.name} request accepted"), None, {"intent": dict(args)}
+
+
+def _without_titles(value: Any) -> Any:
+    """Omit presentation-only model titles while retaining validation keywords."""
+    if isinstance(value, dict):
+        return {key: _without_titles(item) for key, item in value.items() if key != "title"}
+    if isinstance(value, list):
+        return [_without_titles(item) for item in value]
+    return value
 
 
 @BaseTool.register("retrieve")

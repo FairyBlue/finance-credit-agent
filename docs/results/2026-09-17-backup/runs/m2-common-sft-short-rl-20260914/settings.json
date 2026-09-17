@@ -1,0 +1,95 @@
+{
+  "action_protocol": "single_tool_portfolio_v1",
+  "arms": [
+    "M1",
+    "M2"
+  ],
+  "artifact_profile": "research_model_extra_v1",
+  "authorization": {
+    "basis": "user_confirmed_offline_collaborator_agreement",
+    "date": "2026-09-06",
+    "final_oos": false,
+    "formal_training": false,
+    "scope": "implement_wiring_pilot_and_train_only_screening"
+  },
+  "capture_interactions": true,
+  "critic_initialization": "cpu_seed_v1",
+  "engineering_pilot": {
+    "save_freq": 1,
+    "total_epochs": 2,
+    "total_training_steps": 2,
+    "train_episodes": 2
+  },
+  "evaluation": {
+    "do_sample": false,
+    "primary": "mean_paired_m2_minus_m1_both_seeds_positive",
+    "rollout_n": 1,
+    "temperature": 0.0
+  },
+  "execution_amendment": "docs/2026-09-08_M2_SCREENING_EXECUTION_AMENDMENT_R5.md",
+  "execution_revision": 5,
+  "generation": {
+    "enable_thinking": false
+  },
+  "models": {
+    "screening": {
+      "merge_receipt_sha256": "cf3b8e5a4e2e45708943f4c71c822d41d60cfae13170e760cb5979e1df2356db",
+      "name": "/home/tianming/projects/finance-credit-agent/runs/m2-coldstart-v3-20260914/merged_model",
+      "source": "local_export"
+    },
+    "wiring": {
+      "name": "Qwen/Qwen3-1.7B",
+      "revision": "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e"
+    }
+  },
+  "observation_profile": "history_features_v1",
+  "plan": "docs/2026-09-14_M2_COMMON_SFT_SHORT_RL_PLAN.md",
+  "resources": {
+    "actor_optimizer_offload": false,
+    "actor_param_offload": false,
+    "agent_workers": 1,
+    "critic_optimizer_offload": false,
+    "critic_param_offload": false,
+    "optimizer_overrides": {
+      "foreach": false,
+      "fused": false
+    },
+    "profile": "pageable_adam_v1",
+    "ray_num_cpus": 8,
+    "ray_object_store_memory": 1073741824,
+    "reference_model_dtype": "bf16",
+    "rollout_cudagraph_capture_sizes": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "rollout_gpu_memory_utilization": 0.2
+  },
+  "seeds": [
+    42
+  ],
+  "stage": "m2_screening",
+  "training": {
+    "critic_learning_rate": 1e-05,
+    "episodes": 8,
+    "eta": 1.0,
+    "gamma": 1.0,
+    "lam": 1.0,
+    "learning_rate": 1e-06,
+    "max_agent_steps": 256,
+    "max_checkpoints": 1,
+    "max_infrastructure_resumes": 0,
+    "max_prompt_length": 8192,
+    "max_response_length": 4096,
+    "rollout_n": 4,
+    "save_freq": 2,
+    "temperature": 1.0,
+    "top_k": -1,
+    "top_p": 1.0,
+    "total_epochs": 1,
+    "total_training_steps": 2,
+    "train_batch_size": 2
+  },
+  "version": 2
+}

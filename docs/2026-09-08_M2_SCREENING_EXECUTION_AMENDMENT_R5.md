@@ -1,9 +1,15 @@
 # M2 R5：单工具、non-thinking 的有限训练工程候选（2026-09-08）
 
-**状态：CPU 准备完成；9月8日获准清理后磁盘已达113.64GiB，通过112GiB磁盘门槛。**
+**执行结果（2026-09-09 12:08 SGT／UTC+8）：本批76条工程轨迹及最终审计全部通过，已停止判读。**
+四项1.7B wiring与两个4B pilot均完成真实更新、保存及同worker最终评估；没有响应cap触发，
+但全部没有成功买卖/持仓，实际M2/plain residual为零，未启动主screening。
+详见[最终工程报告](history/02_M2_SCREENING_ENGINEERING.md)。以下保留启动前登记和准备记录，
+不改写本次执行预算、算法及原代码身份。
+
+**9月8日启动前准备状态（历史记录）：CPU 准备完成；获准清理后磁盘已达113.64GiB，通过112GiB磁盘门槛。**
 尚未启动R5训练，启动前仍需核对当时GPU/主机资源及冻结身份；不是主screening通过或已恢复。
 下文99GiB/BLOCKED数字为清理前的准备记录，执行更新见
-[空间清理记录](2026-09-08_DISK_CLEANUP_AUDIT.md)。
+[空间清理记录](history/02_M2_SCREENING_ENGINEERING.md)。
 本修订登记 G2 候选的真实训练门禁，配置为 `configs/m2_screening_r5_generation_pilot.yaml`。
 默认 `configs/m2_screening.yaml` 继续保留 R4，所有新运行必须明确指定本候选配置。
 本次执行只到下表规定的工程检查结束；不使用 `--stage all`，不自动启动主筛选或 Dev。
@@ -11,7 +17,7 @@
 
 ## 依据与待回答的问题
 
-[9 月 8 日诊断报告](2026-09-08_M2_GENERATION_DIAGNOSTIC_REPORT.md) 记录：
+[9 月 8 日诊断报告](history/02_M2_SCREENING_ENGINEERING.md) 记录：
 
 - G2：`single_tool_v1 + enable_thinking=False` 的固定 18 请求全部通过；4B base 和 step-8
   actor 各 160 条完整 Train 轨迹，共 6619 请求，自然 EOS、非法动作 0，但 buy/sell 均为 0。

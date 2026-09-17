@@ -418,6 +418,12 @@ def patch_worker_classes(
     actor_class: type[Any], critic_class: type[Any], registry: WorkerRegistry
 ) -> bool:
     """CPU-injectable seam. Installation validates source/version before calling."""
+    # Opt-in only; activate in both arms of a fresh run, never mid-run.
+    initialization_mode = os.environ.get("FINANCE_SCREENING_CRITIC_INIT")
+    if initialization_mode:
+        from src.agents.critic_initialization import patch_critic_initialization
+
+        patch_critic_initialization(critic_class, mode=initialization_mode)
     expected = {
         "init_model": ("self",),
         "update_actor": ("self", "data"),

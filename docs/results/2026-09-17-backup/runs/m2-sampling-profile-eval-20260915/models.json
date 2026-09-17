@@ -1,0 +1,158 @@
+{
+  "sft0": {
+    "cell_id": "sft0",
+    "prior_summary_sha256": "27bfda4c2789a2bd5e1eb20facd0e9b988cb1fa5330c5f3b5d512f10f6e48e6e",
+    "prior_execution_identity_sha256": "a04fdb802213d245a196ea30ab3e25cf6b4f4c4c3e05b40ef52c4cfb12b4ddd8",
+    "trained_updates": 0,
+    "receipt_sha256": "cf3b8e5a4e2e45708943f4c71c822d41d60cfae13170e760cb5979e1df2356db",
+    "files": {
+      "added_tokens.json": {
+        "bytes": 707,
+        "sha256": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680"
+      },
+      "chat_template.jinja": {
+        "bytes": 4168,
+        "sha256": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8"
+      },
+      "config.json": {
+        "bytes": 1542,
+        "sha256": "938d961211217b1b58af4c9dc7c52a34f86c9ca8cace368475161cbd063a93d5"
+      },
+      "generation_config.json": {
+        "bytes": 214,
+        "sha256": "475b038504e6cd813ed0a80c3b01200a5fdbd2e3679c2354c01371e83c50a7cc"
+      },
+      "merges.txt": {
+        "bytes": 1671853,
+        "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+      },
+      "model-00001-of-00003.safetensors": {
+        "bytes": 3957900840,
+        "sha256": "6ad3acfaa795f80d172c80158821b202b8779d99ecf552c56cf918854d8fa278"
+      },
+      "model-00002-of-00003.safetensors": {
+        "bytes": 3987450520,
+        "sha256": "08e177cea7817ac980f973c80e59c5b92d0021637aab78271a8d4c2110df7fa4"
+      },
+      "model-00003-of-00003.safetensors": {
+        "bytes": 99630640,
+        "sha256": "b122b25ad34ee79d85e403fb9816d2c0f5946290c8616320861da11f9e3d5940"
+      },
+      "model.safetensors.index.json": {
+        "bytes": 32855,
+        "sha256": "5b36dbd79cdd00f76600e471c61157c10090952160d49c5a3d7e05840bda029a"
+      },
+      "special_tokens_map.json": {
+        "bytes": 613,
+        "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+      },
+      "tokenizer.json": {
+        "bytes": 11422654,
+        "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+      },
+      "tokenizer_config.json": {
+        "bytes": 5404,
+        "sha256": "443bfa629eb16387a12edbf92a76f6a6f10b2af3b53d87ba1550adfcf45f7fa0"
+      },
+      "vocab.json": {
+        "bytes": 2776833,
+        "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      }
+    },
+    "model_revision": "local-export-sha256:cf3b8e5a4e2e45708943f4c71c822d41d60cfae13170e760cb5979e1df2356db",
+    "model_path": "/home/tianming/projects/finance-credit-agent/runs/m2-coldstart-v3-20260914/merged_model"
+  },
+  "m1": {
+    "cell_id": "m1",
+    "prior_summary_sha256": "d51a66a6ff143cfc30d05c2d661ffb5a91f716d6915b85544b4a311b8e45a8bb",
+    "prior_execution_identity_sha256": "ab96ebd20eecce55f7d9587a8d683da1f13ecf7660753aa946f457d0d8a2477e",
+    "trained_updates": 8,
+    "receipt_sha256": "b2bd64bf099f5ce498263c64c79d742a4f07e4f237effdfffbc48936e931bfb8",
+    "files": {
+      "added_tokens.json": 707,
+      "chat_template.jinja": 4168,
+      "config.json": 1542,
+      "generation_config.json": 214,
+      "merges.txt": 1671853,
+      "model-00001-of-00009.safetensors": 777912448,
+      "model-00002-of-00009.safetensors": 1029588032,
+      "model-00003-of-00009.safetensors": 1059121904,
+      "model-00004-of-00009.safetensors": 1064370512,
+      "model-00005-of-00009.safetensors": 1056506304,
+      "model-00006-of-00009.safetensors": 1059121920,
+      "model-00007-of-00009.safetensors": 1059121904,
+      "model-00008-of-00009.safetensors": 1064370480,
+      "model-00009-of-00009.safetensors": 652780472,
+      "model.safetensors.index.json": 31263,
+      "special_tokens_map.json": 613,
+      "tokenizer.json": 11422654,
+      "tokenizer_config.json": 5404,
+      "vocab.json": 2776833
+    },
+    "model_revision": "actor-export-receipt-sha256:b2bd64bf099f5ce498263c64c79d742a4f07e4f237effdfffbc48936e931bfb8",
+    "completion_marker_sha256": "22e776bb206e4236a4e194ce0f92a266c663bb9ceb989840154b1437f53ffa22",
+    "model_path": "/home/tianming/projects/finance-credit-agent/runs/m2-training-tuning-20260914/m1/checkpoints/global_step_8/actor/huggingface"
+  },
+  "m2_eta1": {
+    "cell_id": "m2_eta1",
+    "prior_summary_sha256": "93ccc9688a806c2574e21d07295fc0ee4c5bce6ce9cc7d6346e3c38f608421e8",
+    "prior_execution_identity_sha256": "69e9bedb847f133bb5635050c2ff7b27f1e0b6320c85ea0bd6d234a2fd1c2f3f",
+    "trained_updates": 8,
+    "receipt_sha256": "5bdd72bf2c42b6f6a5ff3be530bd7ea3e3880b6d6d2d0eca81e48f0f9d75d1f1",
+    "files": {
+      "added_tokens.json": 707,
+      "chat_template.jinja": 4168,
+      "config.json": 1542,
+      "generation_config.json": 214,
+      "merges.txt": 1671853,
+      "model-00001-of-00009.safetensors": 777912448,
+      "model-00002-of-00009.safetensors": 1029588032,
+      "model-00003-of-00009.safetensors": 1059121904,
+      "model-00004-of-00009.safetensors": 1064370512,
+      "model-00005-of-00009.safetensors": 1056506304,
+      "model-00006-of-00009.safetensors": 1059121920,
+      "model-00007-of-00009.safetensors": 1059121904,
+      "model-00008-of-00009.safetensors": 1064370480,
+      "model-00009-of-00009.safetensors": 652780472,
+      "model.safetensors.index.json": 31263,
+      "special_tokens_map.json": 613,
+      "tokenizer.json": 11422654,
+      "tokenizer_config.json": 5404,
+      "vocab.json": 2776833
+    },
+    "model_revision": "actor-export-receipt-sha256:5bdd72bf2c42b6f6a5ff3be530bd7ea3e3880b6d6d2d0eca81e48f0f9d75d1f1",
+    "completion_marker_sha256": "b330de6386bc31f26b5aba656b2af743c5113fc7710957fe71a0bc25e857445c",
+    "model_path": "/home/tianming/projects/finance-credit-agent/runs/m2-training-tuning-20260914/m2_eta1/checkpoints/global_step_8/actor/huggingface"
+  },
+  "m2_eta025": {
+    "cell_id": "m2_eta025",
+    "prior_summary_sha256": "7d6177237b3b0cd0e84c1cafbc0101cc7c14f4a38828b1e3bc893c342a94a4ce",
+    "prior_execution_identity_sha256": "7e08ad9d0f3b60b0d278b669f32df6a712d3b96b3979f5e7dc47c56e91bd1faf",
+    "trained_updates": 8,
+    "receipt_sha256": "c96335cb720ba421f47f6b411decec0482f238d90c20d25110eddc494c373750",
+    "files": {
+      "added_tokens.json": 707,
+      "chat_template.jinja": 4168,
+      "config.json": 1542,
+      "generation_config.json": 214,
+      "merges.txt": 1671853,
+      "model-00001-of-00009.safetensors": 777912448,
+      "model-00002-of-00009.safetensors": 1029588032,
+      "model-00003-of-00009.safetensors": 1059121904,
+      "model-00004-of-00009.safetensors": 1064370512,
+      "model-00005-of-00009.safetensors": 1056506304,
+      "model-00006-of-00009.safetensors": 1059121920,
+      "model-00007-of-00009.safetensors": 1059121904,
+      "model-00008-of-00009.safetensors": 1064370480,
+      "model-00009-of-00009.safetensors": 652780472,
+      "model.safetensors.index.json": 31263,
+      "special_tokens_map.json": 613,
+      "tokenizer.json": 11422654,
+      "tokenizer_config.json": 5404,
+      "vocab.json": 2776833
+    },
+    "model_revision": "actor-export-receipt-sha256:c96335cb720ba421f47f6b411decec0482f238d90c20d25110eddc494c373750",
+    "completion_marker_sha256": "b2012b5f7ce0d10e5e27c731221f76594cc9b2deef24f8ced3baeda10f539a6e",
+    "model_path": "/home/tianming/projects/finance-credit-agent/runs/m2-training-tuning-20260914/m2_eta025/checkpoints/global_step_8/actor/huggingface"
+  }
+}

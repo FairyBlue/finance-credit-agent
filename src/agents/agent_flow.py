@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import math
 import os
+from copy import deepcopy
 from dataclasses import asdict, replace
 from hashlib import sha256
 from pathlib import Path
@@ -13,6 +14,7 @@ from typing import Any
 from agent_r1.agent_flow.agent_env_loop import AgentEnvLoop
 
 # Importing TradingEnv registers `env_type: trading` without touching upstream files.
+from src.env.observation_memory import validate_observation_profile
 from src.env.trading import TradingEnv as _TradingEnv
 from src.rewards import STEP_CREDIT_OUTPUT_SEMANTICS, StepContext, build_credit_strategy
 
@@ -31,6 +33,7 @@ from .screening_prompt import (
 
 SCREENING_EVIDENCE_DIR_ENV = "FINANCE_SCREENING_EVIDENCE_DIR"
 _MAX_SCREENING_FAILURE_TOKEN_IDS = 4096
+_MAX_SCREENING_PROMPT_TOKEN_IDS = 8192
 
 
 class ScreeningIncompleteError(RuntimeError):
@@ -46,14 +49,23 @@ class ScreeningResponseManager:
     """
 
     def __init__(
-        self, manager: Any, *, prompt_limit: int, response_limit: int, context_limit: int
+        self,
+        manager: Any,
+        *,
+        prompt_limit: int,
+        response_limit: int,
+        context_limit: int,
+        capture_token_ids: bool = False,
     ) -> None:
         if min(prompt_limit, response_limit, context_limit) <= 0:
             raise ValueError("screening generation limits must be positive")
+        if not isinstance(capture_token_ids, bool):
+            raise ValueError("capture_token_ids must be a boolean")
         self._manager = manager
         self.prompt_limit = prompt_limit
         self.response_limit = response_limit
         self.context_limit = context_limit
+        self.capture_token_ids = capture_token_ids
         self.requests: list[dict[str, Any]] = []
 
     def __getattr__(self, name: str) -> Any:
@@ -79,6 +91,12 @@ class ScreeningResponseManager:
             "status": "STARTED",
         }
         self.requests.append(record)
+        if self.capture_token_ids:
+            record["manager_request_id"] = request_id
+            record["prompt_token_ids"] = list(prompt_ids[:_MAX_SCREENING_PROMPT_TOKEN_IDS])
+            record["prompt_token_ids_truncated"] = (
+                len(prompt_ids) > _MAX_SCREENING_PROMPT_TOKEN_IDS
+            )
         if len(prompt_ids) > self.prompt_limit:
             record["status"] = "CONTEXT_OVERFLOW"
             raise ScreeningIncompleteError("screening prompt exceeds its frozen limit")
@@ -90,6 +108,10 @@ class ScreeningResponseManager:
             if key in params and params.pop(key) != self.response_limit:
                 raise RuntimeError("screening response cap differs from the resolved contract")
         params["max_tokens"] = self.response_limit
+        if self.capture_token_ids:
+            # Capture exactly what this boundary forwards. Downstream verl may
+            # translate keys or supply defaults; this is not an engine receipt.
+            record["forwarded_sampling_params"] = deepcopy(params)
         try:
             output = await self._manager.generate(
                 request_id, prompt_ids=prompt_ids, sampling_params=params, **kwargs
@@ -108,6 +130,11 @@ class ScreeningResponseManager:
                 "finish_reason": finish_reason,
             }
         )
+        if self.capture_token_ids:
+            diagnostic_limit = min(self.response_limit, _MAX_SCREENING_FAILURE_TOKEN_IDS)
+            record["response_token_ids"] = tokens[:diagnostic_limit]
+            record["response_token_ids_truncated"] = len(tokens) > diagnostic_limit
+            record["response_last_token_id"] = tokens[-1] if tokens else None
         if (
             len(tokens) >= self.response_limit
             or stop_reason in {"length", "abort", "aborted"}
@@ -118,7 +145,7 @@ class ScreeningResponseManager:
             record["response_token_ids"] = tokens[:diagnostic_limit]
             record["response_token_ids_truncated"] = len(tokens) > diagnostic_limit
             # Preserve the actual boundary even if an upstream overrun exceeds
-            # the bounded diagnostic prefix. Successful responses remain hash-only.
+            # the bounded diagnostic prefix. Successes are hash-only by default.
             record["response_last_token_id"] = tokens[-1] if tokens else None
             raise ScreeningIncompleteError("screening response truncated or aborted")
         if (
@@ -289,6 +316,12 @@ class ScreeningTradingAgentEnvLoop(TradingAgentEnvLoop):
         self._action_protocol = validate_action_protocol(
             self.config.data.get("screening_action_protocol", "legacy")
         )
+        self._capture_interactions = self.config.data.get("screening_capture_interactions", False)
+        if not isinstance(self._capture_interactions, bool):
+            raise ValueError("screening_capture_interactions must be a boolean")
+        self._observation_profile = validate_observation_profile(
+            self.config.data.get("screening_observation_profile", "legacy")
+        )
 
     def _create_env(self, **kwargs: Any) -> _TradingEnv:
         supplied = kwargs.get("env_kwargs", {})
@@ -309,6 +342,13 @@ class ScreeningTradingAgentEnvLoop(TradingAgentEnvLoop):
         # Reward placement belongs to the arm, while all sampled rows share the
         # same source/scorer configuration and model-visible prompt schema.
         row["reward_mode"] = self.env_kwargs["reward_mode"]
+        row["capture_interactions"] = self._capture_interactions
+        if (
+            "observation_profile" in row
+            and row["observation_profile"] != self._observation_profile
+        ):
+            raise RuntimeError("screening row overrides frozen observation_profile")
+        row["observation_profile"] = self._observation_profile
         forwarded = dict(kwargs)
         forwarded["env_kwargs"] = row
         env = super()._create_env(**forwarded)
@@ -368,6 +408,7 @@ class ScreeningTradingAgentEnvLoop(TradingAgentEnvLoop):
             prompt_limit=self.prompt_length,
             response_limit=self.response_length,
             context_limit=context_limit,
+            capture_token_ids=self._capture_interactions,
         )
         self.server_manager = manager
         record: dict[str, Any] = {
@@ -382,10 +423,15 @@ class ScreeningTradingAgentEnvLoop(TradingAgentEnvLoop):
                 self.config.data.get("apply_chat_template_kwargs", {})
             ),
             "action_protocol": self._action_protocol,
+            "observation_profile": self._observation_profile,
             "action_protocol_sha256": action_protocol_sha256(self._action_protocol),
             "pid": os.getpid(),
             "complete": False,
         }
+        # A reused flow must not attach the previous trajectory's evidence if
+        # construction of this trajectory's environment fails.
+        if hasattr(self, "_active_trading_env"):
+            del self._active_trading_env
         try:
             output = await super().run(sampling_params, **kwargs)
             env = self._active_trading_env
@@ -495,5 +541,10 @@ class ScreeningTradingAgentEnvLoop(TradingAgentEnvLoop):
                 if evidence_env is not None
                 else []
             )
+            if self._capture_interactions:
+                record["interaction_capture_version"] = 1
+                record["interactions"] = (
+                    evidence_env.interaction_trace if evidence_env is not None else []
+                )
             with (root / f"screening-{os.getpid()}.jsonl").open("a", encoding="utf-8") as handle:
                 handle.write(json.dumps(record, allow_nan=False, sort_keys=True) + "\n")

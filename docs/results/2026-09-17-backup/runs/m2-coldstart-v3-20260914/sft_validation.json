@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "at_SGT": "2026-09-14T01:42:36.917258+08:00",
+  "optimizer_updates": 152,
+  "all_updates_changed_parameters": true,
+  "each_id_exactly_once_per_epoch": true,
+  "epochs": {
+    "1": {
+      "updates": 76,
+      "presentations": 1212,
+      "supervised_tokens": 23318,
+      "mean_target_token_weighted_loss": 0.04471368288597431
+    },
+    "2": {
+      "updates": 76,
+      "presentations": 1212,
+      "supervised_tokens": 23318,
+      "mean_target_token_weighted_loss": 0.03307179250800195
+    }
+  },
+  "artifact_hashes_verified": true,
+  "optimizer_parameter_states": 504,
+  "all_saved_adam_step_counters": 152,
+  "rng_keys": [
+    "cuda",
+    "numpy",
+    "python",
+    "sampler",
+    "torch_cpu"
+  ],
+  "cuda_rng_states": 1,
+  "trainable_parameters": 33030144,
+  "summary_sha256": "c20a3cfaf6aa326dfbbe1f0d6a5676bfc88eba5ba60bcc227796f707ae21e656",
+  "steps_sha256": "60b79dc696b2da9e50c2ff348da22e27f05b5d28e5c7bd1a6627490e19dfeea8",
+  "validator_sha256": "29219fdf45e627249c00e308a71c3e8518f9feea16b3edd45b9f2a0aca7c20f9"
+}

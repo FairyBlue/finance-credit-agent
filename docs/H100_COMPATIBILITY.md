@@ -1,18 +1,11 @@
 # H100 兼容性与 clean-clone 复现
 
-更新日期：`2026-08-30`
+安装与版本合同原更新时间：2026-08-30；导航与历史状态整理：2026-09-14。
 
-文档定位：本文是长期维护的 H100 版本、安装和证据合同。具体实验必须使用对应 runbook 指定的
-精确 commit；本文的通用安装说明不能替代实验任务单。
-
-当前任务单：
-[`2026-08-30_H100_G1_P1_VALIDATION_RUNBOOK.md`](2026-08-30_H100_G1_P1_VALIDATION_RUNBOOK.md)。
-
-当前状态：`PARTIALLY_READY`。H100 stack 和完整 preflight 已在验证提交 `8a090b8` 上通过，但
-本轮复用了已存在的 pinned `.venv`，没有验证从空 `.venv` 重装。Unicode-safe P0 与 exact
-model/offline、episode cap、增量证据、validation identity、direct-only P1 集成仅在本机通过，
-尚未冻结为 validation commit 或在 H100 复验，真实 G1 未启动。历史证据见
-[`2026-08-27_H100_G1_AUDIT_RESULTS.md`](2026-08-27_H100_G1_AUDIT_RESULTS.md)。
+本文保留已登记的软件版本、安装方式和复现注意事项。**其中 G1 相关版本/身份表是历史合同，
+不代表当前实验仍被阻塞。** G1 与 M1 后续接线结果见
+[阶段总结](history/01_H100_AND_M1.md)；最新计划和实验报告见[文档导航](README.md)。
+具体作业采用其对应计划中的配置、模型与执行身份，不从本文旧 commit 推定当前工作区已验证。
 
 ## 1. 身份与证据边界
 
@@ -228,20 +221,13 @@ git diff --check
 同时检查非默认 seed 回归、queue fail-closed 和 W&B residue。不得使用旧 micromamba
 torch 2.9/vLLM 0.12 环境产出本项目结果。
 
-## 11. 当前证据
+## 11. 历史证据与当前入口
 
-| 检查 | 旧基线 + 本地补丁 | 本次移植提交 |
-|---|---|---|
-| FlashAttention H100 kernel | `PASSED`，2026-08-26 | `PASSED`，验证代码 `8a090b8`，复用 pinned `.venv` |
-| 从空 `.venv` clean-clone 安装 | 未记录 | `NOT TESTED` |
-| 完整 preflight-only | 未执行 | `PASSED`，未启动训练，Final OOS 未访问 |
-| Prompt-budget P0 修复 | 不适用 | `LOCAL PASS / H100 UNVERIFIED`；Train/Valid 四类路径待实机复验 |
-| P1 启动与证据门禁 | 不适用 | `LOCAL PASS / H100 UNVERIFIED`；exact snapshot/offline/cap/identity/direct-only 已实现 |
-| 端到端 rollout / optimizer update | 未执行 | `NOT RUN`，等待 P0/P1 的 H100 context-budget 与 preflight 复验 |
-| G1 smoke | 未执行 | `BLOCKED` |
-| 当前 pytest | 旧结果仅供历史参考 | `141 passed`（当前 Mac） |
-| Ruff / mypy | 旧结果仅供历史参考 | 通过；H100 审计中的 mypy 检查 44 个 source files |
-| lock / local sync / pip check | 旧结果仅供历史参考 | 通过；236 packages resolved，57 packages compatible |
+8 月 27 日的 stack/kernel 与 preflight 通过，当时因 prompt 预算停止，未运行 G1；
+这不是现状。后续 8 月 31 日 G1、9 月 1 日 T2 v2、9 月 2 日 M1 wiring 均已通过，
+具体代码身份与边界见[阶段总结](history/01_H100_AND_M1.md)。当初复用 pinned 环境的审计
+没有证明从空 `.venv` 完整重装；本文也不补写这项未执行结果。
 
-项目状态保持 `PARTIALLY_READY`。下一步是冻结包含 P0/P1 集成的新 validation commit，然后在 H100
-重新执行 stack、测试、context-budget 和 preflight 门禁；通过前不得启动 G1。
+9 月后的资源布局、non-thinking 与工程结果见[screening 工程总结](history/02_M2_SCREENING_ENGINEERING.md)。
+9 月 13—14 日采用的共同冷启动和 RL 配置见[文档导航](README.md)。
+原兼容性文档及旧状态表完整保存在[原文归档](archive/README.md)。

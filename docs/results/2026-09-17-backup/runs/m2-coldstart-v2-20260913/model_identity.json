@@ -1,0 +1,58 @@
+{
+  "path": "/home/tianming/projects/finance-credit-agent/runs/m2-coldstart-20260913/merged_model",
+  "merge_receipt_sha256": "171d3eb5474b98e727a8782265f3c149eaabd8fd56b4759097aabf149c9c03a8",
+  "files": {
+    "added_tokens.json": {
+      "bytes": 707,
+      "sha256": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680"
+    },
+    "chat_template.jinja": {
+      "bytes": 4168,
+      "sha256": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8"
+    },
+    "config.json": {
+      "bytes": 1542,
+      "sha256": "938d961211217b1b58af4c9dc7c52a34f86c9ca8cace368475161cbd063a93d5"
+    },
+    "generation_config.json": {
+      "bytes": 214,
+      "sha256": "475b038504e6cd813ed0a80c3b01200a5fdbd2e3679c2354c01371e83c50a7cc"
+    },
+    "merges.txt": {
+      "bytes": 1671853,
+      "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+    },
+    "model-00001-of-00003.safetensors": {
+      "bytes": 3957900840,
+      "sha256": "2a56b188fa7d46d4ba489f9c35997e29dff1f17f2f11b59e74f4fa0e3dae061f"
+    },
+    "model-00002-of-00003.safetensors": {
+      "bytes": 3987450520,
+      "sha256": "1c009a1e71db9b00459333a662d0a4502c7f667b24ad0055d54aa7c891b4aa5e"
+    },
+    "model-00003-of-00003.safetensors": {
+      "bytes": 99630640,
+      "sha256": "134c9008d1278d754be3e20ea18fb918fba448d152b67a16664dcd07f4f43d03"
+    },
+    "model.safetensors.index.json": {
+      "bytes": 32855,
+      "sha256": "5b36dbd79cdd00f76600e471c61157c10090952160d49c5a3d7e05840bda029a"
+    },
+    "special_tokens_map.json": {
+      "bytes": 613,
+      "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+    },
+    "tokenizer.json": {
+      "bytes": 11422654,
+      "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+    },
+    "tokenizer_config.json": {
+      "bytes": 5404,
+      "sha256": "443bfa629eb16387a12edbf92a76f6a6f10b2af3b53d87ba1550adfcf45f7fa0"
+    },
+    "vocab.json": {
+      "bytes": 2776833,
+      "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    }
+  }
+}

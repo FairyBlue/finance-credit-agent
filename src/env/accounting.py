@@ -45,6 +45,19 @@ class PendingTargetOrder:
     symbol: str
     target_weight: float
     decision_at: datetime
+    direction: Literal["buy", "sell"] | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class SkippedTargetOrder:
+    symbol: str
+    requested_side: Literal["buy", "sell"]
+    implied_side: Literal["buy", "sell"]
+    target_weight: float
+    current_weight_at_open: float
+    decision_at: datetime
+    executed_at: datetime
+    reason: str = "opposite_direction_at_next_open"
 
 
 @dataclass(frozen=True, slots=True)
@@ -81,6 +94,7 @@ class PortfolioLedger:
         self._pending: list[PendingTargetOrder] = []
         self.policy = policy
         self._fills: list[Fill] = []
+        self._last_execution_skips: tuple[SkippedTargetOrder, ...] = ()
 
     @property
     def initial_cash(self) -> float:
@@ -102,6 +116,12 @@ class PortfolioLedger:
     def pending_orders(self) -> tuple[PendingTargetOrder, ...]:
         return tuple(self._pending)
 
+    @property
+    def last_execution_skips(self) -> tuple[SkippedTargetOrder, ...]:
+        """Orders consumed without a fill at the most recent execution open."""
+
+        return self._last_execution_skips
+
     def equity(self, mark_prices: Mapping[str, float]) -> float:
         holdings = 0.0
         for symbol, shares in self._positions.items():
@@ -117,16 +137,19 @@ class PortfolioLedger:
         *,
         target_weight: float,
         decision_at: datetime,
+        direction: Literal["buy", "sell"] | None = None,
     ) -> PendingTargetOrder:
         normalized_symbol = symbol.strip().upper()
         if not normalized_symbol:
             raise ValueError("symbol must not be empty")
         if not math.isfinite(target_weight) or not 0.0 <= target_weight <= 1.0:
             raise ValueError("target_weight must be within [0, 1]; shorting/leverage are forbidden")
+        if direction not in (None, "buy", "sell"):
+            raise ValueError("direction must be buy, sell, or None")
         timestamp = _aware_utc(decision_at, name="decision_at")
         if any(order.symbol == normalized_symbol for order in self._pending):
             raise ValueError(f"a pending order already exists for {normalized_symbol}")
-        order = PendingTargetOrder(normalized_symbol, float(target_weight), timestamp)
+        order = PendingTargetOrder(normalized_symbol, float(target_weight), timestamp, direction)
         self._pending.append(order)
         return order
 
@@ -135,7 +158,12 @@ class PortfolioLedger:
         executed_at: datetime,
         open_prices: Mapping[str, float],
     ) -> tuple[Fill, ...]:
-        """Execute queued target weights at the first supplied open after each decision."""
+        """Execute at the next supplied open, without reversing a directional order.
+
+        Generic targets (direction=None) retain bidirectional baseline rebalancing.
+        A directional order whose target crossed after the decision is consumed
+        without a fill; prices and equity still move with the market.
+        """
 
         timestamp = _aware_utc(executed_at, name="executed_at")
         if any(timestamp <= order.decision_at for order in self._pending):
@@ -149,6 +177,7 @@ class PortfolioLedger:
                 self._validated_price(open_prices, symbol)
 
         new_fills: list[Fill] = []
+        skipped: list[SkippedTargetOrder] = []
         pending = tuple(self._pending)
         for order in pending:
             raw_price = self._validated_price(open_prices, order.symbol)
@@ -160,6 +189,19 @@ class PortfolioLedger:
                 continue
 
             side: Literal["buy", "sell"] = "buy" if delta > 0.0 else "sell"
+            if order.direction is not None and side != order.direction:
+                skipped.append(
+                    SkippedTargetOrder(
+                        symbol=order.symbol,
+                        requested_side=order.direction,
+                        implied_side=side,
+                        target_weight=order.target_weight,
+                        current_weight_at_open=current_shares * raw_price / portfolio_equity,
+                        decision_at=order.decision_at,
+                        executed_at=timestamp,
+                    )
+                )
+                continue
             direction = 1.0 if side == "buy" else -1.0
             execution_price = raw_price * (1.0 + direction * self.policy.slippage_rate)
 
@@ -202,6 +244,7 @@ class PortfolioLedger:
             new_fills.append(fill)
 
         self._pending.clear()
+        self._last_execution_skips = tuple(skipped)
         # TODO(human): line-review this next-open boundary and fill accounting.
         return tuple(new_fills)
 

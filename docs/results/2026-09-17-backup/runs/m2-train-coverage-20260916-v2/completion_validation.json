@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "checked_at_SGT": "2026-09-17T13:25:03.156332+08:00",
+  "run": "m2-train-coverage-20260916-v2",
+  "scope": "Read-only completion, contract, artifact and diagnostic audit; no new GPU evaluation/training",
+  "finished_at_SGT": "2026-09-16T18:55:23.209352+08:00",
+  "cli_contract_check": {
+    "status": "PASS",
+    "at_SGT": "2026-09-17T13:18:53.577193+08:00",
+    "command": "python -m src.agents.train_coverage check --directory runs/m2-train-coverage-20260916-v2"
+  },
+  "sealed_input_hashes_verified": 7,
+  "live_and_snapshot_sources_verified": 76,
+  "totals": {
+    "planned": 308,
+    "observed_unique_expected": 308,
+    "terminal_complete": 308,
+    "incomplete_observed": 0,
+    "missing": 0,
+    "requests_observed": 6445,
+    "invalid_observed": 285
+  },
+  "common_actual_initial_critic_head_sha256": "34cca63a36551fbff58a919b66550d05119c0d7979feb4707dd91254d9ef3b20",
+  "cells": {
+    "sft0": {
+      "execution_identity_sha256": "f954e76f8ecea34b4c17adf471b4e11cb0b5fd7bf4b9c48e03cebac19ecb4eb6",
+      "trajectories": {
+        "eval": 20
+      },
+      "actor_updates": 0,
+      "critic_updates": 0,
+      "finished_at_SGT": "2026-09-16T16:26:33.331684+08:00",
+      "paired_validation_status": "PASS"
+    },
+    "m1": {
+      "execution_identity_sha256": "8cd8669f4cc18315c3ef3a21a8c98ad2fcfbf8b44685fc0e2b328b5404c03e2f",
+      "trajectories": {
+        "eval": 80,
+        "train": 64
+      },
+      "actor_updates": 8,
+      "critic_updates": 8,
+      "finished_at_SGT": "2026-09-16T17:39:01.315908+08:00",
+      "paired_validation_status": "PASS",
+      "export": {
+        "path": "runs/m2-train-coverage-20260916-v2/m1/checkpoints/global_step_8",
+        "status": "PASS",
+        "completion_marker_sha256": "10d966f8a02595a0ca879fa5eafb74a16b49bc86a295a8b8d047ef976438d693",
+        "actor_receipt_sha256": "cca275bd5c5674f9265f79d24b39ef3e2ef66febe9bee229b4d562481ccbdd6b",
+        "validation_this_turn": "validate_export_artifact(..., verify_hashes=False) passed: marker/identity, inventory/sizes, tensor metadata, non-weight file hashes",
+        "full_weight_hashing_repeated_this_turn": false,
+        "save_time_full_readback_recorded": true,
+        "resume_supported": false
+      }
+    },
+    "m2_eta025": {
+      "execution_identity_sha256": "46a00edac0c58772e7e2523513c01a8473919bf1f8e823fafc7e02d422352bb6",
+      "trajectories": {
+        "eval": 80,
+        "train": 64
+      },
+      "actor_updates": 8,
+      "critic_updates": 8,
+      "finished_at_SGT": "2026-09-16T18:55:23.206635+08:00",
+      "paired_validation_status": "PASS",
+      "export": {
+        "path": "runs/m2-train-coverage-20260916-v2/m2_eta025/checkpoints/global_step_8",
+        "status": "PASS",
+        "completion_marker_sha256": "b00b4a6c83353183d3dd6fbf018f47f19cfddb6c167325c8648e65b682568e25",
+        "actor_receipt_sha256": "72e92b2ca123aaf2c8a30127fa737b40b05e562b9fc00ca39daf3b65ebc3f1b2",
+        "validation_this_turn": "validate_export_artifact(..., verify_hashes=False) passed: marker/identity, inventory/sizes, tensor metadata, non-weight file hashes",
+        "full_weight_hashing_repeated_this_turn": false,
+        "save_time_full_readback_recorded": true,
+        "resume_supported": false
+      }
+    }
+  },
+  "services": {
+    "m2-train-coverage-20260916-v2.service": {
+      "Result": "success",
+      "ExecMainStatus": "0",
+      "ActiveState": "inactive"
+    },
+    "m2-train-coverage-20260916-v2-monitor.service": {
+      "Result": "success",
+      "ExecMainStatus": "0",
+      "ActiveState": "inactive"
+    }
+  },
+  "source_sha256": {
+    "state.json": "0944d1d72116899ec5c144a35cc33f6a7713240829b8737a3adda0ebef2858c2",
+    "readout.json": "18761565ad14401dbe53d491032cf86b6581eb7e1e9481fcd8e7dda14dd73b4f",
+    "run_contract.json": "ee67a8c2d4e0ab0178db58dfdd520a4c9259b5a1635954a05833b53170630c0c",
+    "source_identity.json": "0fa40bdde5c091f042cb48fed8dcc939a7b8aee061f8e07cd4f21f58e1c5dcd2",
+    "final_actor_diagnostic_audit.json": "ec6660e68c7bc059122a5712a9284557088411b61c51c00373ab0a472567efcd",
+    "final_actor_diagnostic_audit.md": "765ffd691519c66f328a5fc608a3d1d0eb2f4c85b1790394cb981f4132addf61",
+    "raw_trajectory_audit.json": "c327f1259ffdbbafd21e0c7792836ef85994b07d57ee48e42c1d1498bd76a975"
+  },
+  "limits": [
+    "Single training seed and four partly overlapping Train evaluation windows; no A1/Valid/Test.",
+    "SFT baseline and RL evaluations do not claim exact request-level shared random numbers.",
+    "Actor LR and training-date coverage changed jointly.",
+    "Actor exports exclude optimizer/critic/RNG; not training-resumable.",
+    "No full weight byte rehash this status turn; structural/non-weight checks plus retained save-time full verification receipts."
+  ],
+  "independent_raw_trajectory_audit": {
+    "status": "PASS",
+    "artifact": "raw_trajectory_audit.json",
+    "scope": "308 raw trajectories, 18 evaluation groups and eight M2-minus-M1 checkpoint/mode comparisons recomputed by independent reviewer; see artifact methodology and limits"
+  }
+}

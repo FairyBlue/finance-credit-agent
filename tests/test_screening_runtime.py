@@ -192,8 +192,9 @@ def test_malformed_siblings_fail_closed(mutation, match):
 
 @pytest.mark.parametrize("arm", ["A2", "M1", "M2-plain", "M2"])
 @pytest.mark.parametrize("value_dtype", [torch.float32, torch.bfloat16])
+@pytest.mark.parametrize("eta", [1.0, 0.25])
 def test_real_postprocess_driver_keeps_upstream_critic_returns(
-    arm, value_dtype, tmp_path, monkeypatch
+    arm, value_dtype, eta, tmp_path, monkeypatch
 ):
     batch = _batch(arm, value_dtype=value_dtype)
     upstream_advantage, upstream_returns = _upstream(batch)
@@ -204,7 +205,7 @@ def test_real_postprocess_driver_keeps_upstream_critic_returns(
     monkeypatch.setattr(trainer_class, "_load_checkpoint", trainer_class._load_checkpoint)
     monkeypatch.setattr(trainer_class, "_validate", trainer_class._validate)
     monkeypatch.setattr(trainer_class, "_finance_screening_checkpoint_hooks", False, raising=False)
-    settings = ScreeningRuntimeSettings(arm, tmp_path.resolve(), 42)
+    settings = ScreeningRuntimeSettings(arm, tmp_path.resolve(), 42, eta)
     assert patch_trainer_module(ray_trainer, settings)
     assert not patch_trainer_module(ray_trainer, settings)
     assert trainer_class._finance_screening_checkpoint_hooks
@@ -230,6 +231,7 @@ def test_real_postprocess_driver_keeps_upstream_critic_returns(
     assert record["advancing_row_count"] == 160
     assert record["real_step_count"] == 172
     assert record["phase"] == "advantage_pre_update"
+    assert record["eta"] == eta
     assert output.meta_info["finance_screening_diagnostics"] == record
 
 
@@ -240,6 +242,12 @@ def test_zero_eta_is_bitwise_m1_on_same_real_batch(arm):
     compute_screening_advantage(batch, arm=arm, eta=0)
     assert torch.equal(batch.batch["advantages"], expected)
     assert torch.equal(batch.batch["returns"], expected_returns)
+
+
+@pytest.mark.parametrize("eta", [True, "0.25", -0.25, 0.5, float("nan"), float("inf")])
+def test_unregistered_residual_strength_rejected(eta):
+    with pytest.raises(ValueError, match="eta"):
+        compute_screening_advantage(_batch("M2"), arm="M2", eta=eta)
 
 
 def test_padding_reordering_and_token_lengths_do_not_change_whitening():
@@ -270,7 +278,8 @@ def test_padding_reordering_and_token_lengths_do_not_change_whitening():
     assert scalars.std(correction=1).item() == pytest.approx(1, abs=1e-6)
 
 
-def test_actor_residual_added_after_gae_with_one_global_whitening():
+@pytest.mark.parametrize("eta", [1.0, 0.25])
+def test_actor_residual_added_after_gae_with_one_global_whitening(eta):
     batch = _batch("M2")
     raw_u, returns = unwhitened_step_gae(
         token_level_rewards=batch.batch["token_level_rewards"],
@@ -282,10 +291,10 @@ def test_actor_residual_added_after_gae_with_one_global_whitening():
         lam=1,
     )
     raw_s = torch.tensor(compute_sibling_credit(_rows(groups=2)).pooled, dtype=raw_u.dtype)
-    combined = raw_u + raw_s
+    combined = raw_u + eta * raw_s
     expected = (combined - combined.mean()) / (combined.std(correction=1) + 1e-8)
     rewards_before = batch.batch["token_level_rewards"].clone()
-    compute_screening_advantage(batch, arm="M2")
+    compute_screening_advantage(batch, arm="M2", eta=eta)
     assert torch.equal(batch.batch["advantages"][:, 0], expected)
     assert torch.equal(batch.batch["returns"][:, 0], returns)
     assert torch.equal(batch.batch["token_level_rewards"], rewards_before)

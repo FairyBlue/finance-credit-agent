@@ -255,6 +255,79 @@ def test_mock_agent_runs_multiple_episodes_with_next_open_fills_and_safe_errors(
     asyncio.run(second_episode())
 
 
+@pytest.mark.parametrize(
+    ("action", "target", "gap_price", "should_skip"),
+    [
+        ("buy", 0.55, 200.0, True),
+        ("sell", 0.45, 50.0, True),
+        ("buy", 0.55, 80.0, False),
+        ("sell", 0.45, 120.0, False),
+    ],
+)
+def test_directional_target_gap_advances_without_an_opposite_side_fill(
+    action: str, target: float, gap_price: float, should_skip: bool,
+) -> None:
+    days = (2, 3, 6, 7)
+    prices = (100.0, 100.0, gap_price, 100.0)
+    env = TradingEnv(
+        adapter=StockBenchAdapter(
+            [
+                _bar(day, open_price=price, close_price=price)
+                for day, price in zip(days, prices, strict=True)
+            ],
+            data_version="directional-gap-fixture",
+        ),
+        episode_dates=[datetime(2025, 1, day, 21, tzinfo=UTC) for day in days],
+        episode_open_times=[datetime(2025, 1, day, 14, 30, tzinfo=UTC) for day in days],
+        symbols=["AAA"], initial_cash=1000.0, commission_bps=10.0, slippage_bps=5.0,
+        drawdown_coefficient=0.0, turnover_coefficient=0.0,
+        benchmark_closes=[100.0] * len(days),
+    )
+
+    async def episode() -> None:
+        env.reset()
+        await env.step(_call("buy", '{"symbol":"AAA","target_weight":0.5}'))
+        cash_before = env.ledger.cash
+        positions_before = dict(env.ledger.positions)
+        fills_before = env.ledger.fills
+
+        observation, _, done, info = await env.step(
+            _call(action, json.dumps({"symbol": "AAA", "target_weight": target}))
+        )
+
+        assert env.current_date == datetime(2025, 1, 6, 21, tzinfo=UTC)
+        assert not done
+        assert info["invalid_action"] is False
+        assert env.ledger.pending_orders == ()
+        if should_skip:
+            assert info["fills"] == []
+            assert info["cost_fraction"] == 0
+            assert info["turnover"] == 0
+            assert env.ledger.fills == fills_before
+            assert env.ledger.cash == cash_before
+            assert dict(env.ledger.positions) == positions_before
+            assert info["equity"] == pytest.approx(
+                cash_before + positions_before["AAA"] * gap_price
+            )
+            skip, = info["skipped_orders"]
+            assert skip["reason"] == "opposite_direction_at_next_open"
+            assert skip["requested_side"] == action
+            assert skip["reason"] in observation.messages[-1]["content"]
+        else:
+            fill, = info["fills"]
+            assert fill["side"] == action
+            assert info["cost_fraction"] > 0
+            assert info["skipped_orders"] == []
+
+        observation, _, done, info = await env.step(_call("hold"))
+        assert done
+        assert info["fills"] == []
+        assert info["skipped_orders"] == []
+        assert "opposite_direction_at_next_open" not in observation.messages[-1]["content"]
+
+    asyncio.run(episode())
+
+
 def test_g1_history_and_retrieve_output_stay_bounded_across_eight_advances() -> None:
     session_days = (2, 3, 6, 7, 8, 10, 13, 14, 15)
     dates = [datetime(2025, 1, day, 21, 0, tzinfo=UTC) for day in session_days]

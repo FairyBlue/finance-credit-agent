@@ -1,0 +1,13 @@
+{
+  "inputs": {
+    "input_preflight.json": "f1cd894d7c98a2b2c96219bd2fd42d1417e77c03c61a913aa2672fe26eae91db",
+    "model_identity.json": "c3c11fb601fec30ad30e6e508c7d74e8cccc4e7a862264536c19fc205f159247",
+    "plan.md": "fe758190e4e6a3749c84131c8b6f9da580ee495469766d9527217d4710d86edb",
+    "prepared/manifest.json": "b330d2e524f9c33b47692e5b48924a13019884bdfe38b200254a5ddb22b276bc",
+    "selection.json": "4cc19d8e169e2316b197856844f970a7b52a97ce207b279b6431cc81da509255",
+    "settings.json": "70594f6fe7806deb24d820a42fd10b353c5b6bd20a161e3cd6c587fb5d361640",
+    "source_identity.json": "a72ff245e3a0516630fce81f6c4983d6585202dac0a1f00e3c070b05aeeb35b5"
+  },
+  "profile": "common_sft_validity_penalty_v1",
+  "sealed_at_SGT": "2026-09-17T15:22:03.017987+08:00"
+}

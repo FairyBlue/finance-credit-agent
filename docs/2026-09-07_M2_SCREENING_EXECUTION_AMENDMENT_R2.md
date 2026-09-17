@@ -1,8 +1,8 @@
 # M2 screening 工程执行修订 R2（2026-09-07）
 
 **当前状态：R2 诊断已结束，结果及后续资源修订见 [R3](2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R3.md)。**
-顺序与范围见 [恢复记录](2026-09-07_M2_SCREENING_RESUMPTION.md)；暂停时的实际结果见
-[实验报告](2026-09-07_M2_SCREENING_EXPERIMENT_REPORT.md)。
+顺序与范围见 [恢复记录](history/02_M2_SCREENING_ENGINEERING.md)；暂停时的实际结果见
+[实验报告](history/02_M2_SCREENING_ENGINEERING.md)。
 
 R1 的科学契约继续生效：四臂、scorer、数据、seeds、模型 revisions、dtype、学习率、n=4、
 逻辑 batch、4096 response cap、greedy evaluator 及严格完成性均不变。本修订属于计划 §5.2

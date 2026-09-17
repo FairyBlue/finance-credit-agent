@@ -8,6 +8,7 @@ import json
 import sys
 from copy import deepcopy
 from datetime import datetime, timezone
+from hashlib import sha256
 from pathlib import Path
 from types import ModuleType, SimpleNamespace
 from typing import Any
@@ -231,6 +232,8 @@ def _run_flow(
     trade_first=False,
     action_protocol="legacy",
     prompt_length=4096,
+    capture_interactions=False,
+    observation_profile="legacy",
 ):
     monkeypatch.setenv(module.SCREENING_EVIDENCE_DIR_ENV, str(tmp_path / "evidence"))
     monkeypatch.setattr(rollout_seed, "_configured_evidence_root", tmp_path / "seeds")
@@ -238,6 +241,12 @@ def _run_flow(
         {
             "data": {
                 "seed": 42,
+                "screening_capture_interactions": capture_interactions,
+                **(
+                    {"screening_observation_profile": observation_profile}
+                    if observation_profile != "legacy"
+                    else {}
+                ),
                 **(
                     {"screening_action_protocol": action_protocol}
                     if action_protocol != "legacy"
@@ -294,7 +303,9 @@ def _records(root: Path):
 
 @pytest.mark.parametrize("arm", ["A2", "M1", "M2", "M2-plain"])
 @pytest.mark.parametrize("validate", [False, True])
-@pytest.mark.parametrize("action_protocol", ["legacy", "single_tool_v1"])
+@pytest.mark.parametrize(
+    "action_protocol", ["legacy", "single_tool_v1", "single_tool_portfolio_v1"]
+)
 def test_screening_arms_share_scorer_but_preserve_training_reward_timing(
     screening_module,
     monkeypatch,
@@ -330,10 +341,13 @@ def test_screening_arms_share_scorer_but_preserve_training_reward_timing(
     assert len({call["sampling_params"]["seed"] for call in manager.calls}) == 20
     assert record["generated_response_tokens"] == 40
     assert record["action_protocol"] == action_protocol
+    assert record["observation_profile"] == "legacy"
     assert record["action_protocol_sha256"] == action_protocol_sha256(action_protocol)
     assert record["identity"]["validate"] is validate
     for call in manager.calls:
         messages = json.loads(bytes(call["prompt_ids"]).decode("ascii"))
+        assert "compute_history" not in messages[-1]["content"]
+        assert "tool_result_memory" not in messages[-1]["content"]
         assert sum(SINGLE_TOOL_V1_RULES in message["content"] for message in messages) == (
             0 if action_protocol == "legacy" else 1
         )
@@ -588,3 +602,407 @@ def test_added_protocol_text_cannot_bypass_the_parent_prompt_length_guard(
     assert record["requests"] == [] and record["steps"] == []
     assert "terminal_score" not in record
     assert record["action_protocol_sha256"] == action_protocol_sha256("single_tool_v1")
+
+
+def test_interaction_capture_preserves_environment_behavior_and_records_tool_results(
+    environment_kwargs,
+):
+    actions = [
+        Action(text="invalid"),
+        _action("buy", {"symbol": "AAA", "target_weight": 0.3}),
+        _action("compute", {"metric": "price_change", "symbol": "AAA", "lookback": 2}),
+        _action("sell", {"symbol": "AAA", "target_weight": 0.1}),
+    ] + [_action("hold")] * 18
+    environments = [
+        TradingEnv(
+            **environment_kwargs,
+            reward_mode="finance_trajectory",
+            capture_interactions=flag,
+        )
+        for flag in (False, True)
+    ]
+    plain, captured = environments
+    assert plain.reset() == captured.reset()
+    for action in actions:
+        assert asyncio.run(plain.step(action)) == asyncio.run(captured.step(action))
+    assert plain.episode_complete and captured.episode_complete
+    assert plain.credit_step_trace == captured.credit_step_trace
+    assert plain.screening_terminal_metrics() == captured.screening_terminal_metrics()
+    assert plain.interaction_trace == []
+    records = captured.interaction_trace
+    assert len(records) == len(actions)
+    assert records[0]["response"]["text"] == "invalid"
+    assert records[0]["info"]["invalid_action"] is True
+    assert records[0]["info"]["error"]
+    assert records[1]["info"]["fills"]
+    assert "last_tool_result" in records[2]["observation"]["text"]
+    assert "price_change" in records[2]["observation"]["text"]
+    json.dumps(records, allow_nan=False)  # Actual fills include datetime fields.
+    records[0]["info"]["error"] = "mutated reader copy"
+    assert captured.interaction_trace[0]["info"]["error"] != "mutated reader copy"
+    captured.reset()
+    assert captured.interaction_trace == []
+
+
+def test_interaction_text_is_bounded_without_changing_the_parser_input(environment_kwargs):
+    text = "x" * (TradingEnv.MAX_DIAGNOSTIC_TEXT_CHARS + 1)
+    env = TradingEnv(**environment_kwargs, reward_mode="outcome_only", capture_interactions=True)
+    env.reset()
+    _obs, reward, done, info = asyncio.run(env.step(Action(text=text)))
+    assert reward == 0 and not done and info["invalid_action"]
+    (record,) = env.interaction_trace
+    assert record["response"]["char_count"] == len(text)
+    assert record["response"]["truncated"] is True
+    assert len(record["response"]["text"]) == TradingEnv.MAX_DIAGNOSTIC_TEXT_CHARS
+
+
+@pytest.mark.parametrize("value", [None, 123, {"name": "hold"}, b"hold"])
+def test_capture_preserves_invalid_nontext_actions(environment_kwargs, value):
+    plain = TradingEnv(**environment_kwargs, reward_mode="outcome_only")
+    captured = TradingEnv(
+        **environment_kwargs,
+        reward_mode="outcome_only",
+        capture_interactions=True,
+    )
+    plain.reset()
+    captured.reset()
+    action = Action(text=value)
+    assert asyncio.run(plain.step(action)) == asyncio.run(captured.step(action))
+    assert plain.credit_step_trace == captured.credit_step_trace
+    assert captured.interaction_trace[0]["info"]["invalid_action"]
+    assert captured.interaction_trace[0]["response"]["text"] is None
+
+
+@pytest.mark.parametrize("validate", [False, True])
+@pytest.mark.parametrize("invalid_first", [False, True])
+def test_capture_records_dispatched_requests_and_actual_environment_errors(
+    screening_module,
+    monkeypatch,
+    tmp_path,
+    environment_kwargs,
+    validate,
+    invalid_first,
+):
+    outputs = []
+    managers = []
+    for capture in (False, True):
+        output, manager = _run_flow(
+            screening_module,
+            monkeypatch,
+            tmp_path / str(capture),
+            environment_kwargs,
+            capture_interactions=capture,
+            validate=validate,
+            invalid_first=invalid_first,
+        )
+        outputs.append(output)
+        managers.append(manager)
+    assert outputs[0] == outputs[1]
+    assert managers[0].calls == managers[1].calls
+    (baseline,) = _records(tmp_path / "False")
+    (record,) = _records(tmp_path / "True")
+    assert "interactions" not in baseline
+    assert record["interaction_capture_version"] == 1
+    assert len(record["interactions"]) == len(record["steps"]) == len(record["requests"])
+    for request, call, interaction in zip(
+        record["requests"],
+        managers[1].calls,
+        record["interactions"],
+        strict=True,
+    ):
+        assert request["prompt_token_ids"] == call["prompt_ids"]
+        assert request["prompt_token_ids_truncated"] is False
+        assert request["response_token_ids"] == [0, 1]
+        assert request["forwarded_sampling_params"] == call["sampling_params"]
+        assert request["forwarded_sampling_params"]["temperature"] == (0.0 if validate else 1.0)
+        assert request["manager_request_id"] == str(interaction["step_index"])
+    if invalid_first:
+        assert record["interactions"][0]["info"]["invalid_action"]
+        assert record["interactions"][0]["response"]["text"] == "invalid"
+
+
+def test_capture_keeps_an_unfinished_response_without_fabricating_an_environment_step(
+    screening_module,
+    monkeypatch,
+    tmp_path,
+    environment_kwargs,
+):
+    with pytest.raises(screening_module.ScreeningIncompleteError, match="truncated"):
+        _run_flow(
+            screening_module,
+            monkeypatch,
+            tmp_path,
+            environment_kwargs,
+            capture_interactions=True,
+            failure="cap",
+        )
+    (record,) = _records(tmp_path)
+    assert record["status"] == "INCOMPLETE"
+    assert len(record["requests"]) == 1
+    assert record["requests"][0]["prompt_token_ids"]
+    assert record["requests"][0]["response_token_ids"] == list(range(32))
+    assert record["interactions"] == record["steps"] == []
+
+
+def test_reused_flow_does_not_attach_previous_evidence_after_environment_creation_fails(
+    screening_module,
+    monkeypatch,
+    tmp_path,
+    environment_kwargs,
+):
+    instances = []
+    flow_class = screening_module.ScreeningTradingAgentEnvLoop
+    original_run = flow_class.run
+
+    async def remember_instance(self, params, **kwargs):
+        instances.append((self, params, kwargs))
+        return await original_run(self, params, **kwargs)
+
+    monkeypatch.setattr(flow_class, "run", remember_instance)
+    _output, manager = _run_flow(
+        screening_module,
+        monkeypatch,
+        tmp_path,
+        environment_kwargs,
+        capture_interactions=True,
+    )
+    ((flow, params, kwargs),) = instances
+    kwargs["uid"] = "new-failing-group"
+    kwargs["extra_info"] = {**kwargs["extra_info"], "episode_id": "new-failing-episode"}
+    kwargs["env_kwargs"] = {**kwargs["env_kwargs"], "finance_scorer_id": "wrong-scorer"}
+    with pytest.raises(RuntimeError, match="overrides frozen finance_scorer_id"):
+        asyncio.run(original_run(flow, params, **kwargs))
+    first, failed = _records(tmp_path)
+    assert first["complete"] and first["interactions"]
+    assert failed["status"] == "ERROR" and not failed["complete"]
+    assert failed["group_uid"] == "new-failing-group"
+    assert failed["episode_id"] == "new-failing-episode"
+    assert failed["requests"] == failed["steps"] == failed["interactions"] == []
+    assert flow.server_manager is manager
+
+
+@pytest.mark.parametrize("validate", [False, True])
+@pytest.mark.parametrize("profile", ["history_memory_v1", "history_features_v1"])
+def test_history_memory_profile_reaches_all_arms_with_identical_visible_prompts(
+    screening_module,
+    monkeypatch,
+    tmp_path,
+    environment_kwargs,
+    validate,
+    profile,
+):
+    prompts = []
+    for arm in ("A2", "M1", "M2", "M2-plain"):
+        root = tmp_path / arm
+        _, manager = _run_flow(
+            screening_module,
+            monkeypatch,
+            root,
+            environment_kwargs,
+            arm=arm,
+            validate=validate,
+            action_protocol="single_tool_v1",
+            observation_profile=profile,
+            capture_interactions=True,
+            prompt_length=8192,
+        )
+        (record,) = _records(root)
+        assert record["status"] == "COMPLETE" and record["complete"]
+        assert record["observation_profile"] == profile
+        assert record["arm"] == arm and record["identity"]["validate"] is validate
+        assert len(record["requests"]) == len(record["interactions"]) == 20
+        prompts.append([call["prompt_ids"] for call in manager.calls])
+        for index, (request, interaction, call) in enumerate(
+            zip(
+                record["requests"],
+                record["interactions"],
+                manager.calls,
+                strict=True,
+            )
+        ):
+            assert request["prompt_token_ids"] == call["prompt_ids"]
+            assert not request["prompt_token_ids_truncated"]
+            messages = json.loads(bytes(call["prompt_ids"]).decode("ascii"))
+            state = json.loads(
+                messages[-1]["content"]
+                .removeprefix("<tool_response>")
+                .removesuffix("</tool_response>")
+                .strip()
+            )
+            assert state["compute_history"]["available_close_records"] == {"AAA": index + 1}
+            assert state["tool_result_memory"]["byte_limit"] == 4096
+            if profile == "history_features_v1":
+                assert state["decision_features"]["as_of"] == state["current_date"]
+                assert state["decision_features"]["rows"][0][:2] == ["AAA", min(index + 1, 5)]
+            assert interaction["step_index"] == index
+    assert all(prompt == prompts[0] for prompt in prompts[1:])
+
+
+@pytest.mark.parametrize("profile", ["legacy", "history_memory_v1", "history_features_v1"])
+def test_row_may_repeat_the_frozen_observation_profile(
+    screening_module,
+    monkeypatch,
+    tmp_path,
+    environment_kwargs,
+    profile,
+):
+    _run_flow(
+        screening_module,
+        monkeypatch,
+        tmp_path,
+        {**environment_kwargs, "observation_profile": profile},
+        observation_profile=profile,
+        prompt_length=8192,
+    )
+    (record,) = _records(tmp_path)
+    assert record["complete"] and record["observation_profile"] == profile
+
+
+def test_history_features_train_and_eval_use_identical_complete_observations(
+    screening_module, monkeypatch, tmp_path, environment_kwargs,
+):
+    prompts = []
+    for validate in (False, True):
+        root = tmp_path / str(validate)
+        _, manager = _run_flow(
+            screening_module, monkeypatch, root, environment_kwargs,
+            arm="M2", validate=validate, action_protocol="single_tool_v1",
+            observation_profile="history_features_v1", capture_interactions=True,
+            prompt_length=8192, trade_first=True,
+        )
+        (record,) = _records(root)
+        assert record["complete"] and len(record["requests"]) == 20
+        assert all(not request["prompt_token_ids_truncated"] for request in record["requests"])
+        prompts.append([call["prompt_ids"] for call in manager.calls])
+    assert prompts[0] == prompts[1]
+
+
+@pytest.mark.parametrize(
+    "profile,row_profile",
+    [
+        ("legacy", "history_memory_v1"),
+        ("history_memory_v1", "legacy"),
+        ("history_memory_v1", True),
+        ("history_memory_v1", "unknown"),
+    ],
+)
+def test_row_cannot_override_frozen_observation_profile_or_fabricate_evidence(
+    screening_module,
+    monkeypatch,
+    tmp_path,
+    environment_kwargs,
+    profile,
+    row_profile,
+):
+    with pytest.raises(RuntimeError, match="overrides frozen observation_profile"):
+        _run_flow(
+            screening_module,
+            monkeypatch,
+            tmp_path,
+            {**environment_kwargs, "observation_profile": row_profile},
+            observation_profile=profile,
+            capture_interactions=True,
+        )
+    (record,) = _records(tmp_path)
+    assert record["status"] == "ERROR" and not record["complete"]
+    assert record["observation_profile"] == profile
+    assert record["requests"] == record["steps"] == record["interactions"] == []
+    assert "terminal_score" not in record
+
+
+@pytest.mark.parametrize("profile", [None, True, 0, "unknown", ""])
+def test_invalid_config_observation_profile_is_rejected_before_generation(
+    screening_module,
+    monkeypatch,
+    tmp_path,
+    environment_kwargs,
+    profile,
+):
+    with pytest.raises(ValueError, match="observation_profile"):
+        _run_flow(
+            screening_module,
+            monkeypatch,
+            tmp_path,
+            environment_kwargs,
+            observation_profile=profile,
+        )
+    assert _records(tmp_path) == []
+
+
+@pytest.mark.parametrize("prompt_count", [4097, 8192, 8193])
+def test_manager_captures_full_registered_8192_prompt_and_rejects_overflow(
+    screening_module,
+    prompt_count,
+):
+    prompts = list(range(prompt_count))
+    responses = [5] * 4094 + [151645]
+    output = SimpleNamespace(token_ids=responses, stop_reason="completed", finish_reason="stop")
+    calls = []
+
+    async def generate(*args, **kwargs):
+        calls.append(kwargs)
+        assert kwargs["prompt_ids"] == prompts
+        assert kwargs["sampling_params"]["max_tokens"] == 4096
+        return output
+
+    manager = screening_module.ScreeningResponseManager(
+        SimpleNamespace(generate=generate),
+        prompt_limit=8192,
+        response_limit=4096,
+        context_limit=12288,
+        capture_token_ids=True,
+    )
+    if prompt_count > 8192:
+        with pytest.raises(screening_module.ScreeningIncompleteError, match="prompt"):
+            asyncio.run(manager.generate("fixed-request", prompt_ids=prompts, sampling_params={}))
+        assert calls == []
+    else:
+        assert (
+            asyncio.run(
+                manager.generate(
+                    "fixed-request",
+                    prompt_ids=prompts,
+                    sampling_params={},
+                )
+            )
+            is output
+        )
+        assert len(calls) == 1
+    (record,) = manager.requests
+    assert record["prompt_token_count"] == prompt_count
+    assert record["prompt_token_ids"] == prompts[:8192]
+    assert record["prompt_token_ids_truncated"] is (prompt_count > 8192)
+    assert record["prompt_sha256"] == sha256(json.dumps(prompts).encode("ascii")).hexdigest()
+    assert record["response_cap"] == 4096
+    if prompt_count <= 8192:
+        assert record["status"] == "COMPLETE"
+        assert record["response_token_ids"] == responses
+        assert record["response_token_ids_truncated"] is False
+    else:
+        assert record["status"] == "CONTEXT_OVERFLOW"
+        assert "response_token_ids" not in record
+
+
+@pytest.mark.parametrize("overrun", [0, 7])
+def test_larger_prompt_budget_keeps_the_4096_response_cap_strict(screening_module, overrun):
+    tokens = [5] * (4095 + overrun) + [151645]
+
+    async def generate(*args, **kwargs):
+        assert kwargs["sampling_params"]["max_tokens"] == 4096
+        return SimpleNamespace(token_ids=tokens, stop_reason="completed", finish_reason="stop")
+
+    manager = screening_module.ScreeningResponseManager(
+        SimpleNamespace(generate=generate),
+        prompt_limit=8192,
+        response_limit=4096,
+        context_limit=12288,
+        capture_token_ids=True,
+    )
+    with pytest.raises(screening_module.ScreeningIncompleteError, match="truncated"):
+        asyncio.run(manager.generate("fixed-request", prompt_ids=[5] * 8192, sampling_params={}))
+    (record,) = manager.requests
+    assert record["status"] == "RESPONSE_INCOMPLETE"
+    assert record["response_token_count"] == len(tokens)
+    assert record["response_token_ids"] == tokens[:4096]
+    assert record["response_token_ids_truncated"] is bool(overrun)
+    assert record["response_last_token_id"] == 151645

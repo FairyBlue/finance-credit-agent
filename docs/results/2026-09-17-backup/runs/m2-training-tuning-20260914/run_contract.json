@@ -1,0 +1,13 @@
+{
+  "inputs": {
+    "input_preflight.json": "2d61b66e9e8c9743e3914d64e1f5477ffea8a3f065cbf0268cf54b009923f217",
+    "model_identity.json": "c3c11fb601fec30ad30e6e508c7d74e8cccc4e7a862264536c19fc205f159247",
+    "plan.md": "1f5e85ba0cb57c436ecc9570a647f35628b9fd528272e2d5216363ef35fd8e03",
+    "prepared/manifest.json": "bb9c5fe91dfd65b7b3e646691d66f527b553ccfc95c9f90e0be6084070712611",
+    "selection.json": "8c54e46caaff23c7f5689c883ca8e9f7adfa284d0bc638720163d77a7c248368",
+    "settings.json": "bfc8fd6338d2c0c66480a4683626492eef5274e297050e33b01cdc1594eabab3",
+    "source_identity.json": "0837e818113684ac054b19f5c314e4c7274bd25aa5d1215923813ad71f6e3e9a"
+  },
+  "profile": "common_sft_training_tuning_v1",
+  "sealed_at_SGT": "2026-09-14T14:31:32.596165+08:00"
+}

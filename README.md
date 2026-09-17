@@ -1,9 +1,14 @@
 # finance-credit-agent
 
-**New collaborator:** read
-[`docs/EXPERIMENT_HANDOFF.md`](docs/EXPERIMENT_HANDOFF.md) first. It is the self-contained handoff
-for the research motivation, current gate status, frozen inputs, clean-clone setup, H100 G1 and
-A3-M1 wiring smokes, acceptance evidence, troubleshooting, and the work that remains afterwards.
+**Current checkpoint — 2026-09-17 (SGT):** common Qwen3-4B SFT initialization and several
+Train-only M1/M2 learning comparisons are complete. The next four-update common invalid-action
+penalty comparison is implemented and queued for the shared H100; it has no training result yet.
+
+**New collaborator:** start with the
+[current handoff](docs/2026-09-17_PROJECT_BACKUP_HANDOFF.md) and [document index](docs/README.md).
+The [experiment handoff](docs/EXPERIMENT_HANDOFF.md) retains setup and earlier phase summaries.
+[Small result snapshots](docs/results/2026-09-17-backup/README.md) are included in Git;
+model weights, raw data, and full execution directories remain on the server.
 
 For day-to-day work between the two maintainers, see
 [`docs/COLLABORATION.md`](docs/COLLABORATION.md). GitHub automatically publishes a readable report
@@ -14,7 +19,9 @@ tool-using trading agent over outcome-only GRPO and generic StepPO. The project 
 [Agent-R1](https://github.com/AgentR1/Agent-R1) as a locked submodule, keeps every local change under
 `src/`, and treats look-ahead leakage prevention as the first executable requirement.
 
-The three method classes use four formal configurations:
+The initial scaffold distinguished the configurations below. Current method definitions and the
+research ladder are recorded in [`RESEARCH_BRIEF.md`](RESEARCH_BRIEF.md) and
+[`EVAL_PROTOCOL.md`](EVAL_PROTOCOL.md); this overview is not a completed formal comparison.
 
 | Configuration | Upstream optimizer | Reward/credit signal and role |
 |---|---|---|
@@ -29,9 +36,10 @@ Agent-R1 interaction steps, the terminal `A_fin` is retroactively assigned as im
 `A_fin`. These values are StepPO inputs, not direct or uniformly broadcast optimizer advantages;
 StepPO subsequently computes advantages with step-level GAE. A3-M1 must receive a formal,
 budget-matched run as the required reward-shaping ablation, but it cannot serve as A3-main. M2
-state×regime grouping and M3 sampled counterfactual information contribution retain explicit
-interfaces and deliberately raise `NotImplementedError`; A3-main must implement and preregister at
-least one of them.
+state×regime grouping now has a Train screening implementation in
+`src/rewards/sibling_credit.py` and `src/agents/screening_runtime.py`.
+The legacy allocation facade and the M3 counterfactual route remain separate from that runtime;
+M3 is not enabled by the current experiments. Formal A1 and final OOS comparisons remain pending.
 
 The A3 runtime fails closed on empty or truncated trajectories and records one JSONL credit record
 per completed trajectory. The launcher validates finite `A_fin`, the actual rewritten step rewards,

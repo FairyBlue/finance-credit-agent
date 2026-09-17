@@ -1,0 +1,22 @@
+{
+  "status": "COMPLETE",
+  "updated_at_SGT": "2026-09-14T18:16:31.348153+08:00",
+  "run": "/home/tianming/projects/finance-credit-agent/runs/m2-training-tuning-20260914",
+  "automatic_retry": false,
+  "report": "/home/tianming/projects/finance-credit-agent/runs/m2-training-tuning-20260914/FINAL_RESULTS.md",
+  "report_sha256": "5ed10bf5f62b4f06eed12b673f0b8352cbc700ef76aba053f395216101b27131",
+  "command": [
+    "python3",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-training-tuning-preparation-20260914/summarize_comparison.py",
+    "--directory",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-training-tuning-20260914",
+    "--refresh",
+    "--require-complete",
+    "--write"
+  ],
+  "service": {
+    "Result": "success",
+    "ExecMainStatus": "0",
+    "ActiveState": "inactive"
+  }
+}

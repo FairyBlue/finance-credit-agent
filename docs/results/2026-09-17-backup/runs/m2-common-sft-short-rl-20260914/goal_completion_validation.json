@@ -1,0 +1,59 @@
+{
+  "status": "PASS",
+  "at_SGT": "2026-09-14T03:18:03.474954+08:00",
+  "scope": "Common coldstart plus fixed two-round shared-start RL and reports",
+  "checks": {
+    "common_coldstart_audit_pass": true,
+    "baseline_audit_pass": true,
+    "m1_audit_pass": true,
+    "m2_audit_pass": true,
+    "root_terminal_audit_pass": true,
+    "short_rl_report_audit_pass": true,
+    "sft_report_matches_audited_bytes": true,
+    "short_rl_report_matches_audited_bytes": true,
+    "short_rl_report_binds_final_readout": true,
+    "readout_bound_to_completion_receipt": true,
+    "controller_and_readout_complete": true,
+    "all_44_planned_trajectories_complete": true,
+    "actual_three_way_critic_identity_equal": true,
+    "baseline_no_rl_updates": true,
+    "m1_actor_critic_two_actual_updates_each": true,
+    "m1_research_artifact_saved_and_nonresumable": true,
+    "m2_actor_critic_two_actual_updates_each": true,
+    "m2_research_artifact_saved_and_nonresumable": true,
+    "m2_two_batches_have_actual_nonzero_credit": true,
+    "all_67_sealed_sources_unchanged": true,
+    "all_four_sealed_inputs_unchanged": true,
+    "training_and_monitor_finished_successfully": true,
+    "no_remaining_gpu_compute_processes": true,
+    "latest_links_both_final_reports_and_uses_sgt": true
+  },
+  "failed_checks": [],
+  "services": {
+    "training": {
+      "MainPID": "0",
+      "Result": "success",
+      "ExecMainStatus": "0",
+      "ActiveState": "inactive"
+    },
+    "monitor": {
+      "MainPID": "0",
+      "Result": "success",
+      "ExecMainStatus": "0",
+      "ActiveState": "inactive"
+    }
+  },
+  "gpu_compute_processes": "",
+  "report_sha256": "72f5ce982247ce02f8fc7217a26d46bb321420dbe3b13c260e0f6fabea3fdf0b",
+  "sft_report_sha256": "843847d68121457dd8dc83e18b43f9b22eeb45299fa2463734674dc3acae7c06",
+  "readout_sha256": "c2744ed61ceccd37c7895d8e1045a7ac494bd6d199d27b062bfebb350fc06de1",
+  "limits": [
+    "Fixed two-round repeated Train diagnostic; no A1 or OOS superiority conclusion.",
+    "Same shared SFT teacher prior; do not attribute that prior to M2 reward.",
+    "Missing, duplicate, or incomplete episodes are not zero returns and are not stitched.",
+    "Tool submissions, executed actions, and actual ledger fills are separate.",
+    "S diagnostics and actor/critic metrics are reported only when recorded.",
+    "Research model/extra artifacts omit Adam and cannot resume training."
+  ],
+  "new_training_or_tensor_loads": false
+}

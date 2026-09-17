@@ -1,0 +1,13 @@
+{
+  "inputs": {
+    "input_preflight.json": "56441b962d1e32de29d797b0970ed60b097d4ac896782ba9ac84e8a95f92f8bf",
+    "model_identity.json": "c3c11fb601fec30ad30e6e508c7d74e8cccc4e7a862264536c19fc205f159247",
+    "plan.md": "4f1730cf2e1216c277f0cb34ecdad6f39143afb0bf098c974f392cbab2816653",
+    "prepared/manifest.json": "be7c2837ed5037deed0435655e4ecffd140c350d1409176c7d18d50b1f1a1220",
+    "selection.json": "29f77ff0210650162dcf1525e6ae9b8af5a1e28383f76ff818d82b25b98c55a5",
+    "settings.json": "024288e95c91bd5d725a9b7c462f3cd89890e0f966007867d2a1b54d08b8277a",
+    "source_identity.json": "0fa40bdde5c091f042cb48fed8dcc939a7b8aee061f8e07cd4f21f58e1c5dcd2"
+  },
+  "profile": "common_sft_train_coverage_v1",
+  "sealed_at_SGT": "2026-09-16T16:16:32.147294+08:00"
+}

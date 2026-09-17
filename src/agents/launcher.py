@@ -1060,6 +1060,12 @@ def _resolve_exact_model_snapshot(
 ) -> tuple[str, str, Path]:
     """Resolve only the configured immutable revision from local files."""
 
+    model = _required(config, "model")
+    if model.get("source") == "local_export":
+        from .local_export import resolve_local_export
+
+        return resolve_local_export(model)
+
     selected_model = str(
         _required(config, "model", "name")
         if "name" in _required(config, "model")

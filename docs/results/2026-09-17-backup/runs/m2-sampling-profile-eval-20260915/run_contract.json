@@ -1,0 +1,12 @@
+{
+  "profile": "qwen_nonthinking_sampling_comparison_v1",
+  "sealed_at_SGT": "2026-09-15T20:19:50.620242+08:00",
+  "inputs": {
+    "contexts.json": "ae8504046dbc75472494c366cee97191c3b8ce5360483848d35c5f39be33b9bc",
+    "models.json": "e115294e38d1738ab9124733e77c859616247b320610b9b984a32992ee968170",
+    "settings.json": "7b3fd08cdab3f658b092f11fa114add5fd1d3dcae1ddd3dd1c903ee7e5fcea3b",
+    "plan.md": "bc9a682ed0acc27657cd159c44c259695b110055e049be614ee46b9f25d865f4",
+    "source_identity.json": "7771e35fd64cf1a8f2e11b4a05e56f0cc4f120127eb07e31b12003ffc91c9106",
+    "parent_evidence.json": "bb0b5d66b8bdd2dd47c5cb35a19cd4e7091abb2d3c275c2f2f547f082cbad949"
+  }
+}

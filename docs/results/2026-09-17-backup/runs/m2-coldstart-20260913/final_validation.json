@@ -1,0 +1,36 @@
+{
+  "status": "PASSED",
+  "at_SGT": "2026-09-13T20:50:04.137774+08:00",
+  "eval_request_and_trace_accounting": {
+    "base_eval": {
+      "trajectories": 100,
+      "complete": 100,
+      "requests": 645,
+      "response_tokens": 10576,
+      "max_response_tokens": 34,
+      "model_fills": 0,
+      "invalid": 0
+    },
+    "sft_eval_r2": {
+      "trajectories": 100,
+      "complete": 99,
+      "requests": 846,
+      "response_tokens": 18116,
+      "max_response_tokens": 29,
+      "model_fills": 594,
+      "invalid": 207
+    }
+  },
+  "training_epochs_exact_468_unique_each": true,
+  "training_optimizer_steps": 90,
+  "all_evaluation_responses_terminated_below_cap": true,
+  "invalids_preserved": 207,
+  "incomplete_preserved": 1,
+  "initial_startup_failure_preserved": true,
+  "mypy": "passed for evaluator and controller",
+  "cpu_tests": {
+    "dataset": 5,
+    "sft": 3,
+    "evaluator": 3
+  }
+}

@@ -1,0 +1,1515 @@
+{
+  "status": "COMPLETE",
+  "at_SGT": "2026-09-14T03:12:14.941298+08:00",
+  "controller_status": "COMPLETE",
+  "controller_error": null,
+  "shared_model_identity": {
+    "merge_receipt_sha256": "cf3b8e5a4e2e45708943f4c71c822d41d60cfae13170e760cb5979e1df2356db",
+    "model": "/home/tianming/projects/finance-credit-agent/runs/m2-coldstart-v3-20260914/merged_model",
+    "model_revision": "local-export-sha256:cf3b8e5a4e2e45708943f4c71c822d41d60cfae13170e760cb5979e1df2356db",
+    "model_snapshot_path": "/home/tianming/projects/finance-credit-agent/runs/m2-coldstart-v3-20260914/merged_model",
+    "model_source": "local_export"
+  },
+  "initial_critic_heads": {
+    "hashes": {
+      "base": "34cca63a36551fbff58a919b66550d05119c0d7979feb4707dd91254d9ef3b20",
+      "m1": "34cca63a36551fbff58a919b66550d05119c0d7979feb4707dd91254d9ef3b20",
+      "m2": "34cca63a36551fbff58a919b66550d05119c0d7979feb4707dd91254d9ef3b20"
+    },
+    "all_three_equal": true
+  },
+  "remaining_or_failed_checks": [],
+  "input_sha256": {
+    "state.json": "63ae78699c44b7d06a08ae50f020ad17260f94b794a14b2d7be21bf264702d32",
+    "model_identity.json": "c3c11fb601fec30ad30e6e508c7d74e8cccc4e7a862264536c19fc205f159247",
+    "prepared/manifest.json": "d01972af01ec9bad075e950a063c9724319dcf9a20ed3e39979d4f6bb28d758c",
+    "run_contract.json": "abe3683be838fb214c11bffd6fd972acfe84e6f758fa0c5383d476274ae04cb1",
+    "base/summary.json": "13600d66dfd380a8c990a8151cce17fb1deed676c0119e3f79bcc4488eb0eb11",
+    "base/command.json": "f6fc1ba9d3d01f1aac00131edc03d7e35f5619addce88d07bea59e2a30a79dda",
+    "base/artifacts/screening_evidence/screening-741475.jsonl": "0ac84e1480f0a12df98ed12bb2bf6464e85efef8bb5f49d48e2c92eba8850b7b",
+    "base/artifacts/critic_initialization/head-rank0.json": "aba71a4967235cafcc1793093509713d56b297588cb8a04fcfd3f94e4c866b2d",
+    "base/trainer.log": "7d447bf765c956e6c1d4f15bc6dcf55855db0d1d17c3b9130d19e4953c3a4bff",
+    "m1/summary.json": "68d58286f9a85d4122586428c6428c85655afb276b8e5e87148c73937435535d",
+    "m1/command.json": "69fc07b4796f67e18d31f52d012a458b13e123a3fd6381c5683653b7ffbc7f52",
+    "m1/artifacts/screening_evidence/screening-744345.jsonl": "af55be39a51d4ecf1c66fd0b606fd183e2e8d92aa276a6fc2a6a8bcb8069bb25",
+    "m1/artifacts/update_probe/optimizer-update-743781.jsonl": "826df36687eab35633c28942974dd1131e89a5e80e372e43d849ec81f2c0fcde",
+    "m1/artifacts/critic_initialization/head-rank0.json": "4e178541171062cdab482c67be04bd30a841b8771542f33c0b81833a5961dc48",
+    "m1/artifacts/sibling_diagnostics/advantage-743502.jsonl": "ac0235c8b811f7730fef1648f36fba82047709ff4cb6ee367e3b5b1979a8ccb8",
+    "m1/checkpoints/global_step_2/research_artifact_complete.json": "3587537fd2673204922ae71fd7422046e1ebe0eb1148f99c1287c65efbf3280d",
+    "source_identity.json": "d7c8ea89cc2ca62543cd973c49f41b95571480240cbccab48ebbb7ee946065e7",
+    "m1/trainer.log": "3d326b580a2d46b1739fe437361b245aa556462f8c4abe6f9fed5323fa62cff1",
+    "m2/summary.json": "1184568fa91a522efeace175b4773c7aab2f9e05baaf4035edfba66a093e8603",
+    "m2/command.json": "89bb6a15dbffc175234f3999319c2240b7356827b5a8f6eda5b3ac259bb82917",
+    "m2/artifacts/screening_evidence/screening-748876.jsonl": "0464777b3aea410c23ea45c639a0f87b9e1f60061570178a3134647cfd83a7ae",
+    "m2/artifacts/update_probe/optimizer-update-748336.jsonl": "4f9a7b529e479ef1c979413f9abfed275d0ef1341784bae05c5270084d41fdab",
+    "m2/artifacts/critic_initialization/head-rank0.json": "0cd6f0060b76a366a5393d9927f24db3a0197e5cca347f9f93778204dd7328a3",
+    "m2/artifacts/sibling_diagnostics/advantage-748070.jsonl": "0e40a10e3e2df3ac84fd350dfe1ce2a5c8aafa185b78cc44c9f591b3ed35e517",
+    "m2/checkpoints/global_step_2/research_artifact_complete.json": "e92379d270e8864c53ff6143377954dd015e16a1a33b99d1606019b77864e247",
+    "m2/trainer.log": "36fb2e15db8d8c8921324a3c34206ff8096a7d087ff32c2e1f267e12db31e0ef"
+  },
+  "limits": [
+    "Fixed two-round repeated Train diagnostic; no A1 or OOS superiority conclusion.",
+    "Same shared SFT teacher prior; do not attribute that prior to M2 reward.",
+    "Missing, duplicate, or incomplete episodes are not zero returns and are not stitched.",
+    "Tool submissions, executed actions, and actual ledger fills are separate.",
+    "S diagnostics and actor/critic metrics are reported only when recorded.",
+    "Research model/extra artifacts omit Adam and cannot resume training."
+  ],
+  "cells": {
+    "base": {
+      "status": "COMPLETE",
+      "summary": {
+        "actual_rounds": 0,
+        "arm": "SFT_BASELINE",
+        "artifact_profile": "research_model_extra_v1",
+        "critic_initial_head_sha256": "34cca63a36551fbff58a919b66550d05119c0d7979feb4707dd91254d9ef3b20",
+        "evidence": {
+          "optimizer_evidence": {
+            "backward_count": 0,
+            "detected": false,
+            "detected_role_counts": {},
+            "detected_roles": [],
+            "global_update_count": 0,
+            "optimizer_step_count": 0,
+            "peak_gpu_memory_bytes": 0,
+            "representative_update": null,
+            "worker_files": 0
+          },
+          "trajectories": {
+            "eval": 4
+          }
+        },
+        "finished_at_SGT": "2026-09-14T02:24:24.187427+08:00",
+        "model_revision": "local-export-sha256:cf3b8e5a4e2e45708943f4c71c822d41d60cfae13170e760cb5979e1df2356db",
+        "optimizer_included": false,
+        "requested_rounds": 0,
+        "resume_supported": false,
+        "returncode": 0,
+        "started_at_SGT": "2026-09-14T02:11:57.512380+08:00",
+        "status": "COMPLETE"
+      },
+      "groups": {
+        "train": {
+          "planned": 0,
+          "observed_unique_expected": 0,
+          "terminal_complete": 0,
+          "incomplete_observed": 0,
+          "missing": 0,
+          "executed_step_actions_observed": {},
+          "submitted_tool_calls_observed": {},
+          "fill_sides_observed": {},
+          "fill_symbols_observed": {},
+          "observed_fill_cost_including_partial": 0,
+          "invalid_observed": 0,
+          "requests_observed": 0,
+          "mean_Y_complete_only": null,
+          "mean_net_return_complete_only": null,
+          "mean_cost_complete_only": null,
+          "max_position_weight_complete_only": null,
+          "mean_final_position_count_complete_only": null
+        },
+        "eval": {
+          "planned": 4,
+          "observed_unique_expected": 4,
+          "terminal_complete": 4,
+          "incomplete_observed": 0,
+          "missing": 0,
+          "executed_step_actions_observed": {
+            "buy": 44,
+            "sell": 36
+          },
+          "submitted_tool_calls_observed": {
+            "buy": 44,
+            "sell": 36
+          },
+          "fill_sides_observed": {
+            "buy": 44,
+            "sell": 36
+          },
+          "fill_symbols_observed": {
+            "HD": 33,
+            "MSFT": 29,
+            "GS": 18
+          },
+          "observed_fill_cost_including_partial": 24119.8961699948,
+          "invalid_observed": 0,
+          "requests_observed": 80,
+          "mean_Y_complete_only": -4.873926718302496,
+          "mean_net_return_complete_only": 0.016486943312981422,
+          "mean_cost_complete_only": 6029.974042498699,
+          "max_position_weight_complete_only": 0.21043352972392373,
+          "mean_final_position_count_complete_only": 2
+        }
+      },
+      "rounds": [],
+      "training_metrics_as_logged": []
+    },
+    "m1": {
+      "status": "COMPLETE",
+      "summary": {
+        "actual_rounds": 2,
+        "arm": "M1",
+        "artifact_profile": "research_model_extra_v1",
+        "critic_initial_head_sha256": "34cca63a36551fbff58a919b66550d05119c0d7979feb4707dd91254d9ef3b20",
+        "evidence": {
+          "optimizer_evidence": {
+            "backward_count": 710,
+            "detected": true,
+            "detected_role_counts": {
+              "actor": 2,
+              "critic": 2
+            },
+            "detected_roles": [
+              "actor",
+              "critic"
+            ],
+            "global_update_count": 4,
+            "optimizer_step_count": 4,
+            "peak_gpu_memory_bytes": 106725374976,
+            "representative_update": {
+              "after_sha256": "0c375ebdfcdf1e8fa4d6d5e5fcda25d72230930d0e568207be2e58e4207a2c72",
+              "backward_count": 180,
+              "before_sha256": "d6ca6a848ca6ebcf4a594ec0aa0bf03cb12260d9f20a5250ba2bd14f6dfb3d3e",
+              "detected": true,
+              "global_update_count": 1,
+              "grad_norm": 50.287147521972656,
+              "host_pinned_memory_after_optimizer_step": {
+                "allocated_bytes.allocated": 14918103,
+                "allocated_bytes.current": 14877060,
+                "allocated_bytes.freed": 41043,
+                "allocated_bytes.peak": 14877063,
+                "allocation.allocated": 35122,
+                "allocation.current": 14,
+                "allocation.freed": 35108,
+                "allocation.peak": 19,
+                "host_alloc_time.avg": 407,
+                "host_alloc_time.count": 21,
+                "host_alloc_time.max": 3599,
+                "host_alloc_time.min": 3,
+                "host_alloc_time.total": 8561,
+                "host_free_time.avg": 635,
+                "host_free_time.count": 5,
+                "host_free_time.max": 1120,
+                "host_free_time.min": 43,
+                "host_free_time.total": 3177,
+                "num_host_alloc": 21,
+                "num_host_free": 5,
+                "reserved_bytes.allocated": 10682762,
+                "reserved_bytes.current": 196997,
+                "reserved_bytes.freed": 10485765,
+                "reserved_bytes.peak": 10682757,
+                "segment.allocated": 21,
+                "segment.current": 16,
+                "segment.freed": 5,
+                "segment.peak": 19
+              },
+              "host_pinned_memory_before_optimizer_step": {
+                "allocated_bytes.allocated": 14918100,
+                "allocated_bytes.current": 14877060,
+                "allocated_bytes.freed": 41040,
+                "allocated_bytes.peak": 14877063,
+                "allocation.allocated": 35119,
+                "allocation.current": 14,
+                "allocation.freed": 35105,
+                "allocation.peak": 19,
+                "host_alloc_time.avg": 407,
+                "host_alloc_time.count": 21,
+                "host_alloc_time.max": 3599,
+                "host_alloc_time.min": 3,
+                "host_alloc_time.total": 8561,
+                "host_free_time.avg": 635,
+                "host_free_time.count": 5,
+                "host_free_time.max": 1120,
+                "host_free_time.min": 43,
+                "host_free_time.total": 3177,
+                "num_host_alloc": 21,
+                "num_host_free": 5,
+                "reserved_bytes.allocated": 10682762,
+                "reserved_bytes.current": 196997,
+                "reserved_bytes.freed": 10485765,
+                "reserved_bytes.peak": 10682757,
+                "segment.allocated": 21,
+                "segment.current": 16,
+                "segment.freed": 5,
+                "segment.peak": 19
+              },
+              "optimizer_step_count": 1,
+              "parameter_delta_l2": 3.5918899811804295e-05,
+              "parameter_delta_max": 9.999144822359085e-06,
+              "parameter_name": "_fsdp_wrapped_module._flat_param",
+              "parameter_sample_size": 4096,
+              "peak_gpu_memory_bytes": 103097107456,
+              "pid": 743781,
+              "role": "critic",
+              "sampled_gradient_l2": 0.003788689384236932
+            },
+            "worker_files": 1
+          },
+          "trajectories": {
+            "eval": 4,
+            "train": 16
+          }
+        },
+        "finished_at_SGT": "2026-09-14T02:47:28.099806+08:00",
+        "model_revision": "local-export-sha256:cf3b8e5a4e2e45708943f4c71c822d41d60cfae13170e760cb5979e1df2356db",
+        "optimizer_included": false,
+        "requested_rounds": 2,
+        "resume_supported": false,
+        "returncode": 0,
+        "started_at_SGT": "2026-09-14T02:24:30.599620+08:00",
+        "status": "COMPLETE"
+      },
+      "groups": {
+        "train": {
+          "planned": 16,
+          "observed_unique_expected": 16,
+          "terminal_complete": 16,
+          "incomplete_observed": 0,
+          "missing": 0,
+          "executed_step_actions_observed": {
+            "hold": 22,
+            "buy": 171,
+            "sell": 127,
+            "invalid": 35
+          },
+          "submitted_tool_calls_observed": {
+            "hold": 22,
+            "buy": 202,
+            "sell": 131
+          },
+          "fill_sides_observed": {
+            "buy": 169,
+            "sell": 127
+          },
+          "fill_symbols_observed": {
+            "HD": 101,
+            "GS": 85,
+            "MSFT": 110
+          },
+          "observed_fill_cost_including_partial": 86994.97206149499,
+          "invalid_observed": 35,
+          "requests_observed": 355,
+          "mean_Y_complete_only": 1.8793119646372773,
+          "mean_net_return_complete_only": 0.03973851552048761,
+          "mean_cost_complete_only": 5437.185753843437,
+          "max_position_weight_complete_only": 0.21469992239527874,
+          "mean_final_position_count_complete_only": 1.875
+        },
+        "eval": {
+          "planned": 4,
+          "observed_unique_expected": 4,
+          "terminal_complete": 4,
+          "incomplete_observed": 0,
+          "missing": 0,
+          "executed_step_actions_observed": {
+            "buy": 44,
+            "sell": 36
+          },
+          "submitted_tool_calls_observed": {
+            "buy": 44,
+            "sell": 36
+          },
+          "fill_sides_observed": {
+            "buy": 44,
+            "sell": 36
+          },
+          "fill_symbols_observed": {
+            "MSFT": 28,
+            "GS": 21,
+            "HD": 31
+          },
+          "observed_fill_cost_including_partial": 24259.886344231756,
+          "invalid_observed": 0,
+          "requests_observed": 80,
+          "mean_Y_complete_only": -4.213948951433471,
+          "mean_net_return_complete_only": 0.019900353823080835,
+          "mean_cost_complete_only": 6064.971586057939,
+          "max_position_weight_complete_only": 0.21002067485206544,
+          "mean_final_position_count_complete_only": 2
+        }
+      },
+      "rounds": [
+        {
+          "policy_step": 1,
+          "population": {
+            "planned": 8,
+            "observed_unique_expected": 8,
+            "terminal_complete": 8,
+            "incomplete_observed": 0,
+            "missing": 0,
+            "executed_step_actions_observed": {
+              "hold": 11,
+              "buy": 87,
+              "sell": 62,
+              "invalid": 20
+            },
+            "submitted_tool_calls_observed": {
+              "hold": 11,
+              "buy": 106,
+              "sell": 63
+            },
+            "fill_sides_observed": {
+              "buy": 86,
+              "sell": 62
+            },
+            "fill_symbols_observed": {
+              "HD": 50,
+              "GS": 42,
+              "MSFT": 56
+            },
+            "observed_fill_cost_including_partial": 43419.104747576515,
+            "invalid_observed": 20,
+            "requests_observed": 180,
+            "mean_Y_complete_only": -0.0494445717131515,
+            "mean_net_return_complete_only": 0.04034118129942024,
+            "mean_cost_complete_only": 5427.388093447064,
+            "max_position_weight_complete_only": 0.21450001769643232,
+            "mean_final_position_count_complete_only": 2.25
+          },
+          "sibling_Y": [
+            {
+              "episode_id": "formal-train-0001",
+              "observed": 4,
+              "all_four_complete": true,
+              "siblings": [
+                {
+                  "rollout_n": 0,
+                  "Y": -0.36758906348472387,
+                  "net_return": 0.038492518693834965
+                },
+                {
+                  "rollout_n": 1,
+                  "Y": 1.7179940683588475,
+                  "net_return": 0.059403084543690365
+                },
+                {
+                  "rollout_n": 2,
+                  "Y": -0.6707372305383777,
+                  "net_return": 0.03527702181515213
+                },
+                {
+                  "rollout_n": 3,
+                  "Y": 0.04813416921980582,
+                  "net_return": 0.042690221443433485
+                }
+              ],
+              "Y_range_all_four_complete": 2.388731298897225
+            },
+            {
+              "episode_id": "formal-train-0005",
+              "observed": 4,
+              "all_four_complete": true,
+              "siblings": [
+                {
+                  "rollout_n": 0,
+                  "Y": -2.151571319928525,
+                  "net_return": 0.021265856934825855
+                },
+                {
+                  "rollout_n": 1,
+                  "Y": 1.981101320489528,
+                  "net_return": 0.05540635660656723
+                },
+                {
+                  "rollout_n": 2,
+                  "Y": -0.2455433746886499,
+                  "net_return": 0.03703960451095578
+                },
+                {
+                  "rollout_n": 3,
+                  "Y": -0.7073451431331167,
+                  "net_return": 0.033154785846902124
+                }
+              ],
+              "Y_range_all_four_complete": 4.132672640418053
+            }
+          ],
+          "advantage_diagnostics_as_recorded": [
+            {
+              "source": "m1/artifacts/sibling_diagnostics/advantage-743502.jsonl:1",
+              "action_diversity_rate": 0.55,
+              "action_family_histogram": {
+                "abstain": 0,
+                "buy": 87,
+                "hold": 11,
+                "sell": 62
+              },
+              "advancing_row_count": 160,
+              "advancing_steps": {
+                "corr_U_S": null,
+                "exact_nonzero_S_count": 0,
+                "mean_abs_S": 0.0,
+                "nonzero_S_count": 0,
+                "nonzero_S_rate": 0.0,
+                "row_count": 160,
+                "std_S": 0.0,
+                "std_U": 0.7741950941747612
+              },
+              "all_real_steps": {
+                "corr_U_S": null,
+                "exact_nonzero_S_count": 0,
+                "mean_abs_S": 0.0,
+                "nonzero_S_count": 0,
+                "nonzero_S_rate": 0.0,
+                "row_count": 180,
+                "std_S": 0.0,
+                "std_U": 0.7409879585114533
+              },
+              "arm": "M1",
+              "diagnostic_atol": 1e-08,
+              "diagnostic_rtol": 1e-06,
+              "episode_group_count": 2,
+              "episode_ids": [
+                "formal-train-0001",
+                "formal-train-0005"
+              ],
+              "eta": 1.0,
+              "invalid_step_count": 20,
+              "padding_row_count": 0,
+              "phase": "advantage_pre_update",
+              "pid": 743502,
+              "policy_step": 1,
+              "pooling_changed_row_count": 68,
+              "pooling_changed_row_rate": 0.425,
+              "pooling_opportunity_rate": 0.55,
+              "real_step_count": 180,
+              "response_tokens": 3742,
+              "run_seed": 42,
+              "schema_version": 1,
+              "session_group_count": 40,
+              "sibling_group_uids": [
+                "922fa1e4-c9f0-4166-92ea-7f1a8b752d8e",
+                "d862b696-eb5f-4a4a-83e2-db1229abb640"
+              ],
+              "trajectory_count": 8,
+              "whitening_correction": 1,
+              "whitening_epsilon": 1e-08,
+              "whitening_mean": 0.09674788266420364,
+              "whitening_scope": "logical_rollout_batch_real_step_rows",
+              "whitening_std": 0.7409879565238953
+            }
+          ],
+          "actor_critic_metrics_as_logged": [
+            {
+              "source_line": 891,
+              "policy_step": 1,
+              "metrics": {
+                "actor/entropy": 0.042547766119241714,
+                "critic/vf_loss": 0.2776864846733105,
+                "critic/vf_clipfrac": 0.0,
+                "critic/vpred_mean": -0.13949758741590712,
+                "critic/grad_norm": 50.287147521972656,
+                "critic/lr": 1e-05,
+                "actor/pg_loss": 1.1427800927776843e-08,
+                "actor/kl_loss": 0.0016603364247073475,
+                "actor/pg_clipfrac": 0.0,
+                "actor/ppo_kl": 0.0,
+                "actor/pg_clipfrac_lower": 0.0,
+                "actor/kl_coef": 0.0010000000000000002,
+                "actor/grad_norm": 2.777132987976074,
+                "actor/lr": 1e-06,
+                "critic/score/mean": -0.0021975375711917877,
+                "critic/score/max": 0.09005005657672882,
+                "critic/score/min": -0.10245577991008759,
+                "critic/rewards/mean": -0.0021975375711917877,
+                "critic/rewards/max": 0.09005005657672882,
+                "critic/rewards/min": -0.10245577991008759,
+                "critic/advantages/mean": 0.004070357885211706,
+                "critic/advantages/max": 2.864044189453125,
+                "critic/advantages/min": -3.2582645416259766,
+                "critic/returns/mean": -0.04479030892252922,
+                "critic/returns/max": 1.981101393699646,
+                "critic/returns/min": -2.151571273803711,
+                "critic/values/mean": -1.2890625,
+                "critic/values/max": 4.3125,
+                "critic/values/min": -8.3125,
+                "critic/vf_explained_var": -17.629337310791016,
+                "critic/score/trajectory/mean": -0.04944451153278351,
+                "critic/score/trajectory/max": 1.981101632118225,
+                "critic/score/trajectory/min": -2.151571035385132,
+                "critic/rewards/trajectory/mean": -0.04944451153278351,
+                "critic/rewards/trajectory/max": 1.981101632118225,
+                "critic/rewards/trajectory/min": -2.151571035385132
+              }
+            }
+          ]
+        },
+        {
+          "policy_step": 2,
+          "population": {
+            "planned": 8,
+            "observed_unique_expected": 8,
+            "terminal_complete": 8,
+            "incomplete_observed": 0,
+            "missing": 0,
+            "executed_step_actions_observed": {
+              "buy": 84,
+              "hold": 11,
+              "sell": 65,
+              "invalid": 15
+            },
+            "submitted_tool_calls_observed": {
+              "buy": 96,
+              "hold": 11,
+              "sell": 68
+            },
+            "fill_sides_observed": {
+              "buy": 83,
+              "sell": 65
+            },
+            "fill_symbols_observed": {
+              "MSFT": 54,
+              "GS": 43,
+              "HD": 51
+            },
+            "observed_fill_cost_including_partial": 43575.867313918476,
+            "invalid_observed": 15,
+            "requests_observed": 175,
+            "mean_Y_complete_only": 3.808068500987706,
+            "mean_net_return_complete_only": 0.039135849741554984,
+            "mean_cost_complete_only": 5446.9834142398095,
+            "max_position_weight_complete_only": 0.21469992239527874,
+            "mean_final_position_count_complete_only": 1.5
+          },
+          "sibling_Y": [
+            {
+              "episode_id": "formal-train-0009",
+              "observed": 4,
+              "all_four_complete": true,
+              "siblings": [
+                {
+                  "rollout_n": 0,
+                  "Y": 2.9716569465353992,
+                  "net_return": 0.03235571286881522
+                },
+                {
+                  "rollout_n": 1,
+                  "Y": 5.897004119353389,
+                  "net_return": 0.057149312691259
+                },
+                {
+                  "rollout_n": 2,
+                  "Y": 4.3296350125469605,
+                  "net_return": 0.04378679770035743
+                },
+                {
+                  "rollout_n": 3,
+                  "Y": 3.830484636544517,
+                  "net_return": 0.039640798793262544
+                }
+              ],
+              "Y_range_all_four_complete": 2.92534717281799
+            },
+            {
+              "episode_id": "formal-train-0013",
+              "observed": 4,
+              "all_four_complete": true,
+              "siblings": [
+                {
+                  "rollout_n": 0,
+                  "Y": 1.7688441630087968,
+                  "net_return": 0.02445752025282477
+                },
+                {
+                  "rollout_n": 1,
+                  "Y": 2.680806967215574,
+                  "net_return": 0.030530792729244416
+                },
+                {
+                  "rollout_n": 2,
+                  "Y": 4.349719511417126,
+                  "net_return": 0.04161135693778206
+                },
+                {
+                  "rollout_n": 3,
+                  "Y": 4.6363966512798855,
+                  "net_return": 0.04355450595889443
+                }
+              ],
+              "Y_range_all_four_complete": 2.8675524882710888
+            }
+          ],
+          "advantage_diagnostics_as_recorded": [
+            {
+              "source": "m1/artifacts/sibling_diagnostics/advantage-743502.jsonl:2",
+              "action_diversity_rate": 0.5,
+              "action_family_histogram": {
+                "abstain": 0,
+                "buy": 84,
+                "hold": 11,
+                "sell": 65
+              },
+              "advancing_row_count": 160,
+              "advancing_steps": {
+                "corr_U_S": null,
+                "exact_nonzero_S_count": 0,
+                "mean_abs_S": 0.0,
+                "nonzero_S_count": 0,
+                "nonzero_S_rate": 0.0,
+                "row_count": 160,
+                "std_S": 0.0,
+                "std_U": 1.380753528142586
+              },
+              "all_real_steps": {
+                "corr_U_S": null,
+                "exact_nonzero_S_count": 0,
+                "mean_abs_S": 0.0,
+                "nonzero_S_count": 0,
+                "nonzero_S_rate": 0.0,
+                "row_count": 175,
+                "std_S": 0.0,
+                "std_U": 1.3407052943748643
+              },
+              "arm": "M1",
+              "diagnostic_atol": 1e-08,
+              "diagnostic_rtol": 1e-06,
+              "episode_group_count": 2,
+              "episode_ids": [
+                "formal-train-0009",
+                "formal-train-0013"
+              ],
+              "eta": 1.0,
+              "invalid_step_count": 15,
+              "padding_row_count": 0,
+              "phase": "advantage_pre_update",
+              "pid": 743502,
+              "policy_step": 2,
+              "pooling_changed_row_count": 61,
+              "pooling_changed_row_rate": 0.38125,
+              "pooling_opportunity_rate": 0.5,
+              "real_step_count": 175,
+              "response_tokens": 3636,
+              "run_seed": 42,
+              "schema_version": 1,
+              "session_group_count": 40,
+              "sibling_group_uids": [
+                "64e66320-56bc-4781-b0b5-a9d820455bcd",
+                "c937379a-c754-4cee-ba19-420ac6484985"
+              ],
+              "trajectory_count": 8,
+              "whitening_correction": 1,
+              "whitening_epsilon": 1e-08,
+              "whitening_mean": -8.92919921875,
+              "whitening_scope": "logical_rollout_batch_real_step_rows",
+              "whitening_std": 1.3407052755355835
+            }
+          ],
+          "actor_critic_metrics_as_logged": [
+            {
+              "source_line": 905,
+              "policy_step": 2,
+              "metrics": {
+                "actor/entropy": 0.04691263660788536,
+                "critic/vf_loss": 40.758904948830605,
+                "critic/vf_clipfrac": 0.0,
+                "critic/vpred_mean": 10.9225,
+                "critic/grad_norm": 4836.01416015625,
+                "critic/lr": 1e-05,
+                "actor/pg_loss": -2.8761132853105664e-07,
+                "actor/kl_loss": 0.003186098418151012,
+                "actor/pg_clipfrac": 0.0,
+                "actor/ppo_kl": 0.0,
+                "actor/pg_clipfrac_lower": 0.0,
+                "actor/kl_coef": 0.0010000000000000002,
+                "actor/grad_norm": 3.276604652404785,
+                "actor/lr": 1e-06,
+                "critic/score/mean": 0.17408312857151031,
+                "critic/score/max": 0.2680456340312958,
+                "critic/score/min": 0.08844220638275146,
+                "critic/rewards/mean": 0.17408312857151031,
+                "critic/rewards/max": 0.2680456340312958,
+                "critic/rewards/min": 0.08844220638275146,
+                "critic/advantages/mean": 0.01467723585665226,
+                "critic/advantages/max": 3.2268080711364746,
+                "critic/advantages/min": -1.6044306755065918,
+                "critic/returns/mean": 2.0116660594940186,
+                "critic/returns/max": 5.896999359130859,
+                "critic/returns/min": 0.08844184875488281,
+                "critic/values/mean": 0.26953125,
+                "critic/values/max": 11.3125,
+                "critic/values/min": -8.0,
+                "critic/vf_explained_var": -9.323622703552246,
+                "critic/score/trajectory/mean": 3.80806827545166,
+                "critic/score/trajectory/max": 5.897002696990967,
+                "critic/score/trajectory/min": 1.7688441276550293,
+                "critic/rewards/trajectory/mean": 3.80806827545166,
+                "critic/rewards/trajectory/max": 5.897002696990967,
+                "critic/rewards/trajectory/min": 1.7688441276550293
+              }
+            }
+          ]
+        }
+      ],
+      "training_metrics_as_logged": [
+        {
+          "source_line": 891,
+          "policy_step": 1,
+          "metrics": {
+            "actor/entropy": 0.042547766119241714,
+            "critic/vf_loss": 0.2776864846733105,
+            "critic/vf_clipfrac": 0.0,
+            "critic/vpred_mean": -0.13949758741590712,
+            "critic/grad_norm": 50.287147521972656,
+            "critic/lr": 1e-05,
+            "actor/pg_loss": 1.1427800927776843e-08,
+            "actor/kl_loss": 0.0016603364247073475,
+            "actor/pg_clipfrac": 0.0,
+            "actor/ppo_kl": 0.0,
+            "actor/pg_clipfrac_lower": 0.0,
+            "actor/kl_coef": 0.0010000000000000002,
+            "actor/grad_norm": 2.777132987976074,
+            "actor/lr": 1e-06,
+            "critic/score/mean": -0.0021975375711917877,
+            "critic/score/max": 0.09005005657672882,
+            "critic/score/min": -0.10245577991008759,
+            "critic/rewards/mean": -0.0021975375711917877,
+            "critic/rewards/max": 0.09005005657672882,
+            "critic/rewards/min": -0.10245577991008759,
+            "critic/advantages/mean": 0.004070357885211706,
+            "critic/advantages/max": 2.864044189453125,
+            "critic/advantages/min": -3.2582645416259766,
+            "critic/returns/mean": -0.04479030892252922,
+            "critic/returns/max": 1.981101393699646,
+            "critic/returns/min": -2.151571273803711,
+            "critic/values/mean": -1.2890625,
+            "critic/values/max": 4.3125,
+            "critic/values/min": -8.3125,
+            "critic/vf_explained_var": -17.629337310791016,
+            "critic/score/trajectory/mean": -0.04944451153278351,
+            "critic/score/trajectory/max": 1.981101632118225,
+            "critic/score/trajectory/min": -2.151571035385132,
+            "critic/rewards/trajectory/mean": -0.04944451153278351,
+            "critic/rewards/trajectory/max": 1.981101632118225,
+            "critic/rewards/trajectory/min": -2.151571035385132
+          }
+        },
+        {
+          "source_line": 905,
+          "policy_step": 2,
+          "metrics": {
+            "actor/entropy": 0.04691263660788536,
+            "critic/vf_loss": 40.758904948830605,
+            "critic/vf_clipfrac": 0.0,
+            "critic/vpred_mean": 10.9225,
+            "critic/grad_norm": 4836.01416015625,
+            "critic/lr": 1e-05,
+            "actor/pg_loss": -2.8761132853105664e-07,
+            "actor/kl_loss": 0.003186098418151012,
+            "actor/pg_clipfrac": 0.0,
+            "actor/ppo_kl": 0.0,
+            "actor/pg_clipfrac_lower": 0.0,
+            "actor/kl_coef": 0.0010000000000000002,
+            "actor/grad_norm": 3.276604652404785,
+            "actor/lr": 1e-06,
+            "critic/score/mean": 0.17408312857151031,
+            "critic/score/max": 0.2680456340312958,
+            "critic/score/min": 0.08844220638275146,
+            "critic/rewards/mean": 0.17408312857151031,
+            "critic/rewards/max": 0.2680456340312958,
+            "critic/rewards/min": 0.08844220638275146,
+            "critic/advantages/mean": 0.01467723585665226,
+            "critic/advantages/max": 3.2268080711364746,
+            "critic/advantages/min": -1.6044306755065918,
+            "critic/returns/mean": 2.0116660594940186,
+            "critic/returns/max": 5.896999359130859,
+            "critic/returns/min": 0.08844184875488281,
+            "critic/values/mean": 0.26953125,
+            "critic/values/max": 11.3125,
+            "critic/values/min": -8.0,
+            "critic/vf_explained_var": -9.323622703552246,
+            "critic/score/trajectory/mean": 3.80806827545166,
+            "critic/score/trajectory/max": 5.897002696990967,
+            "critic/score/trajectory/min": 1.7688441276550293,
+            "critic/rewards/trajectory/mean": 3.80806827545166,
+            "critic/rewards/trajectory/max": 5.897002696990967,
+            "critic/rewards/trajectory/min": 1.7688441276550293
+          }
+        }
+      ]
+    },
+    "m2": {
+      "status": "COMPLETE",
+      "summary": {
+        "actual_rounds": 2,
+        "arm": "M2",
+        "artifact_profile": "research_model_extra_v1",
+        "critic_initial_head_sha256": "34cca63a36551fbff58a919b66550d05119c0d7979feb4707dd91254d9ef3b20",
+        "evidence": {
+          "optimizer_evidence": {
+            "backward_count": 724,
+            "detected": true,
+            "detected_role_counts": {
+              "actor": 2,
+              "critic": 2
+            },
+            "detected_roles": [
+              "actor",
+              "critic"
+            ],
+            "global_update_count": 4,
+            "optimizer_step_count": 4,
+            "peak_gpu_memory_bytes": 106726201344,
+            "representative_update": {
+              "after_sha256": "1d4c04ed1355d9787ced8c2395ec403d313425e0b604d7ab575591495c378988",
+              "backward_count": 180,
+              "before_sha256": "d6ca6a848ca6ebcf4a594ec0aa0bf03cb12260d9f20a5250ba2bd14f6dfb3d3e",
+              "detected": true,
+              "global_update_count": 1,
+              "grad_norm": 130.1425018310547,
+              "host_pinned_memory_after_optimizer_step": {
+                "allocated_bytes.allocated": 14918099,
+                "allocated_bytes.current": 14877060,
+                "allocated_bytes.freed": 41039,
+                "allocated_bytes.peak": 14877063,
+                "allocation.allocated": 35121,
+                "allocation.current": 14,
+                "allocation.freed": 35107,
+                "allocation.peak": 19,
+                "host_alloc_time.avg": 392,
+                "host_alloc_time.count": 21,
+                "host_alloc_time.max": 3455,
+                "host_alloc_time.min": 2,
+                "host_alloc_time.total": 8233,
+                "host_free_time.avg": 620,
+                "host_free_time.count": 5,
+                "host_free_time.max": 1226,
+                "host_free_time.min": 16,
+                "host_free_time.total": 3103,
+                "num_host_alloc": 21,
+                "num_host_free": 5,
+                "reserved_bytes.allocated": 10682762,
+                "reserved_bytes.current": 196997,
+                "reserved_bytes.freed": 10485765,
+                "reserved_bytes.peak": 10682757,
+                "segment.allocated": 21,
+                "segment.current": 16,
+                "segment.freed": 5,
+                "segment.peak": 19
+              },
+              "host_pinned_memory_before_optimizer_step": {
+                "allocated_bytes.allocated": 14918096,
+                "allocated_bytes.current": 14877060,
+                "allocated_bytes.freed": 41036,
+                "allocated_bytes.peak": 14877063,
+                "allocation.allocated": 35118,
+                "allocation.current": 14,
+                "allocation.freed": 35104,
+                "allocation.peak": 19,
+                "host_alloc_time.avg": 392,
+                "host_alloc_time.count": 21,
+                "host_alloc_time.max": 3455,
+                "host_alloc_time.min": 2,
+                "host_alloc_time.total": 8233,
+                "host_free_time.avg": 620,
+                "host_free_time.count": 5,
+                "host_free_time.max": 1226,
+                "host_free_time.min": 16,
+                "host_free_time.total": 3103,
+                "num_host_alloc": 21,
+                "num_host_free": 5,
+                "reserved_bytes.allocated": 10682762,
+                "reserved_bytes.current": 196997,
+                "reserved_bytes.freed": 10485765,
+                "reserved_bytes.peak": 10682757,
+                "segment.allocated": 21,
+                "segment.current": 16,
+                "segment.freed": 5,
+                "segment.peak": 19
+              },
+              "optimizer_step_count": 1,
+              "parameter_delta_l2": 3.5778037272393703e-05,
+              "parameter_delta_max": 9.998679161071777e-06,
+              "parameter_name": "_fsdp_wrapped_module._flat_param",
+              "parameter_sample_size": 4096,
+              "peak_gpu_memory_bytes": 103097107456,
+              "pid": 748336,
+              "role": "critic",
+              "sampled_gradient_l2": 0.006638225167989731
+            },
+            "worker_files": 1
+          },
+          "trajectories": {
+            "eval": 4,
+            "train": 16
+          }
+        },
+        "finished_at_SGT": "2026-09-14T03:11:56.920822+08:00",
+        "model_revision": "local-export-sha256:cf3b8e5a4e2e45708943f4c71c822d41d60cfae13170e760cb5979e1df2356db",
+        "optimizer_included": false,
+        "requested_rounds": 2,
+        "resume_supported": false,
+        "returncode": 0,
+        "started_at_SGT": "2026-09-14T02:47:37.186350+08:00",
+        "status": "COMPLETE"
+      },
+      "groups": {
+        "train": {
+          "planned": 16,
+          "observed_unique_expected": 16,
+          "terminal_complete": 16,
+          "incomplete_observed": 0,
+          "missing": 0,
+          "executed_step_actions_observed": {
+            "hold": 25,
+            "buy": 169,
+            "sell": 126,
+            "invalid": 42
+          },
+          "submitted_tool_calls_observed": {
+            "hold": 25,
+            "buy": 208,
+            "sell": 129
+          },
+          "fill_sides_observed": {
+            "buy": 167,
+            "sell": 126
+          },
+          "fill_symbols_observed": {
+            "HD": 107,
+            "GS": 85,
+            "MSFT": 101
+          },
+          "observed_fill_cost_including_partial": 86077.17733114983,
+          "invalid_observed": 42,
+          "requests_observed": 362,
+          "mean_Y_complete_only": 1.8931811433887678,
+          "mean_net_return_complete_only": 0.03975931828436287,
+          "mean_cost_complete_only": 5379.823583196864,
+          "max_position_weight_complete_only": 0.21469992239527874,
+          "mean_final_position_count_complete_only": 1.8125
+        },
+        "eval": {
+          "planned": 4,
+          "observed_unique_expected": 4,
+          "terminal_complete": 4,
+          "incomplete_observed": 0,
+          "missing": 0,
+          "executed_step_actions_observed": {
+            "buy": 45,
+            "sell": 35,
+            "invalid": 1
+          },
+          "submitted_tool_calls_observed": {
+            "buy": 46,
+            "sell": 35
+          },
+          "fill_sides_observed": {
+            "buy": 44,
+            "sell": 35
+          },
+          "fill_symbols_observed": {
+            "MSFT": 24,
+            "GS": 20,
+            "HD": 35
+          },
+          "observed_fill_cost_including_partial": 23840.91629275712,
+          "invalid_observed": 1,
+          "requests_observed": 81,
+          "mean_Y_complete_only": -4.879775027528445,
+          "mean_net_return_complete_only": 0.016521019161847117,
+          "mean_cost_complete_only": 5960.229073189279,
+          "max_position_weight_complete_only": 0.21277434409462995,
+          "mean_final_position_count_complete_only": 2.25
+        }
+      },
+      "rounds": [
+        {
+          "policy_step": 1,
+          "population": {
+            "planned": 8,
+            "observed_unique_expected": 8,
+            "terminal_complete": 8,
+            "incomplete_observed": 0,
+            "missing": 0,
+            "executed_step_actions_observed": {
+              "hold": 11,
+              "buy": 86,
+              "sell": 63,
+              "invalid": 20
+            },
+            "submitted_tool_calls_observed": {
+              "hold": 11,
+              "buy": 105,
+              "sell": 64
+            },
+            "fill_sides_observed": {
+              "buy": 85,
+              "sell": 63
+            },
+            "fill_symbols_observed": {
+              "HD": 49,
+              "GS": 44,
+              "MSFT": 55
+            },
+            "observed_fill_cost_including_partial": 43792.36696374461,
+            "invalid_observed": 20,
+            "requests_observed": 180,
+            "mean_Y_complete_only": 0.2828370157958477,
+            "mean_net_return_complete_only": 0.043081856315164035,
+            "mean_cost_complete_only": 5474.045870468076,
+            "max_position_weight_complete_only": 0.21450001769643237,
+            "mean_final_position_count_complete_only": 2.125
+          },
+          "sibling_Y": [
+            {
+              "episode_id": "formal-train-0001",
+              "observed": 4,
+              "all_four_complete": true,
+              "siblings": [
+                {
+                  "rollout_n": 0,
+                  "Y": -0.36758906348472387,
+                  "net_return": 0.038492518693834965
+                },
+                {
+                  "rollout_n": 1,
+                  "Y": 1.7179940683588475,
+                  "net_return": 0.059403084543690365
+                },
+                {
+                  "rollout_n": 2,
+                  "Y": -0.6707372305383777,
+                  "net_return": 0.03527702181515213
+                },
+                {
+                  "rollout_n": 3,
+                  "Y": 0.04813416921980582,
+                  "net_return": 0.042690221443433485
+                }
+              ],
+              "Y_range_all_four_complete": 2.388731298897225
+            },
+            {
+              "episode_id": "formal-train-0005",
+              "observed": 4,
+              "all_four_complete": true,
+              "siblings": [
+                {
+                  "rollout_n": 0,
+                  "Y": -1.0481528284944521,
+                  "net_return": 0.030458126293089638
+                },
+                {
+                  "rollout_n": 1,
+                  "Y": 1.981101320489528,
+                  "net_return": 0.05540635660656723
+                },
+                {
+                  "rollout_n": 2,
+                  "Y": 1.3092908339492708,
+                  "net_return": 0.049772735278642344
+                },
+                {
+                  "rollout_n": 3,
+                  "Y": -0.7073451431331167,
+                  "net_return": 0.033154785846902124
+                }
+              ],
+              "Y_range_all_four_complete": 3.02925414898398
+            }
+          ],
+          "advantage_diagnostics_as_recorded": [
+            {
+              "source": "m2/artifacts/sibling_diagnostics/advantage-748070.jsonl:1",
+              "action_diversity_rate": 0.525,
+              "action_family_histogram": {
+                "abstain": 0,
+                "buy": 86,
+                "hold": 11,
+                "sell": 63
+              },
+              "advancing_row_count": 160,
+              "advancing_steps": {
+                "corr_U_S": 0.37267379864740313,
+                "exact_nonzero_S_count": 84,
+                "mean_abs_S": 0.3209931177319959,
+                "nonzero_S_count": 84,
+                "nonzero_S_rate": 0.525,
+                "row_count": 160,
+                "std_S": 0.5623107501423559,
+                "std_U": 0.7022500218557669
+              },
+              "all_real_steps": {
+                "corr_U_S": 0.3639805689036523,
+                "exact_nonzero_S_count": 84,
+                "mean_abs_S": 0.2853272157617741,
+                "nonzero_S_count": 84,
+                "nonzero_S_rate": 0.4666666666666667,
+                "row_count": 180,
+                "std_S": 0.5299665182656057,
+                "std_U": 0.6776640837595648
+              },
+              "arm": "M2",
+              "diagnostic_atol": 1e-08,
+              "diagnostic_rtol": 1e-06,
+              "episode_group_count": 2,
+              "episode_ids": [
+                "formal-train-0001",
+                "formal-train-0005"
+              ],
+              "eta": 1.0,
+              "invalid_step_count": 20,
+              "padding_row_count": 0,
+              "phase": "advantage_pre_update",
+              "pid": 748070,
+              "policy_step": 1,
+              "pooling_changed_row_count": 67,
+              "pooling_changed_row_rate": 0.41875,
+              "pooling_opportunity_rate": 0.525,
+              "real_step_count": 180,
+              "response_tokens": 3741,
+              "run_seed": 42,
+              "schema_version": 1,
+              "session_group_count": 40,
+              "sibling_group_uids": [
+                "1e48da56-91c1-4d1f-8a48-807e6bc324b5",
+                "8faf8f78-84a9-4d2d-88df-30788ad5a208"
+              ],
+              "trajectory_count": 8,
+              "whitening_correction": 1,
+              "whitening_epsilon": 1e-08,
+              "whitening_mean": 0.2541082799434662,
+              "whitening_scope": "logical_rollout_batch_real_step_rows",
+              "whitening_std": 1.0007660388946533
+            }
+          ],
+          "actor_critic_metrics_as_logged": [
+            {
+              "source_line": 1001,
+              "policy_step": 1,
+              "metrics": {
+                "actor/entropy": 0.04193781316280365,
+                "critic/vf_loss": 0.2606241783949246,
+                "critic/vf_clipfrac": 0.0,
+                "critic/vpred_mean": -0.13872818417019314,
+                "critic/grad_norm": 130.1425018310547,
+                "critic/lr": 1e-05,
+                "actor/pg_loss": 2.4084329197648913e-08,
+                "actor/kl_loss": 0.0017574857027369273,
+                "actor/pg_clipfrac": 0.0,
+                "actor/ppo_kl": 0.0,
+                "actor/pg_clipfrac_lower": 0.0,
+                "actor/kl_coef": 0.0010000000000000002,
+                "actor/grad_norm": 4.447980880737305,
+                "actor/lr": 1e-06,
+                "critic/score/mean": 0.012570532038807869,
+                "critic/score/max": 0.09005005657672882,
+                "critic/score/min": -0.04991203919053078,
+                "critic/rewards/mean": 0.012570532038807869,
+                "critic/rewards/max": 0.09005005657672882,
+                "critic/rewards/min": -0.04991203919053078,
+                "critic/advantages/mean": 0.002948211273178458,
+                "critic/advantages/max": 2.906095504760742,
+                "critic/advantages/min": -2.2146480083465576,
+                "critic/returns/mean": 0.11702127754688263,
+                "critic/returns/max": 1.981101393699646,
+                "critic/returns/min": -1.0481526851654053,
+                "critic/values/mean": -1.2890625,
+                "critic/values/max": 4.3125,
+                "critic/values/min": -8.3125,
+                "critic/vf_explained_var": -21.384912490844727,
+                "critic/score/trajectory/mean": 0.28283703327178955,
+                "critic/score/trajectory/max": 1.981101632118225,
+                "critic/score/trajectory/min": -1.0481528043746948,
+                "critic/rewards/trajectory/mean": 0.28283703327178955,
+                "critic/rewards/trajectory/max": 1.981101632118225,
+                "critic/rewards/trajectory/min": -1.0481528043746948
+              }
+            }
+          ]
+        },
+        {
+          "policy_step": 2,
+          "population": {
+            "planned": 8,
+            "observed_unique_expected": 8,
+            "terminal_complete": 8,
+            "incomplete_observed": 0,
+            "missing": 0,
+            "executed_step_actions_observed": {
+              "buy": 83,
+              "sell": 63,
+              "hold": 14,
+              "invalid": 22
+            },
+            "submitted_tool_calls_observed": {
+              "buy": 103,
+              "sell": 65,
+              "hold": 14
+            },
+            "fill_sides_observed": {
+              "buy": 82,
+              "sell": 63
+            },
+            "fill_symbols_observed": {
+              "MSFT": 46,
+              "HD": 58,
+              "GS": 41
+            },
+            "observed_fill_cost_including_partial": 42284.810367405225,
+            "invalid_observed": 22,
+            "requests_observed": 182,
+            "mean_Y_complete_only": 3.5035252709816875,
+            "mean_net_return_complete_only": 0.0364367802535617,
+            "mean_cost_complete_only": 5285.601295925653,
+            "max_position_weight_complete_only": 0.21469992239527874,
+            "mean_final_position_count_complete_only": 1.5
+          },
+          "sibling_Y": [
+            {
+              "episode_id": "formal-train-0009",
+              "observed": 4,
+              "all_four_complete": true,
+              "siblings": [
+                {
+                  "rollout_n": 0,
+                  "Y": 2.9716569465353992,
+                  "net_return": 0.03235571286881522
+                },
+                {
+                  "rollout_n": 1,
+                  "Y": 4.763634603631005,
+                  "net_return": 0.04748683620227867
+                },
+                {
+                  "rollout_n": 2,
+                  "Y": 4.3296350125469605,
+                  "net_return": 0.04378679770035743
+                },
+                {
+                  "rollout_n": 3,
+                  "Y": 2.113222066855196,
+                  "net_return": 0.02500037572307523
+                }
+              ],
+              "Y_range_all_four_complete": 2.6504125367758093
+            },
+            {
+              "episode_id": "formal-train-0013",
+              "observed": 4,
+              "all_four_complete": true,
+              "siblings": [
+                {
+                  "rollout_n": 0,
+                  "Y": 4.2469190447817855,
+                  "net_return": 0.04094644134349901
+                },
+                {
+                  "rollout_n": 1,
+                  "Y": 0.26197886698072276,
+                  "net_return": 0.014438239668035369
+                },
+                {
+                  "rollout_n": 2,
+                  "Y": 4.349719511417126,
+                  "net_return": 0.04161135693778206
+                },
+                {
+                  "rollout_n": 3,
+                  "Y": 4.991436115105307,
+                  "net_return": 0.04586848158465062
+                }
+              ],
+              "Y_range_all_four_complete": 4.729457248124584
+            }
+          ],
+          "advantage_diagnostics_as_recorded": [
+            {
+              "source": "m2/artifacts/sibling_diagnostics/advantage-748070.jsonl:2",
+              "action_diversity_rate": 0.6,
+              "action_family_histogram": {
+                "abstain": 0,
+                "buy": 83,
+                "hold": 14,
+                "sell": 63
+              },
+              "advancing_row_count": 160,
+              "advancing_steps": {
+                "corr_U_S": 0.32227850508668676,
+                "exact_nonzero_S_count": 96,
+                "mean_abs_S": 0.5302780513651669,
+                "nonzero_S_count": 96,
+                "nonzero_S_rate": 0.6,
+                "row_count": 160,
+                "std_S": 0.8599839840793436,
+                "std_U": 1.4261495164452143
+              },
+              "all_real_steps": {
+                "corr_U_S": 0.30656528502077457,
+                "exact_nonzero_S_count": 96,
+                "mean_abs_S": 0.4661785066946522,
+                "nonzero_S_count": 96,
+                "nonzero_S_rate": 0.5274725274725275,
+                "row_count": 182,
+                "std_S": 0.8060270892134321,
+                "std_U": 1.4051823935075123
+              },
+              "arm": "M2",
+              "diagnostic_atol": 1e-08,
+              "diagnostic_rtol": 1e-06,
+              "episode_group_count": 2,
+              "episode_ids": [
+                "formal-train-0009",
+                "formal-train-0013"
+              ],
+              "eta": 1.0,
+              "invalid_step_count": 22,
+              "padding_row_count": 0,
+              "phase": "advantage_pre_update",
+              "pid": 748070,
+              "policy_step": 2,
+              "pooling_changed_row_count": 70,
+              "pooling_changed_row_rate": 0.4375,
+              "pooling_opportunity_rate": 0.6,
+              "real_step_count": 182,
+              "response_tokens": 3752,
+              "run_seed": 42,
+              "schema_version": 1,
+              "session_group_count": 40,
+              "sibling_group_uids": [
+                "640f7fc6-5c09-48e9-82f7-6e64fd9ca64a",
+                "e69986d9-882f-4ff2-b39e-2495f24536d6"
+              ],
+              "trajectory_count": 8,
+              "whitening_correction": 1,
+              "whitening_epsilon": 1e-08,
+              "whitening_mean": -9.334052085876465,
+              "whitening_scope": "logical_rollout_batch_real_step_rows",
+              "whitening_std": 1.821718454360962
+            }
+          ],
+          "actor_critic_metrics_as_logged": [
+            {
+              "source_line": 1016,
+              "policy_step": 2,
+              "metrics": {
+                "actor/entropy": 0.046763282269239426,
+                "critic/vf_loss": 44.54411210864782,
+                "critic/vf_clipfrac": 0.0,
+                "critic/vpred_mean": 11.124313186813186,
+                "critic/grad_norm": 5063.35302734375,
+                "critic/lr": 1e-05,
+                "actor/pg_loss": 1.494372554589063e-07,
+                "actor/kl_loss": 0.006563261006724143,
+                "actor/pg_clipfrac": 0.0,
+                "actor/ppo_kl": 0.0,
+                "actor/pg_clipfrac_lower": 0.0,
+                "actor/kl_coef": 0.0010000000000000002,
+                "actor/grad_norm": 3.406148672103882,
+                "actor/lr": 1e-06,
+                "critic/score/mean": 0.1540011167526245,
+                "critic/score/max": 0.21748597919940948,
+                "critic/score/min": 0.010076110251247883,
+                "critic/rewards/mean": 0.1540011167526245,
+                "critic/rewards/max": 0.21748597919940948,
+                "critic/rewards/min": 0.010076110251247883,
+                "critic/advantages/mean": -0.0005998376291245222,
+                "critic/advantages/max": 2.053708553314209,
+                "critic/advantages/min": -2.792008399963379,
+                "critic/returns/mean": 1.8004539012908936,
+                "critic/returns/max": 4.991438865661621,
+                "critic/returns/min": 0.010076522827148438,
+                "critic/values/mean": 0.267578125,
+                "critic/values/max": 11.5,
+                "critic/values/min": -7.9375,
+                "critic/vf_explained_var": -8.75620174407959,
+                "critic/score/trajectory/mean": 3.503525495529175,
+                "critic/score/trajectory/max": 4.9914374351501465,
+                "critic/score/trajectory/min": 0.2619788348674774,
+                "critic/rewards/trajectory/mean": 3.503525495529175,
+                "critic/rewards/trajectory/max": 4.9914374351501465,
+                "critic/rewards/trajectory/min": 0.2619788348674774
+              }
+            }
+          ]
+        }
+      ],
+      "training_metrics_as_logged": [
+        {
+          "source_line": 1001,
+          "policy_step": 1,
+          "metrics": {
+            "actor/entropy": 0.04193781316280365,
+            "critic/vf_loss": 0.2606241783949246,
+            "critic/vf_clipfrac": 0.0,
+            "critic/vpred_mean": -0.13872818417019314,
+            "critic/grad_norm": 130.1425018310547,
+            "critic/lr": 1e-05,
+            "actor/pg_loss": 2.4084329197648913e-08,
+            "actor/kl_loss": 0.0017574857027369273,
+            "actor/pg_clipfrac": 0.0,
+            "actor/ppo_kl": 0.0,
+            "actor/pg_clipfrac_lower": 0.0,
+            "actor/kl_coef": 0.0010000000000000002,
+            "actor/grad_norm": 4.447980880737305,
+            "actor/lr": 1e-06,
+            "critic/score/mean": 0.012570532038807869,
+            "critic/score/max": 0.09005005657672882,
+            "critic/score/min": -0.04991203919053078,
+            "critic/rewards/mean": 0.012570532038807869,
+            "critic/rewards/max": 0.09005005657672882,
+            "critic/rewards/min": -0.04991203919053078,
+            "critic/advantages/mean": 0.002948211273178458,
+            "critic/advantages/max": 2.906095504760742,
+            "critic/advantages/min": -2.2146480083465576,
+            "critic/returns/mean": 0.11702127754688263,
+            "critic/returns/max": 1.981101393699646,
+            "critic/returns/min": -1.0481526851654053,
+            "critic/values/mean": -1.2890625,
+            "critic/values/max": 4.3125,
+            "critic/values/min": -8.3125,
+            "critic/vf_explained_var": -21.384912490844727,
+            "critic/score/trajectory/mean": 0.28283703327178955,
+            "critic/score/trajectory/max": 1.981101632118225,
+            "critic/score/trajectory/min": -1.0481528043746948,
+            "critic/rewards/trajectory/mean": 0.28283703327178955,
+            "critic/rewards/trajectory/max": 1.981101632118225,
+            "critic/rewards/trajectory/min": -1.0481528043746948
+          }
+        },
+        {
+          "source_line": 1016,
+          "policy_step": 2,
+          "metrics": {
+            "actor/entropy": 0.046763282269239426,
+            "critic/vf_loss": 44.54411210864782,
+            "critic/vf_clipfrac": 0.0,
+            "critic/vpred_mean": 11.124313186813186,
+            "critic/grad_norm": 5063.35302734375,
+            "critic/lr": 1e-05,
+            "actor/pg_loss": 1.494372554589063e-07,
+            "actor/kl_loss": 0.006563261006724143,
+            "actor/pg_clipfrac": 0.0,
+            "actor/ppo_kl": 0.0,
+            "actor/pg_clipfrac_lower": 0.0,
+            "actor/kl_coef": 0.0010000000000000002,
+            "actor/grad_norm": 3.406148672103882,
+            "actor/lr": 1e-06,
+            "critic/score/mean": 0.1540011167526245,
+            "critic/score/max": 0.21748597919940948,
+            "critic/score/min": 0.010076110251247883,
+            "critic/rewards/mean": 0.1540011167526245,
+            "critic/rewards/max": 0.21748597919940948,
+            "critic/rewards/min": 0.010076110251247883,
+            "critic/advantages/mean": -0.0005998376291245222,
+            "critic/advantages/max": 2.053708553314209,
+            "critic/advantages/min": -2.792008399963379,
+            "critic/returns/mean": 1.8004539012908936,
+            "critic/returns/max": 4.991438865661621,
+            "critic/returns/min": 0.010076522827148438,
+            "critic/values/mean": 0.267578125,
+            "critic/values/max": 11.5,
+            "critic/values/min": -7.9375,
+            "critic/vf_explained_var": -8.75620174407959,
+            "critic/score/trajectory/mean": 3.503525495529175,
+            "critic/score/trajectory/max": 4.9914374351501465,
+            "critic/score/trajectory/min": 0.2619788348674774,
+            "critic/rewards/trajectory/mean": 3.503525495529175,
+            "critic/rewards/trajectory/max": 4.9914374351501465,
+            "critic/rewards/trajectory/min": 0.2619788348674774
+          }
+        }
+      ]
+    }
+  }
+}

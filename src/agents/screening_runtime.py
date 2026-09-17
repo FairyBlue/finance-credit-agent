@@ -2,8 +2,9 @@
 
 The driver holds the complete logical rollout batch before PPO minibatching.
 The hook exposes step GAE before whitening, adds an actor-only sibling residual,
-and whitens once over all sample_mask=true step rows. Critic returns retain the
-unmodified reward/GAE definition. No upstream files or legacy runs are changed.
+and whitens once over all sample_mask=true step rows. An explicit common-validity
+experiment can penalize environment-rejected requests before both GAE and critic
+returns; the sibling residual always uses the original financial outcome.
 """
 
 from __future__ import annotations
@@ -31,6 +32,9 @@ from src.rewards.sibling_credit import (
 SCREENING_ARM_ENV = "FINANCE_SCREENING_ARM"
 SCREENING_DIAGNOSTICS_ENV = "FINANCE_SCREENING_DIAGNOSTICS_DIR"
 SCREENING_SEED_ENV = "FINANCE_SCREENING_RUN_SEED"
+SCREENING_ETA_ENV = "FINANCE_SCREENING_RESIDUAL_ETA"
+COMMON_INVALID_PENALTY_ENV = "FINANCE_COMMON_INVALID_PENALTY"
+RESIDUAL_ETAS = frozenset({0.0, 0.25, 1.0})
 SCREENING_ARMS = frozenset({"A2", "M1", "M2-plain", "M2"})
 _TRAINER_MODULE = "agent_r1.trainer.ppo.ray_trainer"
 _configured_settings: ScreeningRuntimeSettings | None = None
@@ -41,6 +45,24 @@ class ScreeningRuntimeSettings:
     arm: str
     diagnostics_dir: Path
     run_seed: int
+    eta: float = 1.0
+    invalid_action_penalty: float = 0.0
+
+
+def validate_residual_eta(value: Any) -> float:
+    """Explicit bounded strength ablation; historical settings default to 1."""
+    if type(value) not in (int, float) or value not in RESIDUAL_ETAS:
+        raise ValueError("registered screening eta values are 0, 0.25, and 1")
+    return float(value)
+
+
+def validate_invalid_action_penalty(value: Any, arm: str) -> float:
+    """The bounded common-target experiment is off for all historical runs."""
+    if type(value) not in (int, float) or value not in (0, 0.05):
+        raise ValueError("common invalid-action penalty must be 0 or the fixed candidate 0.05")
+    if value and arm not in {"M1", "M2"}:
+        raise ValueError("common invalid-action penalty is registered only for M1 and M2")
+    return float(value)
 
 
 def _python_scalar(value: Any) -> Any:
@@ -209,6 +231,7 @@ def compute_screening_advantage(
     lam: float = 1.0,
     num_repeat: int = 4,
     eta: float = 1.0,
+    invalid_action_penalty: float = 0.0,
     diagnostics_dir: Path | None = None,
     run_seed: int | None = None,
 ) -> Any:
@@ -220,8 +243,8 @@ def compute_screening_advantage(
         raise ValueError(f"unsupported screening arm: {arm!r}")
     if gamma != 1.0 or lam != 1.0 or type(num_repeat) is not int or num_repeat != 4:
         raise ValueError("screening requires gamma=1, lambda=1, and rollout.n=4")
-    if not math.isfinite(eta) or eta not in (0.0, 1.0):
-        raise ValueError("screening eta must be 1 (0 is reserved for matched-null verification)")
+    eta = validate_residual_eta(eta)
+    invalid_action_penalty = validate_invalid_action_penalty(invalid_action_penalty, arm)
     if data.meta_info.get("validate", False):
         raise ValueError("evaluation rollouts must not enter the training advantage hook")
     if "finance_screening_diagnostics" in data.meta_info:
@@ -270,6 +293,18 @@ def compute_screening_advantage(
             (valid_rewards * valid_response).sum(dim=1),
             arm,
         )
+        financial_step_rewards = (valid_rewards * valid_response).sum(dim=1)
+        if invalid_action_penalty:
+            # One environment request is one trainer row. Charge exactly once,
+            # on its last real response token, independently of response length.
+            penalties = valid_rewards.new_tensor(
+                [invalid_action_penalty * row.invalid_action for row in rows]
+            )
+            valid_rewards = valid_rewards.clone()
+            token_positions = torch.arange(valid_response.shape[1], device=rewards.device)
+            last_tokens = (token_positions * valid_response).long().max(dim=1).values
+            valid_rewards[torch.arange(len(rows), device=rewards.device), last_tokens] -= penalties
+        training_step_rewards = (valid_rewards * valid_response).sum(dim=1)
         u, step_returns = unwhitened_step_gae(
             token_level_rewards=valid_rewards,
             values=valid_values,
@@ -316,6 +351,66 @@ def compute_screening_advantage(
             "episode_ids": sorted({row.episode_id for row in rows}),
             "sibling_group_uids": sorted({row.group_uid for row in rows}),
         }
+        if invalid_action_penalty:
+            reward_evidence = []
+            trajectories: dict[str, list[dict[str, Any]]] = defaultdict(list)
+            for position, row in enumerate(rows):
+                evidence = {
+                    "trajectory_uid": row.trajectory_uid,
+                    "step_index": row.step_index,
+                    "batch_row_index": indices[position],
+                    "episode_id": row.episode_id,
+                    "policy_step": row.policy_step,
+                    "rollout_id": row.rollout_id,
+                    "action": row.action,
+                    "invalid_action": row.invalid_action,
+                    "terminal_Y": row.terminal_score,
+                    "financial_step_reward": float(financial_step_rewards[position].item()),
+                    "invalid_penalty": invalid_action_penalty * row.invalid_action,
+                    "training_step_reward": float(training_step_rewards[position].item()),
+                    "unwhitened_U": float(u[position].item()),
+                    "sibling_residual": float(residual[position].item()),
+                    "final_actor_advantage": float(scalar_advantages[position].item()),
+                    "critic_return": float(step_returns[position].item()),
+                }
+                reward_evidence.append(evidence)
+                trajectories[row.trajectory_uid].append(evidence)
+            trajectory_evidence = []
+            for uid, steps in trajectories.items():
+                financial_sum = math.fsum(step["financial_step_reward"] for step in steps)
+                penalty_sum = math.fsum(step["invalid_penalty"] for step in steps)
+                training_sum = math.fsum(step["training_step_reward"] for step in steps)
+                target = steps[0]["terminal_Y"] - penalty_sum
+                if not math.isclose(training_sum, target, rel_tol=1e-6, abs_tol=1e-6):
+                    raise ValueError("common validity reward does not conserve Y minus penalties")
+                trajectory_evidence.append(
+                    {
+                        "trajectory_uid": uid,
+                        "step_count": len(steps),
+                        "terminal_Y": steps[0]["terminal_Y"],
+                        "invalid_count": sum(step["invalid_action"] for step in steps),
+                        "financial_reward_sum": financial_sum,
+                        "penalty_sum": penalty_sum,
+                        "training_reward_sum": training_sum,
+                        "expected_training_reward_sum": target,
+                    }
+                )
+            diagnostics["common_validity_penalty"] = {
+                "profile": "environment_rejection_v1",
+                "coefficient": invalid_action_penalty,
+                "invalid_source": "trading_invalid_action",
+                "sibling_residual_outcome": "original_financial_terminal_Y",
+                "invalid_count": sum(row.invalid_action for row in rows),
+                "financial_reward_sum": math.fsum(
+                    item["financial_reward_sum"] for item in trajectory_evidence
+                ),
+                "penalty_sum": math.fsum(item["penalty_sum"] for item in trajectory_evidence),
+                "training_reward_sum": math.fsum(
+                    item["training_reward_sum"] for item in trajectory_evidence
+                ),
+                "trajectories": trajectory_evidence,
+            }
+            diagnostics["reward_evidence"] = reward_evidence
     # Persist before returning anything to the optimizer; logging failure is fatal.
     if diagnostics_dir is not None:
         directory = Path(diagnostics_dir)
@@ -324,6 +419,18 @@ def compute_screening_advantage(
         directory.mkdir(parents=True, exist_ok=True)
         with (directory / f"advantage-{os.getpid()}.jsonl").open("a", encoding="utf-8") as handle:
             handle.write(json.dumps(diagnostics, sort_keys=True, allow_nan=False) + "\n")
+    if invalid_action_penalty:
+        training_rewards = rewards.clone()
+        training_rewards[valid_mask] = valid_rewards
+        data.batch["token_level_rewards"] = training_rewards
+        for field, evidence_field in (
+            ("finance_common_financial_step_reward", "financial_step_reward"),
+            ("finance_common_invalid_penalty", "invalid_penalty"),
+            ("finance_common_training_step_reward", "training_step_reward"),
+        ):
+            column = np.full(len(data), None, dtype=object)
+            column[indices] = [item[evidence_field] for item in reward_evidence]
+            data.non_tensor_batch[field] = column
     data.batch["advantages"] = advantages
     data.batch["returns"] = returns
     data.meta_info["finance_screening_diagnostics"] = diagnostics
@@ -379,12 +486,18 @@ def patch_trainer_module(module: ModuleType, settings: ScreeningRuntimeSettings)
             gamma=gamma,
             lam=lam,
             num_repeat=num_repeat,
+            eta=settings.eta,
+            invalid_action_penalty=settings.invalid_action_penalty,
             diagnostics_dir=settings.diagnostics_dir,
             run_seed=settings.run_seed,
         )
 
     screening_advantage._finance_screening_settings = settings  # type: ignore[attr-defined]
     module.compute_advantage = screening_advantage  # type: ignore[attr-defined]
+    if os.environ.get("FINANCE_LEARNING_GATE_DIR"):
+        from src.agents.learning_restart_gate import patch_trainer
+
+        patch_trainer(module.RayAgentTrainer)
     return True
 
 
@@ -432,7 +545,17 @@ def install_from_environment() -> None:
     seed_value = os.environ.get(SCREENING_SEED_ENV, "")
     if not seed_value.isascii() or not seed_value.isdigit():
         raise ValueError(f"{SCREENING_SEED_ENV} must be a non-negative integer")
-    settings = ScreeningRuntimeSettings(arm, directory.resolve(), int(seed_value))
+    try:
+        eta = validate_residual_eta(json.loads(os.environ.get(SCREENING_ETA_ENV, "1")))
+    except (json.JSONDecodeError, ValueError) as error:
+        raise ValueError(f"{SCREENING_ETA_ENV}: {error}") from error
+    try:
+        penalty = validate_invalid_action_penalty(
+            json.loads(os.environ.get(COMMON_INVALID_PENALTY_ENV, "0")), arm
+        )
+    except (json.JSONDecodeError, ValueError) as error:
+        raise ValueError(f"{COMMON_INVALID_PENALTY_ENV}: {error}") from error
+    settings = ScreeningRuntimeSettings(arm, directory.resolve(), int(seed_value), eta, penalty)
     global _configured_settings
     if _configured_settings is not None and _configured_settings != settings:
         raise RuntimeError("screening runtime cannot change settings after installation")

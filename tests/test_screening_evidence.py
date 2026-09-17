@@ -163,6 +163,25 @@ def _case(tmp_path, monkeypatch, *, stage="screening", arm="M2", seed=42) -> Evi
     return EvidenceCase(tmp_path, options, records, diagnostics, updates, checkpoint_calls)
 
 
+def test_periodic_train_eval_and_eta_are_explicit_and_complete(tmp_path, monkeypatch):
+    case = _case(tmp_path, monkeypatch, stage="pilot")
+    earlier = copy.deepcopy([r for r in case.records if r["identity"]["validate"]])
+    for record in earlier:
+        record["identity"]["step"] = 1
+    case.records.extend(earlier)
+    case.options.update(expected_eval_steps=[1, 2], expected_eta=0.25)
+    for row in case.diagnostics:
+        row["eta"] = 0.25
+    assert case.validate()["trajectories"] == {"train": 16, "eval": 4}
+    case.diagnostics[0]["eta"] = 1.0
+    with pytest.raises(RuntimeError, match="advantage hook contract"):
+        case.validate()
+    case.diagnostics[0]["eta"] = 0.25
+    case.records.pop()
+    with pytest.raises(RuntimeError, match="trajectory count mismatch"):
+        case.validate()
+
+
 @pytest.mark.parametrize("stage", ["wiring", "pilot", "screening", "zero-shot"])
 @pytest.mark.parametrize("arm,seed", [("A2", 42), ("M1", 43), ("M2-plain", 42), ("M2", 43)])
 def test_accepts_only_complete_registered_stage_grid(tmp_path, monkeypatch, stage, arm, seed):
