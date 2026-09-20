@@ -1,8 +1,11 @@
 # finance-credit-agent
 
-**Current checkpoint — 2026-09-17 (SGT):** common Qwen3-4B SFT initialization and several
-Train-only M1/M2 learning comparisons are complete. The next four-update common invalid-action
-penalty comparison is implemented and queued for the shared H100; it has no training result yet.
+**Current checkpoint — 2026-09-18 (SGT):** common Qwen3-4B SFT initialization and several
+Train-only M1/M2 learning comparisons are complete; a stable M2 performance advantage has not been
+established. The four-update common invalid-action penalty comparison is implemented, but its GPU
+queue ended with `WAIT_TIMEOUT` before training started: **0/164 trajectories**, no new training
+result. See the [local run status](runs/m2-common-validity-penalty-20260917/LIVE_STATUS.md);
+the dated handoff below retains its earlier backup-time snapshot.
 
 **New collaborator:** start with the
 [current handoff](docs/2026-09-17_PROJECT_BACKUP_HANDOFF.md) and [document index](docs/README.md).
@@ -15,39 +18,83 @@ For day-to-day work between the two maintainers, see
 when a pull request changes and when a change reaches `main`.
 
 Research scaffold for testing whether finance-native **step-level credit assignment** improves a
-tool-using trading agent over outcome-only GRPO and generic StepPO. The project composes with
-[Agent-R1](https://github.com/AgentR1/Agent-R1) as a locked submodule, keeps every local change under
-`src/`, and treats look-ahead leakage prevention as the first executable requirement.
+tool-using trading agent over outcome-only GRPO and terminal-outcome StepPO. The project composes
+with [Agent-R1](https://github.com/AgentR1/Agent-R1) as a locked submodule, keeps local extensions
+outside that upstream submodule, and treats look-ahead leakage prevention as the first executable
+requirement.
 
-The initial scaffold distinguished the configurations below. Current method definitions and the
-research ladder are recorded in [`RESEARCH_BRIEF.md`](RESEARCH_BRIEF.md) and
-[`EVAL_PROTOCOL.md`](EVAL_PROTOCOL.md); this overview is not a completed formal comparison.
+The proposed formal comparison ladder below comes from [`RESEARCH_BRIEF.md`](RESEARCH_BRIEF.md)
+and [`EVAL_PROTOCOL.md`](EVAL_PROTOCOL.md); it is not a completed formal comparison. Those documents
+retain historical method proposals, including state/regime conditioning. The implemented M2
+screening mechanism is described separately below and in the
+[M2 screening specification](M2_V1_PREREGISTRATION.md), which is not a final preregistration.
 
 | Configuration | Upstream optimizer | Reward/credit signal and role |
 |---|---|---|
 | A1 | GRPO (`adv_estimator=grpo`) | Original episode return, emitted only at trajectory end |
-| A2 | Agent-R1 StepPO (`adv_estimator=gae`, critic + GSPO loss) | Generic per-environment-step reward |
-| A3-M1 | The same StepPO setup as A3-main | `A_fin` plus M1; required formal ablation, not an eligible main method |
-| A3-M2 or A3-M3 | The same StepPO setup as A2/A3-M1 | `A_fin` plus the preregistered finance-native allocation; A3 main method |
+| A2 | Agent-R1 StepPO (`adv_estimator=gae`, critic + GSPO loss) | Terminal-only net return, matching A1's external reward timeline |
+| A3-M0 | The same StepPO setup as A2 | Terminal-only `A_fin`; terminal-objective control |
+| A3-M1 | The same StepPO setup as A2 | Conserved `A_fin / T` immediate rewards; reward-timing control and M2 matched baseline |
+| A3-M2 | The same StepPO setup as A2 | M1 base rewards plus an actor-only `eta * S` residual after GAE; candidate main method |
+
+The current screening runtime implements terminal-only A2; the legacy dense-reward A2 entrypoint
+is a separate supplementary baseline. M0 belongs to the proposed formal ladder, not the current
+screening arm set. M3 remains a future counterfactual route requiring its own preregistration and
+schedule-matched sham control; it is not enabled by the current experiments.
 
 M1 is frozen as **uniform immediate-step reward v1**. For a completed trajectory with `T` realized
 Agent-R1 interaction steps, the terminal `A_fin` is retroactively assigned as immediate rewards
 `r_t = A_fin / T`; the final step absorbs floating-point residual so the rewards sum exactly to
 `A_fin`. These values are StepPO inputs, not direct or uniformly broadcast optimizer advantages;
 StepPO subsequently computes advantages with step-level GAE. A3-M1 must receive a formal,
-budget-matched run as the required reward-shaping ablation, but it cannot serve as A3-main. M2
-state×regime grouping now has a Train screening implementation in
-`src/rewards/sibling_credit.py` and `src/agents/screening_runtime.py`.
-The legacy allocation facade and the M3 counterfactual route remain separate from that runtime;
-M3 is not enabled by the current experiments. Formal A1 and final OOS comparisons remain pending.
+budget-matched run as the required reward-shaping ablation, but it cannot serve as A3-main.
 
-The A3 runtime fails closed on empty or truncated trajectories and records one JSONL credit record
-per completed trajectory. The launcher validates finite `A_fin`, the actual rewritten step rewards,
-exact conservation, non-zero Train/Valid signals, and one-to-one trajectory identity agreement with
-the deterministic rollout-seed evidence. This evidence contract is shared by M1 and future M2/M3;
-mechanism-specific checks remain separate.
+**Implemented M2: session-aligned sibling action-family credit.**
+[`src/rewards/sibling_credit.py`](src/rewards/sibling_credit.py) aligns four sibling trajectories
+from the same episode occurrence and policy snapshot by decision session. Within each session,
+it pools terminal financial scores by the advancing action family (`buy`, `sell`, `hold`, or
+`abstain`):
 
-The A3-M1 implementation and its single-H100 wiring smoke have now passed. The accepted run executed
+```text
+S_t = mean(Y of siblings choosing action family a_t) - mean(Y of all four siblings)
+U_t = StepPO-GAE(M1 base rewards, critic values)
+A_t = Whiten_step(U_t + eta * S_t)
+```
+
+Current screening uses terminal score `Y` from the separately calibrated
+[`benchmark_scale_v2` scorer](src/rewards/screening.py), with conserved `Y / T` base rewards for
+M1/M2. This scorer has a different definition from the formal ladder's original `A_fin`.
+[`src/agents/screening_runtime.py`](src/agents/screening_runtime.py) adds the residual after GAE
+and whitens once over real steps in the logical rollout batch before the GSPO actor update.
+The residual does not enter rewards or critic returns and is not passed through a second GAE.
+It is zero when all four siblings choose the same action family, and on `retrieve`, `compute`,
+and invalid steps. These steps still retain their base GAE signal.
+
+Grouping does not match portfolio state or market regime, and action families do not distinguish
+stock symbols or target weights. Siblings may reach different portfolio states on the same session;
+this is a relative outcome signal, not an identified causal or counterfactual contribution. The
+legacy state/regime allocation facade and M3 information-credit interface remain unimplemented
+research routes, separate from the working M2 screening runtime.
+
+The latest completed [Train learning comparison](docs/2026-09-15_M2_TRAIN_COVERAGE_REPORT.md)
+started M1/M2 from the same Qwen3-4B SFT initialization, used `eta=0.25` for M2, and completed
+eight actor/critic updates per arm: **128 training + 180 evaluation trajectories, all complete**.
+Evaluation used four fixed Train windows and one training seed; final M2 greedy net return exceeded
+M1 and SFT, while its sampled net return remained below SFT. These results do not establish stable
+M2 superiority or replace formal Valid/OOS evaluation. The subsequent
+[common invalid-action penalty experiment](docs/2026-09-17_M2_COMMON_VALIDITY_PENALTY_PLAN.md)
+adds the same reward penalty to both arms' GAE and critic targets while retaining the original
+financial `Y` for M2's residual; it has no GPU training result.
+
+The legacy A3-M1 runtime fails closed on empty or truncated trajectories and records one JSONL
+credit record per completed trajectory. The launcher validates finite `A_fin`, the actual rewritten
+step rewards, exact conservation, non-zero Train/Valid signals, and one-to-one trajectory identity
+agreement with the deterministic rollout-seed evidence. Current M2 screening additionally validates
+complete four-sibling/session groups, records GAE/residual diagnostics, and validates actual
+actor-loss advantages through separate runtime/probe hooks; the legacy reward-allocation facade
+does not implement that mechanism.
+
+The earlier A3-M1 single-H100 wiring smoke passed on 2026-09-02. The accepted run executed
 one real trainer step with a critic update, an actor update, and post-update validation; all three
 Train/Valid trajectories conserved `A_fin` exactly and Final OOS remained closed. See
 [`docs/2026-09-02_H100_A3_M1_WIRING_SMOKE_RESULTS.md`](docs/2026-09-02_H100_A3_M1_WIRING_SMOKE_RESULTS.md)
@@ -87,8 +134,10 @@ run from a clean GitHub checkout.
 configs/                  frozen assumptions, arm configs, and Agent-R1 flow recipes
 src/data/                 frozen daily-data adapters and mandatory as_of gate
 src/env/                  next-open ledger, BaseTool registrations, TradingEnv plugin
-src/rewards/              A_fin and M1/M2/M3 strategy interface
+src/rewards/              A_fin, screening scorer, M1 rewards, and legacy strategy interfaces
+src/rewards/sibling_credit.py session-aligned sibling action-family residuals for M2 screening
 src/agents/               three training entrypoints, hash capture, Agent-R1 flows
+src/agents/screening_runtime.py post-GAE M2 actor credit, shared penalty option, and diagnostics
 src/agents/credit_evidence.py A3 step-credit persistence and fail-closed trajectory summary
 src/evaluation/           shared metrics/baselines and three standard figures
 tests/                    leakage, accounting, reward, environment, and metric specifications
@@ -109,7 +158,9 @@ runs/                     ignored local preflight/training evidence, one directo
 third_party/agent-r1/     read-only locked submodule
 ```
 
-`RESEARCH_BRIEF.md` and `EVAL_PROTOCOL.md` are frozen inputs and are not generated by code.
+`RESEARCH_BRIEF.md` and `EVAL_PROTOCOL.md` are maintained research/protocol documents, not generated
+by code. The research brief remains labeled **DRAFT**; approved execution boundaries are recorded
+in dated protocol and screening amendments, rather than inferred from the proposed formal ladder.
 `EVAL_PROTOCOL.md` preserves the substantive v0.1 protocol and its dated amendments. V0.3 freezes
 the train-only reward rule, event-anchored regimes, T2 v2, and the narrow G1 exemption; v0.6 replaces
 the old full-OOS smoke with the Valid-derived shadow test and requires structured local and direct
@@ -309,11 +360,12 @@ The five-session tariff-crash metrics are descriptive only and must carry no sig
 
 ## Remaining required work
 
-1. **A3 scientific implementation:** A3-M1 implementation and wiring validation are complete.
-   Implement and preregister M2 or M3 as A3-main, retain A3-M1 as the required formal budget-matched
-   ablation, and freeze the M1 superiority statistic before any formal training. M1 cannot be
-   presented as the main method, and A3-main cannot support a credit-assignment claim unless it
-   passes that preregistered gate.
+1. **A3 scientific validation:** M1 and session-aligned M2 Train screening are implemented and
+   have completed learning comparisons. Resolve the remaining behavior/performance issues, then
+   freeze the selected main method, formal integration, budget-matched controls, and M1 superiority
+   statistic before formal training. M3 would require a separate implementation and preregistration.
+   M1 remains the required matched baseline; an A3-main credit-assignment claim still requires
+   passing its preregistered superiority gate.
 2. **Disabled modalities:** keep current fundamentals and news disabled unless a later protocol
    amendment defines and reviews their point-in-time fields.
 3. **Human line review:** use the offline checklist in `docs/EXPERIMENT_HANDOFF.md` for future-split
