@@ -1,0 +1,24 @@
+{
+  "at_SGT": "2026-10-04T16:01:34+08:00",
+  "status": "PASS",
+  "tests": {
+    "gpu_handoff": 33,
+    "screening_placement": 16,
+    "screening_placement_subtests": 2,
+    "low_memory_pilot": 18,
+    "low_memory_handoff": 5
+  },
+  "total_tests": 72,
+  "ruff": "PASS",
+  "diff_check": "PASS",
+  "source_sha256": {
+    "src/agents/gpu_handoff.py": "8c36830a8392c4ae3677681ba044283a5556a52f64bc556fe52f350f0693ebf8",
+    "src/agents/low_memory_pilot.py": "96b474cab9254ead7e980d9148decd9afc16197d718c328a5e102bf9ce4a2074",
+    "src/agents/screening_placement.py": "e345fcccb5a63a0a4db37ba70409079e30fc6f52500f3827e54858abe4f9d694",
+    "tests/test_gpu_handoff.py": "0ede039e3e4ec6286cb79c80a8868b99a9e30d4ad81911fb8ba858bc433c55b9",
+    "tests/test_low_memory_handoff.py": "0f785db739be3f9a6a9eefc6921c0fe0520260570fba8ea49545d9dc5115995e",
+    "tests/test_low_memory_pilot.py": "6fb8d773df9f86489837fabf89e3383dbdb6ab034ac04da58454da5c5e065205",
+    "tests/test_screening_placement.py": "76f03e87e36f484865cfe5d21aa2fc2925d814516570bc90f8da8e58d0ab52e6"
+  },
+  "training_started": false
+}

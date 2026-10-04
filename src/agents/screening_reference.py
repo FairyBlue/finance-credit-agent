@@ -22,7 +22,7 @@ from typing import Any
 
 PROFILE_ENV = "FINANCE_SCREENING_RESOURCE_PROFILE"
 PROFILE = "manual_ref"
-PROFILES = frozenset({"manual_ref", "pageable_adam_v1"})
+PROFILES = frozenset({"manual_ref", "pageable_adam_v1", "chunked_adam_disk_v1"})
 IDENTITY_ENV = "FINANCE_SCREENING_IDENTITY_SHA256"
 EVIDENCE_ENV = "FINANCE_SCREENING_PLACEMENT_DIR"
 MARKER = "_finance_manual_reference_profile"

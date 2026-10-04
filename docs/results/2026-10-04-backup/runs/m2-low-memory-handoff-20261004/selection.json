@@ -1,0 +1,86 @@
+{
+  "actor_learning_rate": 2e-07,
+  "actor_lr_and_date_coverage_changed_together": false,
+  "coldstart_fresh_dates_preserved": true,
+  "common_invalid_action_penalty": 0.05,
+  "coverage_full_training_episode_ids": [
+    "formal-train-0001",
+    "formal-train-0065",
+    "formal-train-0009",
+    "formal-train-0073",
+    "formal-train-0017",
+    "formal-train-0149",
+    "formal-train-0025",
+    "formal-train-0157",
+    "formal-train-0033",
+    "formal-train-0165",
+    "formal-train-0041",
+    "formal-train-0173",
+    "formal-train-0049",
+    "formal-train-0181",
+    "formal-train-0057",
+    "formal-train-0189"
+  ],
+  "coverage_reference_profile": "common_sft_train_coverage_v1",
+  "criterion": "first four windows of the preserved date-only coverage selection",
+  "critic_learning_rate": 1e-06,
+  "critic_lr_basis": "completed same-batch critic-fit comparison; unchanged from previous main run",
+  "eligible_indices": [
+    0,
+    8,
+    16,
+    24,
+    32,
+    40,
+    48,
+    56,
+    64,
+    72,
+    80,
+    88,
+    96,
+    104,
+    112,
+    120
+  ],
+  "eligible_start_count": 121,
+  "old_screen_dev_dates_preserved": true,
+  "same_as_coverage_first_two_rounds": true,
+  "source_sha256": {
+    "/home/tianming/projects/finance-credit-agent/artifacts/m2_screening/manifest.json": "6208c7b5ac8ecaa24022daeef464c3099a95d84538e1ccb4a86a86b045fc22d7",
+    "/home/tianming/projects/finance-credit-agent/artifacts/m2_screening/reward_calibration.json": "9538c46673ee25cbc984331e1bc91d484fa6527efae7071910bf92d90ec3a1bd",
+    "/home/tianming/projects/finance-credit-agent/configs/episode_manifest.reviewed.yaml": "4a8ff4f3ad8c9305c03aab17f44ebda5c4d493c22b6610a67a70ba238a5a54a3",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-training-tuning-20260914/prepared/dev.parquet": "458a8c6ea65acf7ca51866af6e067129f944b4a5e4e48dc2e12150f93e62c6fc",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-training-tuning-20260914/selection.json": "8c54e46caaff23c7f5689c883ca8e9f7adfa284d0bc638720163d77a7c248368"
+  },
+  "training_episode_ids": [
+    "formal-train-0001",
+    "formal-train-0065",
+    "formal-train-0009",
+    "formal-train-0073"
+  ],
+  "training_eval_dates_disjoint": true,
+  "unique_training_sessions": 58,
+  "windows": [
+    {
+      "episode_id": "formal-train-0001",
+      "first_session": "2023-01-03",
+      "last_session": "2023-02-01"
+    },
+    {
+      "episode_id": "formal-train-0065",
+      "first_session": "2023-04-05",
+      "last_session": "2023-05-04"
+    },
+    {
+      "episode_id": "formal-train-0009",
+      "first_session": "2023-01-13",
+      "last_session": "2023-02-13"
+    },
+    {
+      "episode_id": "formal-train-0073",
+      "first_session": "2023-04-18",
+      "last_session": "2023-05-16"
+    }
+  ]
+}

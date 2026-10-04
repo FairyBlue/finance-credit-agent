@@ -110,12 +110,13 @@ def admit_host_transfer(cgroup_root: Path, size: int, reserve: int) -> None:
 class Evidence:
     def __init__(self, directory: Path, identity: str):
         self.directory, self.identity = directory, identity
+        self.profile = os.environ.get(PROFILE_ENV, PROFILE)
 
     def __call__(self, event: str, **fields: Any) -> None:
         try:
             row = {
                 "schema_version": 1,
-                "profile": PROFILE,
+                "profile": self.profile,
                 "identity_sha256": self.identity,
                 "pid": os.getpid(),
                 "time_ns": time.time_ns(),
@@ -310,6 +311,8 @@ class TorchBackend:
             gpu_driver_total_bytes=total,
             gpu_allocated_bytes=self.torch.cuda.memory_allocated(self.gpu_device),
             gpu_reserved_bytes=self.torch.cuda.memory_reserved(self.gpu_device),
+            gpu_peak_allocated_bytes=self.torch.cuda.max_memory_allocated(self.gpu_device),
+            gpu_peak_reserved_bytes=self.torch.cuda.max_memory_reserved(self.gpu_device),
         )
         for filename in (
             "memory.current",
@@ -323,8 +326,9 @@ class TorchBackend:
 
 
 class WorkerRegistry:
-    def __init__(self, *, identity: str, backend: Any, emit: Any):
+    def __init__(self, *, identity: str, backend: Any, emit: Any, profile: str = PROFILE):
         self.identity, self.backend, self.emit = identity, backend, emit
+        self.profile = profile
         self.pid = os.getpid()
         self.workers: dict[str, Any] = {}
         self.reference: Any = None
@@ -353,7 +357,7 @@ class WorkerRegistry:
 
     def check_identity(self) -> None:
         if (
-            os.environ.get(PROFILE_ENV) != PROFILE
+            os.environ.get(PROFILE_ENV) != self.profile
             or _identity() != self.identity
             or os.getpid() != self.pid
             or self.coordinator.failed
@@ -456,7 +460,7 @@ def patch_worker_classes(
         ),
     )
     if actor_class.__dict__.get("_finance_manual_reference_profile") != {
-        "profile": PROFILE,
+        "profile": registry.profile,
         "identity": registry.identity,
     }:
         raise ExchangeError("matching reference adapter must install before placement wrappers")
@@ -506,6 +510,15 @@ def patch_worker_classes(
                         raise ExchangeError("worker init_model already completed")
                     if registered_role is not None:
                         registry.backend.validate_worker(worker, registered_role)
+                    if os.environ.get("FINANCE_GPU_HANDOFF_CONFIG"):
+                        from src.agents.gpu_handoff import worker_handoff_from_environment
+
+                        # Critic initializes first in the pinned colocated worker.
+                        # Release before any model construction, not during vLLM's
+                        # later free-memory snapshot or profiling interval.
+                        worker_handoff_from_environment(
+                            registered_role or "reference", registry.identity
+                        )
                     result = original(worker, *args, **kwargs)
                     registry.register(worker, registered_role)
                     return result
@@ -536,7 +549,8 @@ def install_from_environment(
 ) -> bool:
     """Install only in explicitly configured screening Ray workers."""
     global _REGISTRY
-    if os.environ.get(PROFILE_ENV) != PROFILE:
+    profile = os.environ.get(PROFILE_ENV)
+    if profile not in {PROFILE, "chunked_adam_disk_v1"}:
         return False
     identity = _identity()
     directory = os.environ.get(DIRECTORY_ENV, "")
@@ -566,10 +580,26 @@ def install_from_environment(
             if Path(original.__code__.co_filename).resolve() != worker_file.resolve():
                 raise ExchangeError(f"unexpected in-memory worker implementation: {name}")
     emit = Evidence(Path(directory), identity)
+    chunked_options = None
+    if profile == "chunked_adam_disk_v1":
+        from src.agents.chunked_placement import environment_options
+
+        chunked_options = environment_options()
+        gpu_reserve_bytes = chunked_options["gpu_reserve_bytes"]
+        host_reserve_bytes = chunked_options["host_reserve_bytes"]
     backend = TorchBackend(
         gpu_reserve_bytes=gpu_reserve_bytes, host_reserve_bytes=host_reserve_bytes
     )
-    registry = WorkerRegistry(identity=identity, backend=backend, emit=emit)
+    if chunked_options is not None:
+        from src.agents.chunked_placement import ChunkedWorkerRegistry
+
+        registry = ChunkedWorkerRegistry(
+            identity=identity, backend=backend, emit=emit, directory=Path(directory),
+            chunk_bytes=chunked_options["chunk_bytes"],
+            disk_reserve_bytes=chunked_options["disk_reserve_bytes"],
+        )
+    else:
+        registry = WorkerRegistry(identity=identity, backend=backend, emit=emit)
     installed = patch_worker_classes(workers.ActorRolloutRefWorker, workers.CriticWorker, registry)
     _REGISTRY = registry
     emit(

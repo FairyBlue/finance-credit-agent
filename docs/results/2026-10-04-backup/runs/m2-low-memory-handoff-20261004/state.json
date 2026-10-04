@@ -1,0 +1,612 @@
+{
+  "automatic_retry": false,
+  "cells": [
+    {
+      "actor_update": {
+        "arm": "M1",
+        "execution_identity_sha256": "ba38edce6fc6ffda5cc279c3b6a9b9eefda38654087d9ecb4d2077e7d45fee0d",
+        "expected_updates": 2,
+        "invalid_positive_advantage_tokens": 107,
+        "invalid_step_count": 19,
+        "observed_updates": 2,
+        "policy_steps": [
+          1,
+          2
+        ],
+        "real_step_count": 339,
+        "response_token_count": 7024,
+        "schema_version": 1,
+        "source_sha256": {
+          "/home/tianming/projects/finance-credit-agent/runs/m2-low-memory-handoff-20261004/m1/artifacts/actor_update/actor-update-3444636.jsonl": "a99531f6785a119ee8f7c9a7c05cf4f91551dde21bf134ced158c1fff0a3b096"
+        },
+        "status": "COMPLETE"
+      },
+      "actual_rounds": 2,
+      "artifact_profile": "actor_bf16_hf_v1",
+      "cell": {
+        "arm": "M1",
+        "cell_id": "m1",
+        "critic_lr": 1e-06,
+        "eta": 0.0,
+        "rounds": 2
+      },
+      "common_penalty_evidence": {
+        "coefficient": 0.05,
+        "evaluation_financial_target_unchanged": true,
+        "invalid_count": 19,
+        "penalty_sum": 0.95,
+        "status": "PASSED",
+        "trajectories": 16,
+        "updates": 2
+      },
+      "common_validity_penalty": {
+        "applies_to": "training_only",
+        "coefficient": 0.05,
+        "financial_terminal_score_unchanged": true,
+        "profile": "environment_rejection_v1"
+      },
+      "critic_fit": {
+        "policy_steps": [
+          1,
+          2
+        ],
+        "source_sha256": {
+          "artifacts/critic_fit/critic-fit-3444636.jsonl": "f585ed059a4b667aabfa76ca5dd4c9c21b51095b3b094a56ea934cd2e3bb52a1"
+        },
+        "updates": 2
+      },
+      "critic_initial_head_sha256": "34cca63a36551fbff58a919b66550d05119c0d7979feb4707dd91254d9ef3b20",
+      "elapsed_seconds": 1977.4435245618224,
+      "evaluation": {
+        "greedy": {
+          "decisions": 80,
+          "invalid_decisions": 0,
+          "mean_raw_net_return": 0.016873817000017055,
+          "mean_terminal_score": -4.816974318807645,
+          "mean_transaction_cost": 5972.176835998058,
+          "trajectories": 4
+        },
+        "sampled": {
+          "decisions": 341,
+          "invalid_decisions": 21,
+          "mean_raw_net_return": 0.015062569622674285,
+          "mean_terminal_score": -5.148019689757656,
+          "mean_transaction_cost": 5513.489878421788,
+          "trajectories": 16
+        }
+      },
+      "evaluation_steps": [
+        2
+      ],
+      "evidence": {
+        "optimizer_evidence": {
+          "backward_count": 678,
+          "detected": true,
+          "detected_role_counts": {
+            "actor": 2,
+            "critic": 2
+          },
+          "detected_roles": [
+            "actor",
+            "critic"
+          ],
+          "global_update_count": 4,
+          "optimizer_step_count": 4,
+          "peak_gpu_memory_bytes": 74598154752,
+          "representative_update": {
+            "after_sha256": "9896fc20eb47ee88a6fc15a8dc0c455417f74cd95e4df26622856897173e9e17",
+            "backward_count": 172,
+            "before_sha256": "d6ca6a848ca6ebcf4a594ec0aa0bf03cb12260d9f20a5250ba2bd14f6dfb3d3e",
+            "detected": true,
+            "global_update_count": 1,
+            "grad_norm": 597.462158203125,
+            "host_pinned_memory_after_optimizer_step": {
+              "allocated_bytes.allocated": 14916275,
+              "allocated_bytes.current": 14877060,
+              "allocated_bytes.freed": 39215,
+              "allocated_bytes.peak": 14877063,
+              "allocation.allocated": 33561,
+              "allocation.current": 14,
+              "allocation.freed": 33547,
+              "allocation.peak": 19,
+              "host_alloc_time.avg": 397,
+              "host_alloc_time.count": 21,
+              "host_alloc_time.max": 3411,
+              "host_alloc_time.min": 6,
+              "host_alloc_time.total": 8348,
+              "host_free_time.avg": 441,
+              "host_free_time.count": 7,
+              "host_free_time.max": 1118,
+              "host_free_time.min": 7,
+              "host_free_time.total": 3092,
+              "num_host_alloc": 21,
+              "num_host_free": 7,
+              "reserved_bytes.allocated": 10682762,
+              "reserved_bytes.current": 196992,
+              "reserved_bytes.freed": 10485770,
+              "reserved_bytes.peak": 10682757,
+              "segment.allocated": 21,
+              "segment.current": 14,
+              "segment.freed": 7,
+              "segment.peak": 19
+            },
+            "host_pinned_memory_before_optimizer_step": {
+              "allocated_bytes.allocated": 14916272,
+              "allocated_bytes.current": 14877060,
+              "allocated_bytes.freed": 39212,
+              "allocated_bytes.peak": 14877063,
+              "allocation.allocated": 33558,
+              "allocation.current": 14,
+              "allocation.freed": 33544,
+              "allocation.peak": 19,
+              "host_alloc_time.avg": 397,
+              "host_alloc_time.count": 21,
+              "host_alloc_time.max": 3411,
+              "host_alloc_time.min": 6,
+              "host_alloc_time.total": 8348,
+              "host_free_time.avg": 607,
+              "host_free_time.count": 5,
+              "host_free_time.max": 1118,
+              "host_free_time.min": 24,
+              "host_free_time.total": 3038,
+              "num_host_alloc": 21,
+              "num_host_free": 5,
+              "reserved_bytes.allocated": 10682762,
+              "reserved_bytes.current": 196997,
+              "reserved_bytes.freed": 10485765,
+              "reserved_bytes.peak": 10682757,
+              "segment.allocated": 21,
+              "segment.current": 16,
+              "segment.freed": 5,
+              "segment.peak": 19
+            },
+            "optimizer_step_count": 1,
+            "parameter_delta_l2": 3.655221917142626e-06,
+            "parameter_delta_max": 1.000240445137024e-06,
+            "parameter_name": "_fsdp_wrapped_module._flat_param",
+            "parameter_sample_size": 4096,
+            "peak_gpu_memory_bytes": 70934342144,
+            "pid": 3444636,
+            "role": "critic",
+            "sampled_gradient_l2": 0.03413993865251541
+          },
+          "worker_files": 1
+        },
+        "trajectories": {
+          "eval": 20,
+          "train": 16
+        }
+      },
+      "execution_identity_sha256": "ba38edce6fc6ffda5cc279c3b6a9b9eefda38654087d9ecb4d2077e7d45fee0d",
+      "finished_at_SGT": "2026-10-04T16:38:12.201873+08:00",
+      "gpu_handoff": {
+        "free_after_release_bytes": 81298980864,
+        "receipt": "/home/tianming/projects/finance-credit-agent/runs/m2-low-memory-handoff-20261004/m1/artifacts/gpu_handoff/receipt-3444636.json",
+        "status": "PASSED",
+        "worker_pid": 3444636
+      },
+      "model_revision": "local-export-sha256:cf3b8e5a4e2e45708943f4c71c822d41d60cfae13170e760cb5979e1df2356db",
+      "optimizer_included": false,
+      "paired_validation": {
+        "greedy_trajectories": 4,
+        "policy_steps": [
+          2
+        ],
+        "profile": "greedy1_sample4_v1",
+        "sampled_trajectories": 16,
+        "seed_identity_contains_actual_policy_step": true,
+        "source_sha256": {
+          "paired-validation-3445244.jsonl": "292378a99bdda082e083116f200d6adf8a3a020a16a4a9fe25b92595c9af5d84"
+        },
+        "status": "PASS",
+        "trajectories": 20
+      },
+      "placement": {
+        "exchanges": [
+          {
+            "active_role": "critic",
+            "elapsed_seconds": 0.652078837,
+            "moment_cpu_bytes_by_role": {
+              "actor": 0,
+              "critic": 0
+            }
+          },
+          {
+            "active_role": "actor",
+            "elapsed_seconds": 135.310349465,
+            "moment_cpu_bytes_by_role": {
+              "actor": 0,
+              "critic": 0
+            }
+          },
+          {
+            "active_role": "critic",
+            "elapsed_seconds": 179.046548093,
+            "moment_cpu_bytes_by_role": {
+              "actor": 0,
+              "critic": 32179765256
+            }
+          },
+          {
+            "active_role": "actor",
+            "elapsed_seconds": 171.952124674,
+            "moment_cpu_bytes_by_role": {
+              "actor": 32179744768,
+              "critic": 0
+            }
+          }
+        ],
+        "gpu_peak_allocated_bytes": 74598154752,
+        "gpu_peak_reserved_bytes": 77936459776,
+        "peak_container_memory_bytes_sampled": 61403525120,
+        "status": "PASSED",
+        "updates": {
+          "actor": [
+            {
+              "chunk_bytes": 67108864,
+              "chunks": 993,
+              "elapsed_seconds": 9.459377087652683,
+              "event": "chunked_adamw_step_complete",
+              "host_allocated_bytes": 32179744916,
+              "maximum_temporary_bytes": 67108864,
+              "moment_transfer_bytes": 64359489536,
+              "updated_parameters": 37
+            },
+            {
+              "chunk_bytes": 67108864,
+              "chunks": 993,
+              "elapsed_seconds": 18.226661417633295,
+              "event": "chunked_adamw_step_complete",
+              "host_allocated_bytes": 0,
+              "maximum_temporary_bytes": 67108864,
+              "moment_transfer_bytes": 64359489536,
+              "updated_parameters": 37
+            }
+          ],
+          "critic": [
+            {
+              "chunk_bytes": 67108864,
+              "chunks": 993,
+              "elapsed_seconds": 8.241942886263132,
+              "event": "chunked_adamw_step_complete",
+              "host_allocated_bytes": 32179765404,
+              "maximum_temporary_bytes": 67108864,
+              "moment_transfer_bytes": 64359530512,
+              "updated_parameters": 37
+            },
+            {
+              "chunk_bytes": 67108864,
+              "chunks": 993,
+              "elapsed_seconds": 8.034725520759821,
+              "event": "chunked_adamw_step_complete",
+              "host_allocated_bytes": 0,
+              "maximum_temporary_bytes": 67108864,
+              "moment_transfer_bytes": 64359530512,
+              "updated_parameters": 37
+            }
+          ]
+        }
+      },
+      "requested_rounds": 2,
+      "resume_supported": false,
+      "returncode": 0,
+      "started_at_SGT": "2026-10-04T16:06:12.414620+08:00",
+      "status": "COMPLETE"
+    },
+    {
+      "actor_update": {
+        "arm": "M2",
+        "execution_identity_sha256": "15c1edc97079a2434383148923b836581ce8a96a452b67b8879c68dfae3d763c",
+        "expected_updates": 2,
+        "invalid_positive_advantage_tokens": 105,
+        "invalid_step_count": 20,
+        "observed_updates": 2,
+        "policy_steps": [
+          1,
+          2
+        ],
+        "real_step_count": 340,
+        "response_token_count": 7035,
+        "schema_version": 1,
+        "source_sha256": {
+          "/home/tianming/projects/finance-credit-agent/runs/m2-low-memory-handoff-20261004/m2_eta025/artifacts/actor_update/actor-update-3451848.jsonl": "a9771a5860a4ca550c8fb2df145c4975968ab30514fc8397e9eddb45d648d3d3"
+        },
+        "status": "COMPLETE"
+      },
+      "actual_rounds": 2,
+      "artifact_profile": "actor_bf16_hf_v1",
+      "cell": {
+        "arm": "M2",
+        "cell_id": "m2_eta025",
+        "critic_lr": 1e-06,
+        "eta": 0.25,
+        "rounds": 2
+      },
+      "common_penalty_evidence": {
+        "coefficient": 0.05,
+        "evaluation_financial_target_unchanged": true,
+        "invalid_count": 20,
+        "penalty_sum": 1.0,
+        "status": "PASSED",
+        "trajectories": 16,
+        "updates": 2
+      },
+      "common_validity_penalty": {
+        "applies_to": "training_only",
+        "coefficient": 0.05,
+        "financial_terminal_score_unchanged": true,
+        "profile": "environment_rejection_v1"
+      },
+      "critic_fit": {
+        "policy_steps": [
+          1,
+          2
+        ],
+        "source_sha256": {
+          "artifacts/critic_fit/critic-fit-3451848.jsonl": "1d6ff7d4ebc4bd8c81e1302fe8821e2d286e4c53d11c1cdec04d6772aef8498d"
+        },
+        "updates": 2
+      },
+      "critic_initial_head_sha256": "34cca63a36551fbff58a919b66550d05119c0d7979feb4707dd91254d9ef3b20",
+      "elapsed_seconds": 2140.9770662486553,
+      "evaluation": {
+        "greedy": {
+          "decisions": 80,
+          "invalid_decisions": 0,
+          "mean_raw_net_return": 0.017703945289710504,
+          "mean_terminal_score": -4.674375636809743,
+          "mean_transaction_cost": 6032.203585232792,
+          "trajectories": 4
+        },
+        "sampled": {
+          "decisions": 338,
+          "invalid_decisions": 18,
+          "mean_raw_net_return": 0.016010298845326933,
+          "mean_terminal_score": -4.953924927000205,
+          "mean_transaction_cost": 5649.330373177151,
+          "trajectories": 16
+        }
+      },
+      "evaluation_steps": [
+        2
+      ],
+      "evidence": {
+        "optimizer_evidence": {
+          "backward_count": 680,
+          "detected": true,
+          "detected_role_counts": {
+            "actor": 2,
+            "critic": 2
+          },
+          "detected_roles": [
+            "actor",
+            "critic"
+          ],
+          "global_update_count": 4,
+          "optimizer_step_count": 4,
+          "peak_gpu_memory_bytes": 74564869632,
+          "representative_update": {
+            "after_sha256": "009b39430791a7ac8dd09b9e3ad454f4bfba3fb8b6048f0052a58971247af3c2",
+            "backward_count": 173,
+            "before_sha256": "d6ca6a848ca6ebcf4a594ec0aa0bf03cb12260d9f20a5250ba2bd14f6dfb3d3e",
+            "detected": true,
+            "global_update_count": 1,
+            "grad_norm": 459.79473876953125,
+            "host_pinned_memory_after_optimizer_step": {
+              "allocated_bytes.allocated": 14916503,
+              "allocated_bytes.current": 14877060,
+              "allocated_bytes.freed": 39443,
+              "allocated_bytes.peak": 14877063,
+              "allocation.allocated": 33756,
+              "allocation.current": 14,
+              "allocation.freed": 33742,
+              "allocation.peak": 19,
+              "host_alloc_time.avg": 378,
+              "host_alloc_time.count": 21,
+              "host_alloc_time.max": 3012,
+              "host_alloc_time.min": 3,
+              "host_alloc_time.total": 7940,
+              "host_free_time.avg": 450,
+              "host_free_time.count": 7,
+              "host_free_time.max": 1177,
+              "host_free_time.min": 9,
+              "host_free_time.total": 3155,
+              "num_host_alloc": 21,
+              "num_host_free": 7,
+              "reserved_bytes.allocated": 10682762,
+              "reserved_bytes.current": 196992,
+              "reserved_bytes.freed": 10485770,
+              "reserved_bytes.peak": 10682757,
+              "segment.allocated": 21,
+              "segment.current": 14,
+              "segment.freed": 7,
+              "segment.peak": 19
+            },
+            "host_pinned_memory_before_optimizer_step": {
+              "allocated_bytes.allocated": 14916500,
+              "allocated_bytes.current": 14877060,
+              "allocated_bytes.freed": 39440,
+              "allocated_bytes.peak": 14877063,
+              "allocation.allocated": 33753,
+              "allocation.current": 14,
+              "allocation.freed": 33739,
+              "allocation.peak": 19,
+              "host_alloc_time.avg": 378,
+              "host_alloc_time.count": 21,
+              "host_alloc_time.max": 3012,
+              "host_alloc_time.min": 3,
+              "host_alloc_time.total": 7940,
+              "host_free_time.avg": 621,
+              "host_free_time.count": 5,
+              "host_free_time.max": 1177,
+              "host_free_time.min": 18,
+              "host_free_time.total": 3106,
+              "num_host_alloc": 21,
+              "num_host_free": 5,
+              "reserved_bytes.allocated": 10682762,
+              "reserved_bytes.current": 196997,
+              "reserved_bytes.freed": 10485765,
+              "reserved_bytes.peak": 10682757,
+              "segment.allocated": 21,
+              "segment.current": 16,
+              "segment.freed": 5,
+              "segment.peak": 19
+            },
+            "optimizer_step_count": 1,
+            "parameter_delta_l2": 3.6751073366758646e-06,
+            "parameter_delta_max": 1.000240445137024e-06,
+            "parameter_name": "_fsdp_wrapped_module._flat_param",
+            "parameter_sample_size": 4096,
+            "peak_gpu_memory_bytes": 70902443520,
+            "pid": 3451848,
+            "role": "critic",
+            "sampled_gradient_l2": 0.02921680361032486
+          },
+          "worker_files": 1
+        },
+        "trajectories": {
+          "eval": 20,
+          "train": 16
+        }
+      },
+      "execution_identity_sha256": "15c1edc97079a2434383148923b836581ce8a96a452b67b8879c68dfae3d763c",
+      "finished_at_SGT": "2026-10-04T17:13:53.184593+08:00",
+      "gpu_handoff": {
+        "free_after_release_bytes": 81298980864,
+        "receipt": "/home/tianming/projects/finance-credit-agent/runs/m2-low-memory-handoff-20261004/m2_eta025/artifacts/gpu_handoff/receipt-3451848.json",
+        "status": "PASSED",
+        "worker_pid": 3451848
+      },
+      "model_revision": "local-export-sha256:cf3b8e5a4e2e45708943f4c71c822d41d60cfae13170e760cb5979e1df2356db",
+      "optimizer_included": false,
+      "paired_validation": {
+        "greedy_trajectories": 4,
+        "policy_steps": [
+          2
+        ],
+        "profile": "greedy1_sample4_v1",
+        "sampled_trajectories": 16,
+        "seed_identity_contains_actual_policy_step": true,
+        "source_sha256": {
+          "paired-validation-3452605.jsonl": "1f35cb6007be327f7f31e1482ab00068e09d388072e4d26836cdb5b44b8893de"
+        },
+        "status": "PASS",
+        "trajectories": 20
+      },
+      "placement": {
+        "exchanges": [
+          {
+            "active_role": "critic",
+            "elapsed_seconds": 0.644300129,
+            "moment_cpu_bytes_by_role": {
+              "actor": 0,
+              "critic": 0
+            }
+          },
+          {
+            "active_role": "actor",
+            "elapsed_seconds": 131.231725086,
+            "moment_cpu_bytes_by_role": {
+              "actor": 0,
+              "critic": 0
+            }
+          },
+          {
+            "active_role": "critic",
+            "elapsed_seconds": 189.86346073,
+            "moment_cpu_bytes_by_role": {
+              "actor": 0,
+              "critic": 32179765256
+            }
+          },
+          {
+            "active_role": "actor",
+            "elapsed_seconds": 189.414575138,
+            "moment_cpu_bytes_by_role": {
+              "actor": 32179744768,
+              "critic": 0
+            }
+          }
+        ],
+        "gpu_peak_allocated_bytes": 74564869632,
+        "gpu_peak_reserved_bytes": 77938556928,
+        "peak_container_memory_bytes_sampled": 61828583424,
+        "status": "PASSED",
+        "updates": {
+          "actor": [
+            {
+              "chunk_bytes": 67108864,
+              "chunks": 993,
+              "elapsed_seconds": 8.94752723351121,
+              "event": "chunked_adamw_step_complete",
+              "host_allocated_bytes": 32179744916,
+              "maximum_temporary_bytes": 67108864,
+              "moment_transfer_bytes": 64359489536,
+              "updated_parameters": 37
+            },
+            {
+              "chunk_bytes": 67108864,
+              "chunks": 993,
+              "elapsed_seconds": 14.331147953867912,
+              "event": "chunked_adamw_step_complete",
+              "host_allocated_bytes": 0,
+              "maximum_temporary_bytes": 67108864,
+              "moment_transfer_bytes": 64359489536,
+              "updated_parameters": 37
+            }
+          ],
+          "critic": [
+            {
+              "chunk_bytes": 67108864,
+              "chunks": 993,
+              "elapsed_seconds": 9.919110957533121,
+              "event": "chunked_adamw_step_complete",
+              "host_allocated_bytes": 32179765404,
+              "maximum_temporary_bytes": 67108864,
+              "moment_transfer_bytes": 64359530512,
+              "updated_parameters": 37
+            },
+            {
+              "chunk_bytes": 67108864,
+              "chunks": 993,
+              "elapsed_seconds": 6.6912678852677345,
+              "event": "chunked_adamw_step_complete",
+              "host_allocated_bytes": 0,
+              "maximum_temporary_bytes": 67108864,
+              "moment_transfer_bytes": 64359530512,
+              "updated_parameters": 37
+            }
+          ]
+        }
+      },
+      "requested_rounds": 2,
+      "resume_supported": false,
+      "returncode": 0,
+      "started_at_SGT": "2026-10-04T16:38:22.007782+08:00",
+      "status": "COMPLETE"
+    }
+  ],
+  "current_cell": "m2_eta025",
+  "evaluation_episode_ids": [
+    "formal-train-0113",
+    "formal-train-0117",
+    "formal-train-0121",
+    "formal-train-0125"
+  ],
+  "evaluation_steps": [
+    2
+  ],
+  "finished_at_SGT": "2026-10-04T17:13:53.189768+08:00",
+  "free_disk_bytes": 127479840768,
+  "planned_trajectories": 72,
+  "profile": "common_sft_low_memory_pilot_v1",
+  "resume_supported": false,
+  "started_at_SGT": "2026-10-04T16:05:14.755007+08:00",
+  "status": "COMPLETE",
+  "train_episode_ids": [
+    "formal-train-0001",
+    "formal-train-0065",
+    "formal-train-0009",
+    "formal-train-0073"
+  ]
+}

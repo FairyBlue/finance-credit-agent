@@ -233,16 +233,24 @@ def build_cell_command(
     if artifact_profile != "full" and resume_path is not None:
         raise ValueError("research artifacts cannot resume training")
     profile = r.get("profile", "native")
-    if profile not in {"native", "pageable_adam_v1"}:
+    if profile not in {"native", "pageable_adam_v1", "chunked_adam_disk_v1"}:
         raise ValueError("unregistered screening resource profile")
-    if profile == "pageable_adam_v1":
+    if profile in {"pageable_adam_v1", "chunked_adam_disk_v1"}:
         if any(r[key] is not False for key in (
             "actor_param_offload", "actor_optimizer_offload",
             "critic_param_offload", "critic_optimizer_offload",
         )) or r["rollout_gpu_memory_utilization"] != 0.20:
-            raise ValueError("pageable_adam_v1 requires the complete registered placement")
+            raise ValueError("Adam resource profiles require the complete registered placement")
         if resume_path is not None:
-            raise ValueError("pageable_adam_v1 checkpoint restore has not been validated")
+            raise ValueError("Adam resource profile checkpoint restore has not been validated")
+    if profile == "chunked_adam_disk_v1":
+        for key in ("chunk_bytes", "gpu_reserve_bytes", "host_reserve_bytes", "disk_reserve_bytes"):
+            if type(r.get(key)) is not int or r[key] <= 0:
+                raise ValueError("chunked Adam requires a positive explicit " + key)
+        if not 20 <= r["chunk_bytes"] <= 256 * 1024**2 or r["chunk_bytes"] % 4:
+            raise ValueError("chunked Adam buffer must be aligned and within registered bounds")
+        if artifact_profile != "actor_bf16_hf_v1":
+            raise ValueError("chunked Adam requires the validated actor-only export profile")
     optimizer_options = r["optimizer_overrides"]
     if optimizer_options != {"foreach": False, "fused": False}:
         raise ValueError("screening requires the registered scalar AdamW resource settings")
@@ -349,11 +357,14 @@ def build_cell_command(
             "commit": hashes.repo_commit, "config": config, "settings": settings,
         }, sort_keys=True).encode()).hexdigest(),
     }
-    if profile == "pageable_adam_v1":
+    if profile in {"pageable_adam_v1", "chunked_adam_disk_v1"}:
         env_flags.update({
             "FINANCE_SCREENING_RESOURCE_PROFILE": profile,
             "FINANCE_SCREENING_PLACEMENT_DIR": str(cell_dir / "artifacts/placement"),
         })
+    if profile == "chunked_adam_disk_v1":
+        for key in ("chunk_bytes", "gpu_reserve_bytes", "host_reserve_bytes", "disk_reserve_bytes"):
+            env_flags["FINANCE_CHUNKED_ADAM_" + key.upper()] = json.dumps(str(r[key]))
     if "m2_residual_eta" in settings:
         env_flags["FINANCE_SCREENING_RESIDUAL_ETA"] = json.dumps(str(eta))
     if artifact_profile in {"actor_bf16_hf_v1", "critic_fit_diagnostic_v1"}:

@@ -1,0 +1,271 @@
+{
+  "schema_version": 1,
+  "captured_at_sgt": "2026-10-04T22:50:24.030446+08:00",
+  "scope": "Small result receipts only; no weights, optimizer, or full trajectories",
+  "files": [
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/FINAL_RESULTS.md",
+      "source_path": "runs/m2-low-memory-handoff-20261004/FINAL_RESULTS.md",
+      "size_bytes": 1302,
+      "sha256": "3e2c9c8c882710fbafd860b8968a7ce1ea29cd91a0e27520ed8c815a9560646a",
+      "source_sha256": "3e2c9c8c882710fbafd860b8968a7ce1ea29cd91a0e27520ed8c815a9560646a",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/LIVE_STATUS.md",
+      "source_path": "runs/m2-low-memory-handoff-20261004/LIVE_STATUS.md",
+      "size_bytes": 1302,
+      "sha256": "3e2c9c8c882710fbafd860b8968a7ce1ea29cd91a0e27520ed8c815a9560646a",
+      "source_sha256": "3e2c9c8c882710fbafd860b8968a7ce1ea29cd91a0e27520ed8c815a9560646a",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/comparison_summary.csv",
+      "source_path": "runs/m2-low-memory-handoff-20261004/comparison_summary.csv",
+      "size_bytes": 399,
+      "sha256": "ee562cef37c656d8c45a05effc09e7670e522bc15decfae04f0397ebcd419259",
+      "source_sha256": "ee562cef37c656d8c45a05effc09e7670e522bc15decfae04f0397ebcd419259",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/completion_readout.json",
+      "source_path": "runs/m2-low-memory-handoff-20261004/completion_readout.json",
+      "size_bytes": 1545,
+      "sha256": "159a8ff68ec8d8c823c649deb120f335356c31649b7efc7f2213aeddfc48d162",
+      "source_sha256": "159a8ff68ec8d8c823c649deb120f335356c31649b7efc7f2213aeddfc48d162",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/state.json",
+      "source_path": "runs/m2-low-memory-handoff-20261004/state.json",
+      "size_bytes": 21518,
+      "sha256": "cc9352c8bd47adfbea9d0555bb2484299168775eb05c87ee0efa043953e54039",
+      "source_sha256": "cc9352c8bd47adfbea9d0555bb2484299168775eb05c87ee0efa043953e54039",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/settings.json",
+      "source_path": "runs/m2-low-memory-handoff-20261004/settings.json",
+      "size_bytes": 3621,
+      "sha256": "bffde68de174d1b519e926864ea3983becf8d421baeb363cc5f898eeee5d71c3",
+      "source_sha256": "bffde68de174d1b519e926864ea3983becf8d421baeb363cc5f898eeee5d71c3",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/run_contract.json",
+      "source_path": "runs/m2-low-memory-handoff-20261004/run_contract.json",
+      "size_bytes": 869,
+      "sha256": "bc2d9ea56ddc0fe0303a5591cb24fe7ce8a4700f465364a8587dee78808f1f3d",
+      "source_sha256": "bc2d9ea56ddc0fe0303a5591cb24fe7ce8a4700f465364a8587dee78808f1f3d",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/model_identity.json",
+      "source_path": "runs/m2-low-memory-handoff-20261004/model_identity.json",
+      "size_bytes": 457,
+      "sha256": "c3c11fb601fec30ad30e6e508c7d74e8cccc4e7a862264536c19fc205f159247",
+      "source_sha256": "c3c11fb601fec30ad30e6e508c7d74e8cccc4e7a862264536c19fc205f159247",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/source_identity.json",
+      "source_path": "runs/m2-low-memory-handoff-20261004/source_identity.json",
+      "size_bytes": 8178,
+      "sha256": "133068f11ff00f01e56925d9b4c9e0d439aec6badef25ad1a739a2019e82baa5",
+      "source_sha256": "133068f11ff00f01e56925d9b4c9e0d439aec6badef25ad1a739a2019e82baa5",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/selection.json",
+      "source_path": "runs/m2-low-memory-handoff-20261004/selection.json",
+      "size_bytes": 2756,
+      "sha256": "4dba994987a7a4b97447f85b95fa905bd5078c166f00ba94e839f332755e8b7e",
+      "source_sha256": "4dba994987a7a4b97447f85b95fa905bd5078c166f00ba94e839f332755e8b7e",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/plan.md",
+      "source_path": "runs/m2-low-memory-handoff-20261004/plan.md",
+      "size_bytes": 4523,
+      "sha256": "df4709877ee3439521ff6ad6f4af867f3b22807e6e546b6558addf3349eabf76",
+      "source_sha256": "df4709877ee3439521ff6ad6f4af867f3b22807e6e546b6558addf3349eabf76",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/implementation_validation.json",
+      "source_path": "runs/m2-low-memory-handoff-20261004/implementation_validation.json",
+      "size_bytes": 1088,
+      "sha256": "45c7c87a33dd3e56587135c5791598ad1790a21756d4de03ed88fc15238d9301",
+      "source_sha256": "45c7c87a33dd3e56587135c5791598ad1790a21756d4de03ed88fc15238d9301",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/input_preflight.json",
+      "source_path": "runs/m2-low-memory-handoff-20261004/input_preflight.json",
+      "size_bytes": 1244,
+      "sha256": "63add5dab5461ac81c58755656ebb8ca50b25662e4060bdb4387487f118ca15a",
+      "source_sha256": "63add5dab5461ac81c58755656ebb8ca50b25662e4060bdb4387487f118ca15a",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/runtime_preflight.json",
+      "source_path": "runs/m2-low-memory-handoff-20261004/runtime_preflight.json",
+      "size_bytes": 668,
+      "sha256": "0baa14889f9e2278812da052dbe05f44760f7b635540d3d5e38879382203a218",
+      "source_sha256": "0baa14889f9e2278812da052dbe05f44760f7b635540d3d5e38879382203a218",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/launch_receipt.json",
+      "source_path": "runs/m2-low-memory-handoff-20261004/launch_receipt.json",
+      "size_bytes": 2469,
+      "sha256": "51aeb86c2409829f4fb5d1b8fb0da27333d8ccaef77fc993a09d6c6ac5609b1b",
+      "source_sha256": "51aeb86c2409829f4fb5d1b8fb0da27333d8ccaef77fc993a09d6c6ac5609b1b",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/gpu_handoff_config.json",
+      "source_path": "runs/m2-low-memory-handoff-20261004/gpu_handoff_config.json",
+      "size_bytes": 390,
+      "sha256": "adb86d7425ca55f23d676a14ec32a13c8853b1c475bb06b0535fac9fe1446f3a",
+      "source_sha256": "adb86d7425ca55f23d676a14ec32a13c8853b1c475bb06b0535fac9fe1446f3a",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/reservation_cleanup.json",
+      "source_path": "runs/m2-low-memory-handoff-20261004/reservation_cleanup.json",
+      "size_bytes": 2962,
+      "sha256": "61cc6b433ca1de9e9f1a014ba1e88008203e19c21afa3f5be6d912d8697cc84f",
+      "source_sha256": "61cc6b433ca1de9e9f1a014ba1e88008203e19c21afa3f5be6d912d8697cc84f",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/m1/summary.json",
+      "source_path": "runs/m2-low-memory-handoff-20261004/m1/summary.json",
+      "size_bytes": 9251,
+      "sha256": "4d9c45467bc2b40a6f832ca789e14e33fa075fca3bcd5167d454d79c49ab9964",
+      "source_sha256": "4d9c45467bc2b40a6f832ca789e14e33fa075fca3bcd5167d454d79c49ab9964",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/m1/process.json",
+      "source_path": "runs/m2-low-memory-handoff-20261004/m1/process.json",
+      "size_bytes": 92,
+      "sha256": "4a18973304c35535bc66490cad4816b4d9bcf587db852d6c5bdf05680130789e",
+      "source_sha256": "4a18973304c35535bc66490cad4816b4d9bcf587db852d6c5bdf05680130789e",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/m1/checkpoints/global_step_2/actor/actor_export_receipt.json",
+      "source_path": "runs/m2-low-memory-handoff-20261004/m1/checkpoints/global_step_2/actor/actor_export_receipt.json",
+      "size_bytes": 66861,
+      "sha256": "15b22327b1ffe3f3620333862a0a79f1d2724165071167de8f601e890631ad9b",
+      "source_sha256": "15b22327b1ffe3f3620333862a0a79f1d2724165071167de8f601e890631ad9b",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/m1/checkpoints/global_step_2/actor_export_complete.json",
+      "source_path": "runs/m2-low-memory-handoff-20261004/m1/checkpoints/global_step_2/actor_export_complete.json",
+      "size_bytes": 382,
+      "sha256": "9237984508a36c1ef70a0448f23918426f70884716bb31c9a74467d7bc3c48a2",
+      "source_sha256": "9237984508a36c1ef70a0448f23918426f70884716bb31c9a74467d7bc3c48a2",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/m2_eta025/summary.json",
+      "source_path": "runs/m2-low-memory-handoff-20261004/m2_eta025/summary.json",
+      "size_bytes": 9274,
+      "sha256": "db9ebc9dcc177d08b5f36102cf65be05322726b0dace90fe999020e800e0c60b",
+      "source_sha256": "db9ebc9dcc177d08b5f36102cf65be05322726b0dace90fe999020e800e0c60b",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/m2_eta025/process.json",
+      "source_path": "runs/m2-low-memory-handoff-20261004/m2_eta025/process.json",
+      "size_bytes": 92,
+      "sha256": "3f6be00cfb0e94b4199d5168b52ae2826cd0b9bdd28a16ad46b579b06ff834a3",
+      "source_sha256": "3f6be00cfb0e94b4199d5168b52ae2826cd0b9bdd28a16ad46b579b06ff834a3",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/m2_eta025/checkpoints/global_step_2/actor/actor_export_receipt.json",
+      "source_path": "runs/m2-low-memory-handoff-20261004/m2_eta025/checkpoints/global_step_2/actor/actor_export_receipt.json",
+      "size_bytes": 66861,
+      "sha256": "8996d958bded881f7584c863fdfeb041a8a09427367a97d0a5212ec4fdf55f84",
+      "source_sha256": "8996d958bded881f7584c863fdfeb041a8a09427367a97d0a5212ec4fdf55f84",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-handoff-20261004/m2_eta025/checkpoints/global_step_2/actor_export_complete.json",
+      "source_path": "runs/m2-low-memory-handoff-20261004/m2_eta025/checkpoints/global_step_2/actor_export_complete.json",
+      "size_bytes": 382,
+      "sha256": "5cc26fba37165c520c0ffe182beb95c386a0d31a42319e1de6f076ca1b9e45f4",
+      "source_sha256": "5cc26fba37165c520c0ffe182beb95c386a0d31a42319e1de6f076ca1b9e45f4",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-pilot-20260930/state.json",
+      "source_path": "runs/m2-low-memory-pilot-20260930/state.json",
+      "size_bytes": 711,
+      "sha256": "1b6ffdbbf2bf76f41c07a2590d52d9e0ea240a54ec83710d6c6271dd947988be",
+      "source_sha256": "1b6ffdbbf2bf76f41c07a2590d52d9e0ea240a54ec83710d6c6271dd947988be",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-pilot-20260930/FINAL_RESULTS.md",
+      "source_path": "runs/m2-low-memory-pilot-20260930/FINAL_RESULTS.md",
+      "size_bytes": 864,
+      "sha256": "2cebfb45438a7290393f2089495c5cab46d9400c0dcc7f987429642f23c08d9b",
+      "source_sha256": "2cebfb45438a7290393f2089495c5cab46d9400c0dcc7f987429642f23c08d9b",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-pilot-20260930/failure_diagnosis_20261002.json",
+      "source_path": "runs/m2-low-memory-pilot-20260930/failure_diagnosis_20261002.json",
+      "size_bytes": 1902,
+      "sha256": "cd031fbb6735d2ac828c0e653184c27e4bb895f301fa7bf7e305403f0e966ab8",
+      "source_sha256": "cd031fbb6735d2ac828c0e653184c27e4bb895f301fa7bf7e305403f0e966ab8",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-preparation-20260930/implementation_validation.json",
+      "source_path": "runs/m2-low-memory-preparation-20260930/implementation_validation.json",
+      "size_bytes": 791,
+      "sha256": "85880f3eed02ecbc9f8c254444608437f98b1c0f46dff3e3adcbb442b23ab941",
+      "source_sha256": "85880f3eed02ecbc9f8c254444608437f98b1c0f46dff3e3adcbb442b23ab941",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/m2-low-memory-preparation-20260930/optimizer_cuda_probe_v2.json",
+      "source_path": "runs/m2-low-memory-preparation-20260930/optimizer_cuda_probe_v2.json",
+      "size_bytes": 1618,
+      "sha256": "e80e4e44d9c5c0865a285e2f640c377401d95f737e5f18bd1581c039c77c2088",
+      "source_sha256": "e80e4e44d9c5c0865a285e2f640c377401d95f737e5f18bd1581c039c77c2088",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/gpu-reservation-preparation-20261002/cuda_probe.json",
+      "source_path": "runs/gpu-reservation-preparation-20261002/cuda_probe.json",
+      "size_bytes": 12819,
+      "sha256": "bf91d20f014af3ac500e7f6bc2be37f71689330998cbbfdd82cc9eec1442a504",
+      "source_sha256": "bf91d20f014af3ac500e7f6bc2be37f71689330998cbbfdd82cc9eec1442a504",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/gpu-reservation-20261004/launch_receipt.json",
+      "source_path": "runs/gpu-reservation-20261004/launch_receipt.json",
+      "size_bytes": 1874,
+      "sha256": "0d6d22dc2af9718a8e04fd29b73358a1df5aab8d642a37793ad6c49d9b4d5756",
+      "source_sha256": "0d6d22dc2af9718a8e04fd29b73358a1df5aab8d642a37793ad6c49d9b4d5756",
+      "copy_mode": "byte_for_byte"
+    },
+    {
+      "path": "runs/gpu-reservation-20261004/status.json",
+      "source_path": "runs/gpu-reservation-20261004/status.json",
+      "size_bytes": 1351,
+      "sha256": "daa3f53f029add00d5382e13829a90fa0d16ca6cbb7bc40cf18971c74c2a456b",
+      "source_sha256": "daa3f53f029add00d5382e13829a90fa0d16ca6cbb7bc40cf18971c74c2a456b",
+      "copy_mode": "byte_for_byte"
+    }
+  ]
+}

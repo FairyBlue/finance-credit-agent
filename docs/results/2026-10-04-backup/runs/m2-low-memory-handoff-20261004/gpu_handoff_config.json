@@ -1,0 +1,10 @@
+{
+  "cuda_device": 0,
+  "directory": "/home/tianming/projects/finance-credit-agent/runs/gpu-reservation-20261004",
+  "gpu_uuid": "GPU-8e53f734-2624-5f26-16af-599cef58a038",
+  "minimum_free_bytes": 64424509440,
+  "owner_sha256": "c6484ca7aba7430d4667c568f3c07fcf8d4d0c6d004747d4bb66ebb1e2ae4dab",
+  "pid": 3441970,
+  "pid_start_ticks": 1806934106,
+  "profile": "bounded_holder_handoff_v1"
+}

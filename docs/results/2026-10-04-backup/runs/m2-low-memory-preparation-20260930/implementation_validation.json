@@ -1,0 +1,19 @@
+{
+  "at_SGT": "2026-09-30T20:02:31.605543+08:00",
+  "cuda_probe": "optimizer_cuda_probe_v2.json",
+  "full_4b_validation": "NOT_STARTED",
+  "scopes": {
+    "chunked_adam_and_integration": 53,
+    "controller": 17,
+    "existing_runtime_regression": 235,
+    "existing_runtime_subtests": 137,
+    "moment_store": 22
+  },
+  "source_sha256": {
+    "src/agents/chunked_adam.py": "8ceb6e83a2d4339c9df3bfb47e1366ccddea0a8f8f46902b3812fdef16ad54ce",
+    "src/agents/chunked_placement.py": "5094e33e4e9376ae36e975d7de70c5ab8c0592eedc78203f08d69c65c9166153",
+    "src/agents/low_memory_pilot.py": "430216f8fe597c11f888742e1c9ce13d16d724545b8b1a3388d4e814a18ade48",
+    "src/agents/optimizer_state_store.py": "849b76192d671d7da3ca0b1103cf7bfa5840c190e8e733b66177af374ac5c42b"
+  },
+  "status": "PASS"
+}

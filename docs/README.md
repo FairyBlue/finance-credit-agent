@@ -1,7 +1,15 @@
 # 文档导航
 
-**2026-09-17 GitHub 备份入口：**先读[当前交接](2026-09-17_PROJECT_BACKUP_HANDOFF.md)，
-再看[随仓库保存的小型结果快照](results/2026-09-17-backup/README.md)。模型与完整运行目录仍在服务器。
+**最新 GitHub 备份入口（2026-10-04）：**先读[4B 两轮最终报告](2026-10-04_M2_GPU_HANDOFF_PILOT.md)，
+再看[随仓库保存的小型结果快照](results/2026-10-04-backup/README.md)。
+72/72 条完整，M1/M2 各两轮，M2 两种解码净收益均略高于 M1；尚非正式性能结论。
+更长四轮对照未启动，模型与完整运行目录仍在服务器。
+
+前置工程记录：[低显存计划](2026-09-30_M2_LOW_MEMORY_PILOT_PLAN.md)、
+[首次失败报告](2026-09-30_M2_LOW_MEMORY_PILOT_REPORT.md)、
+[显存占位尝试](2026-10-02_GPU_RESERVATION_TRIAL.md)。
+旧备份见[9 月 17 日交接](2026-09-17_PROJECT_BACKUP_HANDOFF.md)及
+[当时的结果快照](results/2026-09-17-backup/README.md)。
 
 整理日期：2026-09-14。日常阅读从本页进入；9 月 13、14 日的 12 份文档保持原文。
 更早的日志已汇总为四个阶段，完整旧文本收在一个[压缩归档](archive/README.md)，无需逐份翻阅。

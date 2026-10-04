@@ -1,0 +1,28 @@
+{
+  "automatic_retry": false,
+  "cells": [],
+  "current_cell": "m1",
+  "error": "RuntimeError: m1 trainer exited 1; evidence retained",
+  "evaluation_episode_ids": [
+    "formal-train-0113",
+    "formal-train-0117",
+    "formal-train-0121",
+    "formal-train-0125"
+  ],
+  "evaluation_steps": [
+    2
+  ],
+  "finished_at_SGT": "2026-09-30T20:16:43.426443+08:00",
+  "free_disk_bytes": 199003471872,
+  "planned_trajectories": 72,
+  "profile": "common_sft_low_memory_pilot_v1",
+  "resume_supported": false,
+  "started_at_SGT": "2026-09-30T20:04:22.561176+08:00",
+  "status": "FAILED",
+  "train_episode_ids": [
+    "formal-train-0001",
+    "formal-train-0065",
+    "formal-train-0009",
+    "formal-train-0073"
+  ]
+}

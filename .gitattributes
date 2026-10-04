@@ -3,3 +3,6 @@ docs/results/2026-09-17-backup/** -text
 # Python's CSV writer uses CRLF; Matplotlib SVG paths include trailing spaces.
 docs/results/2026-09-17-backup/runs/**/*.csv whitespace=cr-at-eol
 docs/results/2026-09-17-backup/runs/**/*.svg -whitespace
+# Preserve the latest completed pilot receipts and CSV bytes.
+docs/results/2026-10-04-backup/** -text
+docs/results/2026-10-04-backup/runs/**/*.csv whitespace=cr-at-eol

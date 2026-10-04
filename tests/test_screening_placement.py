@@ -210,6 +210,67 @@ class WorkerAdapterTests(unittest.TestCase):
         critic.update_critic(object())
         actor.update_actor(object())
 
+    def test_handoff_checks_precede_each_original_model_initialization(self):
+        registry, backend, actor, critic, reference, _ = fixture(order=())
+        workers = {"critic": critic, "reference": reference, "actor": actor}
+        calls = []
+        original_validate = backend.validate_worker
+
+        def validate(worker, role):
+            original_validate(worker, role)
+            calls.append(("validated", role))
+
+        def handoff(role, identity):
+            self.assertEqual(identity, IDENTITY)
+            self.assertEqual(workers[role].calls, [])
+            if role != "reference":
+                self.assertEqual(calls[-1], ("validated", role))
+            calls.append(("handoff", role))
+
+        backend.validate_worker = validate
+        with (
+            patch.dict(os.environ, {"FINANCE_GPU_HANDOFF_CONFIG": "/fixture/contract.json"}),
+            patch("src.agents.gpu_handoff.worker_handoff_from_environment", side_effect=handoff),
+        ):
+            for role, worker in workers.items():
+                worker.init_model()
+                self.assertEqual(worker.calls, [("init",)])
+                calls.append(("initialized", role))
+            # Existing compute/checkpoint/rollout paths do not release again.
+            actor.compute_log_prob(object())
+            reference.compute_ref_log_prob(object())
+            critic.compute_values(object())
+            asyncio.run(actor.rollout_mode())
+        self.assertEqual([row for row in calls if row[0] == "handoff"], [
+            ("handoff", "critic"), ("handoff", "reference"), ("handoff", "actor"),
+        ])
+        self.assertFalse(registry.coordinator.failed)
+
+    def test_handoff_failure_prevents_model_init_and_locks_coordinator(self):
+        registry, _, actor, critic, reference, _ = fixture(order=())
+        error = RuntimeError("reservation not paused and fully released")
+        with (
+            patch.dict(os.environ, {"FINANCE_GPU_HANDOFF_CONFIG": "/fixture/contract.json"}),
+            patch("src.agents.gpu_handoff.worker_handoff_from_environment", side_effect=error),
+        ):
+            with self.assertRaises(RuntimeError) as caught:
+                critic.init_model()
+            self.assertIs(caught.exception, error)
+            self.assertEqual(critic.calls, [])
+            self.assertTrue(registry.coordinator.failed)
+            for worker in (actor, reference):
+                with self.assertRaises(ExchangeError):
+                    worker.init_model()
+                self.assertEqual(worker.calls, [])
+
+    def test_disabled_handoff_does_not_call_reservation_service(self):
+        with (
+            patch.dict(os.environ, {"FINANCE_GPU_HANDOFF_CONFIG": ""}),
+            patch("src.agents.gpu_handoff.worker_handoff_from_environment") as handoff,
+        ):
+            fixture(order=("critic", "reference", "actor"))
+        handoff.assert_not_called()
+
     def test_gradients_remaining_after_full_update_lock_all_followup_operations(self):
         registry, backend, actor, critic, reference, _ = fixture()
         critic.update_critic(object())

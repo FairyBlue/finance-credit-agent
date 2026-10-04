@@ -1,0 +1,12 @@
+{
+  "c_compiler": "/home/tianming/micromamba/envs/finance-credit/bin/x86_64-conda-linux-gnu-gcc",
+  "c_compiler_version": "x86_64-conda-linux-gnu-gcc (conda-forge gcc 15.2.0-19) 15.2.0",
+  "cuda_available": true,
+  "cuda_device_count": 1,
+  "datasets_version": "4.0.0",
+  "gpu_model": "NVIDIA H100 NVL",
+  "model": "/home/tianming/projects/finance-credit-agent/runs/m2-coldstart-v3-20260914/merged_model",
+  "model_revision": "local-export-sha256:cf3b8e5a4e2e45708943f4c71c822d41d60cfae13170e760cb5979e1df2356db",
+  "model_snapshot_path": "/home/tianming/projects/finance-credit-agent/runs/m2-coldstart-v3-20260914/merged_model",
+  "triton_cuda_utils_compile": true
+}

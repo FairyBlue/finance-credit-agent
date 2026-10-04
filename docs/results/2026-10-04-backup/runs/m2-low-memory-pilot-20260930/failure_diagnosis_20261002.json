@@ -1,0 +1,40 @@
+{
+  "inspected_at_SGT": "2026-10-02T10:36:37+08:00",
+  "run_status": "FAILED",
+  "service_active_state": "failed",
+  "failure_stage": "reference_model_FSDP_initialization",
+  "exception": "torch.OutOfMemoryError",
+  "admitted_at_SGT": "2026-09-30T20:13:24.801683+08:00",
+  "admission_free_GiB": 62.4287109375,
+  "trainer_started_at_SGT": "2026-09-30T20:14:38.286439+08:00",
+  "finished_at_SGT": "2026-09-30T20:16:43.426443+08:00",
+  "oom_requested_MiB": 194,
+  "oom_driver_free_MiB": 84.75,
+  "critic_pre_init_torch_allocated_GiB": 0,
+  "critic_pre_init_whole_gpu_used_GiB": 72.47,
+  "critic_post_init_torch_allocated_GiB": 15.02,
+  "critic_post_init_whole_gpu_used_GiB": 91.91,
+  "container_memory_current_sampled_peak_GiB": 20.75674819946289,
+  "container_memory_events_first": "low 0\nhigh 30482681\nmax 21\noom 1\noom_kill 1\noom_group_kill 0",
+  "container_memory_events_last": "low 0\nhigh 30482681\nmax 21\noom 1\noom_kill 1\noom_group_kill 0",
+  "training_trajectories": 0,
+  "evaluation_trajectories": 0,
+  "optimizer_updates": 0,
+  "new_model_exports": 0,
+  "M2_started": false,
+  "restarted_during_inspection": false,
+  "current_GPU_MiB": {
+    "total": 95830,
+    "used": 16721,
+    "free": 78599,
+    "utilization_percent": 0
+  },
+  "interpretation": "CUDA OOM before rollout/optimizer update. Available GPU memory changed after admission. Full 4B chunked-Adam capacity and throughput remain untested.",
+  "evidence_sha256": {
+    "state.json": "1b6ffdbbf2bf76f41c07a2590d52d9e0ea240a54ec83710d6c6271dd947988be",
+    "gpu_queue_state.json": "4fbe87074431191a66d136e82e67d5e841ee5e2532025565008c3c1fb958166d",
+    "m1/summary.json": "3f58c8077b911bf418402eb878c0da2d0e4be147af5c29bc901859a49d65493f",
+    "m1/trainer.log": "4e4583e30f242c4e0630343f2b263a09a1c6c6bd927cb770b8e41a99717e05aa",
+    "m1/resources.jsonl": "dc6cc5f0315ee2c91b373bcd35bbb5d0cf6c8b14cd61d3d7fe39c174aa07f9ad"
+  }
+}

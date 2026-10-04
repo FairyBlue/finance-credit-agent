@@ -1,0 +1,50 @@
+{
+  "action_protocol": "single_tool_portfolio_v1",
+  "at_SGT": "2026-10-04T16:03:25.228577+08:00",
+  "enable_thinking": false,
+  "model_revision": "local-export-sha256:cf3b8e5a4e2e45708943f4c71c822d41d60cfae13170e760cb5979e1df2356db",
+  "status": "PASSED",
+  "tokenizer_path": "/home/tianming/projects/finance-credit-agent/runs/m2-coldstart-v3-20260914/merged_model",
+  "windows": [
+    {
+      "complete": true,
+      "episode": "formal-train-0001",
+      "max_prompt_tokens": 4534
+    },
+    {
+      "complete": true,
+      "episode": "formal-train-0065",
+      "max_prompt_tokens": 4551
+    },
+    {
+      "complete": true,
+      "episode": "formal-train-0009",
+      "max_prompt_tokens": 4539
+    },
+    {
+      "complete": true,
+      "episode": "formal-train-0073",
+      "max_prompt_tokens": 4562
+    },
+    {
+      "complete": true,
+      "episode": "formal-train-0113",
+      "max_prompt_tokens": 4589
+    },
+    {
+      "complete": true,
+      "episode": "formal-train-0117",
+      "max_prompt_tokens": 4589
+    },
+    {
+      "complete": true,
+      "episode": "formal-train-0121",
+      "max_prompt_tokens": 4569
+    },
+    {
+      "complete": true,
+      "episode": "formal-train-0125",
+      "max_prompt_tokens": 4569
+    }
+  ]
+}

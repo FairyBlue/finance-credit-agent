@@ -1,0 +1,1 @@
+{"actor_included": true, "actor_receipt_sha256": "8996d958bded881f7584c863fdfeb041a8a09427367a97d0a5212ec4fdf55f84", "artifact_profile": "actor_bf16_hf_v1", "critic_included": false, "global_step": 2, "identity_sha256": "15c1edc97079a2434383148923b836581ce8a96a452b67b8879c68dfae3d763c", "optimizer_included": false, "resume_supported": false, "schema_version": 1, "world_size": 1}

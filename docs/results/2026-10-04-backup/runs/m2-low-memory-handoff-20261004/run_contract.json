@@ -1,0 +1,14 @@
+{
+  "inputs": {
+    "gpu_handoff_config.json": "adb86d7425ca55f23d676a14ec32a13c8853b1c475bb06b0535fac9fe1446f3a",
+    "input_preflight.json": "63add5dab5461ac81c58755656ebb8ca50b25662e4060bdb4387487f118ca15a",
+    "model_identity.json": "c3c11fb601fec30ad30e6e508c7d74e8cccc4e7a862264536c19fc205f159247",
+    "plan.md": "df4709877ee3439521ff6ad6f4af867f3b22807e6e546b6558addf3349eabf76",
+    "prepared/manifest.json": "4ee0c5a548fa4e290e1207e55a9242e6f4d7aab657c61851e308cff152ec033b",
+    "selection.json": "4dba994987a7a4b97447f85b95fa905bd5078c166f00ba94e839f332755e8b7e",
+    "settings.json": "bffde68de174d1b519e926864ea3983becf8d421baeb363cc5f898eeee5d71c3",
+    "source_identity.json": "133068f11ff00f01e56925d9b4c9e0d439aec6badef25ad1a739a2019e82baa5"
+  },
+  "profile": "common_sft_low_memory_pilot_v1",
+  "sealed_at_SGT": "2026-10-04T16:04:14.455087+08:00"
+}
