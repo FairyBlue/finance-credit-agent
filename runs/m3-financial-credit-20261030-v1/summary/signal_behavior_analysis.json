@@ -1,0 +1,697 @@
+{
+  "profile": "recorded_financial_credit_signal_behavior_v1",
+  "scope": "fresh Train probe only; no Test, no new generation or environment replay",
+  "source_probe": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-credit-20261030-v1/probe/paired",
+  "gate": {
+    "complete_anchors": 12,
+    "complete_gate_base_questions": 12,
+    "estimand": "paired_factual_mask_mean_v1",
+    "later_rereading_and_equivalent_sources_unchanged": true,
+    "mean_factual_minus_masked_business": 0.25,
+    "mean_factual_minus_placebo_business": 0.0,
+    "minimum_complete_gate_base_questions": 8,
+    "no_true_action_advantage_claim": true,
+    "placebo_is_metadata_format_control_not_unrelated_tool_step": true,
+    "reason": "INSUFFICIENT_REPRODUCIBILITY_OR_PLACEBO_SEPARATION",
+    "repeated_reverse_effect_base_questions": [],
+    "reproducible_key_loss_base_questions": [
+      "financial-credit-base-10013",
+      "financial-credit-base-10049"
+    ],
+    "required_reproducible_base_questions": 3,
+    "statistical_significance_claim": false,
+    "status": "FAIL",
+    "varying_paired_key_loss_base_questions": [
+      "financial-credit-base-10086",
+      "financial-credit-base-10060",
+      "financial-credit-base-10110",
+      "financial-credit-base-10046"
+    ]
+  },
+  "actual_generation_tokens": 1314181,
+  "per_condition": {
+    "factual": {
+      "trajectories": 24,
+      "business_evaluable_trajectories": 24,
+      "status_counts": {
+        "COMPLETE": 24
+      },
+      "business_successes": 18,
+      "full_successes": 18,
+      "metric_correct": 18,
+      "condition_correct": 21,
+      "portfolio_correct": 22,
+      "evidence_valid": 24,
+      "call_counts": {
+        "6": 24
+      },
+      "mean_calls_used": 6.0,
+      "business_and_citation_reported_separately": true,
+      "actual_generation_cost": {
+        "model_requests": 72,
+        "prompt_tokens": 385376,
+        "response_tokens": 6337,
+        "generation_tokens": 391713
+      }
+    },
+    "masked": {
+      "trajectories": 24,
+      "business_evaluable_trajectories": 24,
+      "status_counts": {
+        "COMPLETE": 24
+      },
+      "business_successes": 12,
+      "full_successes": 9,
+      "metric_correct": 13,
+      "condition_correct": 18,
+      "portfolio_correct": 20,
+      "evidence_valid": 12,
+      "call_counts": {
+        "8": 1,
+        "6": 2,
+        "7": 18,
+        "9": 2,
+        "10": 1
+      },
+      "mean_calls_used": 7.25,
+      "business_and_citation_reported_separately": true,
+      "actual_generation_cost": {
+        "model_requests": 102,
+        "prompt_tokens": 528143,
+        "response_tokens": 7148,
+        "generation_tokens": 535291
+      }
+    },
+    "placebo": {
+      "trajectories": 24,
+      "business_evaluable_trajectories": 24,
+      "status_counts": {
+        "COMPLETE": 24
+      },
+      "business_successes": 18,
+      "full_successes": 18,
+      "metric_correct": 18,
+      "condition_correct": 21,
+      "portfolio_correct": 22,
+      "evidence_valid": 24,
+      "call_counts": {
+        "6": 24
+      },
+      "mean_calls_used": 6.0,
+      "business_and_citation_reported_separately": true,
+      "actual_generation_cost": {
+        "model_requests": 72,
+        "prompt_tokens": 380828,
+        "response_tokens": 6349,
+        "generation_tokens": 387177
+      }
+    }
+  },
+  "masked_recovery": {
+    "trajectories": 24,
+    "original_report_reread_trajectories": 0,
+    "equivalent_copy_read_trajectories": 15,
+    "report_reacquired_trajectories": 15,
+    "business_recovered_after_reacquisition": 11,
+    "all_within_original_tool_budget": true,
+    "rows": [
+      {
+        "trajectory_key": "probe/financial-credit-10010-v0/rep2/masked/rep0",
+        "base_scenario_id": "financial-credit-base-10010",
+        "parent_request_key": "financial-credit-10010-v0/rep2/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-46767c18488b",
+        "original_document_kind": "report",
+        "original_financial_source_id": "AMT/2008/page_32.pdf-4",
+        "equivalent_document_ids": [
+          "doc-46767c18488b",
+          "doc-f45ab05193fd"
+        ],
+        "reread_financial_source_ids": [],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 0,
+        "report_reacquired": false,
+        "business_correct": false,
+        "full_success": false,
+        "calls_used": 8,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": false
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10010-v0/rep2/masked/rep1",
+        "base_scenario_id": "financial-credit-base-10010",
+        "parent_request_key": "financial-credit-10010-v0/rep2/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-46767c18488b",
+        "original_document_kind": "report",
+        "original_financial_source_id": "AMT/2008/page_32.pdf-4",
+        "equivalent_document_ids": [
+          "doc-46767c18488b",
+          "doc-f45ab05193fd"
+        ],
+        "reread_financial_source_ids": [],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 0,
+        "report_reacquired": false,
+        "business_correct": false,
+        "full_success": false,
+        "calls_used": 6,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": false
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10078-v1/rep1/masked/rep0",
+        "base_scenario_id": "financial-credit-base-10078",
+        "parent_request_key": "financial-credit-10078-v1/rep1/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-cbcc1e0952f4",
+        "original_document_kind": "report",
+        "original_financial_source_id": "SLG/2010/page_81.pdf-4",
+        "equivalent_document_ids": [
+          "doc-5b9b6710bdcc",
+          "doc-cbcc1e0952f4"
+        ],
+        "reread_financial_source_ids": [
+          "SLG/2010/page_81.pdf-4"
+        ],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 1,
+        "report_reacquired": true,
+        "business_correct": false,
+        "full_success": false,
+        "calls_used": 7,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": false
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10078-v1/rep1/masked/rep1",
+        "base_scenario_id": "financial-credit-base-10078",
+        "parent_request_key": "financial-credit-10078-v1/rep1/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-cbcc1e0952f4",
+        "original_document_kind": "report",
+        "original_financial_source_id": "SLG/2010/page_81.pdf-4",
+        "equivalent_document_ids": [
+          "doc-5b9b6710bdcc",
+          "doc-cbcc1e0952f4"
+        ],
+        "reread_financial_source_ids": [
+          "SLG/2010/page_81.pdf-4"
+        ],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 1,
+        "report_reacquired": true,
+        "business_correct": false,
+        "full_success": false,
+        "calls_used": 7,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": false
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10013-v0/rep1/masked/rep0",
+        "base_scenario_id": "financial-credit-base-10013",
+        "parent_request_key": "financial-credit-10013-v0/rep1/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-cee0ed3f881c",
+        "original_document_kind": "report",
+        "original_financial_source_id": "ZBH/2008/page_57.pdf-3",
+        "equivalent_document_ids": [
+          "doc-cee0ed3f881c",
+          "doc-cef876a089fe"
+        ],
+        "reread_financial_source_ids": [],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 0,
+        "report_reacquired": false,
+        "business_correct": false,
+        "full_success": false,
+        "calls_used": 7,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": false
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10013-v0/rep1/masked/rep1",
+        "base_scenario_id": "financial-credit-base-10013",
+        "parent_request_key": "financial-credit-10013-v0/rep1/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-cee0ed3f881c",
+        "original_document_kind": "report",
+        "original_financial_source_id": "ZBH/2008/page_57.pdf-3",
+        "equivalent_document_ids": [
+          "doc-cee0ed3f881c",
+          "doc-cef876a089fe"
+        ],
+        "reread_financial_source_ids": [],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 0,
+        "report_reacquired": false,
+        "business_correct": false,
+        "full_success": false,
+        "calls_used": 6,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": false
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10086-v1/rep1/masked/rep0",
+        "base_scenario_id": "financial-credit-base-10086",
+        "parent_request_key": "financial-credit-10086-v1/rep1/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-c5bb1bb58e22",
+        "original_document_kind": "report",
+        "original_financial_source_id": "UAA/2016/page_80.pdf-4",
+        "equivalent_document_ids": [
+          "doc-b0652ab4deee",
+          "doc-c5bb1bb58e22"
+        ],
+        "reread_financial_source_ids": [],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 0,
+        "report_reacquired": false,
+        "business_correct": false,
+        "full_success": false,
+        "calls_used": 7,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": false
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10086-v1/rep1/masked/rep1",
+        "base_scenario_id": "financial-credit-base-10086",
+        "parent_request_key": "financial-credit-10086-v1/rep1/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-c5bb1bb58e22",
+        "original_document_kind": "report",
+        "original_financial_source_id": "UAA/2016/page_80.pdf-4",
+        "equivalent_document_ids": [
+          "doc-b0652ab4deee",
+          "doc-c5bb1bb58e22"
+        ],
+        "reread_financial_source_ids": [
+          "UAA/2016/page_80.pdf-4"
+        ],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 1,
+        "report_reacquired": true,
+        "business_correct": true,
+        "full_success": false,
+        "calls_used": 9,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": true
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10060-v1/rep1/masked/rep0",
+        "base_scenario_id": "financial-credit-base-10060",
+        "parent_request_key": "financial-credit-10060-v1/rep1/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-cb5a576817a4",
+        "original_document_kind": "report",
+        "original_financial_source_id": "ANET/2015/page_155.pdf-1",
+        "equivalent_document_ids": [
+          "doc-162d5454e5b4",
+          "doc-cb5a576817a4"
+        ],
+        "reread_financial_source_ids": [
+          "ANET/2015/page_155.pdf-1"
+        ],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 1,
+        "report_reacquired": true,
+        "business_correct": true,
+        "full_success": true,
+        "calls_used": 7,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": true
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10060-v1/rep1/masked/rep1",
+        "base_scenario_id": "financial-credit-base-10060",
+        "parent_request_key": "financial-credit-10060-v1/rep1/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-cb5a576817a4",
+        "original_document_kind": "report",
+        "original_financial_source_id": "ANET/2015/page_155.pdf-1",
+        "equivalent_document_ids": [
+          "doc-162d5454e5b4",
+          "doc-cb5a576817a4"
+        ],
+        "reread_financial_source_ids": [],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 0,
+        "report_reacquired": false,
+        "business_correct": false,
+        "full_success": false,
+        "calls_used": 9,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": false
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10110-v1/rep3/masked/rep0",
+        "base_scenario_id": "financial-credit-base-10110",
+        "parent_request_key": "financial-credit-10110-v1/rep3/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-b408ae1d7d53",
+        "original_document_kind": "report",
+        "original_financial_source_id": "HUM/2008/page_18.pdf-2",
+        "equivalent_document_ids": [
+          "doc-b408ae1d7d53",
+          "doc-ef098b59c468"
+        ],
+        "reread_financial_source_ids": [],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 0,
+        "report_reacquired": false,
+        "business_correct": false,
+        "full_success": false,
+        "calls_used": 7,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": false
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10110-v1/rep3/masked/rep1",
+        "base_scenario_id": "financial-credit-base-10110",
+        "parent_request_key": "financial-credit-10110-v1/rep3/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-b408ae1d7d53",
+        "original_document_kind": "report",
+        "original_financial_source_id": "HUM/2008/page_18.pdf-2",
+        "equivalent_document_ids": [
+          "doc-b408ae1d7d53",
+          "doc-ef098b59c468"
+        ],
+        "reread_financial_source_ids": [],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 0,
+        "report_reacquired": false,
+        "business_correct": true,
+        "full_success": false,
+        "calls_used": 7,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": false
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10049-v0/rep2/masked/rep0",
+        "base_scenario_id": "financial-credit-base-10049",
+        "parent_request_key": "financial-credit-10049-v0/rep2/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-533c3f794c64",
+        "original_document_kind": "report",
+        "original_financial_source_id": "ETFC/2014/page_26.pdf-3",
+        "equivalent_document_ids": [
+          "doc-533c3f794c64",
+          "doc-89b5c4495721"
+        ],
+        "reread_financial_source_ids": [],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 0,
+        "report_reacquired": false,
+        "business_correct": false,
+        "full_success": false,
+        "calls_used": 10,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": false
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10049-v0/rep2/masked/rep1",
+        "base_scenario_id": "financial-credit-base-10049",
+        "parent_request_key": "financial-credit-10049-v0/rep2/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-533c3f794c64",
+        "original_document_kind": "report",
+        "original_financial_source_id": "ETFC/2014/page_26.pdf-3",
+        "equivalent_document_ids": [
+          "doc-533c3f794c64",
+          "doc-89b5c4495721"
+        ],
+        "reread_financial_source_ids": [
+          "ETFC/2014/page_26.pdf-3"
+        ],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 1,
+        "report_reacquired": true,
+        "business_correct": false,
+        "full_success": false,
+        "calls_used": 7,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": false
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10045-v0/rep3/masked/rep0",
+        "base_scenario_id": "financial-credit-base-10045",
+        "parent_request_key": "financial-credit-10045-v0/rep3/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-e320611a6052",
+        "original_document_kind": "report",
+        "original_financial_source_id": "AAL/2014/page_59.pdf-2",
+        "equivalent_document_ids": [
+          "doc-272a3674c94d",
+          "doc-e320611a6052"
+        ],
+        "reread_financial_source_ids": [
+          "AAL/2014/page_59.pdf-2"
+        ],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 1,
+        "report_reacquired": true,
+        "business_correct": true,
+        "full_success": false,
+        "calls_used": 7,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": true
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10045-v0/rep3/masked/rep1",
+        "base_scenario_id": "financial-credit-base-10045",
+        "parent_request_key": "financial-credit-10045-v0/rep3/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-e320611a6052",
+        "original_document_kind": "report",
+        "original_financial_source_id": "AAL/2014/page_59.pdf-2",
+        "equivalent_document_ids": [
+          "doc-272a3674c94d",
+          "doc-e320611a6052"
+        ],
+        "reread_financial_source_ids": [
+          "AAL/2014/page_59.pdf-2"
+        ],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 1,
+        "report_reacquired": true,
+        "business_correct": true,
+        "full_success": true,
+        "calls_used": 7,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": true
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10011-v0/rep3/masked/rep0",
+        "base_scenario_id": "financial-credit-base-10011",
+        "parent_request_key": "financial-credit-10011-v0/rep3/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-e46976f16f65",
+        "original_document_kind": "report",
+        "original_financial_source_id": "ZBH/2003/page_58.pdf-4",
+        "equivalent_document_ids": [
+          "doc-9b5e5d36584f",
+          "doc-e46976f16f65"
+        ],
+        "reread_financial_source_ids": [
+          "ZBH/2003/page_58.pdf-4"
+        ],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 1,
+        "report_reacquired": true,
+        "business_correct": true,
+        "full_success": true,
+        "calls_used": 7,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": true
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10011-v0/rep3/masked/rep1",
+        "base_scenario_id": "financial-credit-base-10011",
+        "parent_request_key": "financial-credit-10011-v0/rep3/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-e46976f16f65",
+        "original_document_kind": "report",
+        "original_financial_source_id": "ZBH/2003/page_58.pdf-4",
+        "equivalent_document_ids": [
+          "doc-9b5e5d36584f",
+          "doc-e46976f16f65"
+        ],
+        "reread_financial_source_ids": [
+          "ZBH/2003/page_58.pdf-4"
+        ],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 1,
+        "report_reacquired": true,
+        "business_correct": true,
+        "full_success": true,
+        "calls_used": 7,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": true
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10098-v1/rep3/masked/rep0",
+        "base_scenario_id": "financial-credit-base-10098",
+        "parent_request_key": "financial-credit-10098-v1/rep3/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-46390a62ab5e",
+        "original_document_kind": "report",
+        "original_financial_source_id": "STT/2013/page_71.pdf-2",
+        "equivalent_document_ids": [
+          "doc-1471642503dc",
+          "doc-46390a62ab5e"
+        ],
+        "reread_financial_source_ids": [
+          "STT/2013/page_71.pdf-2"
+        ],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 1,
+        "report_reacquired": true,
+        "business_correct": true,
+        "full_success": true,
+        "calls_used": 7,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": true
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10098-v1/rep3/masked/rep1",
+        "base_scenario_id": "financial-credit-base-10098",
+        "parent_request_key": "financial-credit-10098-v1/rep3/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-46390a62ab5e",
+        "original_document_kind": "report",
+        "original_financial_source_id": "STT/2013/page_71.pdf-2",
+        "equivalent_document_ids": [
+          "doc-1471642503dc",
+          "doc-46390a62ab5e"
+        ],
+        "reread_financial_source_ids": [
+          "STT/2013/page_71.pdf-2"
+        ],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 1,
+        "report_reacquired": true,
+        "business_correct": true,
+        "full_success": true,
+        "calls_used": 7,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": true
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10120-v1/rep1/masked/rep0",
+        "base_scenario_id": "financial-credit-base-10120",
+        "parent_request_key": "financial-credit-10120-v1/rep1/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-bfcd42c2fd64",
+        "original_document_kind": "report",
+        "original_financial_source_id": "STT/2006/page_96.pdf-2",
+        "equivalent_document_ids": [
+          "doc-ac9fb9a45e11",
+          "doc-bfcd42c2fd64"
+        ],
+        "reread_financial_source_ids": [
+          "STT/2006/page_96.pdf-2"
+        ],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 1,
+        "report_reacquired": true,
+        "business_correct": true,
+        "full_success": true,
+        "calls_used": 7,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": true
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10120-v1/rep1/masked/rep1",
+        "base_scenario_id": "financial-credit-base-10120",
+        "parent_request_key": "financial-credit-10120-v1/rep1/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-bfcd42c2fd64",
+        "original_document_kind": "report",
+        "original_financial_source_id": "STT/2006/page_96.pdf-2",
+        "equivalent_document_ids": [
+          "doc-ac9fb9a45e11",
+          "doc-bfcd42c2fd64"
+        ],
+        "reread_financial_source_ids": [
+          "STT/2006/page_96.pdf-2"
+        ],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 1,
+        "report_reacquired": true,
+        "business_correct": true,
+        "full_success": true,
+        "calls_used": 7,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": true
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10046-v1/rep0/masked/rep0",
+        "base_scenario_id": "financial-credit-base-10046",
+        "parent_request_key": "financial-credit-10046-v1/rep0/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-f617088e619d",
+        "original_document_kind": "report",
+        "original_financial_source_id": "MRO/2018/page_96.pdf-1",
+        "equivalent_document_ids": [
+          "doc-7e33512d2a3b",
+          "doc-f617088e619d"
+        ],
+        "reread_financial_source_ids": [
+          "MRO/2018/page_96.pdf-1"
+        ],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 1,
+        "report_reacquired": true,
+        "business_correct": false,
+        "full_success": false,
+        "calls_used": 7,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": false
+      },
+      {
+        "trajectory_key": "probe/financial-credit-10046-v1/rep0/masked/rep1",
+        "base_scenario_id": "financial-credit-base-10046",
+        "parent_request_key": "financial-credit-10046-v1/rep0/call2",
+        "anchor_call_index": 3,
+        "original_document_id": "doc-f617088e619d",
+        "original_document_kind": "report",
+        "original_financial_source_id": "MRO/2018/page_96.pdf-1",
+        "equivalent_document_ids": [
+          "doc-7e33512d2a3b",
+          "doc-f617088e619d"
+        ],
+        "reread_financial_source_ids": [
+          "MRO/2018/page_96.pdf-1"
+        ],
+        "original_report_rereads": 0,
+        "equivalent_copy_reads": 1,
+        "report_reacquired": true,
+        "business_correct": true,
+        "full_success": true,
+        "calls_used": 7,
+        "within_original_tool_budget": true,
+        "recovered_business_after_report_reacquisition": true
+      }
+    ]
+  },
+  "local_effects": {
+    "complete_supports": 12,
+    "paired_difference_counts": {
+      "0.0": 6,
+      "1.0": 2,
+      "0.5": 3,
+      "-0.5": 1
+    },
+    "nonzero_supports": 6,
+    "reproducible_key_loss_base_questions": 2,
+    "required_reproducible_base_questions": 3,
+    "failed_gate_does_not_mean_all_differences_zero": true
+  },
+  "intervention_is_single_response_only": true,
+  "placebo_is_metadata_control_not_unrelated_tool_step": true,
+  "global_credit_uselessness_claim": false,
+  "document_identity_note": "original_report_rereads means the exact requested doc_id; a different archive doc_id with the same FinQA source_id is an equivalent-source reread",
+  "recorded_request_generation_tokens": 1314181,
+  "cost_scope": "completed resumed paired attempt only; earlier failed attempt is separate"
+}

@@ -1,0 +1,28 @@
+# 4B SFT / M1 / M2 四轮对照
+
+当前进展（新加坡时间）：2026-10-05T17:40:09.998201+08:00
+
+状态：**FAILED**；当前臂：m1。
+本批 seed：43。
+
+固定预算：SFT0 20 条评估；M1、M2 各 32 条训练 + 40 条评估，共 164 条。
+4B 全参数；共同 SFT v3；non-thinking；CPU 活跃 Adam moments + 磁盘非活跃 moments。
+模型导出不含优化器；本轮不支持断点续训或自动重跑。
+
+GPU 准入读数：91.55 GiB 空闲（门槛 60 GiB）。
+
+占位实际持有 0.00 GiB；空闲加可释放占位 91.55 GiB。
+只在 critic 首次加载前释放；训练期间及两臂之间不自动回补。
+
+- sft0：COMPLETE；已落盘轨迹 20/20。
+  训练 worker 的 PyTorch 峰值分配：64.50 GiB；整臂耗时 11.4 分钟。
+  greedy：平均净收益 1.6187%；非法请求 0/80。
+  sampled：平均净收益 1.1089%；非法请求 6/326。
+- m1：FAILED；已落盘轨迹 72/72。
+  错误：RuntimeError: common penalty evidence target or complete-step count differs
+- m2_eta025：PENDING；已落盘轨迹 0/72。
+
+停止原因：RuntimeError: common penalty evidence target or complete-step count differs
+
+本轮比较共同 SFT 起点、M1 和 M2；单 seed Train 读数不替代正式验证。
+阶段显存包含本进程指标；nvidia-smi 的整卡读数还包含其他用户进程。

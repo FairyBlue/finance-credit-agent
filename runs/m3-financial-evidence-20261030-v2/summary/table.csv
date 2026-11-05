@@ -1,0 +1,25 @@
+model,split,status,planned_N,observed_N,completed_N,successful_N,success_rate,business_correct_N,correct_tool_calls_mean,correct_tool_calls_N,correct_transaction_cost_mean,fact_correct_N,fact_correct_observed_N,period_correct_N,period_correct_observed_N,unit_correct_N,unit_correct_observed_N,metric_correct_N,metric_correct_observed_N,condition_correct_N,condition_correct_observed_N,portfolio_correct_N,portfolio_correct_observed_N,evidence_valid_N,evidence_valid_observed_N,failure_categories,status_counts,diagnostic_mode,privileged_diagnostic,same_model_reference,total_tokens,evaluation_reused,evaluation_source
+original,dev,COMPLETE,100,100,100,0,0.0,1,NA,0,NA,10,18,18,18,18,18,10,18,4,18,9,18,0,100,"{'no_submission': 82, 'business_or_proof_failure': 17, 'evidence_only_failure': 1}",{'COMPLETE': 100},standard,False,NA,4285931,False,NA
+oracle_facts,dev,COMPLETE,100,100,100,44,0.44,46,6.0,44,253.9306905434031,65,98,98,98,98,98,65,98,70,98,92,98,92,100,"{'business_or_proof_failure': 52, 'success': 44, 'evidence_only_failure': 2, 'no_submission': 2}",{'COMPLETE': 100},oracle_facts,True,common,2749912,False,NA
+fixed_retrieval,dev,COMPLETE,100,100,100,55,0.55,55,9.0,55,211.3248699824278,71,100,100,100,100,100,71,100,75,100,90,100,96,100,"{'success': 55, 'business_or_proof_failure': 45}",{'COMPLETE': 100},fixed_retrieval,False,common,3697338,False,NA
+common,dev,COMPLETE,100,100,100,41,0.41,41,6.0,41,277.99778332857557,48,96,96,96,96,96,48,96,67,96,90,96,91,100,"{'success': 41, 'business_or_proof_failure': 55, 'no_submission': 4}",{'COMPLETE': 100},standard,False,NA,2689360,False,NA
+sft,dev,COMPLETE,100,100,100,82,0.82,82,6.0,82,145.4001564119856,82,100,100,100,100,100,82,100,92,100,96,100,98,100,"{'business_or_proof_failure': 18, 'success': 82}",{'COMPLETE': 100},standard,False,NA,2559384,False,NA
+rloo_seed42,dev,COMPLETE,100,100,100,44,0.44,44,6.0,44,276.08571723510676,50,96,96,96,96,96,50,96,64,96,91,96,92,100,"{'success': 44, 'business_or_proof_failure': 52, 'no_submission': 4}",{'COMPLETE': 100},standard,False,NA,2681312,False,NA
+sham_seed42,dev,COMPLETE,100,100,100,41,0.41,41,6.0,41,274.3399177584625,46,92,92,92,92,92,46,92,65,92,87,92,88,100,"{'success': 41, 'business_or_proof_failure': 51, 'no_submission': 8}",{'COMPLETE': 100},standard,False,NA,2809790,False,NA
+m3_seed42,dev,COMPLETE,100,100,100,41,0.41,41,6.0,41,265.19525383318006,48,96,96,96,96,96,48,96,66,96,90,96,91,100,"{'success': 41, 'business_or_proof_failure': 55, 'no_submission': 4}",{'COMPLETE': 100},standard,False,NA,2670841,False,NA
+rloo_seed43,dev,SKIPPED,100,,,NA,,,,,,,,,,,,,,,,,,,,,,,,,,,
+sham_seed43,dev,SKIPPED,100,,,NA,,,,,,,,,,,,,,,,,,,,,,,,,,,
+m3_seed43,dev,SKIPPED,100,,,NA,,,,,,,,,,,,,,,,,,,,,,,,,,,
+original,test,COMPLETE,100,100,100,0,0.0,2,NA,0,NA,14,36,34,36,36,36,14,36,12,36,11,36,0,100,"{'business_or_proof_failure': 34, 'no_submission': 64, 'evidence_only_failure': 2}",{'COMPLETE': 100},standard,False,NA,4073277,False,NA
+oracle_facts,test,COMPLETE,100,100,100,56,0.56,59,6.035714285714286,56,258.4347344312745,81,100,100,100,100,100,81,100,74,100,92,100,97,100,"{'business_or_proof_failure': 41, 'success': 56, 'evidence_only_failure': 3}",{'COMPLETE': 100},oracle_facts,True,common,2663261,False,NA
+fixed_retrieval,test,COMPLETE,100,100,100,42,0.42,42,9.047619047619047,42,221.3879590292095,55,100,100,100,100,100,55,100,71,100,84,100,98,100,"{'business_or_proof_failure': 58, 'success': 42}",{'COMPLETE': 100},fixed_retrieval,False,common,3700723,False,NA
+common,test,COMPLETE,100,100,100,31,0.31,31,6.0,31,280.5936879267176,40,100,100,100,100,100,40,100,62,100,95,100,98,100,"{'business_or_proof_failure': 69, 'success': 31}",{'COMPLETE': 100},standard,False,NA,2661619,False,NA
+sft,test,COMPLETE,100,100,100,72,0.72,72,6.027777777777778,72,149.97248837462578,72,100,100,100,100,100,72,100,86,100,95,100,100,100,"{'success': 72, 'business_or_proof_failure': 28}",{'COMPLETE': 100},standard,False,NA,2593916,False,NA
+rloo_seed42,test,COMPLETE,100,100,100,34,0.34,34,6.029411764705882,34,280.0956768173147,43,100,100,100,100,100,43,100,62,100,96,100,97,100,"{'business_or_proof_failure': 66, 'success': 34}",{'COMPLETE': 100},standard,False,NA,2661574,False,NA
+sham_seed42,test,COMPLETE,100,100,100,31,0.31,31,6.032258064516129,31,278.1747768239009,41,100,100,100,100,100,41,100,61,100,95,100,98,100,"{'business_or_proof_failure': 69, 'success': 31}",{'COMPLETE': 100},standard,False,NA,2661617,False,NA
+m3_seed42,test,COMPLETE,100,100,100,32,0.32,32,6.0,32,274.16845530986086,40,100,100,100,100,100,40,100,60,100,96,100,98,100,"{'business_or_proof_failure': 68, 'success': 32}",{'COMPLETE': 100},standard,False,NA,2661706,False,NA
+rloo_seed43,test,SKIPPED,100,,,NA,,,,,,,,,,,,,,,,,,,,,,,,,,,
+sham_seed43,test,SKIPPED,100,,,NA,,,,,,,,,,,,,,,,,,,,,,,,,,,
+m3_seed43,test,SKIPPED,100,,,NA,,,,,,,,,,,,,,,,,,,,,,,,,,,
+privileged_full_information_oracle,dev,COMPLETE,100,100,100,100,1.0,100,6.0,,146.2231761652607,,,100,,100,,100,,100,,100,,100,,,,,True,,0,,
+privileged_full_information_oracle,test,COMPLETE,100,100,100,100,1.0,100,6.0,,150.7223508164989,,,100,,100,,100,,100,,100,,100,,,,,True,,0,,

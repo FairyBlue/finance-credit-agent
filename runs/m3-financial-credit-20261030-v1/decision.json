@@ -1,0 +1,60 @@
+{
+  "status": "COMPLETE",
+  "decision": "LOCAL_EFFECT_OBSERVED_BUT_PRESET_TRAINING_GATE_NOT_MET",
+  "signal_gate": {
+    "complete_anchors": 12,
+    "complete_gate_base_questions": 12,
+    "estimand": "paired_factual_mask_mean_v1",
+    "later_rereading_and_equivalent_sources_unchanged": true,
+    "mean_factual_minus_masked_business": 0.25,
+    "mean_factual_minus_placebo_business": 0.0,
+    "minimum_complete_gate_base_questions": 8,
+    "no_true_action_advantage_claim": true,
+    "placebo_is_metadata_format_control_not_unrelated_tool_step": true,
+    "reason": "INSUFFICIENT_REPRODUCIBILITY_OR_PLACEBO_SEPARATION",
+    "repeated_reverse_effect_base_questions": [],
+    "reproducible_key_loss_base_questions": [
+      "financial-credit-base-10013",
+      "financial-credit-base-10049"
+    ],
+    "required_reproducible_base_questions": 3,
+    "statistical_significance_claim": false,
+    "status": "FAIL",
+    "varying_paired_key_loss_base_questions": [
+      "financial-credit-base-10086",
+      "financial-credit-base-10060",
+      "financial-credit-base-10110",
+      "financial-credit-base-10046"
+    ]
+  },
+  "no_credit_training_performed": true,
+  "preferred_existing_endpoint": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-evidence-20261030-v2/teacher_sft/adapter",
+  "credit_method_claim_supported": false,
+  "training_stopped": true,
+  "fresh_test_opened": false,
+  "research_direction_review_required": true,
+  "finished_at": "2026-10-30T11:27:15.673372+08:00",
+  "controller_exit_reason": "NO_REPRODUCIBLE_LOCAL_SIGNAL",
+  "local_effects_are_all_zero": false,
+  "completed_base_questions": 12,
+  "conditions_per_base": 3,
+  "continuation_replicates_per_condition": 2,
+  "business_successes": {
+    "factual": 18,
+    "masked": 12,
+    "placebo": 18
+  },
+  "condition_denominator": 24,
+  "repeated_key_loss_base_questions": 2,
+  "required_repeated_key_loss_base_questions": 3,
+  "optimizer_updates": 0,
+  "learning_benefit_tested": false,
+  "estimated_response_intervention_effect": 0.25,
+  "true_action_advantage_identified": false,
+  "actual_generation_tokens": 4680252,
+  "failed_attempt_generation_tokens_included": 57188,
+  "paper_direction_candidate": "verifiable financial evidence use, recovery and correction under tool budgets",
+  "new_paper_claim_validated": false,
+  "credit_retained_as_unconfirmed_optional_module": true,
+  "reviewed_at": "2026-10-30T11:34:17.328649+08:00"
+}

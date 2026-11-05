@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "recorded_at_UTC": "2026-10-18T04:53:39.578419+00:00",
+  "status_source": "actual completed unified exec command results",
+  "commands": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-B",
+        "scripts/diagnostics/m2_same_prefix_gate_probe.py",
+        "prepare",
+        "--fixture",
+        "/tmp/m2-gate-only-fixture-receipt-20261018.json",
+        "--old-baseline",
+        "/tmp/m2-gate-only-old-immutability-baseline-20261018.json"
+      ],
+      "actual_exit_code": 0,
+      "unified_exec_session": 77548
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-B",
+        "scripts/diagnostics/m2_same_prefix_gate_probe.py",
+        "run",
+        "--output",
+        "runs/m2-same-prefix-gate-20261018-v1"
+      ],
+      "actual_exit_code": 0,
+      "unified_exec_session": 60626
+    }
+  ],
+  "contract_sha256": "9b5882f57399fb39575cbcb5cd98b9caf265a8da50ececdb64a1c610e6346c66",
+  "completion_sha256": "6fc6443a85967e80abd6da15e7ad417455a711a337e15c577703c75a5b06fb2c",
+  "model_requests": 0,
+  "environment_requests": 0,
+  "optimizer_updates": 0
+}

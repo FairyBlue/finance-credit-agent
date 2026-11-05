@@ -86,6 +86,12 @@ def _validate_row(row: SiblingStep) -> None:
 def compute_sibling_credit(rows: Sequence[SiblingStep]) -> SiblingCredit:
     """Validate complete n=4 groups and compute plain and family-pooled S.
 
+    At each advancing session j, let mean_Y be the four siblings' mean original
+    financial outcome and D_j indicate at least two action families. Then plain
+    is D_j * (Y_i - mean_Y); pooled replaces Y_i by its action-family mean.
+    Both are zero on non-advancing rows. Neither includes eta or whitening;
+    these are actor-only residuals added to the shared critic/GAE signal later.
+
     Validation is before arithmetic: no partial trajectory, missing sibling,
     cross-policy group, or duplicated step is repaired or silently discarded.
     Rows may have been permuted by the trainer's DP load balancing.

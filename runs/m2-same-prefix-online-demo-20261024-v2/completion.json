@@ -1,0 +1,41 @@
+{
+  "status": "COMPLETE_ONLINE_HEAD_GAE_DEMO",
+  "training_seed": 42,
+  "windows": [
+    "formal-train-0001",
+    "formal-train-0009",
+    "formal-train-0065",
+    "formal-train-0073"
+  ],
+  "rounds_per_arm": 2,
+  "actor_updates": 6,
+  "critic_updates": 6,
+  "training_head_exposures": 96,
+  "unique_collected_heads": 64,
+  "complete_parent_trajectories": 28,
+  "complete_EST_trajectories": 128,
+  "initial_critic_predictions_equal": true,
+  "final_mean_net_returns": {
+    "zero": 0.034709134514228246,
+    "plain": 0.039890375211171836,
+    "exact": 0.045234528661092455
+  },
+  "exact_minus_zero_pp": 1.0525394146864209,
+  "exact_minus_plain_pp": 0.5344153449920619,
+  "exact_vs_zero_window_counts": {
+    "better": 3,
+    "same": 0,
+    "worse": 1
+  },
+  "actual_collection_totals": {
+    "model_requests": 1250,
+    "prompt_tokens": 5804698,
+    "response_tokens": 26350
+  },
+  "known_stage_wall_seconds_including_shared_initial": 2067.324155561626,
+  "holder_restored": true,
+  "next_priority": "Repeat the same configuration on another training seed before changing alpha, SFT or adding methods.",
+  "scope": "One-seed exploratory head-only actor/learned-critic GAE comparison on four previously used Train windows. Fresh optimizer each round; not a full StepPO reproduction, strict compute-matched comparison, or generalization result.",
+  "REF_used": false,
+  "formal_valid_oos_access": false
+}

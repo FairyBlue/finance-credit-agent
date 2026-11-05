@@ -1,0 +1,120 @@
+{
+  "authorized_steps": [
+    1
+  ],
+  "stages": [
+    {
+      "name": "sample_sft",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-transfer-probe-20261105-v1/logs/sample_sft_attempt1.log",
+      "started_at": "2026-11-05T18:14:16.846359+08:00",
+      "gpu_worker": true,
+      "seconds": 186.53757712244987,
+      "finished_at": "2026-11-05T18:17:23.385129+08:00"
+    },
+    {
+      "name": "sample_rloo_high",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-transfer-probe-20261105-v1/logs/sample_rloo_high_attempt1.log",
+      "started_at": "2026-11-05T18:17:23.822557+08:00",
+      "gpu_worker": true,
+      "seconds": 184.33069521188736,
+      "finished_at": "2026-11-05T18:20:28.153926+08:00"
+    }
+  ],
+  "arms": {},
+  "started_at": "2026-11-05T18:14:16.161426+08:00",
+  "formal_valid_access": false,
+  "formal_final_oos_access": false,
+  "synthetic_mandates": true,
+  "known_quote_primary": true,
+  "status": "COMPLETE",
+  "attempt": 1,
+  "updated_at": "2026-11-05T18:20:29.266980+08:00",
+  "experiment": "heldout_native_sampling_probability_probe_v1",
+  "contract_sha256": "690a55438adf7f74154ae159f4a73c34198e1fcf6f547613a52a722f9e4d23bb",
+  "frozen_parent_completion_sha256": "6a4de1c771e66a076e122f02c9075def3dc4ef944df76b3ba6cb009cac79b019",
+  "frozen_parent_costs": {
+    "stage2_generation_tokens": 27798224,
+    "stage3_training_generation_tokens": {
+      "rloo": 2531290,
+      "mc_target": 3023694
+    },
+    "stage3_evaluation_generation_tokens": 3417545,
+    "total_new_generation_tokens": 36770753,
+    "step3_gpu_stage_seconds": 2391.0504164621234,
+    "parent_gpu_stage_seconds": 7730.071248210967,
+    "gpu_stage_seconds": 10121.12166467309,
+    "includes_failed_requests": true,
+    "supervision_accounted_separately": true
+  },
+  "reserved_test_access": false,
+  "controller_source": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-transfer-probe-20261105-v1/frozen_sources/probe_controller_attempt1.py",
+  "controller_source_sha256": "0b8745bcbe469d4a58bf4196ff3bbb818dd822a397d6779cb4dbfdad1ad9f6da",
+  "source_receipts": {
+    "src/agents/mandate_repair_collect.py": {
+      "sha256": "cf88a2df68844bdb7d0c999be49fefc91364de39b3ba6f5aebb7479af0f36e2e",
+      "frozen_at": "2026-11-05T18:14:16.840308+08:00"
+    },
+    "src/agents/financial_evidence_env.py": {
+      "sha256": "a9c17b524d072e84a3039437c7a2a4a20bb9513afa8432599bc91b5de5eba17c",
+      "frozen_at": "2026-11-05T18:14:16.841572+08:00"
+    },
+    "src/agents/mandate_repair_env.py": {
+      "sha256": "9fdc61814436909284388c95a2c55efa1127f55e1a81ffbcb817a4ddfddf8817",
+      "frozen_at": "2026-11-05T18:14:16.842813+08:00"
+    },
+    "src/agents/mandate_repair_metrics.py": {
+      "sha256": "18ed947291e1f436e3423764ae6bc372c43be274270584969808f4870ef0302d",
+      "frozen_at": "2026-11-05T18:14:16.843890+08:00"
+    },
+    "src/agents/mandate_repair_verifier.py": {
+      "sha256": "b20c79771f758ecce9bebc8bce8aa505794446e7d302b996c6fba7fa6c2d5a52",
+      "frozen_at": "2026-11-05T18:14:16.845011+08:00"
+    }
+  },
+  "current_stage": null,
+  "comparison": {
+    "paired_trajectories": 64,
+    "report_clusters": 16,
+    "success_difference_high_rl_minus_sft": -0.015625,
+    "descriptive_report_bootstrap_95_interval": [
+      -0.0625,
+      0.03125
+    ],
+    "report_differences": {
+      "MKTX/2014": -0.25,
+      "UPS/2015": 0.0,
+      "MSI/2012": 0.0,
+      "AAL/2014": 0.0,
+      "ETR/2004": 0.0,
+      "AAL/2018": 0.0,
+      "AWK/2017": 0.0,
+      "AMT/2007": 0.0,
+      "RL/2014": 0.0,
+      "UAA/2016": 0.0,
+      "MSI/2007": 0.0,
+      "PNC/2014": 0.0,
+      "GPN/2010": 0.0,
+      "PNC/2008": -0.25,
+      "SNA/2012": 0.25,
+      "MRO/2014": 0.0
+    },
+    "independently_held_out_confirmation": false,
+    "threshold_versions_and_replicas_clustered": true
+  },
+  "finished_at": "2026-11-05T18:20:28.516755+08:00",
+  "costs": {
+    "generation_tokens_by_model": {
+      "sft": 1641480,
+      "rloo_high": 1641560
+    },
+    "diagnostic_generation_tokens": 3283040,
+    "parent_generation_tokens": 36770753,
+    "total_new_generation_tokens": 40053793,
+    "gpu_stage_seconds": 10491.989937007427,
+    "diagnostic_gpu_stage_seconds": 370.86827233433723,
+    "raw_failures_included": true
+  },
+  "holder_restore": "REFILLING_76_GIB"
+}

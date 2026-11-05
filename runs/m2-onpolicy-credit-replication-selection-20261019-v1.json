@@ -1,0 +1,266 @@
+{
+  "profile": "metadata_only_Train_window_purge_selection_audit_v1",
+  "status": "INSUFFICIENT_UNTOUCHED_PURGED_WINDOWS",
+  "at_UTC": "2026-10-19T06:49:08.836185+00:00",
+  "eligible_new_windows": 0,
+  "requested_new_windows": 8,
+  "source_files_sha256": {
+    "/home/tianming/projects/finance-credit-agent/data/processed/train.parquet": "87e9de90fc322f61b6b18e806b50fc59e3a8adce850442b69659f9f2bc21b33b",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/prepared/dev.parquet": "37dbdad0e887c4d6287dda7c1fdd42e34ad2488ba6e59bad367452d0d9f6f2d5",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-onpolicy-credit-20261018-v1/continuation_manifest.json": "16d49fc4b4d9b43cf1cfd992c5ecd80eb7cdaa412604b6540dde9b96d8a7a0c9",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-coldstart-v3-20260914/dataset/manifest.json": "9c1bce7f181853bd5934478d901cae9189be3f38fa6f538b928c0a22d993ee40",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/dataset_manifest.json": "d345a6036cae260a8c33ca72e8c72f1d5c55535a4b1690f627c74055d7da8503"
+  },
+  "Train_windows": 441,
+  "Train_sessions": 461,
+  "Train_range": [
+    "2023-01-03",
+    "2024-10-31"
+  ],
+  "window_sessions": 21,
+  "purge_sessions": 20,
+  "purge_rule": "At least20 complete trading sessions strictly between disjoint full21-session intervals; apply against old exposures and mutually to new selections.",
+  "last_onpolicy8": [
+    {
+      "episode_id": "formal-train-0001",
+      "start_date": "2023-01-03",
+      "end_date": "2023-02-01",
+      "start_index": 0,
+      "end_index": 20
+    },
+    {
+      "episode_id": "formal-train-0009",
+      "start_date": "2023-01-13",
+      "end_date": "2023-02-13",
+      "start_index": 8,
+      "end_index": 28
+    },
+    {
+      "episode_id": "formal-train-0017",
+      "start_date": "2023-01-26",
+      "end_date": "2023-02-24",
+      "start_index": 16,
+      "end_index": 36
+    },
+    {
+      "episode_id": "formal-train-0025",
+      "start_date": "2023-02-07",
+      "end_date": "2023-03-08",
+      "start_index": 24,
+      "end_index": 44
+    },
+    {
+      "episode_id": "formal-train-0065",
+      "start_date": "2023-04-05",
+      "end_date": "2023-05-04",
+      "start_index": 64,
+      "end_index": 84
+    },
+    {
+      "episode_id": "formal-train-0073",
+      "start_date": "2023-04-18",
+      "end_date": "2023-05-16",
+      "start_index": 72,
+      "end_index": 92
+    },
+    {
+      "episode_id": "formal-train-0149",
+      "start_date": "2023-08-07",
+      "end_date": "2023-09-05",
+      "start_index": 148,
+      "end_index": 168
+    },
+    {
+      "episode_id": "formal-train-0157",
+      "start_date": "2023-08-17",
+      "end_date": "2023-09-15",
+      "start_index": 156,
+      "end_index": 176
+    }
+  ],
+  "touched_Train_dev12": [
+    {
+      "episode_id": "formal-train-0210",
+      "start_date": "2023-11-01",
+      "end_date": "2023-11-30",
+      "start_index": 209,
+      "end_index": 229
+    },
+    {
+      "episode_id": "formal-train-0231",
+      "start_date": "2023-12-01",
+      "end_date": "2024-01-02",
+      "start_index": 230,
+      "end_index": 250
+    },
+    {
+      "episode_id": "formal-train-0252",
+      "start_date": "2024-01-03",
+      "end_date": "2024-02-01",
+      "start_index": 251,
+      "end_index": 271
+    },
+    {
+      "episode_id": "formal-train-0273",
+      "start_date": "2024-02-02",
+      "end_date": "2024-03-04",
+      "start_index": 272,
+      "end_index": 292
+    },
+    {
+      "episode_id": "formal-train-0294",
+      "start_date": "2024-03-05",
+      "end_date": "2024-04-03",
+      "start_index": 293,
+      "end_index": 313
+    },
+    {
+      "episode_id": "formal-train-0315",
+      "start_date": "2024-04-04",
+      "end_date": "2024-05-02",
+      "start_index": 314,
+      "end_index": 334
+    },
+    {
+      "episode_id": "formal-train-0336",
+      "start_date": "2024-05-03",
+      "end_date": "2024-06-03",
+      "start_index": 335,
+      "end_index": 355
+    },
+    {
+      "episode_id": "formal-train-0357",
+      "start_date": "2024-06-04",
+      "end_date": "2024-07-03",
+      "start_index": 356,
+      "end_index": 376
+    },
+    {
+      "episode_id": "formal-train-0378",
+      "start_date": "2024-07-05",
+      "end_date": "2024-08-02",
+      "start_index": 377,
+      "end_index": 397
+    },
+    {
+      "episode_id": "formal-train-0399",
+      "start_date": "2024-08-05",
+      "end_date": "2024-09-03",
+      "start_index": 398,
+      "end_index": 418
+    },
+    {
+      "episode_id": "formal-train-0420",
+      "start_date": "2024-09-04",
+      "end_date": "2024-10-02",
+      "start_index": 419,
+      "end_index": 439
+    },
+    {
+      "episode_id": "formal-train-0441",
+      "start_date": "2024-10-03",
+      "end_date": "2024-10-31",
+      "start_index": 440,
+      "end_index": 460
+    }
+  ],
+  "last8_only": {
+    "eligible_new_windows": 244,
+    "deterministic_earliest_greedy_count": 6,
+    "greedy_windows": [
+      {
+        "episode_id": "formal-train-0198",
+        "start_date": "2023-10-16",
+        "end_date": "2023-11-13",
+        "start_index": 197,
+        "end_index": 217
+      },
+      {
+        "episode_id": "formal-train-0239",
+        "start_date": "2023-12-13",
+        "end_date": "2024-01-12",
+        "start_index": 238,
+        "end_index": 258
+      },
+      {
+        "episode_id": "formal-train-0280",
+        "start_date": "2024-02-13",
+        "end_date": "2024-03-13",
+        "start_index": 279,
+        "end_index": 299
+      },
+      {
+        "episode_id": "formal-train-0321",
+        "start_date": "2024-04-12",
+        "end_date": "2024-05-10",
+        "start_index": 320,
+        "end_index": 340
+      },
+      {
+        "episode_id": "formal-train-0362",
+        "start_date": "2024-06-11",
+        "end_date": "2024-07-11",
+        "start_index": 361,
+        "end_index": 381
+      },
+      {
+        "episode_id": "formal-train-0403",
+        "start_date": "2024-08-09",
+        "end_date": "2024-09-09",
+        "start_index": 402,
+        "end_index": 422
+      }
+    ]
+  },
+  "last8_plus_Train_dev12": {
+    "eligible_new_windows": 0,
+    "deterministic_earliest_greedy_count": 0,
+    "greedy_windows": []
+  },
+  "SFT_exposure_lower_bound": {
+    "v3_source_train_ids": [
+      "formal-train-0001",
+      "formal-train-0013",
+      "formal-train-0021",
+      "formal-train-0033",
+      "formal-train-0045",
+      "formal-train-0057",
+      "formal-train-0065",
+      "formal-train-0077"
+    ],
+    "v3_new_decision_and_horizon_range": [
+      "2023-01-03T21:00:00+00:00",
+      "2023-05-22T20:00:00+00:00"
+    ],
+    "common_recovery_train_source_ids": [
+      "formal-train-0001",
+      "formal-train-0065",
+      "formal-train-0009",
+      "formal-train-0073",
+      "formal-train-0017",
+      "formal-train-0149",
+      "formal-train-0025",
+      "formal-train-0157"
+    ],
+    "recovery_source_date_range": [
+      "2023-01-03",
+      "2023-09-15"
+    ],
+    "acceptance_Train_source_ids": [
+      "formal-train-0105",
+      "formal-train-0113",
+      "formal-train-0121"
+    ],
+    "acceptance_source_date_range": [
+      "2023-06-02",
+      "2023-07-26"
+    ],
+    "note": "Additional prior exposure cannot create eligibility; 0 already follows from old8+Train-dev12. Original retained SFT rows were not inspected."
+  },
+  "selection": [],
+  "recommendation": "Same eight fixed Train windows with fresh independent namespace seeds; sampling/state replication, explicitly not unseen-date/date-generalization evidence.",
+  "metadata_only": true,
+  "Y_or_generation_outputs_read": false,
+  "formal_Valid_or_OOS_read": false,
+  "GPU_or_model_requests": 0
+}

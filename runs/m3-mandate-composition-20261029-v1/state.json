@@ -1,0 +1,166 @@
+{
+  "authorized_steps": [
+    1,
+    2,
+    3
+  ],
+  "stages": [
+    {
+      "name": "eval_original_dev",
+      "status": "FAILED",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/m3-mandate-composition-20261029-v1/logs/eval_original_dev_attempt1.log",
+      "started_at": "2026-10-29T17:57:23.882733+08:00",
+      "gpu_worker": true,
+      "seconds": 86.07993541657925,
+      "finished_at": "2026-10-29T17:58:49.964572+08:00"
+    },
+    {
+      "name": "eval_original_dev",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/m3-mandate-composition-20261029-v1/logs/eval_original_dev_attempt2.log",
+      "started_at": "2026-10-29T17:59:35.007807+08:00",
+      "gpu_worker": true,
+      "seconds": 452.9316480048001,
+      "finished_at": "2026-10-29T18:07:07.941400+08:00"
+    },
+    {
+      "name": "initial_training_probe",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/m3-mandate-composition-20261029-v1/logs/initial_training_probe_attempt2.log",
+      "started_at": "2026-10-29T18:07:08.175469+08:00",
+      "gpu_worker": true,
+      "seconds": 211.37984300404787,
+      "finished_at": "2026-10-29T18:10:39.556366+08:00"
+    },
+    {
+      "name": "common_sft",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/m3-mandate-composition-20261029-v1/logs/common_sft_attempt2.log",
+      "started_at": "2026-10-29T18:10:39.946353+08:00",
+      "gpu_worker": true,
+      "seconds": 2317.407839883119,
+      "finished_at": "2026-10-29T18:49:17.358147+08:00"
+    },
+    {
+      "name": "eval_sft_dev",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/m3-mandate-composition-20261029-v1/logs/eval_sft_dev_attempt2.log",
+      "started_at": "2026-10-29T18:49:17.361181+08:00",
+      "gpu_worker": true,
+      "seconds": 391.4547718539834,
+      "finished_at": "2026-10-29T18:55:48.817701+08:00"
+    },
+    {
+      "name": "rloo_seed42_round000_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/m3-mandate-composition-20261029-v1/logs/rloo_seed42_round000_collect_attempt2.log",
+      "started_at": "2026-10-29T18:55:49.023299+08:00",
+      "gpu_worker": true,
+      "seconds": 200.3613725155592,
+      "finished_at": "2026-10-29T18:59:09.385675+08:00"
+    },
+    {
+      "name": "rloo_seed42_round000_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/m3-mandate-composition-20261029-v1/logs/rloo_seed42_round000_train_attempt2.log",
+      "started_at": "2026-10-29T18:59:09.422792+08:00",
+      "gpu_worker": true,
+      "seconds": 15.376429062336683,
+      "finished_at": "2026-10-29T18:59:24.800309+08:00"
+    },
+    {
+      "name": "eval_rloo_seed42_dev",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/m3-mandate-composition-20261029-v1/logs/eval_rloo_seed42_dev_attempt2.log",
+      "started_at": "2026-10-29T18:59:25.018537+08:00",
+      "gpu_worker": true,
+      "seconds": 0.6800650469958782,
+      "finished_at": "2026-10-29T18:59:25.699631+08:00"
+    },
+    {
+      "name": "eval_original_test",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/m3-mandate-composition-20261029-v1/logs/eval_original_test_attempt2.log",
+      "started_at": "2026-10-29T18:59:26.479296+08:00",
+      "gpu_worker": true,
+      "seconds": 318.46048294752836,
+      "finished_at": "2026-10-29T19:04:44.940731+08:00"
+    },
+    {
+      "name": "eval_sft_test",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/m3-mandate-composition-20261029-v1/logs/eval_sft_test_attempt2.log",
+      "started_at": "2026-10-29T19:04:45.365348+08:00",
+      "gpu_worker": true,
+      "seconds": 293.21704038977623,
+      "finished_at": "2026-10-29T19:09:38.583380+08:00"
+    },
+    {
+      "name": "eval_rloo_seed42_test",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/m3-mandate-composition-20261029-v1/logs/eval_rloo_seed42_test_attempt2.log",
+      "started_at": "2026-10-29T19:09:40.035252+08:00",
+      "gpu_worker": true,
+      "seconds": 3.9913086220622063,
+      "finished_at": "2026-10-29T19:09:44.027606+08:00"
+    }
+  ],
+  "arms": {
+    "rloo_seed42": {
+      "arm": "rloo",
+      "seed": 42,
+      "status": "COMPLETE",
+      "token_budget": 3000000,
+      "auxiliary_token_cap": 0,
+      "cumulative_tokens": 1275152,
+      "parent_tokens": 1275152,
+      "auxiliary_tokens": 0,
+      "rounds": [
+        {
+          "round": 0,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/m3-mandate-composition-20261029-v1/training/rloo_seed42/round_000/collect",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/m3-mandate-composition-20261029-v1/training/rloo_seed42/round_000/train",
+          "cumulative_tokens": 1275152,
+          "tokens": 1275152,
+          "auxiliary_tokens": 0,
+          "auxiliary_allowance": 0,
+          "optimizer_updates": 0,
+          "completed_optimizer_steps": 0,
+          "parent_successes": 64,
+          "parent_started_trajectories": 64
+        }
+      ],
+      "final_adapter": "/home/tianming/projects/finance-credit-agent/runs/m3-mandate-composition-20261029-v1/training/rloo_seed42/round_000/train/adapter",
+      "completed_optimizer_steps": 0,
+      "local_credit_target": null,
+      "budget_stop_reason": "FIRST_BATCH_NO_EFFECTIVE_ADVANTAGE",
+      "finished_at": "2026-10-29T18:59:25.003817+08:00",
+      "unused_budget_tokens": 1724848,
+      "endpoints_not_strictly_equal_actual_tokens": true
+    }
+  },
+  "started_at": "2026-10-29T17:57:23.055554+08:00",
+  "formal_valid_access": false,
+  "formal_final_oos_access": false,
+  "synthetic_mandates": true,
+  "known_quote_primary": true,
+  "status": "COMPLETE",
+  "attempt": 2,
+  "updated_at": "2026-10-29T19:09:44.773255+08:00",
+  "current_step": 3,
+  "plan": "docs/2026-10-29_M3_COMPOSITION_PLAN.md",
+  "initial_adapter": "/home/tianming/projects/finance-credit-agent/runs/m3-mandate-repair-20261029-v1/common_sft/adapter",
+  "current_stage": null,
+  "holder_restore": "REFILLING_76_GIB",
+  "initial_probe_complete": true,
+  "initial_probe_not_actor_training_data": true,
+  "step1_status": "COMPLETE",
+  "step2_status": "COMPLETE",
+  "step3_mode": "FROZEN_SFT_BASELINE_ONLY",
+  "seed43_decision": {
+    "status": "SKIPPED",
+    "trigger": "NO_RL_SIGNAL"
+  },
+  "step3_status": "COMPLETE",
+  "finished_at": "2026-10-29T19:09:44.568101+08:00"
+}

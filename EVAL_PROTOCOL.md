@@ -1,5 +1,7 @@
 # 评测协议（v0.1 起始冻结；当前审核规则以 v0.8 线下人工流程为准）
 
+阅读说明（2026-10-17）：原始条款、TODO 和实现快照按各节日期保留，后续修订覆盖相应旧提案；不将历史待办视为当前执行队列。最新研发进度与下一步见[文档导航](docs/README.md)。Train 内 screening 的工程完成不代表 formal 门禁已解除。
+
 > 本文件是审稿门票。领域现状：77 篇实证研究里只有 2 篇 split 干净、1 篇报交易成本（Agentic Trading survey, arXiv 2605.19337）。协议本身就是差异化。
 
 ## 1. 数据与时间切分
@@ -471,7 +473,7 @@ preflight 通过后启动唯一一次 A1/Qwen3-1.7B G1 wiring smoke。本授权�
   critic、actor 各 1 条 finite non-zero update record，peak allocated GPU memory 为
   `93,829,628,928` bytes。原始 `summary.json` SHA-256 为
   `99329dbf4c624a611a06505af96164fbdbace5acf221b186ebcf5cb27d908fdf`；完整证据和限制见
-  [`docs/2026-09-02_H100_A3_M1_WIRING_SMOKE_RESULTS.md`](docs/2026-09-02_H100_A3_M1_WIRING_SMOKE_RESULTS.md)。
+  [`docs/2026-09-02_H100_A3_M1_WIRING_SMOKE_RESULTS.md`](docs/history/FOUNDATIONS_AND_DIAGNOSTICS.md)。
 - 协议定义的 G1 仍专指 A1/Qwen3-1.7B wiring smoke，并已于 2026-08-31 独立通过；本节的 A3-M1
   run 是后续 method-specific wiring smoke，不能称为 G1，也不能解释为 A3-M1 正式消融、A3-main
   或项目全部门禁已经通过。M2/M3、M1 superiority statistic、正式执行身份与 formal H100
@@ -708,7 +710,7 @@ horizon 与统计规则仍由单独 M3 protocol 冻结；本节不授权一个�
 gate 的 multiplicity 必须单独授权。若 M2 与 M3 都运行，则为七个 main-training arms，不能沿用五臂
 或六臂预算。
 
-### 19.7 当前实现状态与 formal 门禁
+### 19.7 2026-09-03 实现快照与 formal 门禁
 
 截至本修订记录时，以下事项尚未全部实现，因此科学定义与 executable state 必须明确区分：
 
@@ -737,7 +739,7 @@ gate 的 multiplicity 必须单独授权。若 M2 与 M3 都运行，则为七�
 
 ## 20. v1.4 M2 screening 执行修订（2026-09-06，用户确认线下讨论并授权）
 
-用户确认两位合作者已线下讨论 [M2 实验计划 v2](docs/2026-09-05_M2_EXPERIMENT_PLAN_V2.md)，
+用户确认两位合作者已线下讨论 [M2 实验计划 v2](docs/history/FOUNDATIONS_AND_DIAGNOSTICS.md)，
 认为方案可行，并明确要求实现、尝试跑通及保证 H100 进程不受 SSH 网络中断影响。以下记录该授权，
 自动 agent 不作为人工 reviewer 或签字人。
 
@@ -756,14 +758,14 @@ gate 的 multiplicity 必须单独授权。若 M2 与 M3 都运行，则为七�
 - 此授权不启动第 19 节的 formal 五配置实验，也不解除其余 formal gate。旧 smoke 仅保留历史
   wiring 结论；新实验的代码、scorer/manifest/config/model 身份与完成证据另行记录。
 
-执行 R1 记录：[生成限制与预算修订](docs/2026-09-06_M2_SCREENING_EXECUTION_AMENDMENT_R1.md)。
+执行 R1 记录：[生成限制与预算修订](docs/history/FOUNDATIONS_AND_DIAGNOSTICS.md)。
 原 1.7B A2 wiring 的 post-update Train greedy 输出触及 2048-token cap，维持 INCOMPLETE。
 依计划 §5.2，在任何主 screening/dev 前统一改用 response=4096、context=8192，并重做必要验证。
 所有臂和 zero-shot 同边界；不改变 scorer、episode/seed 网格或失败处理规则。该执行调整由 agent
 在已授权范围内记录，不表示新增人工签署。完整更新的 checkpoint 在最终 evaluator 前保存，便于
 保留评测失败时的模型证据；保存仍须含 actor/critic/optimizer/scheduler/data/RNG 完成标记。
 
-执行 R2 记录：[监控与资源诊断修订](docs/2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R2.md)。
+执行 R2 记录：[监控与资源诊断修订](docs/history/FOUNDATIONS_AND_DIAGNOSTICS.md)。
 R1 的 4B 诊断 pilot 首轮 8/8 Train 完整，但 GPU 遥测超时错误地终止 trainer；无实际更新，
 不能认定 4B 容量通过。R2 修复非关键遥测的异常传播，增加命名阶段日志并显式限制 CUDA graph
 形状；科学契约沿用 R1，工程重试另目录、另计成本。主 screening/dev 仍未开放运行。

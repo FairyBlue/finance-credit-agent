@@ -1,0 +1,13 @@
+{
+  "status": "NO_CLEAR_LEARNING_GAIN",
+  "candidate_successes": 81,
+  "sft_successes": 82,
+  "control_successes": {
+    "rloo": 80,
+    "mc_uniform": 82
+  },
+  "strongest_control": "mc_uniform",
+  "required_success_margin": 5,
+  "statistical_significance_claim": false,
+  "uses_reserved_test": false
+}

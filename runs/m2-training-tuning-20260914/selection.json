@@ -1,0 +1,19 @@
+{
+  "diagnostic_directory": "/home/tianming/projects/finance-credit-agent/runs/m2-critic-lr-diagnostic-20260914",
+  "diagnostic_model_revision": "local-export-sha256:cf3b8e5a4e2e45708943f4c71c822d41d60cfae13170e760cb5979e1df2356db",
+  "phase": "comparison",
+  "reason": "At the separately frozen phase boundary, critic LR1e-6 has lower post-update half-MSE than LR1e-5 at both fixed diagnostic steps, and lower mean absolute post-update value bias across the two steps; both training diagnostics completed. No investment return or subsequent comparison evaluation selects this LR.",
+  "selected_at_SGT": "2026-09-14T14:26:20.133110+08:00",
+  "selected_critic_learning_rate": 1e-06,
+  "source_sha256": {
+    "critic_lr_1e5/artifacts/critic_fit/critic-fit-762106.jsonl": "90b1f9d45eb986761510d6e53be6be3ff98d394958305ce6bc20a657a320b051",
+    "critic_lr_1e5/summary.json": "565281666c7b559559e44cd02c5a6e12e31341903e53670c83adb008e45d8796",
+    "critic_lr_1e6/artifacts/critic_fit/critic-fit-767278.jsonl": "fb001b61d2129b230e7250881b52ac444315a1bc035deaeb27a5bd282c5b5fda",
+    "critic_lr_1e6/summary.json": "12fc086c9c58864670fa50305cc8adefad44681d28314d2b1c0b649cfe16cdf6",
+    "model_identity.json": "c3c11fb601fec30ad30e6e508c7d74e8cccc4e7a862264536c19fc205f159247",
+    "run_contract.json": "65597ebd8bf71d35f1aea05b78e9962e0f7f4adc0d10f3c72a960682b395a624",
+    "settings.json": "fc1a5fa6ecff1de8e8fda9295e22b3a64ccca8c552f185b9253170f77bcbb975",
+    "sft0/summary.json": "db25e3c8f6ba0c6db7d5ac043f39cfeb78d1d202d1861fcbf375f9b7cdc1349b",
+    "state.json": "7f2e44e67e837812a6d5f81a829d2151f760e66b77886f40491b3272fa762331"
+  }
+}

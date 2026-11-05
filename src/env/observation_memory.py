@@ -8,8 +8,21 @@ from collections.abc import Mapping
 from copy import deepcopy
 from typing import Any
 
-OBSERVATION_PROFILES = ("legacy", "history_memory_v1", "history_features_v1")
-MEMORY_OBSERVATION_PROFILES = frozenset({"history_memory_v1", "history_features_v1"})
+RECOVERY_OBSERVATION_PROFILE = "history_features_recovery_v1"
+RECOVERY_V2_OBSERVATION_PROFILE = "history_features_recovery_v2"
+RECOVERY_OBSERVATION_PROFILES = frozenset({
+    RECOVERY_OBSERVATION_PROFILE, RECOVERY_V2_OBSERVATION_PROFILE,
+})
+OBSERVATION_PROFILES = (
+    "legacy", "history_memory_v1", "history_features_v1", RECOVERY_OBSERVATION_PROFILE,
+    RECOVERY_V2_OBSERVATION_PROFILE,
+)
+MEMORY_OBSERVATION_PROFILES = frozenset({
+    "history_memory_v1", "history_features_v1", *RECOVERY_OBSERVATION_PROFILES,
+})
+FEATURE_OBSERVATION_PROFILES = frozenset({
+    "history_features_v1", *RECOVERY_OBSERVATION_PROFILES,
+})
 
 
 def validate_observation_profile(value: object) -> str:

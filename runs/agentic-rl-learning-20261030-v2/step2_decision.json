@@ -1,0 +1,51 @@
+{
+  "status": "COMPLETE",
+  "completed_at": "2026-11-05T17:30:15.136305+08:00",
+  "selected_learning_rate": 2e-06,
+  "selected_arm": "rloo_lr2e6",
+  "selection_basis": "report_holdout_metric_correct_tie_lower_lr",
+  "holdout_now_development_evidence": true,
+  "holdout": {
+    "rloo_lr2e6": {
+      "successes": 22,
+      "complete": 32,
+      "planned": 32,
+      "metric_correct": 22,
+      "portfolio_correct": 31,
+      "condition_correct": 27,
+      "tokens": 818167,
+      "evaluation_reused": false
+    },
+    "rloo_lr1e5": {
+      "successes": 22,
+      "complete": 32,
+      "planned": 32,
+      "metric_correct": 22,
+      "portfolio_correct": 31,
+      "condition_correct": 27,
+      "tokens": 818086,
+      "evaluation_reused": false
+    }
+  },
+  "stage3_status": "PENDING_EVIDENCE_REVIEW",
+  "reserved_test_opened": false,
+  "endpoints": {
+    "rloo_lr2e6": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_005/train/adapter",
+    "rloo_lr1e5": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_005/train/adapter",
+    "continued_sft": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/continued_sft/adapter"
+  },
+  "costs": {
+    "baseline_generation_tokens": 1684364,
+    "rl_training_generation_tokens": {
+      "rloo_lr2e6": 5068024,
+      "rloo_lr1e5": 5056576
+    },
+    "evaluation_generation_tokens": 15989260,
+    "stage3_generation_tokens": 0,
+    "total_new_generation_tokens": 27798224,
+    "gpu_stage_seconds": 7730.071248210967,
+    "includes_failed_requests": true,
+    "supervised_tokens_accounted_separately": true,
+    "derived_views_charged": false
+  }
+}

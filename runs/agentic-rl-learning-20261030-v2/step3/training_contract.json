@@ -1,0 +1,8 @@
+{
+  "frozen_at": "2026-11-05T17:30:32.359212+08:00",
+  "parent_batch_allowance_floor": 1526429,
+  "formula": "max Stage2 full32parent batch cost plus one K4worstgroup reserve",
+  "arm_cap": 4000000,
+  "maximum_batches": 4,
+  "maximum_parent_quota": 8
+}

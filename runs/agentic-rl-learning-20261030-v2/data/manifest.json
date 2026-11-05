@@ -1,0 +1,217 @@
+{
+  "profile": "financial_learning_signal_panel_v2",
+  "status": "FROZEN",
+  "seed": 42,
+  "selection": "prior Train mixed-success base questions then one fixed random fill; no rescreening",
+  "train_panel_path": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/data/train_panel.jsonl",
+  "holdout_path": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/data/holdout.jsonl",
+  "teacher_filtered_path": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/data/teacher_filtered.jsonl",
+  "midpoint_panel_path": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/data/midpoint_panel.jsonl",
+  "panel_tasks": 16,
+  "panel_base_questions": 8,
+  "panel_reports": [
+    "AMT/2012",
+    "ECL/2017",
+    "IP/2012",
+    "MRO/2003",
+    "MRO/2018",
+    "PKG/2013",
+    "PPG/2010",
+    "ZBH/2008"
+  ],
+  "panel_source_ids": [
+    "MRO/2003/page_84.pdf-1",
+    "MRO/2018/page_96.pdf-1",
+    "PPG/2010/page_68.pdf-3",
+    "ZBH/2008/page_57.pdf-3",
+    "IP/2012/page_55.pdf-2",
+    "PKG/2013/page_83.pdf-1",
+    "AMT/2012/page_121.pdf-4",
+    "ECL/2017/page_95.pdf-4"
+  ],
+  "selected_prior_mixed_source_ids": [
+    "MRO/2003/page_84.pdf-1",
+    "MRO/2018/page_96.pdf-1",
+    "PPG/2010/page_68.pdf-3",
+    "ZBH/2008/page_57.pdf-3",
+    "IP/2012/page_55.pdf-2",
+    "PKG/2013/page_83.pdf-1",
+    "AMT/2012/page_121.pdf-4",
+    "ECL/2017/page_95.pdf-4"
+  ],
+  "random_fill_source_ids": [],
+  "prior_mixed_task_ids": [
+    "financial-credit-10000-v1",
+    "financial-credit-10013-v0",
+    "financial-credit-10016-v1",
+    "financial-credit-10030-v0",
+    "financial-credit-10042-v1",
+    "financial-credit-10046-v1",
+    "financial-credit-10097-v0",
+    "financial-credit-10112-v1"
+  ],
+  "holdout_tasks": 32,
+  "holdout_reports": [
+    "AAL/2014",
+    "AAL/2018",
+    "AMT/2007",
+    "AWK/2017",
+    "ETR/2004",
+    "GPN/2010",
+    "MKTX/2014",
+    "MRO/2014",
+    "MSI/2007",
+    "MSI/2012",
+    "PNC/2008",
+    "PNC/2014",
+    "RL/2014",
+    "SNA/2012",
+    "UAA/2016",
+    "UPS/2015"
+  ],
+  "holdout_source_ids": [
+    "MRO/2014/page_22.pdf-1",
+    "RL/2014/page_11.pdf-1",
+    "PNC/2008/page_32.pdf-1",
+    "ETR/2004/page_160.pdf-3",
+    "GPN/2010/page_89.pdf-2",
+    "SNA/2012/page_93.pdf-3",
+    "MKTX/2014/page_39.pdf-2",
+    "AWK/2017/page_148.pdf-1",
+    "UAA/2016/page_80.pdf-4",
+    "MSI/2007/page_42.pdf-1",
+    "AAL/2018/page_13.pdf-4",
+    "MSI/2012/page_87.pdf-3",
+    "PNC/2014/page_161.pdf-1",
+    "AAL/2014/page_59.pdf-2",
+    "UPS/2015/page_108.pdf-4",
+    "AMT/2007/page_99.pdf-4"
+  ],
+  "pairs_kept_together": true,
+  "report_overlap_panel_holdout": false,
+  "teacher_records": 4656,
+  "teacher_excluded_holdout_records": 144,
+  "teacher_tasks": 776,
+  "teacher_used_privileged_gold_to_choose_steps": true,
+  "teacher_generation_new_tokens": 0,
+  "teacher_previous_generation_cost_not_zero_claim": true,
+  "holdout_excluded_from_this_cycle_rl_and_continued_sft": true,
+  "holdout_not_unseen_by_initial_sft_claim": true,
+  "old_sft_train_reports": 400,
+  "holdout_reports_seen_by_initial_sft": [
+    "AAL/2014",
+    "AAL/2018",
+    "AWK/2017",
+    "ETR/2004",
+    "MKTX/2014",
+    "MRO/2014",
+    "MSI/2007",
+    "MSI/2012",
+    "PNC/2014",
+    "RL/2014",
+    "SNA/2012",
+    "UPS/2015"
+  ],
+  "new_test_opened": false,
+  "historical_market_oos_opened": false,
+  "baseline_repetitions": 4,
+  "baseline_planned_trajectories": 64,
+  "batches": [
+    {
+      "round": 0,
+      "path": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/data/batch_round000.jsonl",
+      "sha256": "be9d58890cd7ec6329d97a099befe93340d50056e9c517e883827465b20faa3d",
+      "base_questions": [
+        "MRO/2003/page_84.pdf-1",
+        "MRO/2018/page_96.pdf-1",
+        "PPG/2010/page_68.pdf-3",
+        "ZBH/2008/page_57.pdf-3"
+      ],
+      "tasks": 8,
+      "parent_trajectories": 32
+    },
+    {
+      "round": 1,
+      "path": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/data/batch_round001.jsonl",
+      "sha256": "a15a0bb922b02203f6ef07a006c1d780507a0f5a83b9ffe1cacdc9da489779e3",
+      "base_questions": [
+        "IP/2012/page_55.pdf-2",
+        "PKG/2013/page_83.pdf-1",
+        "AMT/2012/page_121.pdf-4",
+        "ECL/2017/page_95.pdf-4"
+      ],
+      "tasks": 8,
+      "parent_trajectories": 32
+    },
+    {
+      "round": 2,
+      "path": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/data/batch_round002.jsonl",
+      "sha256": "be9d58890cd7ec6329d97a099befe93340d50056e9c517e883827465b20faa3d",
+      "base_questions": [
+        "MRO/2003/page_84.pdf-1",
+        "MRO/2018/page_96.pdf-1",
+        "PPG/2010/page_68.pdf-3",
+        "ZBH/2008/page_57.pdf-3"
+      ],
+      "tasks": 8,
+      "parent_trajectories": 32
+    },
+    {
+      "round": 3,
+      "path": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/data/batch_round003.jsonl",
+      "sha256": "a15a0bb922b02203f6ef07a006c1d780507a0f5a83b9ffe1cacdc9da489779e3",
+      "base_questions": [
+        "IP/2012/page_55.pdf-2",
+        "PKG/2013/page_83.pdf-1",
+        "AMT/2012/page_121.pdf-4",
+        "ECL/2017/page_95.pdf-4"
+      ],
+      "tasks": 8,
+      "parent_trajectories": 32
+    },
+    {
+      "round": 4,
+      "path": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/data/batch_round004.jsonl",
+      "sha256": "be9d58890cd7ec6329d97a099befe93340d50056e9c517e883827465b20faa3d",
+      "base_questions": [
+        "MRO/2003/page_84.pdf-1",
+        "MRO/2018/page_96.pdf-1",
+        "PPG/2010/page_68.pdf-3",
+        "ZBH/2008/page_57.pdf-3"
+      ],
+      "tasks": 8,
+      "parent_trajectories": 32
+    },
+    {
+      "round": 5,
+      "path": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/data/batch_round005.jsonl",
+      "sha256": "a15a0bb922b02203f6ef07a006c1d780507a0f5a83b9ffe1cacdc9da489779e3",
+      "base_questions": [
+        "IP/2012/page_55.pdf-2",
+        "PKG/2013/page_83.pdf-1",
+        "AMT/2012/page_121.pdf-4",
+        "ECL/2017/page_95.pdf-4"
+      ],
+      "tasks": 8,
+      "parent_trajectories": 32
+    }
+  ],
+  "inputs": {
+    "/home/tianming/projects/finance-credit-agent/runs/m3-financial-credit-20261030-v1/data/train.jsonl": "b49dba4ff4c275d52ce96afe26c01d1dfc73695311dcb799c3d96a7be0ded179",
+    "/home/tianming/projects/finance-credit-agent/runs/m3-financial-credit-20261030-v1/probe/parents/trajectory_results.jsonl": "4f08f04cda5489bd42978f76d3c489a66e063896ea18398b5317826465a19d0f",
+    "/home/tianming/projects/finance-credit-agent/runs/m3-financial-evidence-20261030-v2/data/train.jsonl": "3018b275fd6c3f8331ddf04d59f2468ce7716b7c22f5a0d53653b6b2587547cb",
+    "/home/tianming/projects/finance-credit-agent/runs/m3-financial-evidence-20261030-v2/teacher/train_requests.jsonl": "aa07174d1ce3039f1bbb211f5270a23bd2773712ba084eb0808db476adbbfe65"
+  },
+  "output_sha256": {
+    "batch_round000.jsonl": "be9d58890cd7ec6329d97a099befe93340d50056e9c517e883827465b20faa3d",
+    "batch_round001.jsonl": "a15a0bb922b02203f6ef07a006c1d780507a0f5a83b9ffe1cacdc9da489779e3",
+    "batch_round002.jsonl": "be9d58890cd7ec6329d97a099befe93340d50056e9c517e883827465b20faa3d",
+    "batch_round003.jsonl": "a15a0bb922b02203f6ef07a006c1d780507a0f5a83b9ffe1cacdc9da489779e3",
+    "batch_round004.jsonl": "be9d58890cd7ec6329d97a099befe93340d50056e9c517e883827465b20faa3d",
+    "batch_round005.jsonl": "a15a0bb922b02203f6ef07a006c1d780507a0f5a83b9ffe1cacdc9da489779e3",
+    "holdout.jsonl": "d14c142cc64b59dc3e071f355094ac4911ae86ba97599e160bb2f162d80bdc5f",
+    "midpoint_panel.jsonl": "5f0d256206c08983290b3daa14bef259be83b51e9d125795bf30a636ff0dd3b1",
+    "teacher_filtered.jsonl": "2abcd8527244556521afa81863745c4af6a3e77de8a3deccb3460c42f70d2465",
+    "train_panel.jsonl": "81b6fcccfba258dbd6912c1d1413363aaf14b1cc744d72ec00eb0847e772a584"
+  }
+}

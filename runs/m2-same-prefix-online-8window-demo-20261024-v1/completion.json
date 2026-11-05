@@ -1,0 +1,120 @@
+{
+  "status": "COMPLETE",
+  "completed_at_UTC": "2026-10-24T08:47:53.705567+00:00",
+  "seed": 42,
+  "episode_ids": [
+    "formal-train-0001",
+    "formal-train-0009",
+    "formal-train-0017",
+    "formal-train-0025",
+    "formal-train-0065",
+    "formal-train-0073",
+    "formal-train-0149",
+    "formal-train-0157"
+  ],
+  "failed_arms": 0,
+  "actor_updates": 6,
+  "critic_updates": 6,
+  "training_head_exposures": 144,
+  "planned_training_head_exposures": 192,
+  "unique_raw_heads": 128,
+  "unique_legal_heads": 115,
+  "complete_parents_and_evaluations": 56,
+  "failed_parents_and_evaluations": 0,
+  "complete_EST_paths": 230,
+  "actual_collection_totals": {
+    "model_requests": 2418,
+    "prompt_tokens": 11264410,
+    "response_tokens": 50750
+  },
+  "model_stage_wall_seconds_including_initial": 2232.007955674082,
+  "final_contrasts": {
+    "exact_minus_zero": {
+      "all8": {
+        "status": "OBSERVED",
+        "planned_windows": 8,
+        "paired_windows": 8,
+        "net_return_delta_pp": -0.27633201052917056,
+        "Y_delta": -0.3280589437404355,
+        "positive_windows": 1,
+        "negative_windows": 4,
+        "tied_windows": 3
+      },
+      "common4": {
+        "status": "OBSERVED",
+        "planned_windows": 4,
+        "paired_windows": 4,
+        "net_return_delta_pp": -0.41399106272276276,
+        "Y_delta": -0.5196586658381761,
+        "positive_windows": 0,
+        "negative_windows": 2,
+        "tied_windows": 2
+      },
+      "added4": {
+        "status": "OBSERVED",
+        "planned_windows": 4,
+        "paired_windows": 4,
+        "net_return_delta_pp": -0.13867295833557836,
+        "Y_delta": -0.1364592216426949,
+        "positive_windows": 1,
+        "negative_windows": 2,
+        "tied_windows": 1
+      }
+    },
+    "exact_minus_plain": {
+      "all8": {
+        "status": "OBSERVED",
+        "planned_windows": 8,
+        "paired_windows": 8,
+        "net_return_delta_pp": -0.3923011240142521,
+        "Y_delta": -0.40635773927128616,
+        "positive_windows": 3,
+        "negative_windows": 5,
+        "tied_windows": 0
+      },
+      "common4": {
+        "status": "OBSERVED",
+        "planned_windows": 4,
+        "paired_windows": 4,
+        "net_return_delta_pp": -0.15255184064799088,
+        "Y_delta": -0.15112290440384446,
+        "positive_windows": 2,
+        "negative_windows": 2,
+        "tied_windows": 0
+      },
+      "added4": {
+        "status": "OBSERVED",
+        "planned_windows": 4,
+        "paired_windows": 4,
+        "net_return_delta_pp": -0.6320504073805133,
+        "Y_delta": -0.6615925741387279,
+        "positive_windows": 1,
+        "negative_windows": 3,
+        "tied_windows": 0
+      }
+    }
+  },
+  "conclusion": "Current exact head-credit configuration did not improve over S=0/plain in the eight-window seed42 demo. All final arms below shared SFT baseline; stable learning advantage not established.",
+  "retained_final_actors": [
+    "/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-online-8window-demo-20261024-v1/plain/round2/train/actor",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-online-8window-demo-20261024-v1/zero/round2/train/actor",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-online-8window-demo-20261024-v1/exact/round2/train/actor"
+  ],
+  "old_intermediate_actor_lossless_archives": "runs/m2-same-prefix-storage-20261024-v1/storage_summary.json",
+  "archived_models": 3,
+  "holder_observed": {
+    "payload_bytes": 81604378624,
+    "paused": false,
+    "claim": null
+  },
+  "free_disk_GiB": 12.9732666015625,
+  "next_proposal": "Stop expanding this exact configuration for now; prioritize a slightly longer fixed-budget S=0 learning-curve demo before another credit comparison. Not started.",
+  "limits": [
+    "Train demo only; 8 reused windows, one seed, two updates per arm.",
+    "Head actor/critic updates with gamma=lambda=1; not a full StepPO reproduction.",
+    "Fresh Adam each round; no optimizer-state continuation or formal Valid/OOS.",
+    "Costs include common collection once; baseline metrics are shared.",
+    "Reported stage times are process wall time including loading/export, not GPU kernel time.",
+    "No failure labels imputed; incomplete parent evaluation means stay NA."
+  ]
+}

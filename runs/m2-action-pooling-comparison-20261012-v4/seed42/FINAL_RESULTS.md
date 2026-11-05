@@ -1,0 +1,35 @@
+# 4B SFT / M1 / M2 参数网格
+
+当前进展（新加坡时间）：2026-10-13T01:01:37.475423+08:00
+
+状态：**FAILED**；当前臂：m2_lr1e7_eta025。
+本批 seed：42。
+
+固定预算：共 668 条；每训练臂 32 条训练 + 120 条评估；SFT0 60 条评估。
+4B 全参数；共同 SFT v3；non-thinking；CPU 活跃 Adam moments + 磁盘非活跃 moments。
+模型导出不含优化器；本轮不支持断点续训或自动重跑。
+
+GPU 准入读数：81.59 GiB 空闲（门槛 60 GiB）。
+
+- sft0：COMPLETE；已落盘轨迹 60/60。
+  训练 worker 的 PyTorch 峰值分配：64.50 GiB；整臂耗时 13.7 分钟。
+  greedy：平均净收益 0.7367%；非法请求 43/283。
+  sampled：平均净收益 0.6132%；非法请求 154/1114。
+- m1_lr1e7：COMPLETE；已落盘轨迹 152/152。
+  训练 worker 的 PyTorch 峰值分配：69.91 GiB；整臂耗时 80.8 分钟。
+  greedy：平均净收益 0.7621%；非法请求 47/287。
+  sampled：平均净收益 0.9288%；非法请求 173/1133。
+- m1_lr2e7：COMPLETE；已落盘轨迹 152/152。
+  训练 worker 的 PyTorch 峰值分配：67.06 GiB；整臂耗时 71.4 分钟。
+  greedy：平均净收益 0.9774%；非法请求 41/281。
+  sampled：平均净收益 0.9751%；非法请求 185/1145。
+- m2_plain_lr1e7_eta025：COMPLETE；已落盘轨迹 152/152。
+  训练 worker 的 PyTorch 峰值分配：69.35 GiB；整臂耗时 83.4 分钟。
+  greedy：平均净收益 1.1047%；非法请求 52/292。
+  sampled：平均净收益 0.9115%；非法请求 189/1149。
+- m2_lr1e7_eta025：PENDING；已落盘轨迹 0/152。
+
+停止原因：TimeoutError: native GPU budget did not become available within 1800 seconds
+
+本轮比较共同 SFT 起点、M1 和 M2；单 seed Train 读数不替代正式验证。
+阶段显存包含本进程指标；nvidia-smi 的整卡读数还包含其他用户进程。

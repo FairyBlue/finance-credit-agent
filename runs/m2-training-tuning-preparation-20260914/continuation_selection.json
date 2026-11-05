@@ -1,0 +1,48 @@
+{
+  "both_round_post_half_mse_lower": true,
+  "comparison_directory": "/home/tianming/projects/finance-credit-agent/runs/m2-training-tuning-20260914",
+  "continuation_script_sha256": "5b7ee718c28b28d0d053adef1b11d60db256693cba0761c709080a455daf78a3",
+  "criterion": "both_post_half_mse_lower_and_mean_absolute_post_bias_lower_v1",
+  "diagnostic_directory": "/home/tianming/projects/finance-credit-agent/runs/m2-critic-lr-diagnostic-20260914",
+  "launcher_sha256": "ba4dcb5c39f2fa6bf2c1912755565462ac533b13c1c2e99b3b76cf1036e2920a",
+  "lr_1e5_mean_absolute_post_bias": 6.840779306368216,
+  "lr_1e6_mean_absolute_post_bias": 0.49420102007672373,
+  "mean_absolute_post_bias_lower": true,
+  "model_revision": "local-export-sha256:cf3b8e5a4e2e45708943f4c71c822d41d60cfae13170e760cb5979e1df2356db",
+  "paired_post_fit": [
+    {
+      "lr_1e5_post_bias": 10.996244620742265,
+      "lr_1e5_post_half_mse": 60.66309321579075,
+      "lr_1e6_post_bias": -0.010325474204139764,
+      "lr_1e6_post_half_mse": 0.18928485795370564,
+      "policy_step": 1
+    },
+    {
+      "lr_1e5_post_bias": 2.6853139919941653,
+      "lr_1e5_post_half_mse": 4.690977079134938,
+      "lr_1e6_post_bias": -0.9780765659493077,
+      "lr_1e6_post_half_mse": 1.3764728734969611,
+      "policy_step": 2
+    }
+  ],
+  "preserved_failure": "/home/tianming/projects/finance-credit-agent/runs/m2-training-tuning-preparation-20260914/continuation_state.json",
+  "reason": "At the separately frozen phase boundary, critic LR1e-6 has lower post-update half-MSE than LR1e-5 at both fixed diagnostic steps, and lower mean absolute post-update value bias across the two steps; both training diagnostics completed. No investment return or subsequent comparison evaluation selects this LR.",
+  "schema_version": 1,
+  "selected_at_UTC": "2026-09-14T06:26:11.458766+00:00",
+  "selected_critic_learning_rate": 1e-06,
+  "selection_execution": "explicit_continuation_recovery",
+  "source_sha256": {
+    "critic_lr_1e5/artifacts/critic_fit/critic-fit-762106.jsonl": "90b1f9d45eb986761510d6e53be6be3ff98d394958305ce6bc20a657a320b051",
+    "critic_lr_1e5/summary.json": "565281666c7b559559e44cd02c5a6e12e31341903e53670c83adb008e45d8796",
+    "critic_lr_1e6/artifacts/critic_fit/critic-fit-767278.jsonl": "fb001b61d2129b230e7250881b52ac444315a1bc035deaeb27a5bd282c5b5fda",
+    "critic_lr_1e6/summary.json": "12fc086c9c58864670fa50305cc8adefad44681d28314d2b1c0b649cfe16cdf6",
+    "model_identity.json": "c3c11fb601fec30ad30e6e508c7d74e8cccc4e7a862264536c19fc205f159247",
+    "plan.md": "1f5e85ba0cb57c436ecc9570a647f35628b9fd528272e2d5216363ef35fd8e03",
+    "run_contract.json": "65597ebd8bf71d35f1aea05b78e9962e0f7f4adc0d10f3c72a960682b395a624",
+    "settings.json": "fc1a5fa6ecff1de8e8fda9295e22b3a64ccca8c552f185b9253170f77bcbb975",
+    "sft0/summary.json": "db25e3c8f6ba0c6db7d5ac043f39cfeb78d1d202d1861fcbf375f9b7cdc1349b",
+    "source_identity.json": "0837e818113684ac054b19f5c314e4c7274bd25aa5d1215923813ad71f6e3e9a",
+    "state.json": "7f2e44e67e837812a6d5f81a829d2151f760e66b77886f40491b3272fa762331"
+  },
+  "status": "SELECTED"
+}

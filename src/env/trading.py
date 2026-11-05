@@ -32,9 +32,17 @@ from . import tools as _registered_tools  # noqa: F401  # registry side effects
 from .accounting import ExecutionPolicy, PortfolioLedger, _aware_utc
 from .observation_features import compute_close_metrics, render_decision_features
 from .observation_memory import (
+    FEATURE_OBSERVATION_PROFILES,
     MEMORY_OBSERVATION_PROFILES,
+    RECOVERY_OBSERVATION_PROFILES,
+    RECOVERY_V2_OBSERVATION_PROFILE,
     ToolResultMemory,
     validate_observation_profile,
+)
+from .order_feedback import (
+    MAX_CONSECUTIVE_REJECTIONS,
+    ORDER_DIRECTION_TOLERANCE,
+    OrderDirectionError,
 )
 
 
@@ -395,6 +403,9 @@ class TradingEnv(ToolEnv):
         self._recent_events: list[dict[str, object]] = []
         self._credit_step_trace: list[TradingStepTrace] = []
         self._active_decision_session_index = 0
+        self._order_rejection: dict[str, Any] | None = None
+        self._last_order_rejection_key: tuple[object, ...] | None = None
+        self._consecutive_order_rejections = 0
 
     @staticmethod
     def _coefficient(value: float, *, name: str) -> float:
@@ -522,6 +533,9 @@ class TradingEnv(ToolEnv):
         self._credit_step_trace = []
         self._interaction_trace = []
         self._active_decision_session_index = 0
+        self._order_rejection = None
+        self._last_order_rejection_key = None
+        self._consecutive_order_rejections = 0
         raw_prompt = list(kwargs.get("raw_prompt", self._base_raw_prompt))
         if not raw_prompt:
             raw_prompt = [
@@ -595,6 +609,7 @@ class TradingEnv(ToolEnv):
 
     async def _step(self, action: Action) -> tuple[Observation, float, bool, dict[str, Any]]:
         self._active_decision_session_index = self._index
+        self._order_rejection = None
         if self._done:
             return self._invalid("episode is already complete", terminal=True)
         if not isinstance(action, Action) or action.text is None:
@@ -644,6 +659,8 @@ class TradingEnv(ToolEnv):
                 return self._advance("abstain")
             self._remember_event(call.name, normalized_args)
             return self._advance("hold")
+        except OrderDirectionError as error:
+            return self._invalid(str(error), order_rejection=error)
         except (KeyError, TypeError, ValidationError, ValueError) as error:
             return self._invalid(str(error))
 
@@ -726,6 +743,7 @@ class TradingEnv(ToolEnv):
             "limit",
             "lookback",
             "metric",
+            "name",
             "query",
             "reason",
             "symbol",
@@ -794,10 +812,17 @@ class TradingEnv(ToolEnv):
         if symbol not in self._symbols:
             raise ValueError(f"symbol {symbol!r} is outside the frozen episode universe")
         current_weight = self._current_weight(symbol)
-        if action_name == "buy" and args.target_weight <= current_weight + 1e-12:
-            raise ValueError("buy target_weight must be above the current weight")
-        if action_name == "sell" and args.target_weight >= current_weight - 1e-12:
-            raise ValueError("sell target_weight must be below the current weight")
+        if (
+            action_name == "buy"
+            and args.target_weight <= current_weight + ORDER_DIRECTION_TOLERANCE
+        ) or (
+            action_name == "sell"
+            and args.target_weight >= current_weight - ORDER_DIRECTION_TOLERANCE
+        ):
+            raise OrderDirectionError(
+                name=action_name, symbol=symbol,
+                target_weight=args.target_weight, current_weight=current_weight,
+            )
         self.ledger.queue_target_order(
             symbol,
             target_weight=args.target_weight,
@@ -1019,10 +1044,12 @@ class TradingEnv(ToolEnv):
             state["tool_result_memory"] = self._tool_result_memory.render(
                 current_result if isinstance(current_result, Mapping) else None,
             )
-            if self._observation_profile == "history_features_v1":
+            if self._observation_profile in FEATURE_OBSERVATION_PROFILES:
                 state["decision_features"] = render_decision_features(
                     visible_closes, as_of=self.current_date.isoformat(),
                 )
+        if self._observation_profile in RECOVERY_OBSERVATION_PROFILES and self._order_rejection:
+            state["order_rejection"] = deepcopy(self._order_rejection)
         if extra:
             state.update(
                 {key: value for key, value in extra.items() if key != "last_reward"}
@@ -1053,6 +1080,8 @@ class TradingEnv(ToolEnv):
         done: bool = False,
         info: dict[str, Any] | None = None,
     ) -> tuple[Observation, float, bool, dict[str, Any]]:
+        self._last_order_rejection_key = None
+        self._consecutive_order_rejections = 0
         info_document = dict(info or {})
         action = info_document.get("action") or info_document.get("tool")
         if not isinstance(action, str) or not action:
@@ -1067,12 +1096,38 @@ class TradingEnv(ToolEnv):
         return observation, float(reward), done, info_document
 
     def _invalid(
-        self, message: str, *, terminal: bool = False
+        self, message: str, *, terminal: bool = False,
+        order_rejection: OrderDirectionError | None = None,
     ) -> tuple[Observation, float, bool, dict[str, Any]]:
         self._invalid_calls += 1
         safe_message = self._bounded_ascii_text(message, limit=self.MAX_ERROR_CHARS)
         error = f"Error: {safe_message}"
-        self._remember_event("invalid", {"error": safe_message})
+        event_arguments: dict[str, object] = {"error": safe_message}
+        if self._observation_profile in RECOVERY_OBSERVATION_PROFILES and order_rejection:
+            key = order_rejection.request_key(self._index)
+            self._consecutive_order_rejections = min(
+                self._consecutive_order_rejections + 1
+                if key == self._last_order_rejection_key else 1,
+                MAX_CONSECUTIVE_REJECTIONS,
+            )
+            self._last_order_rejection_key = key
+            feedback = (
+                order_rejection.feedback_v2
+                if self._observation_profile == RECOVERY_V2_OBSERVATION_PROFILE
+                else order_rejection.feedback
+            )
+            self._order_rejection = feedback(
+                session_index=self._index,
+                consecutive_same_request=self._consecutive_order_rejections,
+            )
+            event_arguments.update(
+                name=order_rejection.name, symbol=order_rejection.symbol,
+                target_weight=order_rejection.target_weight,
+            )
+        else:
+            self._last_order_rejection_key = None
+            self._consecutive_order_rejections = 0
+        self._remember_event("invalid", event_arguments)
         self._record_credit_step(
             action="invalid",
             reward=0.0,

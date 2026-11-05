@@ -1,0 +1,154 @@
+{
+  "BF16_parameter_probe_delta": {
+    "RMS_delta": 1.3838399817379904e-06,
+    "changed_elements": 314,
+    "maximum_absolute_delta": 1.52587890625e-05,
+    "sampled_elements": 6766
+  },
+  "after_greedy": [
+    {
+      "anchor_id": "p001/j15",
+      "complete_eos": true,
+      "do_sample": false,
+      "head_key": "head/p001/j15/s0",
+      "maximum_new_tokens": 64,
+      "response_text": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.0}}</tool_call>",
+      "response_token_ids": [
+        151657,
+        4913,
+        606,
+        3252,
+        34835,
+        2198,
+        16370,
+        22317,
+        18785,
+        3252,
+        4826,
+        3994,
+        2198,
+        5657,
+        15876,
+        788,
+        15,
+        13,
+        15,
+        3417,
+        151658,
+        151645
+      ]
+    },
+    {
+      "anchor_id": "p001/j5",
+      "complete_eos": true,
+      "do_sample": false,
+      "head_key": "head/p001/j5/s0",
+      "maximum_new_tokens": 64,
+      "response_text": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.0}}</tool_call>",
+      "response_token_ids": [
+        151657,
+        4913,
+        606,
+        3252,
+        34835,
+        2198,
+        16370,
+        22317,
+        18785,
+        3252,
+        4826,
+        3994,
+        2198,
+        5657,
+        15876,
+        788,
+        15,
+        13,
+        15,
+        3417,
+        151658,
+        151645
+      ]
+    }
+  ],
+  "after_response_mean_logprobs": [
+    -0.6905022859573364,
+    -0.3676219582557678
+  ],
+  "before_greedy": [
+    {
+      "anchor_id": "p001/j15",
+      "complete_eos": true,
+      "do_sample": false,
+      "head_key": "head/p001/j15/s0",
+      "maximum_new_tokens": 64,
+      "response_text": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+      "response_token_ids": [
+        151657,
+        4913,
+        606,
+        3252,
+        19783,
+        2198,
+        16370,
+        22317,
+        18785,
+        3252,
+        4826,
+        3994,
+        2198,
+        5657,
+        15876,
+        788,
+        15,
+        13,
+        17,
+        3417,
+        151658,
+        151645
+      ]
+    },
+    {
+      "anchor_id": "p001/j5",
+      "complete_eos": true,
+      "do_sample": false,
+      "head_key": "head/p001/j5/s0",
+      "maximum_new_tokens": 64,
+      "response_text": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.0}}</tool_call>",
+      "response_token_ids": [
+        151657,
+        4913,
+        606,
+        3252,
+        34835,
+        2198,
+        16370,
+        22317,
+        18785,
+        3252,
+        4826,
+        3994,
+        2198,
+        5657,
+        15876,
+        788,
+        15,
+        13,
+        15,
+        3417,
+        151658,
+        151645
+      ]
+    }
+  ],
+  "before_response_mean_logprobs": [
+    -0.31014126539230347,
+    -0.07993940263986588
+  ],
+  "checkpoint_probe_readback": {
+    "dtype": "bfloat16",
+    "verified_parameter_tensors": 398,
+    "verified_sampled_elements": 6766
+  },
+  "performance_claim": false
+}

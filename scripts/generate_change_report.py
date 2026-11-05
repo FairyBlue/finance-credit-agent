@@ -158,7 +158,7 @@ def _impact_lines(files: list[ChangedFile]) -> list[str]:
         lines.append("包含可能影响执行结果的实现或依赖，合并前需要查看完整 diff。")
     if categories <= {"文档", "协作自动化", "测试"}:
         lines.append("未检测到训练代码、实验配置、数据规则或依赖改动。")
-    return lines or ["未命中已知实验风险路径；仍需由另一位合作者查看完整 diff。"]
+    return lines or ["未命中已知实验风险路径；仍需由维护者查看完整 diff。"]
 
 
 def _escape_table(value: str) -> str:
@@ -236,7 +236,7 @@ def generate_report(*, mode: str, base: str, head: str, payload: dict[str, Any])
         f"| 规模 | {_escape_table(shortstat)} |",
         f"| 类型 | {', '.join(f'`{item}`' for item in categories)} |",
         "",
-        "### 合作者说明",
+        "### 变更说明",
         "",
         f"- **目的：** {manual['目的']}",
         f"- **影响：** {manual['影响']}",

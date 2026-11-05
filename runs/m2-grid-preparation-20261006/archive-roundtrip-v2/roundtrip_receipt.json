@@ -1,0 +1,25 @@
+{
+  "at_SGT": "2026-10-06T15:47:10.989670+08:00",
+  "elapsed_seconds": 110.82918323203921,
+  "exact_shard_roundtrip": true,
+  "old_models_unchanged": true,
+  "original_bytes": 8822893976,
+  "pack": {
+    "archive": "/home/tianming/projects/finance-credit-agent/runs/m2-grid-preparation-20261006/archive-roundtrip-v2/packed",
+    "original_bytes": 8822893976,
+    "packed_bytes": 125192339,
+    "profile": "lossless_tensor_xor_v1",
+    "status": "PACK_VERIFIED"
+  },
+  "packed_bytes": 125192339,
+  "ratio": 0.014189486957516172,
+  "restore": {
+    "model_directory": "/home/tianming/projects/finance-credit-agent/runs/m2-grid-preparation-20261006/archive-roundtrip-v2/restored",
+    "original_shard_hashes_verified": true,
+    "profile": "lossless_tensor_xor_v1",
+    "status": "COMPLETE"
+  },
+  "shared_sft": "/home/tianming/projects/finance-credit-agent/runs/m2-coldstart-v3-20260914/merged_model",
+  "source": "/home/tianming/projects/finance-credit-agent/runs/m2-sft-four-round-comparison-seed43-20261005-recovery/m2_eta025/checkpoints/global_step_4/actor/huggingface",
+  "status": "PASS"
+}

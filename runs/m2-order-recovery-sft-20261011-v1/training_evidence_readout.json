@@ -1,0 +1,46 @@
+{
+  "status": "PASSED",
+  "optimizer_steps": 72,
+  "epochs": 3,
+  "unique_examples_per_epoch": 384,
+  "example_presentations": 1152,
+  "all_steps_actual_update": true,
+  "all_artifact_hashes_match": true,
+  "evidence_sha256": {
+    "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/training/summary.json": "5c34a9740529d727e6beb7a43733bb860e73d49ec74ca8baf880d9ddeb7a46f3",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/training/settings.json": "6d6aeab54c76e59c4bf6d480974386399834ccfb9e84341c225b6cd5efca085e",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/training/data_preflight.json": "f37dafa319b4acb3f1fc5832a8c1a5c991f2b52033c0604ac6f41137ef15668f",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/training/steps.jsonl": "1aef009a31404fb513767a4c4373940d2249bf3b0a055cb129cb4f4db9b4b647",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/training_allocator_receipt.json": "2155a140d54a44fded42ebf74033c3d53d284c3ca5d09ae573e6e7dec0864a3d"
+  },
+  "summary": {
+    "optimizer_steps": 72,
+    "expected_optimizer_steps": 72,
+    "epochs": 3,
+    "examples_per_epoch": 384,
+    "example_presentations": 1152,
+    "trainable_parameters": 33030144,
+    "trainable_sha256_before": "b933f713e6da2a53d2c564379bc62faba52abad39cd71ec7366dc144dbdd804c",
+    "trainable_sha256_after": "68f7b328c300fb3ac6fb333542b226f8cc4faf021f70042d181df13ec3d88350",
+    "probe_changed_steps": 72,
+    "elapsed_training_seconds": 1105.4891596250236,
+    "status": "COMPLETE",
+    "started_at_SGT": "2026-10-11T17:54:02.985913+08:00",
+    "completed_at_SGT": "2026-10-11T18:12:38.182183+08:00",
+    "adapter": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/training/adapter",
+    "data_sha256": "07e730452a8a50d0f3762d22c7e18c07dceb428ac33b87b5e01033be76e274fd",
+    "artifacts": {
+      "adapter/README.md": "e35f959614782f1e6dd609a1511ee4fe3018c4665271c65b1b65313e57503d1f",
+      "adapter/adapter_config.json": "7bcff939d8f57e279892782e501c5ee7109f47e8c5b9f0ad73cc9a409f3f66ee",
+      "adapter/adapter_model.safetensors": "6b428a1db59ecef37c4d8dd8929b3e0e8de6091a7bf2ae2006aae8b1fe95646e",
+      "adapter/added_tokens.json": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680",
+      "adapter/chat_template.jinja": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8",
+      "adapter/merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+      "adapter/special_tokens_map.json": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd",
+      "adapter/tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+      "adapter/tokenizer_config.json": "443bfa629eb16387a12edbf92a76f6a6f10b2af3b53d87ba1550adfcf45f7fa0",
+      "adapter/vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+      "optimizer_rng.pt": "37a907ea47a742bf1d8089ddaa96dfc0bf4bf7327775f86414bb0ea60149dd11"
+    }
+  }
+}

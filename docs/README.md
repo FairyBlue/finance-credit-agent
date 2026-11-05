@@ -1,100 +1,62 @@
-# 文档导航
+# 文档入口
 
-**最新 GitHub 备份入口（2026-10-04）：**先读[4B 两轮最终报告](2026-10-04_M2_GPU_HANDOFF_PILOT.md)，
-再看[随仓库保存的小型结果快照](results/2026-10-04-backup/README.md)。
-72/72 条完整，M1/M2 各两轮，M2 两种解码净收益均略高于 M1；尚非正式性能结论。
-更长四轮对照未启动，模型与完整运行目录仍在服务器。
+更新：2026-11-05。**先读[当前状态](CURRENT_STATUS.md)**；长期方向读[Research Brief v0.6](../RESEARCH_BRIEF.md)。V2三步及补充采样均已完成：训练正控可改善，报告迁移与新增MC收益均未建立；目标阶段MC40/64对普通RL42/64，原留出采样高LR42/64对SFT43/64。[完整结果](../runs/agentic-rl-learning-20261030-v2/REPORT.md) · [目标回顾](../runs/agentic-rl-learning-20261030-v2/RESEARCH_REVIEW.md)。
 
-前置工程记录：[低显存计划](2026-09-30_M2_LOW_MEMORY_PILOT_PLAN.md)、
-[首次失败报告](2026-09-30_M2_LOW_MEMORY_PILOT_REPORT.md)、
-[显存占位尝试](2026-10-02_GPU_RESERVATION_TRIAL.md)。
-旧备份见[9 月 17 日交接](2026-09-17_PROJECT_BACKUP_HANDOFF.md)及
-[当时的结果快照](results/2026-09-17-backup/README.md)。
+## 按问题读，一类只保留一份总结
 
-整理日期：2026-09-14。日常阅读从本页进入；9 月 13、14 日的 12 份文档保持原文。
-更早的日志已汇总为四个阶段，完整旧文本收在一个[压缩归档](archive/README.md)，无需逐份翻阅。
-
-## 先看这两份
-
-- [共同冷启动 v3 报告](2026-09-14_M2_COLDSTART_V3_REPORT.md)：共同初始化的合法性、完整性和仍存在的教师先验。
-- [共同 SFT 后两轮 M1/M2 报告](2026-09-14_M2_COMMON_SFT_SHORT_RL_REPORT.md)：真实训练、同起点比较及收益结果。
-
-截至整理时，两阶段都已完成。冷启动通过不等于 M2 有收益优势；后者在本次短 RL 中尚未体现。
-实时状态与具体运行位置见 [M2_SCREENING_LATEST](../runs/M2_SCREENING_LATEST.md)。
-
-后续[共同 critic 设置与八轮信号强度对照](2026-09-14_M2_TRAINING_TUNING_PLAN.md)也已于 18:16 SGT 完成，
-主比较 244/244 轨迹完整。较低 critic LR 改善诊断拟合，但三臂第八轮收益均低于共同 SFT；
-两种 M2 也低于 M1，详见[完整报告与训练曲线](2026-09-14_M2_TRAINING_TUNING_REPORT.md)。
-
-[日期与解码方式交叉诊断](2026-09-14_M2_POLICY_TRANSFER_EVAL_PLAN.md)已于21:07 SGT结束：
-四模型240条均已观察，228完整、12条训练greedy拒单循环。M2训练日期sampled提高，另一组日期仍低于SFT；
-[最终报告](2026-09-14_M2_POLICY_TRANSFER_EVAL_REPORT.md)记录收益、合法性和下一步训练方向。
-原SFT失败及[事后继续剩余模型的修正](2026-09-14_M2_POLICY_TRANSFER_EVAL_CONTINUATION.md)保留原样。
-
-[两组 non-thinking 采样对照](2026-09-15_M2_SAMPLING_PROFILE_PLAN.md)已于9月15日21:03 SGT结束：
-384条全部观察，369完整、15条推荐参数下的拒单循环。当前采样192/192完整，推荐177/192；
-收益改善不一致，建议保留当前共同配置，详见[最终报告](2026-09-15_M2_SAMPLING_PROFILE_REPORT.md)。
-
-[扩大 Train 日期覆盖与较低 actor LR 对照](2026-09-15_M2_TRAIN_COVERAGE_PLAN.md)
-已于 **9 月 16 日 18:55 SGT 完成**：308/308 条完整，共同 SFT 起点的 M1/M2 η=0.25 各 8 轮。
-最终 M2 greedy 净收益 1.823533%，高于 M1 的 1.565643% 与 SFT 的 1.618652%；
-sampled 仅略高于 M1，仍低于 SFT，尚无稳定跨解码模式的收益优势。
-前两次诊断兼容性失败的原始记录保留，最终结果仅来自成功 v2；详见
-[完整报告](2026-09-15_M2_TRAIN_COVERAGE_REPORT.md)和
-[最终读数](../runs/m2-train-coverage-20260916-v2/FINAL_RESULTS.md)。
-
-9 月 17 日已完成[持仓损益与真实训练信号诊断](2026-09-17_M2_TRAIN_COVERAGE_DIAGNOSTIC_REPORT.md)：
-后期 sampled 差额主要来自实际持仓路径，M2 没有直接给非法步骤额外 credit；
-采样不确定性仍大。下一项是[共同拒单罚四轮小试候选](2026-09-17_M2_COMMON_VALIDITY_PENALTY_PLAN.md)，
-现已实现、测试并封存，于 9 月 17 日 15:22 SGT 启动独立 GPU 排队和监视服务，尚未开始训练。
-固定 164 条、M1/M2 各四轮；不同时调整 M2 公式、学习率和窗口归一化。
-详见[执行记录](2026-09-17_M2_COMMON_VALIDITY_PENALTY_REPORT.md)与
-[实时进度](../runs/m2-common-validity-penalty-20260917/LIVE_STATUS.md)。
-
-[9 月 17 日磁盘盘点与清理](2026-09-17_DISK_CLEANUP_AUDIT.md)：用户确认后已删除冷启动前旧实验的
-六份 optimizer，释放约 171.24 GiB，可用约 186.44 GiB；模型权重及原始实验记录保留。
-
-## 近期文档原样保留
-
-| 日期 / 工作 | 计划 | 结果或材料 |
+| 想了解什么 | 阅读文档 | 已合并的内容 |
 |---|---|---|
-| 9 月 13 日：Train 实用迭代 | [9 月 12 日原计划](2026-09-12_M2_TRAIN_PRACTICE_PLAN.md) | [报告](2026-09-13_M2_TRAIN_PRACTICE_REPORT.md) |
-| 9 月 13 日：回到模型学习 | [学习重启计划](2026-09-13_M2_LEARNING_RESTART_PLAN.md) | [报告](2026-09-13_M2_LEARNING_RESTART_REPORT.md) |
-| 9 月 13 日：外部训练经验 | — | [训练经验与资料](2026-09-13_TRADING_AGENT_TRAINING_LESSONS.md) |
-| 9 月 13 日：初次冷启动 | [计划](2026-09-13_M2_COLDSTART_PLAN.md) | [报告](2026-09-13_M2_COLDSTART_REPORT.md) |
-| 9 月 13 日：冷启动 v2 | [计划](2026-09-13_M2_COLDSTART_V2_PLAN.md) | [报告](2026-09-13_M2_COLDSTART_V2_REPORT.md) |
-| 9 月 14 日：冷启动 v3 | [计划](2026-09-14_M2_COLDSTART_V3_PLAN.md) | [报告](2026-09-14_M2_COLDSTART_V3_REPORT.md) |
-| 9 月 14 日：共同 SFT 后短 RL | [计划](2026-09-14_M2_COMMON_SFT_SHORT_RL_PLAN.md) | [报告](2026-09-14_M2_COMMON_SFT_SHORT_RL_REPORT.md) |
+| 环境、数据和早期诊断为什么这样定 | [基础与诊断](history/FOUNDATIONS_AND_DIAGNOSTICS.md) | H100 / G1 / M1、screening R1—R5、行为与概率诊断 |
+| 共同初始化及早期训练有什么结果 | [共同初始化与 4B 学习](history/INITIALIZATION_AND_4B_LEARNING.md) | 冷启动 v1—v3、学习重启、两轮/八轮 RL、日期与采样诊断、低显存、两 seed 四轮及旧网格准备；相关旧计划和续跑说明一并归档 |
+| 拒单恢复后，池化是否带来收益 | [恢复与动作池化](history/RECOVERY_AND_ACTION_POOLING.md) | 参数网格 R5、两版反馈、共同恢复 SFT / 验收、四轮 plain / M1 / M2 对照及失败过程 |
+| 功劳分配机制还有什么问题 | [功劳机制与条件采样](history/CREDIT_ORACLE_DIAGNOSTICS.md) | 存档分析、合成oracle、多状态回放、同前缀采样、gate隔离、随机后续、当前π固定收缩及独立种子复验 |
 
-## 历史阶段总结
+这些主题文档直接包含结果、边界和证据入口，不需要按日期逐份翻计划。精确原稿、旧方案与历史哈希统一查[归档说明](archive/README.md)，当前导航不留跳转壳。
 
-| 阶段 | 包含内容 | 核心结论 |
-|---|---|---|
-| [一：H100 与 M1](history/01_H100_AND_M1.md) | 8 月 27 日—9 月 2 日的环境、prompt、G1、数据与 M1 接线 | 工程链路通过，不是正式收益结果 |
-| [二：screening 工程](history/02_M2_SCREENING_ENGINEERING.md) | R1—R5、内存/遥测、thinking 截断、non-thinking、存储 | R5 的 76 条工程轨迹完整，但当时没有交易及非零 residual 覆盖 |
-| [三：行为诊断](history/03_M2_BEHAVIOR_DIAGNOSTICS.md) | schema、历史/记忆、工具循环、4B 理解与交易转移、1024 单步采样 | 接口问题有修复，额外说明未带来稳定交易，转向共同初始化 |
-| [四：概率排查收束](history/04_INFERENCE_PROBABILITY.md) | logprob、BF16/FP32、真实 KV decode、未完成配对与归因更正 | 原始生成概率读取正确；精确配对仍未完成，结束底层扩展排查 |
+## 接手、安装与协作
 
-## 保留的设计与协议
+长期研究目标：[Research Brief v0.6](../RESEARCH_BRIEF.md)，只维护研究问题、候选贡献、证据与重要方向调整；滚动三步另存`docs/`，每轮结束回顾Brief。旧交易实验边界：[评测协议](../EVAL_PROTOCOL.md) · [M2历史规格](../M2_V1_PREREGISTRATION.md)。安装复现：[SETUP](../SETUP.md) · [H100版本合同](H100_COMPATIBILITY.md)。协作方式：[COLLABORATION](COLLABORATION.md)。
 
-这些文件定义研究问题或执行变更，保留其主体，不与流水日志一起删去。
+接手时先读当前状态，再按需要选择主题；具体执行核对该次收据、冻结源码和输入，不从旧容量或旧命令推定当前资源。`runs/`、行情和模型主要在服务器，不随源码完整同步。[9/17](results/2026-09-17-backup/README.md)和 [10/04](results/2026-10-04-backup/README.md)备份只代表当时快照。
 
-- [RESEARCH_BRIEF](../RESEARCH_BRIEF.md)、[EVAL_PROTOCOL](../EVAL_PROTOCOL.md)、[M2 预注册](../M2_V1_PREREGISTRATION.md)。
-- [M2 实验计划 v2](2026-09-05_M2_EXPERIMENT_PLAN_V2.md)；
-  [合作者 ladder review](2026-09-04_M2_M3_LADDER_REVIEW.md)、[合作者实验计划](claude/2026-09-04_EXPERIMENT_PLAN.md)。
-- 执行修订：[R1](2026-09-06_M2_SCREENING_EXECUTION_AMENDMENT_R1.md)、
-  [R2](2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R2.md)、
-  [R3](2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R3.md)、
-  [R4](2026-09-07_M2_SCREENING_EXECUTION_AMENDMENT_R4.md)、
-  [R5](2026-09-08_M2_SCREENING_EXECUTION_AMENDMENT_R5.md)。
-- 数据与基础验收：[formal manifest](2026-09-01_FORMAL_MANIFEST_RESULTS.md)、
-  [T2 v2](2026-09-01_T2_V2_RESULTS.md)、[G1 精简结果](2026-08-31_H100_G1_SMOKE_RESULTS.md)、
-  [M1 精简结果](2026-09-02_H100_A3_M1_WIRING_SMOKE_RESULTS.md)。
+## 最新结果与计划
 
-## 安装、协作与追溯
+[Agentic RL三步v3精简版](2026-11-05_AGENTIC_RL_THREE_STEP_PLAN_V3.md)：**已于20:36启动首批采样**。复用旧SFT/窄覆盖对照，只新增24报告宽覆盖短训（6批/192父轨迹）和64条留出评估，上限900万token、2小时GPU阶段。足以选方向就推进；[实时状态](../runs/agentic-rl-coverage-20261105-v3/state.json)。
 
-[接手指南](EXPERIMENT_HANDOFF.md) · [H100 安装与版本](H100_COMPATIBILITY.md) ·
-[协作方式](COLLABORATION.md) · [旧文件到新总结的映射与原文归档](archive/README.md)。
+[Agentic RL三步v2](2026-10-30_AGENTIC_RL_THREE_STEP_PLAN_V2.md)：已完整收尾。高LR改善训练正控但未带来报告留出/Dev净收益；目标阶段MC14个baseline实际进入更新，40/64未超过普通RL42/64。[补充留出采样](2026-11-05_HELDOUT_SAMPLING_PROBE.md)亦完整完成，无正向频率差异；合计4005.4万生成token、GPU阶段约2.91小时。后续聚焦训练覆盖与迁移，旧模型和收据保留。
 
-历史记录中的“当前/下一步”只对当时有效。新工作优先引用本页的近期计划/报告；
-具体运行成功与否以相应实际证据为准。`runs/` 链接指向本机资料，不代表已随源码上传。
+[Agentic RL已结束三步](2026-10-30_AGENTIC_RL_THREE_STEP_PLAN.md)：真实MC baseline和状态恢复通过；普通RL/均匀MC/候选分配MC均未超过完整SFT；无增量出口收尾，新Test未评估。实际新增生成1517.9万，未补采追门槛。[完整读数](../runs/agentic-rl-mc-20261030-v1/REPORT.md) · [结果与Brief回顾](../runs/agentic-rl-mc-20261030-v1/RESEARCH_REVIEW.md)。
+
+[方向演变](2026-10-28_NEXT_RESEARCH_DIRECTION.md)保留从交易到条件委托及RL主线调整的说明；[v0.3与未执行推理三步原文](archive/pre_2026-10-30_agentic_rl_brief_v04.zip)、[更早两份合并前原文](archive/pre_2026-10-30_research_plan_merge.zip)供回顾，不是当前待办。
+
+[强SFT局部信用探测结论](../runs/m3-financial-credit-20261030-v1/CONCLUSION.md)：父128条全部完成；12个真实前缀各3条件×2续写，原返回/遮蔽/格式对照业务18/24、12/24、18/24，仅2题两次一致损失，预设需3。四臂跳过，不能写credit训练失败；[真实对照与恢复例子](../runs/m3-financial-credit-20261030-v1/examples/README.md)、[成本与状态](../runs/m3-financial-credit-20261030-v1/REPORT.md)已保留。
+
+[真实财报条件委托结论](../runs/m3-financial-evidence-20261030-v2/CONCLUSION.md)：共同起点开发41%、新Test31%，教师SFT82%/72%；普通RLOO44%/34%、sham41%/31%、M3 41%/32%，按Dev门槛跳过第二seed。[完整结果与成本](../runs/m3-financial-evidence-20261030-v2/REPORT.md) · [同一财报双阈值的真实执行展示](../runs/m3-financial-evidence-20261030-v2/examples/paired_demo.md)。
+
+[组合约束新一轮结论](../runs/m3-mandate-composition-20261029-v1/CONCLUSION.md)：新SFT在新任务开发194/200、保留测试191/200；普通RLOO首批零优势后提前结束，M3本轮未训练。[完整结果](../runs/m3-mandate-composition-20261029-v1/REPORT.md)与[真实同题前后对照](../runs/m3-mandate-composition-20261029-v1/examples/README.md)已交付。
+
+[首版委托修复结论](../runs/m3-mandate-repair-20261029-v1/CONCLUSION.md)：共同SFT开发92%、保留测试84%，当前M3配置无独立增量；[完整报告](../runs/m3-mandate-repair-20261029-v1/REPORT.md)与[真实工具轨迹示例](../runs/m3-mandate-repair-20261029-v1/examples/README.md)已交付。
+
+[已完成三步计划](2026-10-29_M3_COMPOSITION_PLAN.md)：改任务组合与信息选择、补齐共同SFT、按普通RL出口统一评估并收尾。首版[已完成计划](2026-10-28_NEXT_RESEARCH_DIRECTION.md)保留供回顾。
+
+旧交易结果见[demo简报](2026-10-28_DEMO_SUMMARY.md)与[宽覆盖主实验报告](../runs/m2-broad-rloo-order-main-20261028-v1/FINAL_REPORT.md)；10月22—29日过程的整理前状态页见[原文快照](archive/pre_2026-10-29_current_status.zip)。
+
+## 历史机制结果与封存输入
+
+以下为当时的诊断结果与取样合同，后续训练/收益验证已完成；原文中的“下一步”不再作为当前待办。
+
+[10/19 独立种子复验结果](history/CREDIT_ORACLE_DIAGNOSTICS.md#独立种子复验同窗口的收缩信号方向复现) · [取样前方案](2026-10-19_M2_ONPOLICY_CREDIT_REPLICATION_PLAN.md) · [314分支实际收据](../runs/m2-onpolicy-credit-replication-20261019-v1/README.md)。α=.25/.5对zero的六个预设方向均复现；仅同窗新seed，不称日期泛化或收益，下一步固定同前缀训练及同α plain对照。
+
+[10/18 当前π状态验证结果](history/CREDIT_ORACLE_DIAGNOSTICS.md#当前π状态固定收缩出现有限参考改善) · [预先固定方案](2026-10-18_M2_ONPOLICY_CREDIT_PLAN.md) · [8父/16状态/300分支收据](../runs/m2-onpolicy-credit-20261018-v1/README.md)。全部完成，预设α=.25/.5在有限参考下低于zero，尚需独立复核，不选最佳α或扩大RL。
+
+[10/18 独立估计/参考结果](history/CREDIT_ORACLE_DIAGNOSTICS.md#独立估计与参考细分pool未优于零credit) · [执行前方案](2026-10-18_M2_CREDIT_COMPARISON_PLAN.md) · [864路径实际收据](../runs/m2-stochastic-credit-comparison-20261018-v1/README.md)。全部完成，zero附加credit误差最低；暂不升级gate/pool或扩大RL。
+
+[10/18 随机后续结果](history/CREDIT_ORACLE_DIAGNOSTICS.md#随机策略后续pilot154路径全部完成) · [执行方案](2026-10-18_M2_STOCHASTIC_CONTINUATION_PLAN.md) · [154路径实际收据](../runs/m2-stochastic-continuation-20261018-v3/README.md)。GPU优先、CPU并行的约定见[协作说明](COLLABORATION.md#8-gpu与cpu工作顺序)。
+
+[10/18 gate隔离结果](history/CREDIT_ORACLE_DIAGNOSTICS.md#gate单因素验证候选实现与信号覆盖通过) · [执行前方案](2026-10-18_M2_SAME_PREFIX_GATE_PLAN.md) · [实际收据与复现](../runs/m2-same-prefix-gate-20261018-v1/README.md)。仅单因素实现与覆盖，生产未接入；上述随机后续pilot随后完成。
+
+[10/18 原生首请求结果](history/CREDIT_ORACLE_DIAGNOSTICS.md#原生同输入采样重复支持存在但原gate漏掉差异) · [采样执行前方案](2026-10-18_M2_SAME_PREFIX_SAMPLING_PLAN.md) · [采样收据与复现](../runs/m2-same-prefix-sampling-20261018-v1/README.md) · [10/18 同前缀菜单结果](history/CREDIT_ORACLE_DIAGNOSTICS.md#同前缀菜单验证真实输入与分支账务通过) · [菜单执行前方案](2026-10-18_M2_SAME_PREFIX_MENU_PLAN.md) · [菜单输入与复现](../runs/m2-same-prefix-menu-20261018-v1/README.md) · [10/17 上轮完整报告](2026-10-17_M2_STATE_ORDER_ORACLE_REPORT.md)。新增结果并入机制主题；运行合同所需原文仍保留原路径。
+
+[10/11 恢复方案](2026-10-11_M2_ORDER_RECOVERY_LEARNING_PLAN.md) · [10/12 池化方案](2026-10-12_M2_ACTION_POOLING_COMPARISON_PLAN.md) · [10/14 CPU 方案](2026-10-14_M2_CREDIT_ORACLE_PROBE_PLAN.md) · [10/17 多状态方案](2026-10-17_M2_STATE_ORDER_ORACLE_PLAN.md)。
+
+上述四份封存文件被现有运行合同按绝对路径和 SHA 校验，保留原字节供工具使用；日常阅读使用上面的主题总结。封存正文里的旧状态及原相对链接属于当时记录，原链接目标可在归档 ZIP 中按原目录找到。更早的诊断 / 训练工具需在隔离历史 checkout 恢复相应原文后复现，不将最新源码与旧合同拼成同一执行身份。

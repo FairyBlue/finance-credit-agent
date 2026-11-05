@@ -10,6 +10,7 @@ import inspect
 import json
 import os
 import time
+from contextlib import suppress
 from functools import wraps
 from hashlib import sha256
 from importlib import metadata
@@ -422,6 +423,9 @@ def patch_worker_classes(
     actor_class: type[Any], critic_class: type[Any], registry: WorkerRegistry
 ) -> bool:
     """CPU-injectable seam. Installation validates source/version before calling."""
+    from src.agents.gpu_memory_coordinator import coordinator_from_environment
+
+    memory_coordinator = coordinator_from_environment(registry.identity)
     # Opt-in only; activate in both arms of a fresh run, never mid-run.
     initialization_mode = os.environ.get("FINANCE_SCREENING_CRITIC_INIT")
     if initialization_mode:
@@ -486,11 +490,18 @@ def patch_worker_classes(
             @wraps(original)
             async def rollout(worker: Any, *args: Any, **kwargs: Any) -> Any:
                 try:
+                    if memory_coordinator is not None:
+                        memory_coordinator.before_phase(name)
                     registry.begin(name)
                     result = await original(worker, *args, **kwargs)
                     registry.finish(name, "actor")
+                    if memory_coordinator is not None:
+                        memory_coordinator.after_phase(name)
                     return result
                 except BaseException as error:
+                    if memory_coordinator is not None:
+                        with suppress(Exception):
+                            memory_coordinator.fail(error, name)
                     registry.fail(error, name)
                     raise
 
@@ -498,6 +509,7 @@ def patch_worker_classes(
 
         @wraps(original)
         def wrapped(worker: Any, *args: Any, **kwargs: Any) -> Any:
+            phase = name
             try:
                 if name == "load_checkpoint":
                     raise ExchangeError(
@@ -506,10 +518,13 @@ def patch_worker_classes(
                 if name == "init_model":
                     registry.check_identity()
                     registered_role = role if role == "critic" or worker._is_actor else None
+                    phase = "init_" + (registered_role or "reference")
                     if registered_role in registry.workers or registry.reference is worker:
                         raise ExchangeError("worker init_model already completed")
                     if registered_role is not None:
                         registry.backend.validate_worker(worker, registered_role)
+                    if memory_coordinator is not None:
+                        memory_coordinator.before_phase(phase)
                     if os.environ.get("FINANCE_GPU_HANDOFF_CONFIG"):
                         from src.agents.gpu_handoff import worker_handoff_from_environment
 
@@ -521,15 +536,24 @@ def patch_worker_classes(
                         )
                     result = original(worker, *args, **kwargs)
                     registry.register(worker, registered_role)
+                    if memory_coordinator is not None:
+                        memory_coordinator.after_phase(phase)
                     return result
                 target = role if name in ("update_actor", "update_critic") else None
                 if role == "actor" and name != "compute_ref_log_prob" and not worker._is_actor:
                     raise ExchangeError("a non-actor worker cannot use an actor operation")
+                if memory_coordinator is not None:
+                    memory_coordinator.before_phase(phase)
                 registry.begin(name, activate=target)
                 result = original(worker, *args, **kwargs)
                 registry.finish(name, target or "actor")
+                if memory_coordinator is not None:
+                    memory_coordinator.after_phase(phase)
                 return result
             except BaseException as error:
+                if memory_coordinator is not None:
+                    with suppress(Exception):
+                        memory_coordinator.fail(error, phase)
                 registry.fail(error, name)
                 raise
 

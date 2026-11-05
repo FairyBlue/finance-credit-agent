@@ -1,0 +1,533 @@
+{
+  "profile": "fresh_estimate_reference_credit_comparison_v1",
+  "status": "PASS",
+  "at_UTC": "2026-10-18T14:18:09.670906+00:00",
+  "scope": "descriptive raw credit loss against an independent finite Monte Carlo reference",
+  "counts": {
+    "planned_group_replicates": 64,
+    "planned_slot_replicates": 256,
+    "original_partial_group_replicates": 6,
+    "supported_group_replicates": 58,
+    "supported_slot_replicates": 232,
+    "NA_group_replicates": 6,
+    "NA_slot_replicates": 24,
+    "all_methods_share_support": true,
+    "planned_paths": 864,
+    "estimate_paths": 248,
+    "reference_paths": 616,
+    "path_status_counts": {
+      "COMPLETE": 864
+    },
+    "reference_cells_full8_supported": 77,
+    "model_requests": 10788,
+    "maximum_model_requests": 39024
+  },
+  "method_summary": [
+    {
+      "method": "zero",
+      "reference_panel": "full8",
+      "planned_group_replicates": 64,
+      "supported_group_replicates": 58,
+      "planned_slot_replicates": 256,
+      "supported_slot_replicates": 232,
+      "NA_slot_replicates": 24,
+      "raw_financial_Y_squared_slot_MSE": 0.0360799477716439
+    },
+    {
+      "method": "zero",
+      "reference_panel": "ref0_3",
+      "planned_group_replicates": 64,
+      "supported_group_replicates": 58,
+      "planned_slot_replicates": 256,
+      "supported_slot_replicates": 232,
+      "NA_slot_replicates": 24,
+      "raw_financial_Y_squared_slot_MSE": 0.05260911861405908
+    },
+    {
+      "method": "zero",
+      "reference_panel": "ref4_7",
+      "planned_group_replicates": 64,
+      "supported_group_replicates": 58,
+      "planned_slot_replicates": 256,
+      "supported_slot_replicates": 232,
+      "NA_slot_replicates": 24,
+      "raw_financial_Y_squared_slot_MSE": 0.04336321157936481
+    },
+    {
+      "method": "ungated_plain",
+      "reference_panel": "full8",
+      "planned_group_replicates": 64,
+      "supported_group_replicates": 58,
+      "planned_slot_replicates": 256,
+      "supported_slot_replicates": 232,
+      "NA_slot_replicates": 24,
+      "raw_financial_Y_squared_slot_MSE": 0.5930134174067747
+    },
+    {
+      "method": "ungated_plain",
+      "reference_panel": "ref0_3",
+      "planned_group_replicates": 64,
+      "supported_group_replicates": 58,
+      "planned_slot_replicates": 256,
+      "supported_slot_replicates": 232,
+      "NA_slot_replicates": 24,
+      "raw_financial_Y_squared_slot_MSE": 0.6073793265536467
+    },
+    {
+      "method": "ungated_plain",
+      "reference_panel": "ref4_7",
+      "planned_group_replicates": 64,
+      "supported_group_replicates": 58,
+      "planned_slot_replicates": 256,
+      "supported_slot_replicates": 232,
+      "NA_slot_replicates": 24,
+      "raw_financial_Y_squared_slot_MSE": 0.6024599429100388
+    },
+    {
+      "method": "family_gate_plain",
+      "reference_panel": "full8",
+      "planned_group_replicates": 64,
+      "supported_group_replicates": 58,
+      "planned_slot_replicates": 256,
+      "supported_slot_replicates": 232,
+      "NA_slot_replicates": 24,
+      "raw_financial_Y_squared_slot_MSE": 0.12933684890093816
+    },
+    {
+      "method": "family_gate_plain",
+      "reference_panel": "ref0_3",
+      "planned_group_replicates": 64,
+      "supported_group_replicates": 58,
+      "planned_slot_replicates": 256,
+      "supported_slot_replicates": 232,
+      "NA_slot_replicates": 24,
+      "raw_financial_Y_squared_slot_MSE": 0.15857265276269922
+    },
+    {
+      "method": "family_gate_plain",
+      "reference_panel": "ref4_7",
+      "planned_group_replicates": 64,
+      "supported_group_replicates": 58,
+      "planned_slot_replicates": 256,
+      "supported_slot_replicates": 232,
+      "NA_slot_replicates": 24,
+      "raw_financial_Y_squared_slot_MSE": 0.1239134796893132
+    },
+    {
+      "method": "order_gate_plain",
+      "reference_panel": "full8",
+      "planned_group_replicates": 64,
+      "supported_group_replicates": 58,
+      "planned_slot_replicates": 256,
+      "supported_slot_replicates": 232,
+      "NA_slot_replicates": 24,
+      "raw_financial_Y_squared_slot_MSE": 0.26919733600342993
+    },
+    {
+      "method": "order_gate_plain",
+      "reference_panel": "ref0_3",
+      "planned_group_replicates": 64,
+      "supported_group_replicates": 58,
+      "planned_slot_replicates": 256,
+      "supported_slot_replicates": 232,
+      "NA_slot_replicates": 24,
+      "raw_financial_Y_squared_slot_MSE": 0.2835632451503019
+    },
+    {
+      "method": "order_gate_plain",
+      "reference_panel": "ref4_7",
+      "planned_group_replicates": 64,
+      "supported_group_replicates": 58,
+      "planned_slot_replicates": 256,
+      "supported_slot_replicates": 232,
+      "NA_slot_replicates": 24,
+      "raw_financial_Y_squared_slot_MSE": 0.278643861506694
+    },
+    {
+      "method": "family_pool_order_gate",
+      "reference_panel": "full8",
+      "planned_group_replicates": 64,
+      "supported_group_replicates": 58,
+      "planned_slot_replicates": 256,
+      "supported_slot_replicates": 232,
+      "NA_slot_replicates": 24,
+      "raw_financial_Y_squared_slot_MSE": 0.058492066958651855
+    },
+    {
+      "method": "family_pool_order_gate",
+      "reference_panel": "ref0_3",
+      "planned_group_replicates": 64,
+      "supported_group_replicates": 58,
+      "planned_slot_replicates": 256,
+      "supported_slot_replicates": 232,
+      "NA_slot_replicates": 24,
+      "raw_financial_Y_squared_slot_MSE": 0.08519770930572505
+    },
+    {
+      "method": "family_pool_order_gate",
+      "reference_panel": "ref4_7",
+      "planned_group_replicates": 64,
+      "supported_group_replicates": 58,
+      "planned_slot_replicates": 256,
+      "supported_slot_replicates": 232,
+      "NA_slot_replicates": 24,
+      "raw_financial_Y_squared_slot_MSE": 0.055598859261714734
+    },
+    {
+      "method": "exact_pool_order_gate",
+      "reference_panel": "full8",
+      "planned_group_replicates": 64,
+      "supported_group_replicates": 58,
+      "planned_slot_replicates": 256,
+      "supported_slot_replicates": 232,
+      "NA_slot_replicates": 24,
+      "raw_financial_Y_squared_slot_MSE": 0.11991885885051434
+    },
+    {
+      "method": "exact_pool_order_gate",
+      "reference_panel": "ref0_3",
+      "planned_group_replicates": 64,
+      "supported_group_replicates": 58,
+      "planned_slot_replicates": 256,
+      "supported_slot_replicates": 232,
+      "NA_slot_replicates": 24,
+      "raw_financial_Y_squared_slot_MSE": 0.13428476799738634
+    },
+    {
+      "method": "exact_pool_order_gate",
+      "reference_panel": "ref4_7",
+      "planned_group_replicates": 64,
+      "supported_group_replicates": 58,
+      "planned_slot_replicates": 256,
+      "supported_slot_replicates": 232,
+      "NA_slot_replicates": 24,
+      "raw_financial_Y_squared_slot_MSE": 0.12936538435377845
+    }
+  ],
+  "paired_comparisons": [
+    {
+      "candidate": "ungated_plain",
+      "comparator": "zero",
+      "delta_definition": "candidate loss minus comparator loss",
+      "supported_slot_replicates": 232,
+      "mean_paired_delta_full8": 0.5569334696351309,
+      "mean_paired_delta_ref0_3": 0.5547702079395876,
+      "mean_paired_delta_ref4_7": 0.5590967313306741,
+      "direction_full8": "positive",
+      "direction_ref0_3": "positive",
+      "direction_ref4_7": "positive",
+      "reference_half_direction_stable": true,
+      "structural_projection_or_same_order_gate_identity": false,
+      "interpretation": "DESCRIPTIVE_DIRECTION_ONLY_FINITE_REFERENCE"
+    },
+    {
+      "candidate": "family_gate_plain",
+      "comparator": "zero",
+      "delta_definition": "candidate loss minus comparator loss",
+      "supported_slot_replicates": 232,
+      "mean_paired_delta_full8": 0.09325690112929427,
+      "mean_paired_delta_ref0_3": 0.10596353414864015,
+      "mean_paired_delta_ref4_7": 0.08055026810994839,
+      "direction_full8": "positive",
+      "direction_ref0_3": "positive",
+      "direction_ref4_7": "positive",
+      "reference_half_direction_stable": true,
+      "structural_projection_or_same_order_gate_identity": false,
+      "interpretation": "DESCRIPTIVE_DIRECTION_ONLY_FINITE_REFERENCE"
+    },
+    {
+      "candidate": "order_gate_plain",
+      "comparator": "zero",
+      "delta_definition": "candidate loss minus comparator loss",
+      "supported_slot_replicates": 232,
+      "mean_paired_delta_full8": 0.23311738823178602,
+      "mean_paired_delta_ref0_3": 0.2309541265362428,
+      "mean_paired_delta_ref4_7": 0.2352806499273292,
+      "direction_full8": "positive",
+      "direction_ref0_3": "positive",
+      "direction_ref4_7": "positive",
+      "reference_half_direction_stable": true,
+      "structural_projection_or_same_order_gate_identity": false,
+      "interpretation": "DESCRIPTIVE_DIRECTION_ONLY_FINITE_REFERENCE"
+    },
+    {
+      "candidate": "family_pool_order_gate",
+      "comparator": "zero",
+      "delta_definition": "candidate loss minus comparator loss",
+      "supported_slot_replicates": 232,
+      "mean_paired_delta_full8": 0.02241211918700795,
+      "mean_paired_delta_ref0_3": 0.03258859069166596,
+      "mean_paired_delta_ref4_7": 0.012235647682349925,
+      "direction_full8": "positive",
+      "direction_ref0_3": "positive",
+      "direction_ref4_7": "positive",
+      "reference_half_direction_stable": true,
+      "structural_projection_or_same_order_gate_identity": false,
+      "interpretation": "DESCRIPTIVE_DIRECTION_ONLY_FINITE_REFERENCE"
+    },
+    {
+      "candidate": "exact_pool_order_gate",
+      "comparator": "zero",
+      "delta_definition": "candidate loss minus comparator loss",
+      "supported_slot_replicates": 232,
+      "mean_paired_delta_full8": 0.08383891107887045,
+      "mean_paired_delta_ref0_3": 0.08167564938332726,
+      "mean_paired_delta_ref4_7": 0.08600217277441363,
+      "direction_full8": "positive",
+      "direction_ref0_3": "positive",
+      "direction_ref4_7": "positive",
+      "reference_half_direction_stable": true,
+      "structural_projection_or_same_order_gate_identity": false,
+      "interpretation": "DESCRIPTIVE_DIRECTION_ONLY_FINITE_REFERENCE"
+    },
+    {
+      "candidate": "family_gate_plain",
+      "comparator": "ungated_plain",
+      "delta_definition": "candidate loss minus comparator loss",
+      "supported_slot_replicates": 232,
+      "mean_paired_delta_full8": -0.46367656850583655,
+      "mean_paired_delta_ref0_3": -0.4488066737909475,
+      "mean_paired_delta_ref4_7": -0.47854646322072564,
+      "direction_full8": "negative",
+      "direction_ref0_3": "negative",
+      "direction_ref4_7": "negative",
+      "reference_half_direction_stable": true,
+      "structural_projection_or_same_order_gate_identity": false,
+      "interpretation": "DESCRIPTIVE_DIRECTION_ONLY_FINITE_REFERENCE"
+    },
+    {
+      "candidate": "order_gate_plain",
+      "comparator": "ungated_plain",
+      "delta_definition": "candidate loss minus comparator loss",
+      "supported_slot_replicates": 232,
+      "mean_paired_delta_full8": -0.32381608140334484,
+      "mean_paired_delta_ref0_3": -0.32381608140334484,
+      "mean_paired_delta_ref4_7": -0.32381608140334484,
+      "direction_full8": "negative",
+      "direction_ref0_3": "negative",
+      "direction_ref4_7": "negative",
+      "reference_half_direction_stable": true,
+      "structural_projection_or_same_order_gate_identity": true,
+      "interpretation": "STRUCTURAL_IDENTITY_NOT_REFERENCE_PRECISION_EVIDENCE"
+    },
+    {
+      "candidate": "family_pool_order_gate",
+      "comparator": "ungated_plain",
+      "delta_definition": "candidate loss minus comparator loss",
+      "supported_slot_replicates": 232,
+      "mean_paired_delta_full8": -0.5345213504481229,
+      "mean_paired_delta_ref0_3": -0.5221816172479217,
+      "mean_paired_delta_ref4_7": -0.5468610836483241,
+      "direction_full8": "negative",
+      "direction_ref0_3": "negative",
+      "direction_ref4_7": "negative",
+      "reference_half_direction_stable": true,
+      "structural_projection_or_same_order_gate_identity": false,
+      "interpretation": "DESCRIPTIVE_DIRECTION_ONLY_FINITE_REFERENCE"
+    },
+    {
+      "candidate": "exact_pool_order_gate",
+      "comparator": "ungated_plain",
+      "delta_definition": "candidate loss minus comparator loss",
+      "supported_slot_replicates": 232,
+      "mean_paired_delta_full8": -0.47309455855626037,
+      "mean_paired_delta_ref0_3": -0.47309455855626037,
+      "mean_paired_delta_ref4_7": -0.47309455855626037,
+      "direction_full8": "negative",
+      "direction_ref0_3": "negative",
+      "direction_ref4_7": "negative",
+      "reference_half_direction_stable": true,
+      "structural_projection_or_same_order_gate_identity": true,
+      "interpretation": "STRUCTURAL_IDENTITY_NOT_REFERENCE_PRECISION_EVIDENCE"
+    },
+    {
+      "candidate": "order_gate_plain",
+      "comparator": "family_gate_plain",
+      "delta_definition": "candidate loss minus comparator loss",
+      "supported_slot_replicates": 232,
+      "mean_paired_delta_full8": 0.13986048710249174,
+      "mean_paired_delta_ref0_3": 0.12499059238760266,
+      "mean_paired_delta_ref4_7": 0.1547303818173808,
+      "direction_full8": "positive",
+      "direction_ref0_3": "positive",
+      "direction_ref4_7": "positive",
+      "reference_half_direction_stable": true,
+      "structural_projection_or_same_order_gate_identity": false,
+      "interpretation": "DESCRIPTIVE_DIRECTION_ONLY_FINITE_REFERENCE"
+    },
+    {
+      "candidate": "family_pool_order_gate",
+      "comparator": "family_gate_plain",
+      "delta_definition": "candidate loss minus comparator loss",
+      "supported_slot_replicates": 232,
+      "mean_paired_delta_full8": -0.07084478194228631,
+      "mean_paired_delta_ref0_3": -0.07337494345697418,
+      "mean_paired_delta_ref4_7": -0.06831462042759845,
+      "direction_full8": "negative",
+      "direction_ref0_3": "negative",
+      "direction_ref4_7": "negative",
+      "reference_half_direction_stable": true,
+      "structural_projection_or_same_order_gate_identity": false,
+      "interpretation": "DESCRIPTIVE_DIRECTION_ONLY_FINITE_REFERENCE"
+    },
+    {
+      "candidate": "exact_pool_order_gate",
+      "comparator": "family_gate_plain",
+      "delta_definition": "candidate loss minus comparator loss",
+      "supported_slot_replicates": 232,
+      "mean_paired_delta_full8": -0.009417990050423822,
+      "mean_paired_delta_ref0_3": -0.024287884765312892,
+      "mean_paired_delta_ref4_7": 0.0054519046644652515,
+      "direction_full8": "negative",
+      "direction_ref0_3": "negative",
+      "direction_ref4_7": "positive",
+      "reference_half_direction_stable": false,
+      "structural_projection_or_same_order_gate_identity": false,
+      "interpretation": "UNRESOLVED_REFERENCE_SENSITIVITY_OR_SUPPORT"
+    },
+    {
+      "candidate": "family_pool_order_gate",
+      "comparator": "order_gate_plain",
+      "delta_definition": "candidate loss minus comparator loss",
+      "supported_slot_replicates": 232,
+      "mean_paired_delta_full8": -0.21070526904477807,
+      "mean_paired_delta_ref0_3": -0.19836553584457686,
+      "mean_paired_delta_ref4_7": -0.22304500224497928,
+      "direction_full8": "negative",
+      "direction_ref0_3": "negative",
+      "direction_ref4_7": "negative",
+      "reference_half_direction_stable": true,
+      "structural_projection_or_same_order_gate_identity": false,
+      "interpretation": "DESCRIPTIVE_DIRECTION_ONLY_FINITE_REFERENCE"
+    },
+    {
+      "candidate": "exact_pool_order_gate",
+      "comparator": "order_gate_plain",
+      "delta_definition": "candidate loss minus comparator loss",
+      "supported_slot_replicates": 232,
+      "mean_paired_delta_full8": -0.14927847715291556,
+      "mean_paired_delta_ref0_3": -0.14927847715291556,
+      "mean_paired_delta_ref4_7": -0.14927847715291556,
+      "direction_full8": "negative",
+      "direction_ref0_3": "negative",
+      "direction_ref4_7": "negative",
+      "reference_half_direction_stable": true,
+      "structural_projection_or_same_order_gate_identity": true,
+      "interpretation": "STRUCTURAL_IDENTITY_NOT_REFERENCE_PRECISION_EVIDENCE"
+    },
+    {
+      "candidate": "exact_pool_order_gate",
+      "comparator": "family_pool_order_gate",
+      "delta_definition": "candidate loss minus comparator loss",
+      "supported_slot_replicates": 232,
+      "mean_paired_delta_full8": 0.0614267918918625,
+      "mean_paired_delta_ref0_3": 0.049087058691661294,
+      "mean_paired_delta_ref4_7": 0.07376652509206372,
+      "direction_full8": "positive",
+      "direction_ref0_3": "positive",
+      "direction_ref4_7": "positive",
+      "reference_half_direction_stable": true,
+      "structural_projection_or_same_order_gate_identity": false,
+      "interpretation": "DESCRIPTIVE_DIRECTION_ONLY_FINITE_REFERENCE"
+    }
+  ],
+  "order_strata": [
+    {
+      "order_stratum": "ALL_SAME_ORDER",
+      "planned_group_replicates": 36,
+      "planned_slot_replicates": 144,
+      "original_partial_group_replicates": 0,
+      "supported_group_replicates": 36,
+      "supported_slot_replicates": 144,
+      "NA_group_replicates": 0,
+      "NA_slot_replicates": 0,
+      "all_methods_share_support": true
+    },
+    {
+      "order_stratum": "ORDER_DIVERSE_SAME_FAMILY",
+      "planned_group_replicates": 14,
+      "planned_slot_replicates": 56,
+      "original_partial_group_replicates": 0,
+      "supported_group_replicates": 14,
+      "supported_slot_replicates": 56,
+      "NA_group_replicates": 0,
+      "NA_slot_replicates": 0,
+      "all_methods_share_support": true
+    },
+    {
+      "order_stratum": "FAMILY_DIVERSE",
+      "planned_group_replicates": 8,
+      "planned_slot_replicates": 32,
+      "original_partial_group_replicates": 0,
+      "supported_group_replicates": 8,
+      "supported_slot_replicates": 32,
+      "NA_group_replicates": 0,
+      "NA_slot_replicates": 0,
+      "all_methods_share_support": true
+    },
+    {
+      "order_stratum": "ORIGINAL_PARTIAL",
+      "planned_group_replicates": 6,
+      "planned_slot_replicates": 24,
+      "original_partial_group_replicates": 6,
+      "supported_group_replicates": 0,
+      "supported_slot_replicates": 0,
+      "NA_group_replicates": 6,
+      "NA_slot_replicates": 24,
+      "all_methods_share_support": true
+    }
+  ],
+  "role_costs": {
+    "estimate": {
+      "planned_paths": 248,
+      "path_status_counts": {
+        "COMPLETE": 248
+      },
+      "model_requests": 3149
+    },
+    "reference": {
+      "planned_paths": 616,
+      "path_status_counts": {
+        "COMPLETE": 616
+      },
+      "model_requests": 7639
+    }
+  },
+  "definitions": {
+    "target": "Qhat per concrete cell, centered with the original four-slot multiset weights",
+    "support": "all four legal original heads, four complete EST paths, and eight complete REF paths for every required cell",
+    "partial": "every main signal, tau and loss for all four slots stays NA, including zero",
+    "pool": "within-family/exact-order EST mean, minus the same four-slot EST mean; both pools share order gate",
+    "production_family_pool": "family_pool_order_gate equals the legacy family-pool formula on the same four inputs; this is not full production-pipeline integration",
+    "units": "raw terminal financial Y squared, never percentage-point squared",
+    "eta": "0.25*S is a derived common scaling only; raw S is compared to raw tau",
+    "direction": "paired candidate-minus-comparator mean loss; negative is smaller descriptive loss",
+    "sign_tolerance": 1e-12
+  },
+  "limits": [
+    "The reference has eight draws per cell, split 0..3 and 4..7; it is not exact Q^pi.",
+    "Exact-pool versus plain and the all-same-order gate comparison have structural projection improvements independent of reference values; their half-sign agreement is not reference-precision evidence.",
+    "Opposing/zero-vs-nonzero reference-half directions are unresolved, not a method winner.",
+    "Two EST draws per original slot and overlapping Train states do not yield iid market samples or significance.",
+    "This target is a realized-four-action centered Q^pi proxy, not A^pi or policy return.",
+    "No GAE, whitening, critic fitting, actor update, formal Valid or Final OOS is performed."
+  ],
+  "input_sha256": {
+    "continuation_manifest.json": "41172703c9081aa306009cc61439f05227f7abb7d129bfc623599d2b7e5b9afe",
+    "driver_completion.json": "3d3ab0fb6b57feaea2eadcb3673fcc783642de8408b0ac6b72fcb46bbc72079f",
+    "trajectory_results.jsonl": "7eb5e1caad31c1b36ea4900fbdd1f4d74f91e872e36d46b898d6c270ca1c804e",
+    "request_seed_table.jsonl": "073eaefe78e1c62073e5c0e5a7283f397d147376129f319054942497aba43f18"
+  },
+  "output_sha256": {
+    "credit_paths.csv": "92b98feff142afe4d3d9ee5aedc338cd92caaa68270ddb52a9912fea30d954c8",
+    "credit_references.csv": "295620ba7dc93b016d3fd861f25b9f6f06b827b90940a2c9f3f6de3ed5502e9e",
+    "credit_groups.csv": "ccda358ff2e76ad3c12bda6b400776e5d52a1f9574186bab23e2773f96c5957f",
+    "credit_slots.csv": "e17a1d988249f26ea542fad3f739439c407e7428e503880184912754a8f5f64e",
+    "credit_methods.csv": "587b2ac53cfcf662f8dafaf2dc0d7e145dbcc767c4d9159789e86c69c53063fa",
+    "credit_comparisons.csv": "48c216eb1569d841636c69e52eb6a3d473c6004d6a84aff6ce9f8bcde8e8317e",
+    "credit_group_comparisons.csv": "53cfd1fabc6d437781573d2caf0667601d8f69852494d307675aa28604c1c89e",
+    "credit_strata_methods.csv": "37ff06407b2ea504b5379c7dd5aa4fa0b32d81bbd1fa40818432482d5bfb8823",
+    "credit_strata_comparisons.csv": "1bd2b3840866ae0489b47ef70a6b4aca5b9c3d0ea115871734bc321c8546bb6b"
+  },
+  "readout_source_sha256": "c89ef20baab2bfa346dd715ee8af0d72ed60e5ed2d0dfc91b2b26e6b5bee3b3d"
+}

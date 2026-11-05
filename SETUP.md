@@ -1,5 +1,7 @@
 # H100-NVL setup
 
+This is the installation and reproduction guide. The 1.7B G1 commands below reproduce a historical wiring smoke; current 4B development and priorities are in the [document index](docs/README.md).
+
 These steps target one Linux x86_64 H100-NVL (96 GB) and CPython 3.10.20. The pinned GPU set is
 PyTorch 2.7.0+cu128, vLLM 0.9.2, flash-attn 2.8.0.post2, verl 0.7.0, Transformers
 4.53.2, PyArrow 20.0.0, and datasets 4.0.0. See [`docs/H100_COMPATIBILITY.md`](docs/H100_COMPATIBILITY.md) for the
@@ -12,7 +14,7 @@ Confirm that the NVIDIA driver supports the selected CUDA runtime, then clone re
 ```bash
 nvidia-smi
 git clone --recurse-submodules \
-  https://github.com/HaoPan036/finance-credit-agent.git
+  https://github.com/FairyBlue/finance-credit-agent.git
 cd finance-credit-agent
 git submodule update --init --recursive
 git -C third_party/agent-r1 rev-parse HEAD
@@ -191,7 +193,7 @@ The reviewed manifest raw-byte SHA-256 is
 SHA-256 is `a86507384e6806db84066a0cd286cc143664ecddb3c2b851f63562ea45b117b8`. The generated processed
 inputs were verified at Train/Valid/Test `441/60/1` rows; they remain Git-ignored and must be rebuilt
 on another execution host. Full evidence is in
-[`docs/2026-09-01_FORMAL_MANIFEST_RESULTS.md`](docs/2026-09-01_FORMAL_MANIFEST_RESULTS.md).
+[`docs/2026-09-01_FORMAL_MANIFEST_RESULTS.md`](docs/history/FOUNDATIONS_AND_DIAGNOSTICS.md).
 
 The one approved legacy T2 access used 81 StockBench OOS samples (`0.530864` aligned vs `0.518519`
 shifted) and produced artifact SHA-256

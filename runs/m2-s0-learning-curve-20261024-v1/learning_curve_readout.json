@@ -1,0 +1,1971 @@
+{
+  "profile": "fixed_s0_eight_round_train_curve_description_v1",
+  "status": "DESCRIBED",
+  "execution_status": "COMPLETE",
+  "generated_at_UTC": "2026-10-24T09:56:33.984271+00:00",
+  "source_results": "/home/tianming/projects/finance-credit-agent/runs/m2-s0-learning-curve-20261024-v1/curve_results.json",
+  "source_results_sha256": "780dfefea1cabfdc2b0dbf7efae8da491b29caa0e6a721fae2561b20f4ae7180",
+  "statistical_helper_sha256": "9cc3182b6cfb65041186fd94c8c03a87a2f61b11ed93d8df23beb937964f48e3",
+  "planned_rounds": 8,
+  "planned_windows": 8,
+  "episode_ids": [
+    "formal-train-0001",
+    "formal-train-0009",
+    "formal-train-0017",
+    "formal-train-0025",
+    "formal-train-0065",
+    "formal-train-0073",
+    "formal-train-0149",
+    "formal-train-0157"
+  ],
+  "strata": {
+    "all8": [
+      "formal-train-0001",
+      "formal-train-0009",
+      "formal-train-0017",
+      "formal-train-0025",
+      "formal-train-0065",
+      "formal-train-0073",
+      "formal-train-0149",
+      "formal-train-0157"
+    ],
+    "common4": [
+      "formal-train-0001",
+      "formal-train-0009",
+      "formal-train-0065",
+      "formal-train-0073"
+    ],
+    "added4": [
+      "formal-train-0017",
+      "formal-train-0025",
+      "formal-train-0149",
+      "formal-train-0157"
+    ]
+  },
+  "initial_collection_path": "/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-online-8window-demo-20261024-v1/common_initial",
+  "baseline_reused": true,
+  "baseline_reused_model_requests": 461,
+  "observed_evaluation_rounds": 8,
+  "completed_training_rounds": 8,
+  "curve": [
+    {
+      "round": 0,
+      "execution_status": "BASELINE",
+      "evaluation": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "observed_windows": 8,
+            "planned_windows": 8,
+            "mean_net_return": 0.025690659638686122,
+            "mean_net_return_pct": 2.569065963868612,
+            "mean_Y": 3.725996753574258
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.042690759889983054,
+            "mean_net_return_pct": 4.269075988998305,
+            "mean_Y": 4.1906033215407215
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.00869055938738919,
+            "mean_net_return_pct": 0.8690559387389191,
+            "mean_Y": 3.2613901856077945
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return": 0.07631448946437813,
+            "net_return_pct": 7.631448946437813,
+            "Y": 3.3836512620744714,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return": 0.05211236465002922,
+            "net_return_pct": 5.211236465002922,
+            "Y": 5.306190432125484,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return": 0.0429766285380222,
+            "net_return_pct": 4.29766285380222,
+            "Y": 9.107645732308802,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return": 0.0031345289332724846,
+            "net_return_pct": 0.31345289332724846,
+            "Y": 4.373031680997741,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return": 0.025948459888670117,
+            "net_return_pct": 2.5948459888670117,
+            "Y": 4.100370340663127,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return": 0.01638772555685475,
+            "net_return_pct": 1.6387725556854749,
+            "Y": 3.9722012512998033,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return": -0.018497089785387888,
+            "net_return_pct": -1.8497089785387888,
+            "Y": 0.23686403001568723,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return": 0.007148169863649967,
+            "net_return_pct": 0.7148169863649967,
+            "Y": -0.6719807008910522,
+            "status": "OBSERVED"
+          }
+        ],
+        "collection_invalid_requests": 40,
+        "parent_failures": 0
+      },
+      "versus_common_SFT": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "planned_windows": 8,
+            "paired_windows": 8,
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "positive_windows": 0,
+            "negative_windows": 0,
+            "tied_windows": 8
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "positive_windows": 0,
+            "negative_windows": 0,
+            "tied_windows": 4
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "positive_windows": 0,
+            "negative_windows": 0,
+            "tied_windows": 4
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          }
+        ]
+      },
+      "training": {
+        "status": "NOT_APPLICABLE",
+        "supported_heads": null,
+        "supported_groups": null,
+        "planned_heads": null,
+        "NA_heads": null,
+        "order_gate_open_groups": null,
+        "order_gate_closed_groups": null,
+        "groups_without_gate": null,
+        "actor_updates": null,
+        "critic_updates": null,
+        "critic_before_full_head_MSE": null,
+        "critic_after_full_head_MSE": null,
+        "critic_MSE_delta": null
+      },
+      "actor_checkpoint": null,
+      "error": null
+    },
+    {
+      "round": 1,
+      "execution_status": "COMPLETE",
+      "evaluation": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "observed_windows": 8,
+            "planned_windows": 8,
+            "mean_net_return": 0.027010121005681273,
+            "mean_net_return_pct": 2.701012100568127,
+            "mean_Y": 3.8914149550188544
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.04604478486477653,
+            "mean_net_return_pct": 4.604478486477653,
+            "mean_Y": 4.641148988489756
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.007975457146586012,
+            "mean_net_return_pct": 0.7975457146586012,
+            "mean_Y": 3.141680921547953
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return": 0.07631448946437813,
+            "net_return_pct": 7.631448946437813,
+            "Y": 3.3836512620744714,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return": 0.05211236465002922,
+            "net_return_pct": 5.211236465002922,
+            "Y": 5.306190432125484,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return": 0.0429766285380222,
+            "net_return_pct": 4.29766285380222,
+            "Y": 9.107645732308802,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return": 0.0031345289332724846,
+            "net_return_pct": 0.31345289332724846,
+            "Y": 4.373031680997741,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return": 0.041279219918561205,
+            "net_return_pct": 4.1279219918561205,
+            "Y": 6.163353167410749,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return": 0.014473065426137577,
+            "net_return_pct": 1.4473065426137577,
+            "Y": 3.7114010923483196,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return": -0.017691483751835713,
+            "net_return_pct": -1.7691483751835713,
+            "Y": 0.3767906721257833,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return": 0.003482154866885079,
+            "net_return_pct": 0.3482154866885079,
+            "Y": -1.2907443992405137,
+            "status": "OBSERVED"
+          }
+        ],
+        "collection_invalid_requests": 52,
+        "parent_failures": 0
+      },
+      "versus_common_SFT": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "planned_windows": 8,
+            "paired_windows": 8,
+            "net_return_delta_pp": 0.13194613669951505,
+            "Y_delta": 0.16541820144459665,
+            "positive_windows": 2,
+            "negative_windows": 2,
+            "tied_windows": 4
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": 0.3354024974793479,
+            "Y_delta": 0.45054566694903464,
+            "positive_windows": 1,
+            "negative_windows": 1,
+            "tied_windows": 2
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": -0.07151022408031782,
+            "Y_delta": -0.11970926405984134,
+            "positive_windows": 1,
+            "negative_windows": 1,
+            "tied_windows": 2
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return_delta_pp": 1.5330760029891088,
+            "Y_delta": 2.0629828267476222,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return_delta_pp": -0.19146601307171718,
+            "Y_delta": -0.2608001589514837,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return_delta_pp": 0.08056060335521753,
+            "Y_delta": 0.1399266421100961,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return_delta_pp": -0.3666014996764888,
+            "Y_delta": -0.6187636983494614,
+            "status": "OBSERVED"
+          }
+        ]
+      },
+      "training": {
+        "status": "COMPLETE",
+        "supported_heads": 24,
+        "supported_groups": 6,
+        "planned_heads": 32,
+        "NA_heads": 8,
+        "order_gate_open_groups": 2,
+        "order_gate_closed_groups": 4,
+        "groups_without_gate": 2,
+        "actor_updates": 1,
+        "critic_updates": 1,
+        "critic_before_full_head_MSE": 0.8795467732795942,
+        "critic_after_full_head_MSE": 0.5558960499567998,
+        "critic_MSE_delta": -0.32365072332279443
+      },
+      "actor_checkpoint": "/home/tianming/projects/finance-credit-agent/runs/m2-s0-learning-curve-20261024-v1/zero/round1/train/actor",
+      "error": null
+    },
+    {
+      "round": 2,
+      "execution_status": "COMPLETE",
+      "evaluation": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "observed_windows": 8,
+            "planned_windows": 8,
+            "mean_net_return": 0.019855016734905792,
+            "mean_net_return_pct": 1.9855016734905793,
+            "mean_Y": 3.1002996651659194
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.040731434984870474,
+            "mean_net_return_pct": 4.073143498487047,
+            "mean_Y": 4.046615135842792
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": -0.0010214015150588895,
+            "mean_net_return_pct": -0.10214015150588895,
+            "mean_Y": 2.153984194489046
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return": 0.0696804671449256,
+            "net_return_pct": 6.9680467144925595,
+            "Y": 2.7305336793515953,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return": 0.04235117365255703,
+            "net_return_pct": 4.235117365255703,
+            "Y": 4.16124210275095,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return": 0.01828038892170869,
+            "net_return_pct": 1.828038892170869,
+            "Y": 6.073694987435335,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return": -0.013830825390707568,
+            "net_return_pct": -1.3830825390707568,
+            "Y": 2.4933877809820038,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return": 0.03307648006540442,
+            "net_return_pct": 3.3076480065404423,
+            "Y": 5.127714500446368,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return": 0.01781761907659485,
+            "net_return_pct": 1.7817619076594848,
+            "Y": 4.166970260822256,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return": -0.016612398021089825,
+            "net_return_pct": -1.6612398021089825,
+            "Y": 0.5640247369534048,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return": 0.008077228429853145,
+            "net_return_pct": 0.8077228429853145,
+            "Y": -0.5151707274145596,
+            "status": "OBSERVED"
+          }
+        ],
+        "collection_invalid_requests": 63,
+        "parent_failures": 0
+      },
+      "versus_common_SFT": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "planned_windows": 8,
+            "paired_windows": 8,
+            "net_return_delta_pp": -0.583564290378033,
+            "Y_delta": -0.6256970884083387,
+            "positive_windows": 4,
+            "negative_windows": 4,
+            "tied_windows": 0
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": -0.19593249051125805,
+            "Y_delta": -0.14398818569792904,
+            "positive_windows": 2,
+            "negative_windows": 2,
+            "tied_windows": 0
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": -0.971196090244808,
+            "Y_delta": -1.1074059911187484,
+            "positive_windows": 2,
+            "negative_windows": 2,
+            "tied_windows": 0
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return_delta_pp": -0.6634022319452537,
+            "Y_delta": -0.6531175827228761,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return_delta_pp": -0.9761190997472191,
+            "Y_delta": -1.1449483293745342,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return_delta_pp": -2.469623961631351,
+            "Y_delta": -3.033950744873467,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return_delta_pp": -1.6965354323980053,
+            "Y_delta": -1.8796439000157372,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return_delta_pp": 0.7128020176734307,
+            "Y_delta": 1.0273441597832411,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return_delta_pp": 0.14298935197400997,
+            "Y_delta": 0.19476900952245302,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return_delta_pp": 0.18846917642980632,
+            "Y_delta": 0.3271607069377176,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return_delta_pp": 0.0929058566203178,
+            "Y_delta": 0.15680997347649261,
+            "status": "OBSERVED"
+          }
+        ]
+      },
+      "training": {
+        "status": "COMPLETE",
+        "supported_heads": 20,
+        "supported_groups": 5,
+        "planned_heads": 32,
+        "NA_heads": 12,
+        "order_gate_open_groups": 1,
+        "order_gate_closed_groups": 4,
+        "groups_without_gate": 3,
+        "actor_updates": 1,
+        "critic_updates": 1,
+        "critic_before_full_head_MSE": 1.0236137087728168,
+        "critic_after_full_head_MSE": 0.693237574969233,
+        "critic_MSE_delta": -0.33037613380358377
+      },
+      "actor_checkpoint": "/home/tianming/projects/finance-credit-agent/runs/m2-s0-learning-curve-20261024-v1/zero/round2/train/actor",
+      "error": null
+    },
+    {
+      "round": 3,
+      "execution_status": "COMPLETE",
+      "evaluation": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "observed_windows": 8,
+            "planned_windows": 8,
+            "mean_net_return": 0.020000450297745984,
+            "mean_net_return_pct": 2.0000450297745984,
+            "mean_Y": 3.167724489685071
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.03882678092322611,
+            "mean_net_return_pct": 3.882678092322611,
+            "mean_Y": 3.8216950331016917
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.0011741196722658553,
+            "mean_net_return_pct": 0.11741196722658553,
+            "mean_Y": 2.51375394626845
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return": 0.06122404172133744,
+            "net_return_pct": 6.122404172133744,
+            "Y": 1.8912691469368819,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return": 0.04845851042178295,
+            "net_return_pct": 4.845851042178295,
+            "Y": 4.877296719112408,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return": 0.02431025121455055,
+            "net_return_pct": 2.431025121455055,
+            "Y": 6.817196591424842,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return": -0.017893608786979875,
+            "net_return_pct": -1.7893608786979875,
+            "Y": 2.0329706204388587,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return": 0.02720934946912723,
+            "net_return_pct": 2.720934946912723,
+            "Y": 4.2732197472927895,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return": 0.018415222080656823,
+            "net_return_pct": 1.8415222080656823,
+            "Y": 4.244994519064687,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return": -0.016735793621107553,
+            "net_return_pct": -1.6735793621107553,
+            "Y": 0.5426435368736064,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return": 0.015015629882600301,
+            "net_return_pct": 1.50156298826003,
+            "Y": 0.6622050363364939,
+            "status": "OBSERVED"
+          }
+        ],
+        "collection_invalid_requests": 75,
+        "parent_failures": 0
+      },
+      "versus_common_SFT": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "planned_windows": 8,
+            "paired_windows": 8,
+            "net_return_delta_pp": -0.5690209340940139,
+            "Y_delta": -0.5582722638891869,
+            "positive_windows": 4,
+            "negative_windows": 4,
+            "tied_windows": 0
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": -0.38639789667569424,
+            "Y_delta": -0.3689082884390296,
+            "positive_windows": 2,
+            "negative_windows": 2,
+            "tied_windows": 0
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": -0.7516439715123335,
+            "Y_delta": -0.7476362393393443,
+            "positive_windows": 2,
+            "negative_windows": 2,
+            "tied_windows": 0
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return_delta_pp": -1.5090447743040691,
+            "Y_delta": -1.4923821151375896,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return_delta_pp": -0.3653854228246267,
+            "Y_delta": -0.42889371301307566,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return_delta_pp": -1.866637732347165,
+            "Y_delta": -2.2904491408839602,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return_delta_pp": -2.102813772025236,
+            "Y_delta": -2.3400610605588823,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return_delta_pp": 0.1260889580457114,
+            "Y_delta": 0.17284940662966264,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return_delta_pp": 0.20274965238020748,
+            "Y_delta": 0.2727932677648841,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return_delta_pp": 0.1761296164280335,
+            "Y_delta": 0.3057795068579192,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return_delta_pp": 0.7867460018950334,
+            "Y_delta": 1.334185737227546,
+            "status": "OBSERVED"
+          }
+        ]
+      },
+      "training": {
+        "status": "COMPLETE",
+        "supported_heads": 20,
+        "supported_groups": 5,
+        "planned_heads": 32,
+        "NA_heads": 12,
+        "order_gate_open_groups": 4,
+        "order_gate_closed_groups": 1,
+        "groups_without_gate": 3,
+        "actor_updates": 1,
+        "critic_updates": 1,
+        "critic_before_full_head_MSE": 0.6248868427249434,
+        "critic_after_full_head_MSE": 0.3830702339282647,
+        "critic_MSE_delta": -0.2418166087966787
+      },
+      "actor_checkpoint": "/home/tianming/projects/finance-credit-agent/runs/m2-s0-learning-curve-20261024-v1/zero/round3/train/actor",
+      "error": null
+    },
+    {
+      "round": 4,
+      "execution_status": "COMPLETE",
+      "evaluation": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "observed_windows": 8,
+            "planned_windows": 8,
+            "mean_net_return": 0.020000003546700396,
+            "mean_net_return_pct": 2.0000003546700396,
+            "mean_Y": 3.144258718020883
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.03774047796161739,
+            "mean_net_return_pct": 3.774047796161739,
+            "mean_Y": 3.6310508710399585
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.0022595291317834,
+            "mean_net_return_pct": 0.22595291317834,
+            "mean_Y": 2.657466565001808
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return": 0.06282432235013236,
+            "net_return_pct": 6.2824322350132356,
+            "Y": 2.047876375730008,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return": 0.05395606453423518,
+            "net_return_pct": 5.395606453423518,
+            "Y": 5.520444793075316,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return": 0.02431025121455055,
+            "net_return_pct": 2.431025121455055,
+            "Y": 6.817196591424842,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return": -0.01496590649904217,
+            "net_return_pct": -1.496590649904217,
+            "Y": 2.3690139304886038,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return": 0.02720934946912723,
+            "net_return_pct": 2.720934946912723,
+            "Y": 4.2732197472927895,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return": 0.006972175492974797,
+            "net_return_pct": 0.6972175492974797,
+            "Y": 2.68266256806172,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return": -0.01704987953936321,
+            "net_return_pct": -1.704987953936321,
+            "Y": 0.48978878669402476,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return": 0.01674365135098843,
+            "net_return_pct": 1.674365135098843,
+            "Y": 0.9538669513997616,
+            "status": "OBSERVED"
+          }
+        ],
+        "collection_invalid_requests": 77,
+        "parent_failures": 0
+      },
+      "versus_common_SFT": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "planned_windows": 8,
+            "paired_windows": 8,
+            "net_return_delta_pp": -0.5690656091985726,
+            "Y_delta": -0.5817380355533748,
+            "positive_windows": 4,
+            "negative_windows": 4,
+            "tied_windows": 0
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": -0.4950281928365663,
+            "Y_delta": -0.559552450500763,
+            "positive_windows": 2,
+            "negative_windows": 2,
+            "tied_windows": 0
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": -0.6431030255605791,
+            "Y_delta": -0.6039236206059865,
+            "positive_windows": 2,
+            "negative_windows": 2,
+            "tied_windows": 0
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return_delta_pp": -1.3490167114245777,
+            "Y_delta": -1.3357748863444634,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return_delta_pp": 0.18436998842059626,
+            "Y_delta": 0.2142543609498322,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return_delta_pp": -1.866637732347165,
+            "Y_delta": -2.2904491408839602,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return_delta_pp": -1.8100435432314654,
+            "Y_delta": -2.004017750509137,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return_delta_pp": 0.1260889580457114,
+            "Y_delta": 0.17284940662966264,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return_delta_pp": -0.9415550063879952,
+            "Y_delta": -1.2895386832380833,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return_delta_pp": 0.14472102460246772,
+            "Y_delta": 0.2529247566783375,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return_delta_pp": 0.9595481487338464,
+            "Y_delta": 1.6258476522908138,
+            "status": "OBSERVED"
+          }
+        ]
+      },
+      "training": {
+        "status": "COMPLETE",
+        "supported_heads": 24,
+        "supported_groups": 6,
+        "planned_heads": 32,
+        "NA_heads": 8,
+        "order_gate_open_groups": 4,
+        "order_gate_closed_groups": 2,
+        "groups_without_gate": 2,
+        "actor_updates": 1,
+        "critic_updates": 1,
+        "critic_before_full_head_MSE": 0.2575553225497887,
+        "critic_after_full_head_MSE": 0.20420006897704082,
+        "critic_MSE_delta": -0.05335525357274787
+      },
+      "actor_checkpoint": "/home/tianming/projects/finance-credit-agent/runs/m2-s0-learning-curve-20261024-v1/zero/round4/train/actor",
+      "error": null
+    },
+    {
+      "round": 5,
+      "execution_status": "COMPLETE",
+      "evaluation": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "observed_windows": 8,
+            "planned_windows": 8,
+            "mean_net_return": 0.018128307977208213,
+            "mean_net_return_pct": 1.8128307977208213,
+            "mean_Y": 2.8748604714343906
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.03729622648567804,
+            "mean_net_return_pct": 3.729622648567804,
+            "mean_Y": 3.574839668659295
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": -0.0010396105312616144,
+            "mean_net_return_pct": -0.10396105312616144,
+            "mean_Y": 2.174881274209486
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return": 0.06302270046569869,
+            "net_return_pct": 6.302270046569869,
+            "Y": 2.0750786334987867,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return": 0.04450940540680315,
+            "net_return_pct": 4.450940540680315,
+            "Y": 4.417547613887011,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return": 0.012962237790924647,
+            "net_return_pct": 1.2962237790924647,
+            "Y": 5.409566565512258,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return": -0.013641965911568188,
+            "net_return_pct": -1.3641965911568188,
+            "Y": 2.3927963508379246,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return": 0.027419711435653138,
+            "net_return_pct": 2.741971143565314,
+            "Y": 4.29583339886057,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return": 0.01423308863455719,
+            "net_return_pct": 1.423308863455719,
+            "Y": 3.5108990283908112,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return": -0.01841627711671079,
+            "net_return_pct": -1.8416277116710789,
+            "Y": 0.24813354510624627,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return": 0.014937563112307872,
+            "net_return_pct": 1.4937563112307872,
+            "Y": 0.6490286353815147,
+            "status": "OBSERVED"
+          }
+        ],
+        "collection_invalid_requests": 72,
+        "parent_failures": 0
+      },
+      "versus_common_SFT": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "planned_windows": 8,
+            "paired_windows": 8,
+            "net_return_delta_pp": -0.7562351661477908,
+            "Y_delta": -0.8511362821398675,
+            "positive_windows": 3,
+            "negative_windows": 5,
+            "tied_windows": 0
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": -0.5394533404305013,
+            "Y_delta": -0.6157636528814264,
+            "positive_windows": 1,
+            "negative_windows": 3,
+            "tied_windows": 0
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": -0.9730169918650805,
+            "Y_delta": -1.0865089113983086,
+            "positive_windows": 2,
+            "negative_windows": 2,
+            "tied_windows": 0
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return_delta_pp": -1.3291788998679444,
+            "Y_delta": -1.3085726285756847,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return_delta_pp": -0.7602959243226071,
+            "Y_delta": -0.8886428182384725,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return_delta_pp": -3.0014390747097552,
+            "Y_delta": -3.6980791667965436,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return_delta_pp": -1.6776494844840673,
+            "Y_delta": -1.9802353301598163,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return_delta_pp": 0.14712515469830212,
+            "Y_delta": 0.19546305819744347,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return_delta_pp": -0.21546369222975592,
+            "Y_delta": -0.46130222290899203,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return_delta_pp": 0.008081266867709935,
+            "Y_delta": 0.01126951509055904,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return_delta_pp": 0.7789393248657905,
+            "Y_delta": 1.3210093362725668,
+            "status": "OBSERVED"
+          }
+        ]
+      },
+      "training": {
+        "status": "COMPLETE",
+        "supported_heads": 24,
+        "supported_groups": 6,
+        "planned_heads": 32,
+        "NA_heads": 8,
+        "order_gate_open_groups": 3,
+        "order_gate_closed_groups": 3,
+        "groups_without_gate": 2,
+        "actor_updates": 1,
+        "critic_updates": 1,
+        "critic_before_full_head_MSE": 0.23662527065856861,
+        "critic_after_full_head_MSE": 0.2415768504862674,
+        "critic_MSE_delta": 0.004951579827698782
+      },
+      "actor_checkpoint": "/home/tianming/projects/finance-credit-agent/runs/m2-s0-learning-curve-20261024-v1/zero/round5/train/actor",
+      "error": null
+    },
+    {
+      "round": 6,
+      "execution_status": "COMPLETE",
+      "evaluation": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "observed_windows": 8,
+            "planned_windows": 8,
+            "mean_net_return": 0.02385018989798686,
+            "mean_net_return_pct": 2.3850189897986858,
+            "mean_Y": 3.549532488143858
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.04245056044187373,
+            "mean_net_return_pct": 4.245056044187373,
+            "mean_Y": 4.198897881459262
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.005249819354099988,
+            "mean_net_return_pct": 0.5249819354099988,
+            "mean_Y": 2.9001670948284537
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return": 0.06944314011209674,
+            "net_return_pct": 6.9443140112096735,
+            "Y": 2.699497074156321,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return": 0.04329276035154361,
+            "net_return_pct": 4.329276035154361,
+            "Y": 4.274840056600003,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return": 0.032212025973821,
+            "net_return_pct": 3.2212025973821,
+            "Y": 7.783689534835391,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return": -0.0030434812680193435,
+            "net_return_pct": -0.30434812680193435,
+            "Y": 3.7013720750082193,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return": 0.03413127816474382,
+            "net_return_pct": 3.4131278164743817,
+            "Y": 5.125039864700923,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return": 0.022935063139110756,
+            "net_return_pct": 2.2935063139110756,
+            "Y": 4.6962145303798,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return": -0.016635352968097927,
+            "net_return_pct": -1.6635352968097927,
+            "Y": 0.5651447186128623,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return": 0.008466085678696222,
+            "net_return_pct": 0.8466085678696222,
+            "Y": -0.449537949142657,
+            "status": "OBSERVED"
+          }
+        ],
+        "collection_invalid_requests": 55,
+        "parent_failures": 0
+      },
+      "versus_common_SFT": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "planned_windows": 8,
+            "paired_windows": 8,
+            "net_return_delta_pp": -0.18404697406992632,
+            "Y_delta": -0.1764642654304,
+            "positive_windows": 4,
+            "negative_windows": 4,
+            "tied_windows": 0
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": -0.024019944810932392,
+            "Y_delta": 0.008294559918540556,
+            "positive_windows": 2,
+            "negative_windows": 2,
+            "tied_windows": 0
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": -0.34407400332892024,
+            "Y_delta": -0.36122309077934056,
+            "positive_windows": 2,
+            "negative_windows": 2,
+            "tied_windows": 0
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return_delta_pp": -0.6871349352281397,
+            "Y_delta": -0.6841541879181503,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return_delta_pp": -0.8819604298485606,
+            "Y_delta": -1.0313503755254807,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return_delta_pp": -1.0764602564201198,
+            "Y_delta": -1.3239561974734109,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return_delta_pp": -0.6178010201291828,
+            "Y_delta": -0.6716596059895217,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return_delta_pp": 0.81828182760737,
+            "Y_delta": 1.0246695240377965,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return_delta_pp": 0.6547337582256008,
+            "Y_delta": 0.7240132790799967,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return_delta_pp": 0.18617368172899607,
+            "Y_delta": 0.3282806885971751,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return_delta_pp": 0.13179158150462555,
+            "Y_delta": 0.22244275174839523,
+            "status": "OBSERVED"
+          }
+        ]
+      },
+      "training": {
+        "status": "COMPLETE",
+        "supported_heads": 20,
+        "supported_groups": 5,
+        "planned_heads": 32,
+        "NA_heads": 12,
+        "order_gate_open_groups": 2,
+        "order_gate_closed_groups": 3,
+        "groups_without_gate": 3,
+        "actor_updates": 1,
+        "critic_updates": 1,
+        "critic_before_full_head_MSE": 0.20500576601904402,
+        "critic_after_full_head_MSE": 0.10415270897577873,
+        "critic_MSE_delta": -0.10085305704326529
+      },
+      "actor_checkpoint": "/home/tianming/projects/finance-credit-agent/runs/m2-s0-learning-curve-20261024-v1/zero/round6/train/actor",
+      "error": null
+    },
+    {
+      "round": 7,
+      "execution_status": "COMPLETE",
+      "evaluation": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "observed_windows": 8,
+            "planned_windows": 8,
+            "mean_net_return": 0.02139464947126432,
+            "mean_net_return_pct": 2.139464947126432,
+            "mean_Y": 3.273828947274314
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.039409750770003305,
+            "mean_net_return_pct": 3.9409750770003305,
+            "mean_Y": 3.916626870052521
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.0033795481725253373,
+            "mean_net_return_pct": 0.33795481725253373,
+            "mean_Y": 2.6310310244961075
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return": 0.05821906326889237,
+            "net_return_pct": 5.821906326889237,
+            "Y": 1.5944899482932902,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return": 0.044847188865269505,
+            "net_return_pct": 4.4847188865269505,
+            "Y": 4.45716825101639,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return": 0.026308423445383866,
+            "net_return_pct": 2.6308423445383866,
+            "Y": 7.064975165555913,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return": -0.002856109112340355,
+            "net_return_pct": -0.2856109112340355,
+            "Y": 3.5745037970007765,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return": 0.03163768780674059,
+            "net_return_pct": 3.163768780674059,
+            "Y": 4.918634750520604,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return": 0.022935063139110756,
+            "net_return_pct": 2.2935063139110756,
+            "Y": 4.6962145303798,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return": -0.008103660896234044,
+            "net_return_pct": -0.8103660896234044,
+            "Y": 2.078521880480576,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return": -0.001830460746708118,
+            "net_return_pct": -0.1830460746708118,
+            "Y": -2.1938767450528367,
+            "status": "OBSERVED"
+          }
+        ],
+        "collection_invalid_requests": 78,
+        "parent_failures": 0
+      },
+      "versus_common_SFT": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "planned_windows": 8,
+            "paired_windows": 8,
+            "net_return_delta_pp": -0.42960101674218015,
+            "Y_delta": -0.45216780629994374,
+            "positive_windows": 3,
+            "negative_windows": 5,
+            "tied_windows": 0
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": -0.328100911997975,
+            "Y_delta": -0.2739764514882003,
+            "positive_windows": 2,
+            "negative_windows": 2,
+            "tied_windows": 0
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": -0.5311011214863853,
+            "Y_delta": -0.6303591611116872,
+            "positive_windows": 1,
+            "negative_windows": 3,
+            "tied_windows": 0
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return_delta_pp": -1.8095426195485764,
+            "Y_delta": -1.7891613137811813,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return_delta_pp": -0.7265175784759714,
+            "Y_delta": -0.8490221811090937,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return_delta_pp": -1.6668205092638333,
+            "Y_delta": -2.0426705667528884,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return_delta_pp": -0.5990638045612839,
+            "Y_delta": -0.7985278839969645,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return_delta_pp": 0.5689227918070472,
+            "Y_delta": 0.818264409857477,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return_delta_pp": 0.6547337582256008,
+            "Y_delta": 0.7240132790799967,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return_delta_pp": 1.0393428889153844,
+            "Y_delta": 1.8416578504648886,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return_delta_pp": -0.8978630610358085,
+            "Y_delta": -1.5218960441617844,
+            "status": "OBSERVED"
+          }
+        ]
+      },
+      "training": {
+        "status": "COMPLETE",
+        "supported_heads": 16,
+        "supported_groups": 4,
+        "planned_heads": 32,
+        "NA_heads": 16,
+        "order_gate_open_groups": 2,
+        "order_gate_closed_groups": 2,
+        "groups_without_gate": 4,
+        "actor_updates": 1,
+        "critic_updates": 1,
+        "critic_before_full_head_MSE": 0.4632536598430326,
+        "critic_after_full_head_MSE": 0.25166969730168953,
+        "critic_MSE_delta": -0.21158396254134304
+      },
+      "actor_checkpoint": "/home/tianming/projects/finance-credit-agent/runs/m2-s0-learning-curve-20261024-v1/zero/round7/train/actor",
+      "error": null
+    },
+    {
+      "round": 8,
+      "execution_status": "COMPLETE",
+      "evaluation": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "observed_windows": 8,
+            "planned_windows": 8,
+            "mean_net_return": 0.022822166048667505,
+            "mean_net_return_pct": 2.2822166048667505,
+            "mean_Y": 3.4333169806207113
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.0397987182875037,
+            "mean_net_return_pct": 3.97987182875037,
+            "mean_Y": 3.833211029508174
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.005845613809831313,
+            "mean_net_return_pct": 0.5845613809831313,
+            "mean_Y": 3.0334229317332486
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return": 0.061407255574821074,
+            "net_return_pct": 6.140725557482107,
+            "Y": 1.9083665606764189,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return": 0.04961262110261888,
+            "net_return_pct": 4.961262110261888,
+            "Y": 5.012497317250464,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return": 0.03316009808532727,
+            "net_return_pct": 3.316009808532727,
+            "Y": 7.898140270105107,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return": -0.005956149374776398,
+            "net_return_pct": -0.5956149374776398,
+            "Y": 3.371440880840054,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return": 0.032050155295613614,
+            "net_return_pct": 3.2050155295613614,
+            "Y": 4.47558706093441,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return": 0.016124841176961224,
+            "net_return_pct": 1.6124841176961224,
+            "Y": 3.936393179171403,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return": -0.014425124479383489,
+            "net_return_pct": -1.4425124479383489,
+            "Y": 0.9528656438235464,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return": 0.010603631008157866,
+            "net_return_pct": 1.0603631008157866,
+            "Y": -0.08875506783571266,
+            "status": "OBSERVED"
+          }
+        ],
+        "collection_invalid_requests": 30,
+        "parent_failures": 0
+      },
+      "versus_common_SFT": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "planned_windows": 8,
+            "paired_windows": 8,
+            "net_return_delta_pp": -0.2868493590018617,
+            "Y_delta": -0.2926797729535466,
+            "positive_windows": 3,
+            "negative_windows": 5,
+            "tied_windows": 0
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": -0.2892041602479356,
+            "Y_delta": -0.35739229203254735,
+            "positive_windows": 1,
+            "negative_windows": 3,
+            "tied_windows": 0
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": -0.2844945577557878,
+            "Y_delta": -0.22796725387454578,
+            "positive_windows": 2,
+            "negative_windows": 2,
+            "tied_windows": 0
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return_delta_pp": -1.4907233889557059,
+            "Y_delta": -1.4752847013980526,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return_delta_pp": -0.2499743547410338,
+            "Y_delta": -0.2936931148750199,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return_delta_pp": -0.9816530452694927,
+            "Y_delta": -1.209505462203695,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return_delta_pp": -0.9090678308048883,
+            "Y_delta": -1.001590800157687,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return_delta_pp": 0.6101695406943497,
+            "Y_delta": 0.3752167202712835,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return_delta_pp": -0.02628843798935243,
+            "Y_delta": -0.035808072128400426,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return_delta_pp": 0.4071965306004399,
+            "Y_delta": 0.7160016138078592,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return_delta_pp": 0.34554611445078987,
+            "Y_delta": 0.5832256330553396,
+            "status": "OBSERVED"
+          }
+        ]
+      },
+      "training": {
+        "status": "COMPLETE",
+        "supported_heads": 20,
+        "supported_groups": 5,
+        "planned_heads": 32,
+        "NA_heads": 12,
+        "order_gate_open_groups": 2,
+        "order_gate_closed_groups": 3,
+        "groups_without_gate": 3,
+        "actor_updates": 1,
+        "critic_updates": 1,
+        "critic_before_full_head_MSE": 0.11368688598541651,
+        "critic_after_full_head_MSE": 0.08286388498785915,
+        "critic_MSE_delta": -0.03082300099755736
+      },
+      "actor_checkpoint": "/home/tianming/projects/finance-credit-agent/runs/m2-s0-learning-curve-20261024-v1/zero/round8/train/actor",
+      "error": null
+    }
+  ],
+  "round8_versus_common_SFT": {
+    "strata": {
+      "all8": {
+        "status": "OBSERVED",
+        "planned_windows": 8,
+        "paired_windows": 8,
+        "net_return_delta_pp": -0.2868493590018617,
+        "Y_delta": -0.2926797729535466,
+        "positive_windows": 3,
+        "negative_windows": 5,
+        "tied_windows": 0
+      },
+      "common4": {
+        "status": "OBSERVED",
+        "planned_windows": 4,
+        "paired_windows": 4,
+        "net_return_delta_pp": -0.2892041602479356,
+        "Y_delta": -0.35739229203254735,
+        "positive_windows": 1,
+        "negative_windows": 3,
+        "tied_windows": 0
+      },
+      "added4": {
+        "status": "OBSERVED",
+        "planned_windows": 4,
+        "paired_windows": 4,
+        "net_return_delta_pp": -0.2844945577557878,
+        "Y_delta": -0.22796725387454578,
+        "positive_windows": 2,
+        "negative_windows": 2,
+        "tied_windows": 0
+      }
+    },
+    "windows": [
+      {
+        "episode_id": "formal-train-0001",
+        "net_return_delta_pp": -1.4907233889557059,
+        "Y_delta": -1.4752847013980526,
+        "status": "OBSERVED"
+      },
+      {
+        "episode_id": "formal-train-0009",
+        "net_return_delta_pp": -0.2499743547410338,
+        "Y_delta": -0.2936931148750199,
+        "status": "OBSERVED"
+      },
+      {
+        "episode_id": "formal-train-0017",
+        "net_return_delta_pp": -0.9816530452694927,
+        "Y_delta": -1.209505462203695,
+        "status": "OBSERVED"
+      },
+      {
+        "episode_id": "formal-train-0025",
+        "net_return_delta_pp": -0.9090678308048883,
+        "Y_delta": -1.001590800157687,
+        "status": "OBSERVED"
+      },
+      {
+        "episode_id": "formal-train-0065",
+        "net_return_delta_pp": 0.6101695406943497,
+        "Y_delta": 0.3752167202712835,
+        "status": "OBSERVED"
+      },
+      {
+        "episode_id": "formal-train-0073",
+        "net_return_delta_pp": -0.02628843798935243,
+        "Y_delta": -0.035808072128400426,
+        "status": "OBSERVED"
+      },
+      {
+        "episode_id": "formal-train-0149",
+        "net_return_delta_pp": 0.4071965306004399,
+        "Y_delta": 0.7160016138078592,
+        "status": "OBSERVED"
+      },
+      {
+        "episode_id": "formal-train-0157",
+        "net_return_delta_pp": 0.34554611445078987,
+        "Y_delta": 0.5832256330553396,
+        "status": "OBSERVED"
+      }
+    ]
+  },
+  "round8_evaluation": {
+    "strata": {
+      "all8": {
+        "status": "OBSERVED",
+        "observed_windows": 8,
+        "planned_windows": 8,
+        "mean_net_return": 0.022822166048667505,
+        "mean_net_return_pct": 2.2822166048667505,
+        "mean_Y": 3.4333169806207113
+      },
+      "common4": {
+        "status": "OBSERVED",
+        "observed_windows": 4,
+        "planned_windows": 4,
+        "mean_net_return": 0.0397987182875037,
+        "mean_net_return_pct": 3.97987182875037,
+        "mean_Y": 3.833211029508174
+      },
+      "added4": {
+        "status": "OBSERVED",
+        "observed_windows": 4,
+        "planned_windows": 4,
+        "mean_net_return": 0.005845613809831313,
+        "mean_net_return_pct": 0.5845613809831313,
+        "mean_Y": 3.0334229317332486
+      }
+    },
+    "windows": [
+      {
+        "episode_id": "formal-train-0001",
+        "net_return": 0.061407255574821074,
+        "net_return_pct": 6.140725557482107,
+        "Y": 1.9083665606764189,
+        "status": "OBSERVED"
+      },
+      {
+        "episode_id": "formal-train-0009",
+        "net_return": 0.04961262110261888,
+        "net_return_pct": 4.961262110261888,
+        "Y": 5.012497317250464,
+        "status": "OBSERVED"
+      },
+      {
+        "episode_id": "formal-train-0017",
+        "net_return": 0.03316009808532727,
+        "net_return_pct": 3.316009808532727,
+        "Y": 7.898140270105107,
+        "status": "OBSERVED"
+      },
+      {
+        "episode_id": "formal-train-0025",
+        "net_return": -0.005956149374776398,
+        "net_return_pct": -0.5956149374776398,
+        "Y": 3.371440880840054,
+        "status": "OBSERVED"
+      },
+      {
+        "episode_id": "formal-train-0065",
+        "net_return": 0.032050155295613614,
+        "net_return_pct": 3.2050155295613614,
+        "Y": 4.47558706093441,
+        "status": "OBSERVED"
+      },
+      {
+        "episode_id": "formal-train-0073",
+        "net_return": 0.016124841176961224,
+        "net_return_pct": 1.6124841176961224,
+        "Y": 3.936393179171403,
+        "status": "OBSERVED"
+      },
+      {
+        "episode_id": "formal-train-0149",
+        "net_return": -0.014425124479383489,
+        "net_return_pct": -1.4425124479383489,
+        "Y": 0.9528656438235464,
+        "status": "OBSERVED"
+      },
+      {
+        "episode_id": "formal-train-0157",
+        "net_return": 0.010603631008157866,
+        "net_return_pct": 1.0603631008157866,
+        "Y": -0.08875506783571266,
+        "status": "OBSERVED"
+      }
+    ],
+    "collection_invalid_requests": 30,
+    "parent_failures": 0
+  },
+  "limits": [
+    "Fixed round 8 and the entire 0..8 curve are reported; no best-round selection.",
+    "Eight reused Train windows, seed42; not Valid/OOS, new dates, or a method comparison.",
+    "Fresh sampled evaluations are descriptive, without a monotonic-return guarantee.",
+    "common4/added4 are predeclared ID strata, not independent market samples.",
+    "Missing points stay NA; means retain the full planned stratum denominator.",
+    "Critic MSE is its recorded current training-batch fit before/after one update.",
+    "Fresh targets differ by round; MSE levels are not a fixed validation curve."
+  ],
+  "window_curve_csv_sha256": "15d20d6467488bcc9b13406bd90c8ee98f71653214f28ebdb563786596f55632"
+}

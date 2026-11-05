@@ -1,0 +1,14 @@
+{
+  "status": "AUTHORIZED_PREPARING",
+  "authorized_at": "2026-10-30T23:22:53.916022+08:00",
+  "user_instruction": "可以，按这个计划下那开始干着看看吧",
+  "plan": "docs/2026-10-30_AGENTIC_RL_THREE_STEP_PLAN_V2.md",
+  "new_generation_token_cap": 44000000,
+  "gpu_worker_stage_seconds_cap": 43200,
+  "reserved_new_test_access": false,
+  "historical_market_final_oos_access": false,
+  "step1_existing_logs_cpu": true,
+  "step2_multitask_learning": true,
+  "step3_conditional_single_branch": true,
+  "prior_runs_read_only": true
+}

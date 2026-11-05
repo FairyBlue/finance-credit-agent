@@ -3,14 +3,14 @@
 这是 GitHub 可直接阅读的固定快照；采集时间见 [manifest.json](manifest.json)。
 后续运行不会自动更新本目录。文件均从服务器原路径逐字节复制，未重算收益或合并不同实验。
 
-最新 4B 两轮小试已于 **10 月 4 日 17:13:53 SGT（UTC+8）** 完成：72/72 条完整，
+本快照时点的 4B 两轮小试已于 **10 月 4 日 17:13:53 SGT（UTC+8）** 完成：72/72 条完整，
 M1/M2 各两次 actor 与 critic 更新，最终模型导出验收通过。
 greedy 净收益分别为 1.6874% / 1.7704%，sampled 为 1.5063% / 1.6010%。
-这是单 seed、Train 内工程结果，尚未证明正式样本外优势；四轮实验未启动。
+这是单 seed、Train 内工程结果，尚未证明正式样本外优势；采集时四轮实验未启动。后续结果见[文档导航](../../README.md)。
 
 | 内容 | GitHub 可读证据 |
 |---|---|
-| 最终报告 | [报告](../../2026-10-04_M2_GPU_HANDOFF_PILOT.md) |
+| 最终报告 | [报告（阶段汇总）](../../history/INITIALIZATION_AND_4B_LEARNING.md) |
 | 两臂收益与成本 | [比较 CSV](runs/m2-low-memory-handoff-20261004/comparison_summary.csv) |
 | 完成验收 | [完成读数](runs/m2-low-memory-handoff-20261004/completion_readout.json)、[权威状态](runs/m2-low-memory-handoff-20261004/state.json) |
 | 分臂训练与评估 | [M1](runs/m2-low-memory-handoff-20261004/m1/summary.json)、[M2](runs/m2-low-memory-handoff-20261004/m2_eta025/summary.json) |

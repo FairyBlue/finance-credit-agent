@@ -1,0 +1,13 @@
+{
+  "frozen_at": "2026-10-31T00:54:20.076827+08:00",
+  "rl_chain_gpu_seconds": {
+    "rloo_lr2e6": 2024.9241599701345,
+    "rloo_lr1e5": 2018.7871627546847
+  },
+  "maximum_training_seconds": 2018.7871627546847,
+  "maximum_epochs": 1,
+  "teacher_data": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/data/teacher_filtered.jsonl",
+  "teacher_data_sha256": "2abcd8527244556521afa81863745c4af6a3e77de8a3deccb3460c42f70d2465",
+  "excludes_evaluation": true,
+  "includes_rl_sampling_loading_oldlogprobs_updates": true
+}

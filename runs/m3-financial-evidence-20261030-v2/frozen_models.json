@@ -1,0 +1,85 @@
+{
+  "status": "COMPLETE",
+  "frozen_at": "2026-10-30T04:33:55.571413+08:00",
+  "models": {
+    "original": {
+      "base_model": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model",
+      "adapter": "/home/tianming/projects/finance-credit-agent/runs/m3-mandate-composition-20261029-v1/common_sft/adapter",
+      "adapter_sha256": "af8f5cfa6916d8198746a5698ef27131ac7dd1f4e61fdca803127af144b1680f",
+      "diagnostic_mode": "standard"
+    },
+    "common": {
+      "base_model": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model",
+      "adapter": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-evidence-20261030-v1/common_adaptation/adapter",
+      "adapter_sha256": "2a2296279be3c6fd87ac917ddece9808d0cb7d49feb532407090c759ebcf15ba",
+      "diagnostic_mode": "standard"
+    },
+    "rloo_seed42": {
+      "base_model": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model",
+      "adapter": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-evidence-20261030-v2/training/rloo_seed42/round_003/train/adapter",
+      "adapter_sha256": "3d8814c461848ec0685d1446d1e329b822e01e946ce26269fd2d576883ebb7fd",
+      "diagnostic_mode": "standard"
+    },
+    "sft": {
+      "base_model": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model",
+      "adapter": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-evidence-20261030-v2/teacher_sft/adapter",
+      "adapter_sha256": "8c49dd2442077eeef62d903945c7f820f920f3d01231e2f0a923c9040fa8f796",
+      "diagnostic_mode": "standard"
+    },
+    "sham_seed42": {
+      "base_model": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model",
+      "adapter": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-evidence-20261030-v2/training/sham_seed42/round_002/train/adapter",
+      "adapter_sha256": "f3aa0d57a5baacfac899213d34923c5da1f4e3b402d32ec57c573e6bb7397577",
+      "diagnostic_mode": "standard"
+    },
+    "m3_seed42": {
+      "base_model": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model",
+      "adapter": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-evidence-20261030-v2/training/m3_seed42/round_002/train/adapter",
+      "adapter_sha256": "2d314e6d58baf1c2edc53be4533957e07b42de312a76df22daec17a149d490cb",
+      "diagnostic_mode": "standard"
+    }
+  },
+  "diagnostics": {
+    "oracle_facts": {
+      "role": "privileged",
+      "same_model_reference": "common",
+      "adapter": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-evidence-20261030-v1/common_adaptation/adapter",
+      "adapter_sha256": "2a2296279be3c6fd87ac917ddece9808d0cb7d49feb532407090c759ebcf15ba"
+    },
+    "fixed_retrieval": {
+      "role": "same_tools",
+      "same_model_reference": "common",
+      "adapter": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-evidence-20261030-v1/common_adaptation/adapter",
+      "adapter_sha256": "2a2296279be3c6fd87ac917ddece9808d0cb7d49feb532407090c759ebcf15ba"
+    }
+  },
+  "no_endpoint_selected_by_dev_score": true,
+  "seed43_allocation": {
+    "status": "SKIPPED",
+    "trigger": "NO_THRESHOLD_GAIN",
+    "comparisons": {
+      "rloo_seed42": {
+        "success_gain": -0.030000000000000027,
+        "common_success_call_reduction": 0.0
+      },
+      "sham_seed42": {
+        "success_gain": 0.0,
+        "common_success_call_reduction": 0.0
+      }
+    },
+    "common_success_tasks": 39,
+    "success_rates": {
+      "rloo_seed42": 0.44,
+      "sham_seed42": 0.41,
+      "m3_seed42": 0.41
+    },
+    "common_success_mean_calls": {
+      "rloo_seed42": 6.0,
+      "sham_seed42": 6.0,
+      "m3_seed42": 6.0
+    },
+    "uses_reserved_test": false,
+    "statistical_significance_claim": false
+  },
+  "reserved_test_used_for_training_or_allocation": false
+}

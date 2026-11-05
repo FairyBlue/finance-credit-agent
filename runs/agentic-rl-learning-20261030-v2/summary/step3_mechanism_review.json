@@ -1,0 +1,273 @@
+{
+  "scope": "completed V2 conditional MC comparison",
+  "credit_method_claim": false,
+  "reserved_test_read": false,
+  "primary_endpoint": "16 selected Train tasks x4 native trajectories; 8 report clusters",
+  "learning_rate": 2e-06,
+  "evaluation_scope": "PANEL_K4_ONLY",
+  "per_arm": {
+    "rloo": {
+      "successes": 42,
+      "planned": 64,
+      "metric_correct": 42,
+      "rounds": 3,
+      "updates": 12,
+      "generation_tokens": 2531290,
+      "status": "COMPLETE_LIMITED",
+      "stop_reason": "NO_FULL_FIXED_PARENT_BATCH_FORECAST_ALLOWANCE",
+      "parent_trajectories": 96
+    },
+    "mc_target": {
+      "successes": 40,
+      "planned": 64,
+      "metric_correct": 40,
+      "rounds": 3,
+      "updates": 12,
+      "generation_tokens": 3023694,
+      "status": "COMPLETE_LIMITED",
+      "stop_reason": "NO_FULL_FIXED_PARENT_BATCH_FORECAST_ALLOWANCE",
+      "parent_trajectories": 96
+    }
+  },
+  "mc_mechanism": {
+    "rounds": [
+      {
+        "round": 0,
+        "parent_trajectories": 32,
+        "parent_requests": 192,
+        "calculation_requests": 32,
+        "completed_mc_pairs": 8,
+        "actual_replacements": 8,
+        "changed_raw": 8,
+        "parent_tokens": 853639,
+        "auxiliary_tokens": 289822
+      },
+      {
+        "round": 1,
+        "parent_trajectories": 32,
+        "parent_requests": 192,
+        "calculation_requests": 32,
+        "completed_mc_pairs": 5,
+        "actual_replacements": 5,
+        "changed_raw": 1,
+        "parent_tokens": 824915,
+        "auxiliary_tokens": 169486
+      },
+      {
+        "round": 2,
+        "parent_trajectories": 32,
+        "parent_requests": 192,
+        "calculation_requests": 32,
+        "completed_mc_pairs": 1,
+        "actual_replacements": 1,
+        "changed_raw": 1,
+        "parent_tokens": 853449,
+        "auxiliary_tokens": 32383
+      }
+    ],
+    "replacements": 14,
+    "parent_requests": 576,
+    "calculation_requests": 96,
+    "all_request_coverage": 0.024305555555555556,
+    "calculation_coverage": 0.14583333333333334,
+    "changed_raw": 10,
+    "raw_turned_on": 1,
+    "raw_turned_off": 4,
+    "sign_reversed": 0,
+    "tools": {
+      "calculate": 14
+    },
+    "records": [
+      {
+        "round": 0,
+        "request_key": "financial-credit-10042-v0/rep1/call3",
+        "tool": "calculate",
+        "plain_raw": 0.6661667583720847,
+        "mc_raw": 0.4992501375581269,
+        "raw_changed": true,
+        "raw_turned_on": false,
+        "raw_turned_off": false,
+        "sign_reversed": false
+      },
+      {
+        "round": 0,
+        "request_key": "financial-credit-10042-v1/rep3/call3",
+        "tool": "calculate",
+        "plain_raw": -0.33233351674416917,
+        "mc_raw": 0.0,
+        "raw_changed": true,
+        "raw_turned_on": false,
+        "raw_turned_off": true,
+        "sign_reversed": false
+      },
+      {
+        "round": 0,
+        "request_key": "financial-credit-10046-v0/rep3/call3",
+        "tool": "calculate",
+        "plain_raw": 0.33283342503875124,
+        "mc_raw": 0.0,
+        "raw_changed": true,
+        "raw_turned_on": false,
+        "raw_turned_off": true,
+        "sign_reversed": false
+      },
+      {
+        "round": 0,
+        "request_key": "financial-credit-10046-v1/rep3/call3",
+        "tool": "calculate",
+        "plain_raw": 0.33333333333333326,
+        "mc_raw": 0.0,
+        "raw_changed": true,
+        "raw_turned_on": false,
+        "raw_turned_off": true,
+        "sign_reversed": false
+      },
+      {
+        "round": 0,
+        "request_key": "financial-credit-10112-v0/rep0/call3",
+        "tool": "calculate",
+        "plain_raw": 0.33283342503875124,
+        "mc_raw": 0.49925013755812686,
+        "raw_changed": true,
+        "raw_turned_on": false,
+        "raw_turned_off": false,
+        "sign_reversed": false
+      },
+      {
+        "round": 0,
+        "request_key": "financial-credit-10013-v0/rep0/call3",
+        "tool": "calculate",
+        "plain_raw": 0.33283342503875124,
+        "mc_raw": 0.9985002751162537,
+        "raw_changed": true,
+        "raw_turned_on": false,
+        "raw_turned_off": false,
+        "sign_reversed": false
+      },
+      {
+        "round": 0,
+        "request_key": "financial-credit-10013-v0/rep2/call3",
+        "tool": "calculate",
+        "plain_raw": -0.9985002751162537,
+        "mc_raw": -0.49925013755812686,
+        "raw_changed": true,
+        "raw_turned_on": false,
+        "raw_turned_off": false,
+        "sign_reversed": false
+      },
+      {
+        "round": 0,
+        "request_key": "financial-credit-10013-v1/rep0/call3",
+        "tool": "calculate",
+        "plain_raw": 0.0,
+        "mc_raw": 0.5025,
+        "raw_changed": true,
+        "raw_turned_on": true,
+        "raw_turned_off": false,
+        "sign_reversed": false
+      },
+      {
+        "round": 1,
+        "request_key": "financial-credit-10030-v0/rep1/call3",
+        "tool": "calculate",
+        "plain_raw": 0.0,
+        "mc_raw": 0.0,
+        "raw_changed": false,
+        "raw_turned_on": false,
+        "raw_turned_off": false,
+        "sign_reversed": false
+      },
+      {
+        "round": 1,
+        "request_key": "financial-credit-10030-v0/rep3/call3",
+        "tool": "calculate",
+        "plain_raw": 0.0,
+        "mc_raw": 0.0,
+        "raw_changed": false,
+        "raw_turned_on": false,
+        "raw_turned_off": false,
+        "sign_reversed": false
+      },
+      {
+        "round": 1,
+        "request_key": "financial-credit-10030-v1/rep2/call3",
+        "tool": "calculate",
+        "plain_raw": 0.33333333333333326,
+        "mc_raw": 0.0,
+        "raw_changed": true,
+        "raw_turned_on": false,
+        "raw_turned_off": true,
+        "sign_reversed": false
+      },
+      {
+        "round": 1,
+        "request_key": "financial-credit-10097-v0/rep2/call3",
+        "tool": "calculate",
+        "plain_raw": 0.0,
+        "mc_raw": 0.0,
+        "raw_changed": false,
+        "raw_turned_on": false,
+        "raw_turned_off": false,
+        "sign_reversed": false
+      },
+      {
+        "round": 1,
+        "request_key": "financial-credit-10097-v1/rep0/call3",
+        "tool": "calculate",
+        "plain_raw": 0.0,
+        "mc_raw": 0.0,
+        "raw_changed": false,
+        "raw_turned_on": false,
+        "raw_turned_off": false,
+        "sign_reversed": false
+      },
+      {
+        "round": 2,
+        "request_key": "financial-credit-10042-v0/rep0/call3",
+        "tool": "calculate",
+        "plain_raw": 0.6656668500775025,
+        "mc_raw": 0.9985002751162538,
+        "raw_changed": true,
+        "raw_turned_on": false,
+        "raw_turned_off": false,
+        "sign_reversed": false
+      }
+    ]
+  },
+  "paired_panel_comparison": {
+    "status": "COMPLETE",
+    "paired_trajectories": 64,
+    "report_clusters": 8,
+    "full_success_difference_mc_minus_rloo": -0.03125,
+    "descriptive_report_bootstrap_95_interval": [
+      -0.109375,
+      0.03125
+    ],
+    "report_differences": {
+      "ECL/2017": 0.0,
+      "ZBH/2008": 0.0,
+      "AMT/2012": -0.25,
+      "IP/2012": 0.125,
+      "MRO/2003": -0.125,
+      "MRO/2018": 0.0,
+      "PKG/2013": 0.0,
+      "PPG/2010": 0.0
+    },
+    "all_thresholds_and_replicas_kept_in_cluster": true,
+    "training_positive_control_not_independent_confirmation": true
+  },
+  "costs": {
+    "stage2_generation_tokens": 27798224,
+    "stage3_training_generation_tokens": {
+      "rloo": 2531290,
+      "mc_target": 3023694
+    },
+    "stage3_evaluation_generation_tokens": 3417545,
+    "total_new_generation_tokens": 36770753,
+    "step3_gpu_stage_seconds": 2391.0504164621234,
+    "parent_gpu_stage_seconds": 7730.071248210967,
+    "gpu_stage_seconds": 10121.12166467309,
+    "includes_failed_requests": true,
+    "supervision_accounted_separately": true
+  }
+}

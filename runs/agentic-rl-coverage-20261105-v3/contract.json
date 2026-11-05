@@ -1,0 +1,49 @@
+{
+  "frozen_at": "2026-11-05T20:34:44.123307+08:00",
+  "rules": {
+    "profile": "financial_coverage_lean_v3",
+    "data_manifest_sha256": "27ebfc7a0ec5cace4282db5fa3a9a62f19ab9b0c87e2dc1f59ff78e134516aba",
+    "initial_adapter": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-evidence-20261030-v2/teacher_sft/adapter",
+    "initial_adapter_sha256": "8c49dd2442077eeef62d903945c7f820f920f3d01231e2f0a923c9040fa8f796",
+    "references": {
+      "sft": {
+        "path": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-transfer-probe-20261105-v1/eval/sft/sample",
+        "successes": 43,
+        "metric_correct": 43,
+        "outcomes_sha256": "c9acead3599757fc640f67e6125d687dfb535c876af557db34bb8eaa7e417c15"
+      },
+      "rloo_high": {
+        "path": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-transfer-probe-20261105-v1/eval/rloo_high/sample",
+        "successes": 42,
+        "metric_correct": 42,
+        "outcomes_sha256": "a9e042b960cee8a0389156f783985b5ef4371a6420aaa4ae68d659b011b9ae44"
+      }
+    },
+    "evaluation": {
+      "data_sha256": "d14c142cc64b59dc3e071f355094ac4911ae86ba97599e160bb2f162d80bdc5f",
+      "seed": 145,
+      "temperature": 1,
+      "max_context_tokens": 16384,
+      "max_response_tokens": 512,
+      "environment": "financial_evidence",
+      "decode_mode": "native"
+    },
+    "parent_repetitions": 4,
+    "evaluation_repetitions": 2,
+    "batches": 6,
+    "parent_trajectories": 192,
+    "learning_rate": 1e-05,
+    "optimizer_seed": 42,
+    "minibatch_size": 8,
+    "generation_caps": {
+      "training": 6000000,
+      "evaluation": 2200000,
+      "recovery": 800000,
+      "total": 9000000
+    },
+    "gpu_stage_seconds_cap": 7200,
+    "reserved_test_read": false,
+    "historical_market_oos_read": false,
+    "no_intermediate_evaluation": true
+  }
+}

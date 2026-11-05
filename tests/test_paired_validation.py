@@ -34,6 +34,7 @@ def worker_class():
             )
             self.calls = []
             self.failure = None
+            self.retained_outputs = {}
 
         async def _run_agent_flow(
             self, sampling_params, trajectory, *, agent_name, trace=True, **kwargs
@@ -48,7 +49,7 @@ def worker_class():
             self.calls.append(result)
             if self.failure:
                 raise self.failure
-            return result
+            return self.retained_outputs.get(trajectory["rollout_n"], result)
 
     rollout_seed.patch_agent_flow_worker_class(Worker)
     return Worker
@@ -82,7 +83,9 @@ def records(directory):
     ]
 
 
-def test_five_lanes_only_override_decoding_and_preserve_seed_identity(evidence):
+@pytest.mark.parametrize("arm", ["M1", "M2-plain", "M2"])
+def test_five_lanes_only_override_decoding_and_preserve_seed_identity(evidence, monkeypatch, arm):
+    monkeypatch.setenv("FINANCE_SCREENING_ARM", arm)
     Worker = worker_class()
     assert paired.patch_worker_class(Worker, evidence)
     worker = Worker()
@@ -119,6 +122,7 @@ def test_five_lanes_only_override_decoding_and_preserve_seed_identity(evidence):
         assert row["sampled_sibling"] == (None if lane == 0 else lane - 1)
         assert row["identity"] == identity(lane) and row["policy_step"] == 2
         assert row["execution_identity_sha256"] == "e" * 64
+        assert row["arm"] == arm
         assert row["upstream_sampling_params"] == before
         assert row["seed_identity_preserved"] is True
     assert len({rollout_seed.derive_request_seed(42, identity(lane), 0) for lane in range(5)}) == 5
@@ -178,6 +182,86 @@ def test_runtime_failure_is_preserved_once_without_retry(evidence):
     assert len(worker.calls) == len(records(evidence)) == 1
     row = records(evidence)[0]
     assert row["status"] == "FAILED" and "original incomplete" in row["error"]
+
+
+def retained_prefix():
+    return SimpleNamespace(
+        steps=[
+            SimpleNamespace(
+                reward_score=0.0,
+                extra_fields={
+                    "finance_grid_evaluation_failure": True,
+                    "finance_grid_evaluation_transport_only": True,
+                    "finance_grid_evaluation_failure_profile": "retain_prefix_v1",
+                    "finance_grid_evaluation_failure_kind": "trajectory_max_steps",
+                    "finance_screening_trajectory_complete": False,
+                    "finance_screening_terminal_score": None,
+                    "finance_screening_net_return": None,
+                },
+            )
+            for _ in range(256)
+        ]
+    )
+
+
+def test_paired_retained_prefix_stays_incomplete_and_requires_explicit_validator_opt_in(
+    evidence, monkeypatch,
+):
+    monkeypatch.setenv("FINANCE_GRID_EVALUATION_INCOMPLETE", "retain_prefix_v1")
+    Worker = worker_class()
+    paired.patch_worker_class(Worker, evidence)
+    worker = Worker()
+    worker.retained_outputs[0] = retained_prefix()
+
+    async def dispatch():
+        for lane in range(5):
+            await worker._run_agent_flow(
+                {"temperature": 1.0, "top_p": 1.0}, identity(lane, step=0), **kwargs(),
+            )
+
+    asyncio.run(dispatch())
+    row = next(row for row in records(evidence) if row["identity"]["rollout_n"] == 0)
+    assert row["status"] == "INCOMPLETE" and row["terminal_score"] is row["metrics"] is None
+    arguments = dict(
+        expected_steps=[0], expected_episode_ids=["formal-train-0113"],
+        arm="M2", execution_identity="e" * 64,
+    )
+    with pytest.raises(RuntimeError, match="actual paired"):
+        paired.validate_run_evidence(evidence, **arguments)
+    result = paired.validate_run_evidence(evidence, allow_incomplete=True, **arguments)
+    assert result["execution_status"] == "PASS" and result["status"] == "INCOMPLETE"
+    assert result["performance_status"] == "INCOMPLETE"
+    assert result["complete_trajectories"] == 4 and result["incomplete_trajectories"] == 1
+    assert len(worker.calls) == 5
+
+
+@pytest.mark.parametrize("damage", ["profile", "score", "mixed", "count", "reward"])
+def test_paired_dispatch_rejects_malformed_validation_failure_transport(
+    evidence, monkeypatch, damage,
+):
+    monkeypatch.setenv("FINANCE_GRID_EVALUATION_INCOMPLETE", "retain_prefix_v1")
+    Worker = worker_class()
+    paired.patch_worker_class(Worker, evidence)
+    worker = Worker()
+    output = retained_prefix()
+    if damage == "profile":
+        output.steps[0].extra_fields["finance_grid_evaluation_failure_profile"] = "wrong"
+    elif damage == "score":
+        output.steps[0].extra_fields["finance_screening_terminal_score"] = 0.0
+    elif damage == "mixed":
+        output.steps[0].extra_fields["finance_grid_evaluation_failure"] = False
+    elif damage == "count":
+        output.steps.pop()
+    else:
+        output.steps[0].reward_score = 1.0
+    worker.retained_outputs[0] = output
+    with pytest.raises(RuntimeError, match="invalid retained"):
+        asyncio.run(
+            worker._run_agent_flow(
+                {"temperature": 1.0, "top_p": 1.0}, identity(), **kwargs(),
+            )
+        )
+    assert records(evidence)[0]["status"] == "FAILED"
 
 
 def test_patch_is_idempotent_and_cannot_change_directory(evidence):
@@ -289,3 +373,57 @@ def test_run_evidence_requires_all_twenty_correct_actual_lanes(evidence, damage)
         assert result["status"] == "PASS"
         assert result["trajectories"] == 20
         assert result["greedy_trajectories"] == 4 and result["sampled_trajectories"] == 16
+
+
+@pytest.mark.parametrize("damage", [None, "missing", "duplicate"])
+def test_twelve_windows_require_actual_lanes_at_both_policy_steps(evidence, damage):
+    Worker = worker_class()
+    paired.patch_worker_class(Worker, evidence)
+    worker = Worker()
+    episodes = [f"formal-train-{index:04d}" for index in range(190, 442, 21)]
+
+    async def dispatch_all():
+        for step in (2, 4):
+            for index, episode in enumerate(episodes):
+                for lane in range(5):
+                    trajectory = {**identity(lane, step=step), "sample_index": index}
+                    arguments = {
+                        **kwargs(), "index": index, "extra_info": {"episode_id": episode}
+                    }
+                    await worker._run_agent_flow(
+                        {"temperature": 1.0, "top_p": 1.0}, trajectory, **arguments
+                    )
+
+    asyncio.run(dispatch_all())
+    if damage:
+        path = next(evidence.glob("*.jsonl"))
+        rows = records(evidence)
+        if damage == "missing":
+            rows.pop()
+        else:
+            rows[-1] = rows[0]
+        path.write_text("".join(json.dumps(row) + "\n" for row in rows))
+
+    arguments = dict(
+        expected_steps=[2, 4], expected_episode_ids=episodes,
+        arm="M2", execution_identity="e" * 64,
+    )
+    if damage:
+        with pytest.raises(RuntimeError, match="missing|repeated|unexpected"):
+            paired.validate_run_evidence(evidence, **arguments)
+    else:
+        result = paired.validate_run_evidence(evidence, **arguments)
+        assert result["status"] == "PASS"
+        assert result["trajectories"] == 120
+        assert result["greedy_trajectories"] == 24
+        assert result["sampled_trajectories"] == 96
+        assert result["policy_steps"] == [2, 4]
+
+
+@pytest.mark.parametrize("episodes", [[], ["formal-train-0190"] * 12])
+def test_paired_grid_rejects_empty_or_duplicate_windows(evidence, episodes):
+    with pytest.raises(ValueError, match="invalid expected paired validation grid"):
+        paired.validate_run_evidence(
+            evidence, expected_steps=[2, 4], expected_episode_ids=episodes,
+            arm="M2", execution_identity="e" * 64,
+        )

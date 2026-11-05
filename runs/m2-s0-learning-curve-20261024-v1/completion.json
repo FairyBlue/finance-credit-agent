@@ -1,0 +1,21 @@
+{
+  "status": "COMPLETE",
+  "planned_rounds": 8,
+  "completed_rounds": 8,
+  "baseline_reused_model_requests": 461,
+  "baseline_new_model_requests": 0,
+  "known_completed_new_collection_totals": {
+    "model_requests": 3312,
+    "prompt_tokens": 15498863,
+    "response_tokens": 69440
+  },
+  "all_planned_new_collections_complete": true,
+  "stage_wall_seconds": 2885.781910751015,
+  "final_actor": "/home/tianming/projects/finance-credit-agent/runs/m2-s0-learning-curve-20261024-v1/zero/round8/train/actor",
+  "limits": [
+    "S0 only, eight fixed Train windows, seed42; no best-round selection.",
+    "Each round continues previous actor and learned critic; Adam is reset each round.",
+    "Head-only gamma=lambda=1 demo, no REF and no formal Valid/OOS.",
+    "Historical initial collection is reused; only post-update collections are new cost."
+  ]
+}

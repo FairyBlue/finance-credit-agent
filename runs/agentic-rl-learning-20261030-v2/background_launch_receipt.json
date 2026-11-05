@@ -1,0 +1,26 @@
+{
+  "at": "2026-10-30T23:44:12.853358+08:00",
+  "execution": "persistent systemd user services",
+  "services": {
+    "baseline": {
+      "unit": "fca-agentic-learning-20261030-v2-baseline.service",
+      "status_at_receipt": "COMPLETE",
+      "completed_trajectories": 64,
+      "successes": 41,
+      "actual_generation_tokens": 1684364
+    },
+    "step2": {
+      "unit": "fca-agentic-learning-20261030-v2.service",
+      "status_at_receipt": "RUNNING"
+    },
+    "step3": {
+      "unit": "fca-agentic-learning-20261030-v2-step3.service",
+      "status_at_receipt": "WAITING_FOR_COMPLETE_STEP2_AND_RELEASED_GPU_CLAIM"
+    }
+  },
+  "step3_protocol_sha256": "6ea89bea1ad859ed49c610ceb4f786f0179931e75703e76b28e2c2e95ce80ce0",
+  "total_generation_token_cap": 44000000,
+  "gpu_stage_seconds_cap": 43200,
+  "new_test_opened": false,
+  "historical_market_oos_opened": false
+}

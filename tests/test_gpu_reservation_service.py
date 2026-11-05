@@ -33,6 +33,7 @@ from src.agents import gpu_reservation_service as service
 from src.agents.gpu_reservation import Allocation
 
 config = json.loads(sys.argv[1])
+scale = 1024**3 if config.get('persistent') else 1
 root = Path(config['root'])
 directory = Path(config['directory'])
 service.ROOT = root
@@ -51,7 +52,7 @@ class FakeBackend:
                                          allocated=self.allocated)) + '\n')
 
     def snapshot(self):
-        return dict(free_bytes=256-self.allocated, total_bytes=256,
+        return dict(free_bytes=256*scale-self.allocated, total_bytes=256*scale,
                     allocator_allocated_bytes=self.allocated,
                     allocator_reserved_bytes=self.allocated)
 
@@ -79,11 +80,31 @@ class FakeBackend:
         return False
 
 args = SimpleNamespace(directory=directory, device=0,
-                       target_gib=config.get('target', 24), max_gib=64,
-                       block_gib=8, reserve_gib=4,
+                       target_gib=config.get('target', 24)*scale,
+                       max_gib=(80 if config.get('persistent') else 64)*scale,
+                       block_gib=8*scale, reserve_gib=(2 if config.get('persistent') else 4)*scale,
                        ttl_hours=config.get('ttl_seconds', 30)/3600,
-                       poll_seconds=0.1)
-result = service.serve(args, backend_factory=FakeBackend)
+                       poll_seconds=0.1, persistent=config.get('persistent', False))
+if config.get('persistent'):
+    directory.mkdir(parents=True, exist_ok=True)
+    owner = dict(pid=7001, start_time_ticks=3, cgroup_path='/cpu-test.service',
+                 process_group_id=7001, session_id=7001)
+    worker = dict(pid=7002, start_time_ticks=4, cgroup_path='/cpu-test.service',
+                  process_group_id=7002, session_id=7002)
+    (directory / 'processes.json').write_text(json.dumps({'7001':owner, '7002':worker}))
+    (directory / 'scope-populated').write_text('1')
+    def identity(pid):
+        processes = json.loads((directory / 'processes.json').read_text())
+        if str(pid) not in processes:
+            raise ProcessLookupError(pid)
+        return processes[str(pid)]
+    def populated(path):
+        assert path == '/cpu-test.service'
+        return (directory / 'scope-populated').read_text() == '1'
+    result = service.serve(args, backend_factory=FakeBackend,
+                           identity_reader=identity, populated_reader=populated)
+else:
+    result = service.serve(args, backend_factory=FakeBackend)
 assert 'torch' not in sys.modules, 'CPU protocol tests must not import torch'
 raise SystemExit(result)
 """
@@ -360,3 +381,33 @@ def test_client_helper_uses_same_id_for_uncertain_retry(daemons):
     assert first == second
     assert payload["request_id"] == request_id
     assert first["payload_bytes"] == 0 and first["paused"]
+
+
+def test_persistent_socket_service_handoffs_and_recaptures_after_full_group_exit(daemons):
+    gib = 1024**3
+    daemon = daemons(persistent=True, ttl_seconds=0.15)
+    state = daemon.wait_state(lambda row: row["payload_bytes"] == 24 * gib)
+    assert state["persistent"] and state["expires_at_SGT"] is None
+    assert state["remaining_seconds"] is None
+    time.sleep(0.3)  # An explicit persistent profile does not expire at finite TTL.
+    identities = json.loads((daemon.directory / "processes.json").read_text())
+    owner, worker = identities["7001"], identities["7002"]
+    claim = daemon.command("claim", lease_token="training", owner=owner,
+                           workers=[worker], request_id="claim-once")
+    assert claim["paused"] and claim["claim"]["cgroup_populated"]
+    assert daemon.command("claim", lease_token="training", owner=owner,
+                          workers=[worker], request_id="claim-once") == claim
+    state = daemon.command("release", lease_token="training", bytes=24 * gib)
+    assert state["payload_bytes"] == 0
+    (daemon.directory / "processes.json").write_text(json.dumps({"7002": worker}))
+    time.sleep(0.3)
+    assert daemon.command("status")["payload_bytes"] == 0
+    with pytest.raises(RuntimeError, match="still populated"):
+        daemon.command("unclaim", lease_token="training")
+    (daemon.directory / "processes.json").write_text("{}")
+    (daemon.directory / "scope-populated").write_text("0")
+    state = daemon.wait_state(lambda row: row["payload_bytes"] == 24 * gib)
+    assert state["claim"] is None and not state["training_connected"]
+    assert state["last_claim_end"]["reason"] == "cgroup_empty"
+    daemon.command("stop")
+    assert daemon.finish()["allocator_allocated_bytes"] == 0

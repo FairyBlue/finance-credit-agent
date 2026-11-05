@@ -1,0 +1,41 @@
+{
+  "status": "PASS",
+  "at_UTC": "2026-10-18T13:47:41.385533+00:00",
+  "lightweight_checks": true,
+  "full_model_or_data_rehash_repeated": false,
+  "actual_service_and_CPU_GPU_readout_exit0": true,
+  "startup_and_driver_sources_unchanged": true,
+  "model_stats_unchanged": true,
+  "all_154_paths_complete": true,
+  "model_requests": 1903,
+  "max_requests_per_advancing_session": 3,
+  "invalid_reasons": {
+    "buy target_weight must be above the current weight": 136,
+    "sell target_weight must be below the current weight": 38,
+    "symbol 'HSBC' is outside the frozen episode universe": 1,
+    "symbol 'OSRL' is outside the frozen episode universe": 1,
+    "symbol 'HSI' is outside the frozen episode universe": 1
+  },
+  "paired_absolute_Y_difference": {
+    "median": 0.6080966638904712,
+    "mean": 0.7326542548147037,
+    "max": 3.8352038581220858,
+    "unit": "original financial Y"
+  },
+  "paired_exact_response_sequence_equal": 8,
+  "GPU_sampled_peak_GiB": 35.0615234375,
+  "prior_failed_runs_model_requests": 0,
+  "fixed_seed_tables_unchanged": true,
+  "holder_return_verified": true,
+  "evidence_sha256": {
+    "contract.json": "e981002c209937f5495b249c895266995213d3ee7423810671b7152773883fc2",
+    "driver_start_seal.json": "011e59261fe9dc2cbc6e1a867e5e4e81c51256943fed2f900154ffd3d6452fe5",
+    "driver_completion.json": "0e76c5bbaa7e952448b3812bd5fd9d60e0ad9dca4db2f4084e40691d4807cad7",
+    "worker_completion.json": "7262fcc86f62bd3cee9483f8acb63d4dcf1e33ec61218c39a1898216cee65ac6",
+    "process_exit_receipt.json": "c16980d187d4c991c47bd60c90d43cfa43e6721ccf662559aab085790c5f5251",
+    "service_exit_receipt.json": "abb77ce7af5255d078d0eb2a9b6a1c7aeb0bc47aeb6e003de87bc0d307ed5370",
+    "continuation_readout.json": "3b95e1fbf0ff043d24d28c63aad94ea615dd23a931c33af4a87754686ead14cd",
+    "readout_exit_receipt.json": "524fcc5b2b39adeaf46c7f90c22af7c36370304f194a371a5122b918b5bf7816",
+    "holder_return_verified.json": "1b646d7427d3b3efb441da80be16a47695c2ca2c802b3cbc6744417dd8c730bd"
+  }
+}

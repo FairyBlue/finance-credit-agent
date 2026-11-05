@@ -1,0 +1,147 @@
+{
+  "profile": "stochastic_continuation_feasibility_readout_v1",
+  "status": "PASS",
+  "scope": "bounded continuation feasibility only",
+  "at_UTC": "2026-10-18T13:44:01.595083+00:00",
+  "counts": {
+    "planned_paths": 154,
+    "planned_cells": 77,
+    "anchors": 32,
+    "complete_paths": 154,
+    "noncomplete_paths": 0,
+    "both_complete_cells": 77,
+    "pair_difference_NA_cells": 0,
+    "complete_pairs_exactly_equal_Y": 9,
+    "complete_pairs_different_Y": 68,
+    "model_calls": 1903,
+    "maximum_model_calls": 6904,
+    "path_status_counts": {
+      "COMPLETE": 154
+    }
+  },
+  "request_cost": {
+    "model_requests": 1903,
+    "environment_applied_model_responses": 1903,
+    "expected_total_environment_requests": 3371,
+    "generation_status_counts": {
+      "COMPLETE": 1903
+    },
+    "native_finish_reason_counts": {
+      "stop": 1903
+    },
+    "environment_response_counts": {
+      "ADVANCING": 1726,
+      "INVALID": 177
+    },
+    "prompt_tokens": 8870710,
+    "response_tokens": 39927,
+    "response_token_count_min": 12,
+    "response_token_count_median": 21,
+    "response_token_count_max": 22
+  },
+  "day_summary": [
+    {
+      "start_session_index": 0,
+      "planned_paths": 36,
+      "planned_cells": 18,
+      "anchors": 8,
+      "complete_paths": 36,
+      "noncomplete_paths": 0,
+      "both_complete_cells": 18,
+      "pair_difference_NA_cells": 0,
+      "complete_pairs_exactly_equal_Y": 0,
+      "complete_pairs_different_Y": 18,
+      "model_calls": 753,
+      "maximum_model_calls": 2736,
+      "path_status_counts": {
+        "COMPLETE": 36
+      },
+      "prompt_tokens": 3503577,
+      "response_tokens": 15812
+    },
+    {
+      "start_session_index": 5,
+      "planned_paths": 38,
+      "planned_cells": 19,
+      "anchors": 8,
+      "complete_paths": 38,
+      "noncomplete_paths": 0,
+      "both_complete_cells": 19,
+      "pair_difference_NA_cells": 0,
+      "complete_pairs_exactly_equal_Y": 0,
+      "complete_pairs_different_Y": 19,
+      "model_calls": 578,
+      "maximum_model_calls": 2128,
+      "path_status_counts": {
+        "COMPLETE": 38
+      },
+      "prompt_tokens": 2694900,
+      "response_tokens": 12155
+    },
+    {
+      "start_session_index": 10,
+      "planned_paths": 38,
+      "planned_cells": 19,
+      "anchors": 8,
+      "complete_paths": 38,
+      "noncomplete_paths": 0,
+      "both_complete_cells": 19,
+      "pair_difference_NA_cells": 0,
+      "complete_pairs_exactly_equal_Y": 1,
+      "complete_pairs_different_Y": 18,
+      "model_calls": 380,
+      "maximum_model_calls": 1368,
+      "path_status_counts": {
+        "COMPLETE": 38
+      },
+      "prompt_tokens": 1772925,
+      "response_tokens": 7947
+    },
+    {
+      "start_session_index": 15,
+      "planned_paths": 42,
+      "planned_cells": 21,
+      "anchors": 8,
+      "complete_paths": 42,
+      "noncomplete_paths": 0,
+      "both_complete_cells": 21,
+      "pair_difference_NA_cells": 0,
+      "complete_pairs_exactly_equal_Y": 8,
+      "complete_pairs_different_Y": 13,
+      "model_calls": 192,
+      "maximum_model_calls": 672,
+      "path_status_counts": {
+        "COMPLETE": 42
+      },
+      "prompt_tokens": 899308,
+      "response_tokens": 4013
+    }
+  ],
+  "definitions": {
+    "Y": "original terminal financial score after the fixed first action and stochastic common-SFT continuation",
+    "paired_difference": "replicate1 minus replicate0 Y, only when both original planned paths complete",
+    "NA": "failed/capped path terminal Y and every unsupported pair difference stay NA, never zero"
+  },
+  "limits": [
+    "The two paths per cell are repeated feasibility continuations, not independent estimation/reference sets.",
+    "Two terminal draws do not establish precise Q^pi, A^pi, denoising, MSE, ranking or financial superiority.",
+    "Cells share Train windows/dates and historical M2 prefixes; they are not independent market samples or on-policy state coverage.",
+    "No candidate pooling, actor update, formal Valid or Final OOS inference is performed by this reader."
+  ],
+  "input_sha256": {
+    "continuation_manifest.json": "aca1b5d2e1a24842af8d9547371be17d6c7eab917933cde8dd9a18b0d47bad0a",
+    "driver_completion.json": "0e76c5bbaa7e952448b3812bd5fd9d60e0ad9dca4db2f4084e40691d4807cad7",
+    "worker_completion.json": "7262fcc86f62bd3cee9483f8acb63d4dcf1e33ec61218c39a1898216cee65ac6",
+    "trajectory_results.jsonl": "060d837bc43aa8cb2ce2c93b715cf8094752e684b87154397e9cb4af7ebe3d48",
+    "driver_requests.jsonl": "33d84c9e915a3f3cdb4e119cb41d73623dc743c29b431e5dfe4b68da4f4b7387",
+    "driver_evaluations.jsonl": "187bb9dd005ce249bcb2d6cca261bebd7439fe87ad89117005026ea65f2a6656",
+    "generations.jsonl": "9705126fd6a2ee3407dbef5bc0b1bdcca8300a9dcd369533d55370addf3cd5db",
+    "request_seed_table.jsonl": "9db3c4d28fda63f72764c4035679b5eff6415d9caad4bf8fc0fb1d9e9f2703b2"
+  },
+  "output_sha256": {
+    "continuation_paths.csv": "21917e08eade26d1836b27cdb1ee0b183fc348224706b327b529602eb26d4322",
+    "continuation_cells.csv": "66d38031756e67bd484ff8a2d2ac2344458e45a0e7b144fab75037a6f691bc60",
+    "continuation_days.csv": "a01b486556ecc612b55ffe7dd3586186f7279d619e07d4869985b68eefbbb503"
+  },
+  "readout_source_sha256": "47f45fa8441d383bd537820b2ebbdcd68952776e5a2d8794204f91077c943643"
+}

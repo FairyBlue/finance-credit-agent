@@ -1,10 +1,10 @@
 # H100 兼容性与 clean-clone 复现
 
-安装与版本合同原更新时间：2026-08-30；导航与历史状态整理：2026-09-14。
+安装与版本合同原更新时间：2026-08-30；导航与历史状态整理：2026-10-17。
 
 本文保留已登记的软件版本、安装方式和复现注意事项。**其中 G1 相关版本/身份表是历史合同，
 不代表当前实验仍被阻塞。** G1 与 M1 后续接线结果见
-[阶段总结](history/01_H100_AND_M1.md)；最新计划和实验报告见[文档导航](README.md)。
+[主题汇总](history/FOUNDATIONS_AND_DIAGNOSTICS.md)；最新计划和实验报告见[文档导航](README.md)。
 具体作业采用其对应计划中的配置、模型与执行身份，不从本文旧 commit 推定当前工作区已验证。
 
 ## 1. 身份与证据边界
@@ -225,9 +225,9 @@ torch 2.9/vLLM 0.12 环境产出本项目结果。
 
 8 月 27 日的 stack/kernel 与 preflight 通过，当时因 prompt 预算停止，未运行 G1；
 这不是现状。后续 8 月 31 日 G1、9 月 1 日 T2 v2、9 月 2 日 M1 wiring 均已通过，
-具体代码身份与边界见[阶段总结](history/01_H100_AND_M1.md)。当初复用 pinned 环境的审计
+具体代码身份与边界见[主题汇总](history/FOUNDATIONS_AND_DIAGNOSTICS.md)。当初复用 pinned 环境的审计
 没有证明从空 `.venv` 完整重装；本文也不补写这项未执行结果。
 
-9 月后的资源布局、non-thinking 与工程结果见[screening 工程总结](history/02_M2_SCREENING_ENGINEERING.md)。
-9 月 13—14 日采用的共同冷启动和 RL 配置见[文档导航](README.md)。
+9 月后的资源布局、non-thinking 与工程结果见[screening 工程总结](history/FOUNDATIONS_AND_DIAGNOSTICS.md)。
+最新实验、共同初始化和资源记录见[文档导航](README.md)。
 原兼容性文档及旧状态表完整保存在[原文归档](archive/README.md)。

@@ -32,7 +32,7 @@ from .launcher import (
     verify_gpu_runtime_and_model,
 )
 from .metadata import collect_run_hashes, verify_validation_identity
-from .rollout_seed import normalize_rollout_identity
+from .rollout_seed import derive_request_seed, normalize_rollout_identity
 from .screening_checkpoint import RESEARCH_PROFILE, validate_checkpoint, validate_research_artifact
 from .screening_prompt import validate_action_protocol
 from .screening_runtime import validate_residual_eta
@@ -425,6 +425,98 @@ def capture_process(command: list[str], *, environment: dict[str, str], cell_dir
     return int(process.returncode)
 
 
+def validate_incomplete_evaluation_evidence(record: dict[str, Any]) -> None:
+    """Accept only a real exhausted evaluation prefix, without a financial outcome.
+
+    The marker alone grants no exemption. These checks distinguish the fixed
+    agent-step budget from failed requests, response truncation and a terminal
+    trajectory whose outcome has been hidden.
+    """
+    identity = normalize_rollout_identity(record.get("rollout_identity", record.get("identity")))
+    steps, requests = record.get("steps"), record.get("requests")
+    if (
+        identity.validate is not True
+        or record.get("status") != "INCOMPLETE"
+        or record.get("complete") is not False
+        or record.get("evaluation_failure_profile") != "retain_prefix_v1"
+        or record.get("failure_kind") != "trajectory_max_steps"
+        or record.get("error_type") != "ScreeningIncompleteError"
+        or record.get("error") != "screening rollout stopped before its exact terminal"
+        or type(record.get("max_steps_limit")) is not int
+        or record["max_steps_limit"] != 256
+        or record.get("transport_output_returned") is not True
+        or type(record.get("transport_step_count")) is not int
+        or record["transport_step_count"] != 256
+        or record.get("transport_rewards_are_not_financial") is not True
+        or any(record.get(name) is not None for name in ("metrics", "terminal_score", "credits"))
+        or not isinstance(steps, list)
+        or not isinstance(requests, list)
+        or len(steps) != 256
+        or len(requests) != 256
+    ):
+        raise RuntimeError("INCOMPLETE evaluation lacks the verified retain-prefix contract")
+    current_session = 0
+    for index, (step, request) in enumerate(zip(steps, requests, strict=True)):
+        if not isinstance(step, dict) or not isinstance(request, dict):
+            raise RuntimeError("INCOMPLETE evaluation has invalid real-prefix records")
+        result_session = step.get("result_session_index")
+        response_count, prompt_count = (
+            request.get("response_token_count"), request.get("prompt_token_count")
+        )
+        forwarded = request.get("forwarded_sampling_params")
+        request_seed = derive_request_seed(record.get("base_seed"), identity, index)
+        if (
+            type(step.get("step_index")) is not int
+            or step["step_index"] != index
+            or type(step.get("decision_session_index")) is not int
+            or step["decision_session_index"] != current_session
+            or type(result_session) is not int
+            or result_session not in {current_session, current_session + 1}
+            or result_session >= 20
+            or step.get("done") is not False
+            or type(step.get("reward")) not in (int, float)
+            or step["reward"] != 0.0
+            or type(step.get("invalid_action")) is not bool
+            or (step["invalid_action"] and result_session != current_session)
+            or type(request.get("request_index")) is not int
+            or request["request_index"] != index
+            or request.get("status") != "COMPLETE"
+            or request.get("stop_reason") != "completed"
+            or request.get("finish_reason") not in {None, "stop"}
+            or type(request.get("request_seed")) is not int
+            or request["request_seed"] != request_seed
+            or type(response_count) is not int
+            or not 0 < response_count < 4096
+            or type(prompt_count) is not int
+            or not 0 < prompt_count <= 8192
+            or type(request.get("response_cap")) is not int
+            or request["response_cap"] != 4096
+            or not isinstance(forwarded, dict)
+            or forwarded.get("seed") != request_seed
+            or forwarded.get("max_tokens") != 4096
+        ):
+            raise RuntimeError(
+                "INCOMPLETE evaluation real-prefix identity or request budget differs"
+            )
+        current_session = result_session
+    if record.get("generated_response_tokens") != sum(
+        request["response_token_count"] for request in requests
+    ) or record.get("prompt_tokens") != sum(request["prompt_token_count"] for request in requests):
+        raise RuntimeError("INCOMPLETE evaluation request token totals differ")
+    if "interactions" in record:
+        interactions = record["interactions"]
+        if not isinstance(interactions, list) or len(interactions) != len(steps):
+            raise RuntimeError("INCOMPLETE evaluation captured prefix is incomplete")
+        for step, interaction in zip(steps, interactions, strict=True):
+            if not isinstance(interaction, dict) or any(
+                interaction.get(name) != step[name]
+                for name in (
+                    "step_index", "decision_session_index", "result_session_index", "done", "reward"
+                )
+            ):
+                raise RuntimeError("INCOMPLETE evaluation captured prefix differs from real steps")
+
+
 def validate_cell_evidence(
     cell_dir: Path, *, stage: str, expected_rounds: int, arm: str, seed: int,
     train_episode_ids: list[str], eval_episode_ids: list[str],
@@ -434,15 +526,19 @@ def validate_cell_evidence(
     expected_eval_steps: list[int] | None = None,
     expected_eta: float | None = None,
     eval_rollout_n: int = 1,
+    allow_incomplete_evaluation: bool = False,
 ) -> dict[str, Any]:
     """Count semantic trajectory identities and optimizer evidence, never infer from exit 0."""
     checkpoint_artifact_profile({"artifact_profile": artifact_profile})
     if type(eval_rollout_n) is not int or eval_rollout_n <= 0:
         raise ValueError("evaluation sibling count must be a positive integer")
+    if type(allow_incomplete_evaluation) is not bool:
+        raise ValueError("allow_incomplete_evaluation must be boolean")
     records = read_jsonl(cell_dir / "artifacts/screening_evidence")
     # Flow schema is normalized here; repeated identities from recovery are not accepted silently.
     identities: set[str] = set()
     counts: Counter[str] = Counter()
+    evaluation_complete = evaluation_incomplete = 0
     expected_grid = {
         (step, index, sibling, False): train_episode_ids[index]
         for step in range(1, expected_rounds + 1)
@@ -483,15 +579,29 @@ def validate_cell_evidence(
         observed_grid.add(grid_key)
         if record.get("arm") != arm or record.get("base_seed") != seed:
             raise RuntimeError("trajectory arm/seed identity mismatch")
-        if record.get("metrics", {}).get("calibration_sha256") != calibration_payload_sha256:
-            raise RuntimeError("trajectory calibration identity mismatch")
         key = json.dumps(identity, sort_keys=True)
         if key in identities:
             raise RuntimeError("duplicate screening trajectory evidence")
         identities.add(key)
         complete = record.get("complete", record.get("episode_complete"))
         if complete is not True:
-            raise RuntimeError("INCOMPLETE screening trajectory")
+            if not allow_incomplete_evaluation or not normalized.validate:
+                raise RuntimeError("INCOMPLETE screening trajectory")
+            validate_incomplete_evaluation_evidence(record)
+            counts["eval"] += 1
+            evaluation_incomplete += 1
+            continue
+        if any(name in record for name in (
+            "evaluation_failure_profile", "failure_kind", "transport_output_returned",
+        )):
+            raise RuntimeError(
+                "INCOMPLETE evaluation marker conflicts with complete financial outcome"
+            )
+        metrics = record.get("metrics")
+        if not isinstance(metrics, dict) or metrics.get("calibration_sha256") != (
+            calibration_payload_sha256
+        ):
+            raise RuntimeError("trajectory calibration identity mismatch")
         score = record.get("terminal_score")
         if (
             isinstance(score, bool)
@@ -499,9 +609,10 @@ def validate_cell_evidence(
             or not math.isfinite(score)
         ):
             raise RuntimeError("missing finite common terminal score")
-        if record.get("metrics", {}).get("terminal_score") != score:
+        if metrics.get("terminal_score") != score:
             raise RuntimeError("common terminal score differs from the ledger metrics")
         counts["eval" if identity["validate"] else "train"] += 1
+        evaluation_complete += int(normalized.validate)
     expected_train = 0 if stage == "zero-shot" else expected_rounds * 8
     expected_eval = (
         expected_eval_count if expected_eval_count is not None
@@ -551,7 +662,17 @@ def validate_cell_evidence(
         cell_dir / "artifacts/sibling_diagnostics"
     ):
         raise RuntimeError("zero-shot unexpectedly updated optimizer")
-    return {"trajectories": dict(counts), "optimizer_evidence": updates}
+    result = {"trajectories": dict(counts), "optimizer_evidence": updates}
+    if allow_incomplete_evaluation:
+        result.update(
+            evaluation_completion={
+                "attempted": counts["eval"],
+                "complete": evaluation_complete,
+                "incomplete": evaluation_incomplete,
+            },
+            financial_status="INCOMPLETE" if evaluation_incomplete else "COMPLETE",
+        )
+    return result
 
 
 def launch_cell(

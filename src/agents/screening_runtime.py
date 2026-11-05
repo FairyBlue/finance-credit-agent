@@ -34,7 +34,7 @@ SCREENING_DIAGNOSTICS_ENV = "FINANCE_SCREENING_DIAGNOSTICS_DIR"
 SCREENING_SEED_ENV = "FINANCE_SCREENING_RUN_SEED"
 SCREENING_ETA_ENV = "FINANCE_SCREENING_RESIDUAL_ETA"
 COMMON_INVALID_PENALTY_ENV = "FINANCE_COMMON_INVALID_PENALTY"
-RESIDUAL_ETAS = frozenset({0.0, 0.25, 1.0})
+RESIDUAL_ETAS = frozenset({0.0, 0.125, 0.25, 1.0})
 SCREENING_ARMS = frozenset({"A2", "M1", "M2-plain", "M2"})
 _TRAINER_MODULE = "agent_r1.trainer.ppo.ray_trainer"
 _configured_settings: ScreeningRuntimeSettings | None = None
@@ -52,7 +52,7 @@ class ScreeningRuntimeSettings:
 def validate_residual_eta(value: Any) -> float:
     """Explicit bounded strength ablation; historical settings default to 1."""
     if type(value) not in (int, float) or value not in RESIDUAL_ETAS:
-        raise ValueError("registered screening eta values are 0, 0.25, and 1")
+        raise ValueError("registered screening eta values are 0, 0.125, 0.25, and 1")
     return float(value)
 
 
@@ -60,8 +60,10 @@ def validate_invalid_action_penalty(value: Any, arm: str) -> float:
     """The bounded common-target experiment is off for all historical runs."""
     if type(value) not in (int, float) or value not in (0, 0.05):
         raise ValueError("common invalid-action penalty must be 0 or the fixed candidate 0.05")
-    if value and arm not in {"M1", "M2"}:
-        raise ValueError("common invalid-action penalty is registered only for M1 and M2")
+    if value and arm not in {"M1", "M2-plain", "M2"}:
+        raise ValueError(
+            "common invalid-action penalty is registered only for M1, M2-plain, and M2"
+        )
     return float(value)
 
 
@@ -314,6 +316,8 @@ def compute_screening_advantage(
             gamma=gamma,
             lam=lam,
         )
+        # Plain removes only action-family pooling. It retains session alignment,
+        # the action-diversity gate, penalized GAE/critic targets and one whitening.
         raw_residual = credits.pooled if arm == "M2" else credits.plain
         residual = torch.tensor(raw_residual, dtype=u.dtype, device=u.device)
         if arm in {"A2", "M1"}:

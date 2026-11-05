@@ -126,7 +126,7 @@ def patch_worker_class(worker_class: type[Any], directory: Path) -> bool:
         forwarded = {**sampling_params, **lane["sampling_params"]}
         execution = os.environ.get("FINANCE_SCREENING_IDENTITY_SHA256", "")
         arm = os.environ.get("FINANCE_SCREENING_ARM", "")
-        if not re.fullmatch(r"[0-9a-f]{64}", execution) or arm not in {"M1", "M2"}:
+        if not re.fullmatch(r"[0-9a-f]{64}", execution) or arm not in {"M1", "M2-plain", "M2"}:
             raise RuntimeError("paired validation requires the actual screening execution identity")
         extra = kwargs.get("extra_info", {})
         if isinstance(extra, str):
@@ -165,7 +165,42 @@ def patch_worker_class(worker_class: type[Any], directory: Path) -> bool:
                 _ray_trace_ctx=_ray_trace_ctx,
                 **kwargs,
             )
-            record["status"] = "COMPLETE"
+            steps = getattr(result, "steps", ())
+            failure_steps = [
+                step for step in steps
+                if step.extra_fields.get("finance_grid_evaluation_failure") is True
+            ]
+            if failure_steps:
+                profile = os.environ.get("FINANCE_GRID_EVALUATION_INCOMPLETE")
+                if (
+                    profile != "retain_prefix_v1"
+                    or len(failure_steps) != len(steps)
+                    or len(steps) != 256
+                    or any(
+                        step.reward_score != 0.0
+                        or step.extra_fields.get("finance_grid_evaluation_transport_only")
+                        is not True
+                        or step.extra_fields.get("finance_grid_evaluation_failure_profile")
+                        != profile
+                        or step.extra_fields.get("finance_grid_evaluation_failure_kind")
+                        != "trajectory_max_steps"
+                        or step.extra_fields.get("finance_screening_trajectory_complete")
+                        is not False
+                        or step.extra_fields.get("finance_screening_terminal_score") is not None
+                        or step.extra_fields.get("finance_screening_net_return") is not None
+                        for step in steps
+                    )
+                ):
+                    raise RuntimeError("invalid retained validation failure transport")
+                record.update(
+                    status="INCOMPLETE", evaluation_failure_profile=profile,
+                    failure_kind="trajectory_max_steps", max_steps_limit=256,
+                    transport_output_returned=True, transport_step_count=len(steps),
+                    transport_rewards_are_not_financial=True,
+                    terminal_score=None, metrics=None,
+                )
+            else:
+                record["status"] = "COMPLETE"
             return result
         except BaseException as error:
             record.update(status="FAILED", error=f"{type(error).__name__}: {error}")
@@ -186,18 +221,21 @@ def validate_run_evidence(
     expected_episode_ids: list[str],
     arm: str,
     execution_identity: str,
+    allow_incomplete: bool = False,
 ) -> dict[str, Any]:
     """Require every registered lane with its actual unchanged seed identity and parameters."""
     from src.agents.rollout_seed import normalize_rollout_identity
 
     directory = Path(directory)
     if (
+        type(allow_incomplete) is not bool
+        or
         not expected_steps
         or any(type(step) is not int or step < 0 for step in expected_steps)
         or len(set(expected_steps)) != len(expected_steps)
-        or len(expected_episode_ids) != 4
-        or len(set(expected_episode_ids)) != 4
-        or arm not in {"M1", "M2"}
+        or not expected_episode_ids
+        or len(set(expected_episode_ids)) != len(expected_episode_ids)
+        or arm not in {"M1", "M2-plain", "M2"}
         or not re.fullmatch(r"[0-9a-f]{64}", execution_identity)
     ):
         raise ValueError("invalid expected paired validation grid")
@@ -208,6 +246,7 @@ def validate_run_evidence(
         for lane in range(5)
     }
     observed, sources = set(), {}
+    incomplete = []
     for path in sorted(directory.glob("*.jsonl")):
         payload = path.read_bytes()
         sources[path.name] = sha256(payload).hexdigest()
@@ -222,6 +261,20 @@ def validate_run_evidence(
                     "paired validation has missing, repeated or unexpected identities"
                 )
             lane = lane_settings(identity["rollout_n"])
+            retained_failure = row.get("status") == "INCOMPLETE" and allow_incomplete
+            if retained_failure:
+                if (
+                    row.get("evaluation_failure_profile") != "retain_prefix_v1"
+                    or row.get("failure_kind") != "trajectory_max_steps"
+                    or row.get("max_steps_limit") != 256
+                    or row.get("transport_step_count") != 256
+                    or row.get("transport_output_returned") is not True
+                    or row.get("transport_rewards_are_not_financial") is not True
+                    or row.get("terminal_score") is not None
+                    or row.get("metrics") is not None
+                ):
+                    raise RuntimeError("paired validation retained failure evidence differs")
+                incomplete.append(key)
             upstream, forwarded = (
                 row.get("upstream_sampling_params", {}),
                 row.get("forwarded_sampling_params", {}),
@@ -229,7 +282,7 @@ def validate_run_evidence(
             if (
                 row.get("schema_version") != 1
                 or row.get("profile") != PROFILE
-                or row.get("status") != "COMPLETE"
+                or (row.get("status") != "COMPLETE" and not retained_failure)
                 or row.get("arm") != arm
                 or row.get("execution_identity_sha256") != execution_identity
                 or row.get("policy_step") != identity["step"]
@@ -252,11 +305,16 @@ def validate_run_evidence(
     if observed != set(expected):
         raise RuntimeError("paired validation is missing one or more fixed validation lanes")
     return {
-        "status": "PASS",
+        "status": "INCOMPLETE" if incomplete else "PASS",
+        "execution_status": "PASS",
+        "performance_status": "INCOMPLETE" if incomplete else "COMPLETE",
+        "complete_trajectories": len(observed) - len(incomplete),
+        "incomplete_trajectories": len(incomplete),
+        "incomplete_identities": [list(key) for key in incomplete],
         "profile": PROFILE,
         "trajectories": len(observed),
-        "greedy_trajectories": len(expected_steps) * 4,
-        "sampled_trajectories": len(expected_steps) * 16,
+        "greedy_trajectories": len(expected_steps) * len(expected_episode_ids),
+        "sampled_trajectories": len(expected_steps) * len(expected_episode_ids) * 4,
         "policy_steps": list(expected_steps),
         "source_sha256": sources,
         "seed_identity_contains_actual_policy_step": True,

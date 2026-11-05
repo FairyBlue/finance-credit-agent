@@ -1,0 +1,1075 @@
+{
+  "authorized_steps": [
+    1,
+    2,
+    3
+  ],
+  "stages": [
+    {
+      "name": "wiring_actor_update",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/wiring_actor_update_attempt1.log",
+      "started_at": "2026-10-30T16:26:29.381166+08:00",
+      "gpu_worker": true,
+      "seconds": 344.80615920573473,
+      "finished_at": "2026-10-30T16:32:14.188804+08:00"
+    },
+    {
+      "name": "wiring_saved_state_resume",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/wiring_saved_state_resume_attempt1.log",
+      "started_at": "2026-10-30T16:32:14.204139+08:00",
+      "gpu_worker": true,
+      "seconds": 269.2082398086786,
+      "finished_at": "2026-10-30T16:36:43.414335+08:00"
+    },
+    {
+      "name": "rloo_seed42_round000_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/rloo_seed42_round000_collect_attempt1.log",
+      "started_at": "2026-10-30T16:36:48.525776+08:00",
+      "gpu_worker": true,
+      "seconds": 151.58334048092365,
+      "finished_at": "2026-10-30T16:39:20.110030+08:00"
+    },
+    {
+      "name": "rloo_seed42_round000_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/rloo_seed42_round000_train_attempt1.log",
+      "started_at": "2026-10-30T16:39:20.121736+08:00",
+      "gpu_worker": true,
+      "seconds": 127.19780294969678,
+      "finished_at": "2026-10-30T16:41:27.321383+08:00"
+    },
+    {
+      "name": "rloo_seed42_round001_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/rloo_seed42_round001_collect_attempt1.log",
+      "started_at": "2026-10-30T16:41:27.779753+08:00",
+      "gpu_worker": true,
+      "seconds": 65.75910632312298,
+      "finished_at": "2026-10-30T16:42:33.540076+08:00"
+    },
+    {
+      "name": "rloo_seed42_round001_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/rloo_seed42_round001_train_attempt1.log",
+      "started_at": "2026-10-30T16:42:33.547698+08:00",
+      "gpu_worker": true,
+      "seconds": 109.00834242254496,
+      "finished_at": "2026-10-30T16:44:22.557944+08:00"
+    },
+    {
+      "name": "rloo_seed42_round002_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/rloo_seed42_round002_collect_attempt1.log",
+      "started_at": "2026-10-30T16:44:23.278970+08:00",
+      "gpu_worker": true,
+      "seconds": 60.16712494939566,
+      "finished_at": "2026-10-30T16:45:23.447507+08:00"
+    },
+    {
+      "name": "rloo_seed42_round002_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/rloo_seed42_round002_train_attempt1.log",
+      "started_at": "2026-10-30T16:45:23.454826+08:00",
+      "gpu_worker": true,
+      "seconds": 55.83581321313977,
+      "finished_at": "2026-10-30T16:46:19.292747+08:00"
+    },
+    {
+      "name": "rloo_seed42_round003_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/rloo_seed42_round003_collect_attempt1.log",
+      "started_at": "2026-10-30T16:46:23.259531+08:00",
+      "gpu_worker": true,
+      "seconds": 240.98412692546844,
+      "finished_at": "2026-10-30T16:50:24.244955+08:00"
+    },
+    {
+      "name": "rloo_seed42_round003_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/rloo_seed42_round003_train_attempt1.log",
+      "started_at": "2026-10-30T16:50:24.252361+08:00",
+      "gpu_worker": true,
+      "seconds": 107.90771396458149,
+      "finished_at": "2026-10-30T16:52:12.162005+08:00"
+    },
+    {
+      "name": "rloo_seed42_round004_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/rloo_seed42_round004_collect_attempt1.log",
+      "started_at": "2026-10-30T16:52:14.462781+08:00",
+      "gpu_worker": true,
+      "seconds": 89.54956138879061,
+      "finished_at": "2026-10-30T16:53:44.013652+08:00"
+    },
+    {
+      "name": "rloo_seed42_round004_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/rloo_seed42_round004_train_attempt1.log",
+      "started_at": "2026-10-30T16:53:44.020873+08:00",
+      "gpu_worker": true,
+      "seconds": 102.04762507602572,
+      "finished_at": "2026-10-30T16:55:26.070373+08:00"
+    },
+    {
+      "name": "rloo_seed42_round005_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/rloo_seed42_round005_collect_attempt1.log",
+      "started_at": "2026-10-30T16:55:27.536601+08:00",
+      "gpu_worker": true,
+      "seconds": 141.90519427508116,
+      "finished_at": "2026-10-30T16:57:49.443109+08:00"
+    },
+    {
+      "name": "rloo_seed42_round005_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/rloo_seed42_round005_train_attempt1.log",
+      "started_at": "2026-10-30T16:57:49.446921+08:00",
+      "gpu_worker": true,
+      "seconds": 52.715185042470694,
+      "finished_at": "2026-10-30T16:58:42.163127+08:00"
+    },
+    {
+      "name": "eval_rloo_seed42_dev",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/eval_rloo_seed42_dev_attempt1.log",
+      "started_at": "2026-10-30T16:58:45.924409+08:00",
+      "gpu_worker": true,
+      "seconds": 124.27688796073198,
+      "finished_at": "2026-10-30T17:00:50.202448+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round000_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round000_collect_attempt1.log",
+      "started_at": "2026-10-30T17:00:51.377748+08:00",
+      "gpu_worker": true,
+      "seconds": 66.6326626650989,
+      "finished_at": "2026-10-30T17:01:58.011531+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round000_mc",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round000_mc_attempt1.log",
+      "started_at": "2026-10-30T17:01:58.114835+08:00",
+      "gpu_worker": true,
+      "seconds": 69.83874021843076,
+      "finished_at": "2026-10-30T17:03:07.954895+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round000_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round000_train_attempt1.log",
+      "started_at": "2026-10-30T17:03:07.967574+08:00",
+      "gpu_worker": true,
+      "seconds": 121.11033228039742,
+      "finished_at": "2026-10-30T17:05:09.079998+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round001_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round001_collect_attempt1.log",
+      "started_at": "2026-10-30T17:05:10.495437+08:00",
+      "gpu_worker": true,
+      "seconds": 66.41683028638363,
+      "finished_at": "2026-10-30T17:06:16.913630+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round001_mc",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round001_mc_attempt1.log",
+      "started_at": "2026-10-30T17:06:17.454434+08:00",
+      "gpu_worker": true,
+      "seconds": 162.20187958329916,
+      "finished_at": "2026-10-30T17:08:59.657743+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round001_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round001_train_attempt1.log",
+      "started_at": "2026-10-30T17:08:59.670056+08:00",
+      "gpu_worker": true,
+      "seconds": 114.54957666620612,
+      "finished_at": "2026-10-30T17:10:54.221826+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round002_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round002_collect_attempt1.log",
+      "started_at": "2026-10-30T17:10:57.700504+08:00",
+      "gpu_worker": true,
+      "seconds": 86.6340810097754,
+      "finished_at": "2026-10-30T17:12:24.336025+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round002_mc",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round002_mc_attempt1.log",
+      "started_at": "2026-10-30T17:12:24.538104+08:00",
+      "gpu_worker": true,
+      "seconds": 56.44526828080416,
+      "finished_at": "2026-10-30T17:13:20.984736+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round002_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round002_train_attempt1.log",
+      "started_at": "2026-10-30T17:13:20.996949+08:00",
+      "gpu_worker": true,
+      "seconds": 101.39336099103093,
+      "finished_at": "2026-10-30T17:15:02.392544+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round003_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round003_collect_attempt1.log",
+      "started_at": "2026-10-30T17:15:04.432634+08:00",
+      "gpu_worker": true,
+      "seconds": 45.530268870294094,
+      "finished_at": "2026-10-30T17:15:49.964324+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round003_mc",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round003_mc_attempt1.log",
+      "started_at": "2026-10-30T17:15:51.211853+08:00",
+      "gpu_worker": true,
+      "seconds": 239.58879133686423,
+      "finished_at": "2026-10-30T17:19:50.802010+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round003_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round003_train_attempt1.log",
+      "started_at": "2026-10-30T17:19:50.815457+08:00",
+      "gpu_worker": true,
+      "seconds": 22.73399829119444,
+      "finished_at": "2026-10-30T17:20:13.551690+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round004_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round004_collect_attempt1.log",
+      "started_at": "2026-10-30T17:20:18.351884+08:00",
+      "gpu_worker": true,
+      "seconds": 49.298093903809786,
+      "finished_at": "2026-10-30T17:21:07.651484+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round004_mc",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round004_mc_attempt1.log",
+      "started_at": "2026-10-30T17:21:07.880928+08:00",
+      "gpu_worker": true,
+      "seconds": 44.072226114571095,
+      "finished_at": "2026-10-30T17:21:51.954604+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round004_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round004_train_attempt1.log",
+      "started_at": "2026-10-30T17:21:51.966284+08:00",
+      "gpu_worker": true,
+      "seconds": 31.735266275703907,
+      "finished_at": "2026-10-30T17:22:23.703996+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round005_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round005_collect_attempt1.log",
+      "started_at": "2026-10-30T17:22:25.939231+08:00",
+      "gpu_worker": true,
+      "seconds": 43.855223160237074,
+      "finished_at": "2026-10-30T17:23:09.795923+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round005_mc",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round005_mc_attempt1.log",
+      "started_at": "2026-10-30T17:23:10.044059+08:00",
+      "gpu_worker": true,
+      "seconds": 44.408494506031275,
+      "finished_at": "2026-10-30T17:23:54.454017+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round005_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round005_train_attempt1.log",
+      "started_at": "2026-10-30T17:23:54.465514+08:00",
+      "gpu_worker": true,
+      "seconds": 10.664401803165674,
+      "finished_at": "2026-10-30T17:24:05.132406+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round006_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round006_collect_attempt1.log",
+      "started_at": "2026-10-30T17:24:07.469969+08:00",
+      "gpu_worker": true,
+      "seconds": 44.372180823236704,
+      "finished_at": "2026-10-30T17:24:51.843570+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round006_mc",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round006_mc_attempt1.log",
+      "started_at": "2026-10-30T17:24:52.080578+08:00",
+      "gpu_worker": true,
+      "seconds": 41.90718671306968,
+      "finished_at": "2026-10-30T17:25:33.989296+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round006_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round006_train_attempt1.log",
+      "started_at": "2026-10-30T17:25:34.000937+08:00",
+      "gpu_worker": true,
+      "seconds": 10.06069154292345,
+      "finished_at": "2026-10-30T17:25:44.064080+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round007_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round007_collect_attempt1.log",
+      "started_at": "2026-10-30T17:25:51.622738+08:00",
+      "gpu_worker": true,
+      "seconds": 150.37609039247036,
+      "finished_at": "2026-10-30T17:28:22.000468+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round007_mc",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round007_mc_attempt1.log",
+      "started_at": "2026-10-30T17:28:24.010686+08:00",
+      "gpu_worker": true,
+      "seconds": 0.5321059003472328,
+      "finished_at": "2026-10-30T17:28:24.544394+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round007_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round007_train_attempt1.log",
+      "started_at": "2026-10-30T17:28:24.552519+08:00",
+      "gpu_worker": true,
+      "seconds": 15.780292838811874,
+      "finished_at": "2026-10-30T17:28:40.335298+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round008_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round008_collect_attempt1.log",
+      "started_at": "2026-10-30T17:28:44.565429+08:00",
+      "gpu_worker": true,
+      "seconds": 45.318615309894085,
+      "finished_at": "2026-10-30T17:29:29.885724+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round008_mc",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round008_mc_attempt1.log",
+      "started_at": "2026-10-30T17:29:30.177569+08:00",
+      "gpu_worker": true,
+      "seconds": 0.33025508001446724,
+      "finished_at": "2026-10-30T17:29:30.509312+08:00"
+    },
+    {
+      "name": "mc_uniform_seed42_round008_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_uniform_seed42_round008_train_attempt1.log",
+      "started_at": "2026-10-30T17:29:30.521062+08:00",
+      "gpu_worker": true,
+      "seconds": 9.959770493209362,
+      "finished_at": "2026-10-30T17:29:40.483695+08:00"
+    },
+    {
+      "name": "eval_mc_uniform_seed42_dev",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/eval_mc_uniform_seed42_dev_attempt1.log",
+      "started_at": "2026-10-30T17:29:44.640837+08:00",
+      "gpu_worker": true,
+      "seconds": 117.61687931790948,
+      "finished_at": "2026-10-30T17:31:42.259366+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round000_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round000_collect_attempt1.log",
+      "started_at": "2026-10-30T17:31:44.310454+08:00",
+      "gpu_worker": true,
+      "seconds": 65.13922471180558,
+      "finished_at": "2026-10-30T17:32:49.451202+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round000_mc",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round000_mc_attempt1.log",
+      "started_at": "2026-10-30T17:32:49.565668+08:00",
+      "gpu_worker": true,
+      "seconds": 62.569344844669104,
+      "finished_at": "2026-10-30T17:33:52.136650+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round000_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round000_train_attempt1.log",
+      "started_at": "2026-10-30T17:33:52.149047+08:00",
+      "gpu_worker": true,
+      "seconds": 120.88668206334114,
+      "finished_at": "2026-10-30T17:35:53.038388+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round001_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round001_collect_attempt1.log",
+      "started_at": "2026-10-30T17:36:02.225428+08:00",
+      "gpu_worker": true,
+      "seconds": 162.43197663500905,
+      "finished_at": "2026-10-30T17:38:44.659087+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round001_mc",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round001_mc_attempt1.log",
+      "started_at": "2026-10-30T17:38:44.824174+08:00",
+      "gpu_worker": true,
+      "seconds": 53.75361016765237,
+      "finished_at": "2026-10-30T17:39:38.579412+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round001_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round001_train_attempt1.log",
+      "started_at": "2026-10-30T17:39:38.591905+08:00",
+      "gpu_worker": true,
+      "seconds": 113.18007383495569,
+      "finished_at": "2026-10-30T17:41:31.774739+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round002_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round002_collect_attempt1.log",
+      "started_at": "2026-10-30T17:41:34.355710+08:00",
+      "gpu_worker": true,
+      "seconds": 87.93952848762274,
+      "finished_at": "2026-10-30T17:43:02.297003+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round002_mc",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round002_mc_attempt1.log",
+      "started_at": "2026-10-30T17:43:02.505649+08:00",
+      "gpu_worker": true,
+      "seconds": 56.38077439367771,
+      "finished_at": "2026-10-30T17:43:58.888124+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round002_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round002_train_attempt1.log",
+      "started_at": "2026-10-30T17:43:58.901045+08:00",
+      "gpu_worker": true,
+      "seconds": 101.56971939280629,
+      "finished_at": "2026-10-30T17:45:40.473680+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round003_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round003_collect_attempt1.log",
+      "started_at": "2026-10-30T17:45:43.378630+08:00",
+      "gpu_worker": true,
+      "seconds": 160.3793521784246,
+      "finished_at": "2026-10-30T17:48:23.759802+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round003_mc",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round003_mc_attempt1.log",
+      "started_at": "2026-10-30T17:48:24.956034+08:00",
+      "gpu_worker": true,
+      "seconds": 136.75935588777065,
+      "finished_at": "2026-10-30T17:50:41.717054+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round003_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round003_train_attempt1.log",
+      "started_at": "2026-10-30T17:50:41.730364+08:00",
+      "gpu_worker": true,
+      "seconds": 16.031345929950476,
+      "finished_at": "2026-10-30T17:50:57.764547+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round004_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round004_collect_attempt1.log",
+      "started_at": "2026-10-30T17:51:04.377094+08:00",
+      "gpu_worker": true,
+      "seconds": 45.064239133149385,
+      "finished_at": "2026-10-30T17:51:49.443151+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round004_mc",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round004_mc_attempt1.log",
+      "started_at": "2026-10-30T17:51:49.667598+08:00",
+      "gpu_worker": true,
+      "seconds": 43.81457591056824,
+      "finished_at": "2026-10-30T17:52:33.483908+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round004_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round004_train_attempt1.log",
+      "started_at": "2026-10-30T17:52:33.496089+08:00",
+      "gpu_worker": true,
+      "seconds": 31.734837658703327,
+      "finished_at": "2026-10-30T17:53:05.234085+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round005_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round005_collect_attempt1.log",
+      "started_at": "2026-10-30T17:53:08.327650+08:00",
+      "gpu_worker": true,
+      "seconds": 44.21657668426633,
+      "finished_at": "2026-10-30T17:53:52.545968+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round005_mc",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round005_mc_attempt1.log",
+      "started_at": "2026-10-30T17:53:52.801928+08:00",
+      "gpu_worker": true,
+      "seconds": 44.40792987495661,
+      "finished_at": "2026-10-30T17:54:37.211927+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round005_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round005_train_attempt1.log",
+      "started_at": "2026-10-30T17:54:37.224226+08:00",
+      "gpu_worker": true,
+      "seconds": 10.010630708187819,
+      "finished_at": "2026-10-30T17:54:47.237973+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round006_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round006_collect_attempt1.log",
+      "started_at": "2026-10-30T17:54:50.425324+08:00",
+      "gpu_worker": true,
+      "seconds": 44.281305965036154,
+      "finished_at": "2026-10-30T17:55:34.708452+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round006_mc",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round006_mc_attempt1.log",
+      "started_at": "2026-10-30T17:55:34.975094+08:00",
+      "gpu_worker": true,
+      "seconds": 153.52833614870906,
+      "finished_at": "2026-10-30T17:58:08.505230+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round006_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round006_train_attempt1.log",
+      "started_at": "2026-10-30T17:58:08.518724+08:00",
+      "gpu_worker": true,
+      "seconds": 16.28045604750514,
+      "finished_at": "2026-10-30T17:58:24.802294+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round007_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round007_collect_attempt1.log",
+      "started_at": "2026-10-30T17:58:33.136813+08:00",
+      "gpu_worker": true,
+      "seconds": 45.055414501577616,
+      "finished_at": "2026-10-30T17:59:18.194078+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round007_mc",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round007_mc_attempt1.log",
+      "started_at": "2026-10-30T17:59:18.470866+08:00",
+      "gpu_worker": true,
+      "seconds": 33.9566710665822,
+      "finished_at": "2026-10-30T17:59:52.429347+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round007_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round007_train_attempt1.log",
+      "started_at": "2026-10-30T17:59:52.442030+08:00",
+      "gpu_worker": true,
+      "seconds": 9.926065471023321,
+      "finished_at": "2026-10-30T18:00:02.371310+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round008_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round008_collect_attempt1.log",
+      "started_at": "2026-10-30T18:00:05.720132+08:00",
+      "gpu_worker": true,
+      "seconds": 44.78062452748418,
+      "finished_at": "2026-10-30T18:00:50.502634+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round008_mc",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round008_mc_attempt1.log",
+      "started_at": "2026-10-30T18:00:50.792693+08:00",
+      "gpu_worker": true,
+      "seconds": 0.3158251754939556,
+      "finished_at": "2026-10-30T18:00:51.110459+08:00"
+    },
+    {
+      "name": "mc_priority_seed42_round008_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/mc_priority_seed42_round008_train_attempt1.log",
+      "started_at": "2026-10-30T18:00:51.122798+08:00",
+      "gpu_worker": true,
+      "seconds": 9.933234453201294,
+      "finished_at": "2026-10-30T18:01:01.059244+08:00"
+    },
+    {
+      "name": "eval_mc_priority_seed42_dev",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/logs/eval_mc_priority_seed42_dev_attempt1.log",
+      "started_at": "2026-10-30T18:01:07.149622+08:00",
+      "gpu_worker": true,
+      "seconds": 118.78043200820684,
+      "finished_at": "2026-10-30T18:03:05.931955+08:00"
+    }
+  ],
+  "arms": {
+    "rloo_seed42": {
+      "arm": "rloo",
+      "seed": 42,
+      "status": "COMPLETE",
+      "rounds": [
+        {
+          "round": 0,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/rloo_seed42/round_000/collect",
+          "mc": null,
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/rloo_seed42/round_000/train",
+          "parent_tokens": 478021,
+          "auxiliary_tokens": 0,
+          "completed_baselines": 0,
+          "optimizer_updates": 4,
+          "completed_optimizer_steps": 4,
+          "parent_successes": 9
+        },
+        {
+          "round": 1,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/rloo_seed42/round_001/collect",
+          "mc": null,
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/rloo_seed42/round_001/train",
+          "parent_tokens": 427393,
+          "auxiliary_tokens": 0,
+          "completed_baselines": 0,
+          "optimizer_updates": 4,
+          "completed_optimizer_steps": 8,
+          "parent_successes": 14
+        },
+        {
+          "round": 2,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/rloo_seed42/round_002/collect",
+          "mc": null,
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/rloo_seed42/round_002/train",
+          "parent_tokens": 400886,
+          "auxiliary_tokens": 0,
+          "completed_baselines": 0,
+          "optimizer_updates": 4,
+          "completed_optimizer_steps": 12,
+          "parent_successes": 12
+        },
+        {
+          "round": 3,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/rloo_seed42/round_003/collect",
+          "mc": null,
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/rloo_seed42/round_003/train",
+          "parent_tokens": 401174,
+          "auxiliary_tokens": 0,
+          "completed_baselines": 0,
+          "optimizer_updates": 4,
+          "completed_optimizer_steps": 16,
+          "parent_successes": 5
+        },
+        {
+          "round": 4,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/rloo_seed42/round_004/collect",
+          "mc": null,
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/rloo_seed42/round_004/train",
+          "parent_tokens": 402074,
+          "auxiliary_tokens": 0,
+          "completed_baselines": 0,
+          "optimizer_updates": 4,
+          "completed_optimizer_steps": 20,
+          "parent_successes": 9
+        },
+        {
+          "round": 5,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/rloo_seed42/round_005/collect",
+          "mc": null,
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/rloo_seed42/round_005/train",
+          "parent_tokens": 309984,
+          "auxiliary_tokens": 0,
+          "completed_baselines": 0,
+          "optimizer_updates": 0,
+          "completed_optimizer_steps": 20,
+          "parent_successes": 8
+        }
+      ],
+      "token_budget": 3000000,
+      "auxiliary_token_cap": 0,
+      "final_adapter": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/rloo_seed42/round_005/train/adapter",
+      "completed_optimizer_steps": 20,
+      "cumulative_tokens": 2419532,
+      "parent_tokens": 2419532,
+      "auxiliary_tokens": 0,
+      "step1_endpoint_used": false,
+      "finished_at": "2026-10-30T16:58:44.940099+08:00",
+      "unused_budget_tokens": 580468,
+      "equal_budget_ceiling_not_equal_actual_compute": true
+    },
+    "mc_uniform_seed42": {
+      "arm": "mc_uniform",
+      "seed": 42,
+      "status": "COMPLETE",
+      "rounds": [
+        {
+          "round": 0,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_000/collect",
+          "mc": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_000/mc",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_000/train",
+          "parent_tokens": 478146,
+          "auxiliary_tokens": 131777,
+          "completed_baselines": 2,
+          "optimizer_updates": 4,
+          "completed_optimizer_steps": 4,
+          "parent_successes": 9
+        },
+        {
+          "round": 1,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_001/collect",
+          "mc": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_001/mc",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_001/train",
+          "parent_tokens": 427393,
+          "auxiliary_tokens": 102498,
+          "completed_baselines": 2,
+          "optimizer_updates": 4,
+          "completed_optimizer_steps": 8,
+          "parent_successes": 14
+        },
+        {
+          "round": 2,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_002/collect",
+          "mc": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_002/mc",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_002/train",
+          "parent_tokens": 400880,
+          "auxiliary_tokens": 87343,
+          "completed_baselines": 2,
+          "optimizer_updates": 4,
+          "completed_optimizer_steps": 12,
+          "parent_successes": 12
+        },
+        {
+          "round": 3,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_003/collect",
+          "mc": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_003/mc",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_003/train",
+          "parent_tokens": 100793,
+          "auxiliary_tokens": 53402,
+          "completed_baselines": 2,
+          "optimizer_updates": 0,
+          "completed_optimizer_steps": 12,
+          "parent_successes": 4
+        },
+        {
+          "round": 4,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_004/collect",
+          "mc": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_004/mc",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_004/train",
+          "parent_tokens": 95172,
+          "auxiliary_tokens": 47510,
+          "completed_baselines": 1,
+          "optimizer_updates": 1,
+          "completed_optimizer_steps": 13,
+          "parent_successes": 3
+        },
+        {
+          "round": 5,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_005/collect",
+          "mc": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_005/mc",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_005/train",
+          "parent_tokens": 102600,
+          "auxiliary_tokens": 44408,
+          "completed_baselines": 2,
+          "optimizer_updates": 0,
+          "completed_optimizer_steps": 13,
+          "parent_successes": 0
+        },
+        {
+          "round": 6,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_006/collect",
+          "mc": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_006/mc",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_006/train",
+          "parent_tokens": 94144,
+          "auxiliary_tokens": 35801,
+          "completed_baselines": 1,
+          "optimizer_updates": 0,
+          "completed_optimizer_steps": 13,
+          "parent_successes": 4
+        },
+        {
+          "round": 7,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_007/collect",
+          "mc": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_007/mc",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_007/train",
+          "parent_tokens": 102216,
+          "auxiliary_tokens": 0,
+          "completed_baselines": 0,
+          "optimizer_updates": 0,
+          "completed_optimizer_steps": 13,
+          "parent_successes": 4
+        },
+        {
+          "round": 8,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_008/collect",
+          "mc": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_008/mc",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_008/train",
+          "parent_tokens": 101295,
+          "auxiliary_tokens": 0,
+          "completed_baselines": 0,
+          "optimizer_updates": 0,
+          "completed_optimizer_steps": 13,
+          "parent_successes": 0
+        }
+      ],
+      "token_budget": 3000000,
+      "auxiliary_token_cap": 1000000,
+      "final_adapter": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_uniform_seed42/round_008/train/adapter",
+      "completed_optimizer_steps": 13,
+      "cumulative_tokens": 2405378,
+      "parent_tokens": 1902639,
+      "auxiliary_tokens": 502739,
+      "step1_endpoint_used": false,
+      "finished_at": "2026-10-30T17:29:42.575570+08:00",
+      "unused_budget_tokens": 594622,
+      "equal_budget_ceiling_not_equal_actual_compute": true
+    },
+    "mc_priority_seed42": {
+      "arm": "mc_priority",
+      "seed": 42,
+      "status": "COMPLETE",
+      "rounds": [
+        {
+          "round": 0,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_000/collect",
+          "mc": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_000/mc",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_000/train",
+          "parent_tokens": 478011,
+          "auxiliary_tokens": 144662,
+          "completed_baselines": 2,
+          "optimizer_updates": 4,
+          "completed_optimizer_steps": 4,
+          "parent_successes": 8
+        },
+        {
+          "round": 1,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_001/collect",
+          "mc": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_001/mc",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_001/train",
+          "parent_tokens": 421516,
+          "auxiliary_tokens": 79201,
+          "completed_baselines": 2,
+          "optimizer_updates": 4,
+          "completed_optimizer_steps": 8,
+          "parent_successes": 14
+        },
+        {
+          "round": 2,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_002/collect",
+          "mc": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_002/mc",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_002/train",
+          "parent_tokens": 400886,
+          "auxiliary_tokens": 87343,
+          "completed_baselines": 2,
+          "optimizer_updates": 4,
+          "completed_optimizer_steps": 12,
+          "parent_successes": 12
+        },
+        {
+          "round": 3,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_003/collect",
+          "mc": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_003/mc",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_003/train",
+          "parent_tokens": 100796,
+          "auxiliary_tokens": 53406,
+          "completed_baselines": 2,
+          "optimizer_updates": 0,
+          "completed_optimizer_steps": 12,
+          "parent_successes": 4
+        },
+        {
+          "round": 4,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_004/collect",
+          "mc": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_004/mc",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_004/train",
+          "parent_tokens": 95172,
+          "auxiliary_tokens": 47510,
+          "completed_baselines": 1,
+          "optimizer_updates": 1,
+          "completed_optimizer_steps": 13,
+          "parent_successes": 3
+        },
+        {
+          "round": 5,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_005/collect",
+          "mc": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_005/mc",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_005/train",
+          "parent_tokens": 102600,
+          "auxiliary_tokens": 44408,
+          "completed_baselines": 2,
+          "optimizer_updates": 0,
+          "completed_optimizer_steps": 13,
+          "parent_successes": 0
+        },
+        {
+          "round": 6,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_006/collect",
+          "mc": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_006/mc",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_006/train",
+          "parent_tokens": 94144,
+          "auxiliary_tokens": 28200,
+          "completed_baselines": 1,
+          "optimizer_updates": 0,
+          "completed_optimizer_steps": 13,
+          "parent_successes": 4
+        },
+        {
+          "round": 7,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_007/collect",
+          "mc": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_007/mc",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_007/train",
+          "parent_tokens": 102216,
+          "auxiliary_tokens": 12130,
+          "completed_baselines": 1,
+          "optimizer_updates": 0,
+          "completed_optimizer_steps": 13,
+          "parent_successes": 4
+        },
+        {
+          "round": 8,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_008/collect",
+          "mc": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_008/mc",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_008/train",
+          "parent_tokens": 101295,
+          "auxiliary_tokens": 0,
+          "completed_baselines": 0,
+          "optimizer_updates": 0,
+          "completed_optimizer_steps": 13,
+          "parent_successes": 0
+        }
+      ],
+      "token_budget": 3000000,
+      "auxiliary_token_cap": 1000000,
+      "final_adapter": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1/training/mc_priority_seed42/round_008/train/adapter",
+      "completed_optimizer_steps": 13,
+      "cumulative_tokens": 2393496,
+      "parent_tokens": 1896636,
+      "auxiliary_tokens": 496860,
+      "step1_endpoint_used": false,
+      "finished_at": "2026-10-30T18:01:04.020945+08:00",
+      "unused_budget_tokens": 606504,
+      "equal_budget_ceiling_not_equal_actual_compute": true
+    }
+  },
+  "started_at": "2026-10-30T16:26:28.350087+08:00",
+  "formal_valid_access": false,
+  "formal_final_oos_access": false,
+  "synthetic_mandates": true,
+  "known_quote_primary": true,
+  "status": "COMPLETE",
+  "attempt": 1,
+  "updated_at": "2026-10-30T18:03:11.774624+08:00",
+  "experiment": "financial_mc_state_baseline_allocation_v1",
+  "initial_adapter": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-evidence-20261030-v2/teacher_sft/adapter",
+  "data_source": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-credit-20261030-v1/data",
+  "parent_data_reuse_source": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-credit-20261030-v1/probe/parents",
+  "wiring_token_cap": 2000000,
+  "arm_token_cap": 3000000,
+  "auxiliary_token_cap": 1000000,
+  "evaluation_token_cap": 32000000,
+  "total_new_generation_token_cap": 49000000,
+  "candidate": "prefix_only_fixed_priority_with_uniform_mix",
+  "full_vineppo_reproduction": false,
+  "explicit_action_q_estimator": false,
+  "step1_only": false,
+  "current_step": 3,
+  "step1_status": "COMPLETE",
+  "current_stage": null,
+  "wiring": {
+    "status": "COMPLETE",
+    "completed_at": "2026-10-30T16:36:43.432544+08:00",
+    "completed_baselines": 8,
+    "optimizer_steps_before_resume": 4,
+    "optimizer_steps_after_resume": 8,
+    "resumed_optimizer_updates": 4,
+    "state_resume_completed": true,
+    "step2_initialization": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-evidence-20261030-v2/teacher_sft/adapter",
+    "wiring_endpoint_used_for_step2": false,
+    "reused_parent_sampling_tokens": 3308883,
+    "new_generation_tokens": 282676,
+    "full_parent_batch_retained": true
+  },
+  "costs": {
+    "wiring_generation_tokens": 282676,
+    "training_generation_tokens": 7218406,
+    "evaluation_generation_tokens": 7677857,
+    "total_new_generation_tokens": 15178939,
+    "cost_includes_failed_request_logs": true,
+    "reused_parent_exposure_tokens": 3308883,
+    "reused_parent_new_generation_tokens": 0
+  },
+  "step2_status": "COMPLETE",
+  "step3_status": "COMPLETE",
+  "dev_gate": {
+    "status": "NO_CLEAR_LEARNING_GAIN",
+    "candidate_successes": 81,
+    "sft_successes": 82,
+    "control_successes": {
+      "rloo": 80,
+      "mc_uniform": 82
+    },
+    "strongest_control": "mc_uniform",
+    "required_success_margin": 5,
+    "statistical_significance_claim": false,
+    "uses_reserved_test": false
+  },
+  "decision": {
+    "status": "COMPLETE",
+    "decision": "NO_CLEAR_SEED42_LEARNING_GAIN",
+    "finished_at": "2026-10-30T18:03:08.767137+08:00",
+    "fresh_test_opened": false,
+    "costs": {
+      "wiring_generation_tokens": 282676,
+      "training_generation_tokens": 7218406,
+      "evaluation_generation_tokens": 7677857,
+      "total_new_generation_tokens": 15178939,
+      "cost_includes_failed_request_logs": true,
+      "reused_parent_exposure_tokens": 3308883,
+      "reused_parent_new_generation_tokens": 0
+    },
+    "credit_method_claim_supported": false,
+    "full_vineppo_reproduction": false,
+    "strict_equal_actual_compute_claim": false,
+    "research_brief_review_required": true
+  },
+  "finished_at": "2026-10-30T18:03:11.520212+08:00",
+  "holder_restore": "REFILLING_76_GIB"
+}

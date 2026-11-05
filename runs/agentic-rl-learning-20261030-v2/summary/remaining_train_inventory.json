@@ -1,0 +1,15 @@
+{
+  "source": "runs/m3-financial-credit-20261030-v1/data/train.jsonl",
+  "pool_tasks": 256,
+  "pool_questions": 128,
+  "pool_reports": 128,
+  "questions_with_no_rollout_in_listed_runs": 66,
+  "reports_with_no_rollout_in_listed_runs": 66,
+  "listed_runs": [
+    "runs/agentic-rl-learning-20261030-v2",
+    "runs/agentic-rl-mc-20261030-v1",
+    "runs/m3-financial-credit-20261030-v1/probe/parents"
+  ],
+  "not_a_pretraining_or_initial_sft_unseen_claim": true,
+  "only_cpu_inventory_no_selection_by_correctness": true
+}

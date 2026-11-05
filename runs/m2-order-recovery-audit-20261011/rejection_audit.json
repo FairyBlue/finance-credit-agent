@@ -1,0 +1,1640 @@
+{
+  "at_SGT": "2026-10-11T14:46:01.011599+08:00",
+  "source_run": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5",
+  "failed_trajectories": 29,
+  "failure_windows": {
+    "formal-train-0399": 12,
+    "formal-train-0210": 1,
+    "formal-train-0441": 9,
+    "formal-train-0336": 3,
+    "formal-train-0420": 2,
+    "formal-train-0252": 2
+  },
+  "all_requests_target_20_percent": true,
+  "records": [
+    {
+      "seed": 42,
+      "cell": "m1_lr1e7",
+      "episode": "formal-train-0399",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 9,
+        "step": 2,
+        "validate": true
+      },
+      "line": 66,
+      "file": "seed42/m1_lr1e7/artifacts/screening_evidence/screening-3561664.jsonl",
+      "first_invalid": 3,
+      "date": "2024-08-08T20:00:00+00:00",
+      "session": 3,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "MSFT",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.20137266,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 253,
+      "tail_len": 253,
+      "same_terminal_prompt_count": 250,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "c8449a6ff2b7324f9634dd7a21ea1cd592fe4d1a8278a971844deb7f06bc262e"
+    },
+    {
+      "seed": 42,
+      "cell": "m1_lr1e7",
+      "episode": "formal-train-0399",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 9,
+        "step": 4,
+        "validate": true
+      },
+      "line": 142,
+      "file": "seed42/m1_lr1e7/artifacts/screening_evidence/screening-3561664.jsonl",
+      "first_invalid": 3,
+      "date": "2024-08-08T20:00:00+00:00",
+      "session": 3,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "MSFT",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.20137266,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 253,
+      "tail_len": 253,
+      "same_terminal_prompt_count": 250,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "5fa1d1588a375254020e92a0f71beaad55115a144fe2a882a3af266b474f5978"
+    },
+    {
+      "seed": 42,
+      "cell": "m1_lr2e7",
+      "episode": "formal-train-0399",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 9,
+        "step": 2,
+        "validate": true
+      },
+      "line": 66,
+      "file": "seed42/m1_lr2e7/artifacts/screening_evidence/screening-3589070.jsonl",
+      "first_invalid": 3,
+      "date": "2024-08-08T20:00:00+00:00",
+      "session": 3,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "MSFT",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.20137266,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 253,
+      "tail_len": 253,
+      "same_terminal_prompt_count": 250,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "6dc1a322beeabf009dd49be6f08436e7d555fd8ce7aee3c2f3ed7b6114c98338"
+    },
+    {
+      "seed": 42,
+      "cell": "m1_lr2e7",
+      "episode": "formal-train-0210",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 0,
+        "step": 4,
+        "validate": true
+      },
+      "line": 102,
+      "file": "seed42/m1_lr2e7/artifacts/screening_evidence/screening-3589070.jsonl",
+      "first_invalid": 15,
+      "date": "2023-11-22T21:00:00+00:00",
+      "session": 15,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "HD",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.2008166,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 240,
+      "tail_len": 241,
+      "same_terminal_prompt_count": 238,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 15,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 15,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 15,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "e8b92745e0c38f12cb9cc57d6e3cc8a292f52c4fe039678d77d1d69aa524c295"
+    },
+    {
+      "seed": 42,
+      "cell": "m1_lr2e7",
+      "episode": "formal-train-0441",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 11,
+        "step": 4,
+        "validate": true
+      },
+      "line": 152,
+      "file": "seed42/m1_lr2e7/artifacts/screening_evidence/screening-3589070.jsonl",
+      "first_invalid": 3,
+      "date": "2024-10-08T20:00:00+00:00",
+      "session": 3,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "HD",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.2019409,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 253,
+      "tail_len": 253,
+      "same_terminal_prompt_count": 250,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "a9e5505324a2220ec4778990948ea024472c25203f64e7eece846b64e0e91bd8"
+    },
+    {
+      "seed": 42,
+      "cell": "m2_lr1e7_eta0125",
+      "episode": "formal-train-0336",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 6,
+        "step": 2,
+        "validate": true
+      },
+      "line": 56,
+      "file": "seed42/m2_lr1e7_eta0125/artifacts/screening_evidence/screening-3573632.jsonl",
+      "first_invalid": 15,
+      "date": "2024-05-24T20:00:00+00:00",
+      "session": 15,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "MSFT",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.2084142,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 241,
+      "tail_len": 241,
+      "same_terminal_prompt_count": 238,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 15,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 15,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 15,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "4f876c6f6e617eea72a73fb82b3333c03347951b99e11e769b1d97bcbdc4ce16"
+    },
+    {
+      "seed": 42,
+      "cell": "m2_lr1e7_eta0125",
+      "episode": "formal-train-0399",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 9,
+        "step": 2,
+        "validate": true
+      },
+      "line": 66,
+      "file": "seed42/m2_lr1e7_eta0125/artifacts/screening_evidence/screening-3573632.jsonl",
+      "first_invalid": 3,
+      "date": "2024-08-08T20:00:00+00:00",
+      "session": 3,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "MSFT",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.20137266,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 253,
+      "tail_len": 253,
+      "same_terminal_prompt_count": 250,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "c9071b7fb8cbd1c5cb79c7386a74ed32768a4a954fec4c90ad291b283b9be2c2"
+    },
+    {
+      "seed": 42,
+      "cell": "m2_lr2e7_eta0125",
+      "episode": "formal-train-0399",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 9,
+        "step": 4,
+        "validate": true
+      },
+      "line": 142,
+      "file": "seed42/m2_lr2e7_eta0125/artifacts/screening_evidence/screening-3595805.jsonl",
+      "first_invalid": 3,
+      "date": "2024-08-08T20:00:00+00:00",
+      "session": 3,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "MSFT",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.20137266,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 253,
+      "tail_len": 253,
+      "same_terminal_prompt_count": 250,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "b8f35a1104bdb28706adecd18d23f997941917908c04608c73eb93deaed47b45"
+    },
+    {
+      "seed": 42,
+      "cell": "m2_lr2e7_eta0125",
+      "episode": "formal-train-0420",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 10,
+        "step": 4,
+        "validate": true
+      },
+      "line": 152,
+      "file": "seed42/m2_lr2e7_eta0125/artifacts/screening_evidence/screening-3595805.jsonl",
+      "first_invalid": 13,
+      "date": "2024-09-23T20:00:00+00:00",
+      "session": 13,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "HD",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.200752,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 243,
+      "tail_len": 243,
+      "same_terminal_prompt_count": 240,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 13,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 13,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 13,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "1d7213566f86c36acb563dfe65fa0ceb32e72f38d59502894e1b6e6ebcd6b8d6"
+    },
+    {
+      "seed": 42,
+      "cell": "m2_lr2e7_eta025",
+      "episode": "formal-train-0441",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 11,
+        "step": 2,
+        "validate": true
+      },
+      "line": 76,
+      "file": "seed42/m2_lr2e7_eta025/artifacts/screening_evidence/screening-3602543.jsonl",
+      "first_invalid": 3,
+      "date": "2024-10-08T20:00:00+00:00",
+      "session": 3,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "HD",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.2019409,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 253,
+      "tail_len": 253,
+      "same_terminal_prompt_count": 250,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "35e066ee84b48bc32e031b1f86a0dfc7488f66ba0319fb36fcb3b7a4424bff98"
+    },
+    {
+      "seed": 42,
+      "cell": "m2_lr2e7_eta025",
+      "episode": "formal-train-0420",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 10,
+        "step": 4,
+        "validate": true
+      },
+      "line": 152,
+      "file": "seed42/m2_lr2e7_eta025/artifacts/screening_evidence/screening-3602543.jsonl",
+      "first_invalid": 13,
+      "date": "2024-09-23T20:00:00+00:00",
+      "session": 13,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "HD",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.200752,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 243,
+      "tail_len": 243,
+      "same_terminal_prompt_count": 240,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 13,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 13,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 13,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "27345171d7c3cf4bb665d6d754dacfe1a16c360cb372ee84d0be3aaaf97cc915"
+    },
+    {
+      "seed": 42,
+      "cell": "sft0",
+      "episode": "formal-train-0399",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 9,
+        "step": 0,
+        "validate": true
+      },
+      "line": 50,
+      "file": "seed42/sft0/artifacts/screening_evidence/screening-3555795.jsonl",
+      "first_invalid": 3,
+      "date": "2024-08-08T20:00:00+00:00",
+      "session": 3,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "MSFT",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.20137266,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 253,
+      "tail_len": 253,
+      "same_terminal_prompt_count": 250,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "881da57369f9b855ad27dcafc5bdb960f42f84b9f83de1e5c50624293d1df20e"
+    },
+    {
+      "seed": 43,
+      "cell": "m1_lr1e7",
+      "episode": "formal-train-0399",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 9,
+        "step": 2,
+        "validate": true
+      },
+      "line": 66,
+      "file": "seed43/m1_lr1e7/artifacts/screening_evidence/screening-3645298.jsonl",
+      "first_invalid": 3,
+      "date": "2024-08-08T20:00:00+00:00",
+      "session": 3,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "MSFT",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.20137266,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 253,
+      "tail_len": 253,
+      "same_terminal_prompt_count": 250,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "b404619cd8fa1025479a28b3cc452b222f9bb831b984d5c588b354a878402f0b"
+    },
+    {
+      "seed": 43,
+      "cell": "m1_lr1e7",
+      "episode": "formal-train-0441",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 11,
+        "step": 2,
+        "validate": true
+      },
+      "line": 76,
+      "file": "seed43/m1_lr1e7/artifacts/screening_evidence/screening-3645298.jsonl",
+      "first_invalid": 3,
+      "date": "2024-10-08T20:00:00+00:00",
+      "session": 3,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "HD",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.2019409,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 253,
+      "tail_len": 253,
+      "same_terminal_prompt_count": 250,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "e8abe1b7203c45108a11d125739ce28a214be34f5522d51fac89358111eeb7b5"
+    },
+    {
+      "seed": 43,
+      "cell": "m1_lr1e7",
+      "episode": "formal-train-0399",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 9,
+        "step": 4,
+        "validate": true
+      },
+      "line": 142,
+      "file": "seed43/m1_lr1e7/artifacts/screening_evidence/screening-3645298.jsonl",
+      "first_invalid": 3,
+      "date": "2024-08-08T20:00:00+00:00",
+      "session": 3,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "MSFT",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.20137266,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 253,
+      "tail_len": 253,
+      "same_terminal_prompt_count": 250,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "c93031ef564982ce74678b24b7d06648d9b02f421d3828591d6c3e8ac15740c4"
+    },
+    {
+      "seed": 43,
+      "cell": "m1_lr2e7",
+      "episode": "formal-train-0252",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 2,
+        "step": 2,
+        "validate": true
+      },
+      "line": 36,
+      "file": "seed43/m1_lr2e7/artifacts/screening_evidence/screening-3624999.jsonl",
+      "first_invalid": 14,
+      "date": "2024-01-24T21:00:00+00:00",
+      "session": 14,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "MSFT",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.20641916,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 242,
+      "tail_len": 242,
+      "same_terminal_prompt_count": 239,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 14,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 14,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 14,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "a339f7ae3d1225f8654c2b17c71931c51bdd160ea6493e612b0f7addecaa4ec8"
+    },
+    {
+      "seed": 43,
+      "cell": "m1_lr2e7",
+      "episode": "formal-train-0441",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 11,
+        "step": 2,
+        "validate": true
+      },
+      "line": 76,
+      "file": "seed43/m1_lr2e7/artifacts/screening_evidence/screening-3624999.jsonl",
+      "first_invalid": 3,
+      "date": "2024-10-08T20:00:00+00:00",
+      "session": 3,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "HD",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.2019409,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 253,
+      "tail_len": 253,
+      "same_terminal_prompt_count": 250,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "bfe9b40c77de893159b457cb255f2b8cc9f0e2287a1d7807d599f85c8e3b22eb"
+    },
+    {
+      "seed": 43,
+      "cell": "m1_lr2e7",
+      "episode": "formal-train-0399",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 9,
+        "step": 4,
+        "validate": true
+      },
+      "line": 142,
+      "file": "seed43/m1_lr2e7/artifacts/screening_evidence/screening-3624999.jsonl",
+      "first_invalid": 3,
+      "date": "2024-08-08T20:00:00+00:00",
+      "session": 3,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "MSFT",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.20137266,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 253,
+      "tail_len": 253,
+      "same_terminal_prompt_count": 250,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "7dc52f7d037ef9891278cb8008cf4e69dedaed340b96fdd09210b22bbed5a469"
+    },
+    {
+      "seed": 43,
+      "cell": "m1_lr2e7",
+      "episode": "formal-train-0441",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 11,
+        "step": 4,
+        "validate": true
+      },
+      "line": 152,
+      "file": "seed43/m1_lr2e7/artifacts/screening_evidence/screening-3624999.jsonl",
+      "first_invalid": 3,
+      "date": "2024-10-08T20:00:00+00:00",
+      "session": 3,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "HD",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.2019409,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 253,
+      "tail_len": 253,
+      "same_terminal_prompt_count": 250,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "5a7aadaf30532df11a4a77de6e38311ebde3c0af44a7ef5c9d8d4e16bbf49ce4"
+    },
+    {
+      "seed": 43,
+      "cell": "m2_lr1e7_eta0125",
+      "episode": "formal-train-0399",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 9,
+        "step": 2,
+        "validate": true
+      },
+      "line": 66,
+      "file": "seed43/m2_lr1e7_eta0125/artifacts/screening_evidence/screening-3638457.jsonl",
+      "first_invalid": 3,
+      "date": "2024-08-08T20:00:00+00:00",
+      "session": 3,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "MSFT",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.20137266,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 253,
+      "tail_len": 253,
+      "same_terminal_prompt_count": 250,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "838d3a124056b627ba65b68dcf9f792f063cf13fc5e3b7bfbfef76e302f7f1ef"
+    },
+    {
+      "seed": 43,
+      "cell": "m2_lr1e7_eta0125",
+      "episode": "formal-train-0441",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 11,
+        "step": 2,
+        "validate": true
+      },
+      "line": 76,
+      "file": "seed43/m2_lr1e7_eta0125/artifacts/screening_evidence/screening-3638457.jsonl",
+      "first_invalid": 3,
+      "date": "2024-10-08T20:00:00+00:00",
+      "session": 3,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "HD",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.2019409,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 253,
+      "tail_len": 253,
+      "same_terminal_prompt_count": 250,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "c85feeae808719a5b4a070c45bcca0b94d4c8cc156ec884bfca4dd835fd331fb"
+    },
+    {
+      "seed": 43,
+      "cell": "m2_lr1e7_eta0125",
+      "episode": "formal-train-0336",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 6,
+        "step": 4,
+        "validate": true
+      },
+      "line": 132,
+      "file": "seed43/m2_lr1e7_eta0125/artifacts/screening_evidence/screening-3638457.jsonl",
+      "first_invalid": 15,
+      "date": "2024-05-24T20:00:00+00:00",
+      "session": 15,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "MSFT",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.2084142,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 241,
+      "tail_len": 241,
+      "same_terminal_prompt_count": 238,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 15,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 15,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 15,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "c52ad1233746d32f33158f6765f3d115585d43e07deb2844797a42f2c26fd449"
+    },
+    {
+      "seed": 43,
+      "cell": "m2_lr1e7_eta0125",
+      "episode": "formal-train-0441",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 11,
+        "step": 4,
+        "validate": true
+      },
+      "line": 152,
+      "file": "seed43/m2_lr1e7_eta0125/artifacts/screening_evidence/screening-3638457.jsonl",
+      "first_invalid": 3,
+      "date": "2024-10-08T20:00:00+00:00",
+      "session": 3,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "HD",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.2019409,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 253,
+      "tail_len": 253,
+      "same_terminal_prompt_count": 250,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "ecd24170295ea77cf9eecd480831db7a4d8aa74a23eb5815fdb87b84e6c57c23"
+    },
+    {
+      "seed": 43,
+      "cell": "m2_lr1e7_eta025",
+      "episode": "formal-train-0441",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 11,
+        "step": 2,
+        "validate": true
+      },
+      "line": 76,
+      "file": "seed43/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3631761.jsonl",
+      "first_invalid": 3,
+      "date": "2024-10-08T20:00:00+00:00",
+      "session": 3,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "HD",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.2019409,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 253,
+      "tail_len": 253,
+      "same_terminal_prompt_count": 250,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "32714058aa8c1175343b1cf6407b9f534588e7fed11416025e4488fd55265bba"
+    },
+    {
+      "seed": 43,
+      "cell": "m2_lr2e7_eta0125",
+      "episode": "formal-train-0399",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 9,
+        "step": 4,
+        "validate": true
+      },
+      "line": 142,
+      "file": "seed43/m2_lr2e7_eta0125/artifacts/screening_evidence/screening-3618390.jsonl",
+      "first_invalid": 3,
+      "date": "2024-08-08T20:00:00+00:00",
+      "session": 3,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "MSFT",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.20137266,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 253,
+      "tail_len": 253,
+      "same_terminal_prompt_count": 250,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "737bfc60c4476d51bf43d412907959005ec9dc019a8487d03378698a3f88f4e6"
+    },
+    {
+      "seed": 43,
+      "cell": "m2_lr2e7_eta0125",
+      "episode": "formal-train-0441",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 11,
+        "step": 4,
+        "validate": true
+      },
+      "line": 152,
+      "file": "seed43/m2_lr2e7_eta0125/artifacts/screening_evidence/screening-3618390.jsonl",
+      "first_invalid": 3,
+      "date": "2024-10-08T20:00:00+00:00",
+      "session": 3,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "HD",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.2019409,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 253,
+      "tail_len": 253,
+      "same_terminal_prompt_count": 250,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "20a5a896a76a710720aa4ffb750076a43bf4f9a16b1b8a87ba6a692c0b5be71a"
+    },
+    {
+      "seed": 43,
+      "cell": "m2_lr2e7_eta025",
+      "episode": "formal-train-0336",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 6,
+        "step": 4,
+        "validate": true
+      },
+      "line": 132,
+      "file": "seed43/m2_lr2e7_eta025/artifacts/screening_evidence/screening-3611598.jsonl",
+      "first_invalid": 15,
+      "date": "2024-05-24T20:00:00+00:00",
+      "session": 15,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "MSFT",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.2084142,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 241,
+      "tail_len": 241,
+      "same_terminal_prompt_count": 238,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 15,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 15,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 15,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "b5ef267db4b572488ce97eb25502d9144a4adf237a12382e71df09fe03162fc6"
+    },
+    {
+      "seed": 43,
+      "cell": "sft0",
+      "episode": "formal-train-0252",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 2,
+        "step": 0,
+        "validate": true
+      },
+      "line": 20,
+      "file": "seed43/sft0/artifacts/screening_evidence/screening-3609129.jsonl",
+      "first_invalid": 14,
+      "date": "2024-01-24T21:00:00+00:00",
+      "session": 14,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "MSFT",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.20641916,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 242,
+      "tail_len": 242,
+      "same_terminal_prompt_count": 239,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 14,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 14,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 14,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "4a064f92e5a37d42bc25f231c9dd76319b4fbbd4c11f9f392e3e96776fce3cef"
+    },
+    {
+      "seed": 43,
+      "cell": "sft0",
+      "episode": "formal-train-0399",
+      "identity": {
+        "rollout_n": 0,
+        "sample_index": 9,
+        "step": 0,
+        "validate": true
+      },
+      "line": 50,
+      "file": "seed43/sft0/artifacts/screening_evidence/screening-3609129.jsonl",
+      "first_invalid": 3,
+      "date": "2024-08-08T20:00:00+00:00",
+      "session": 3,
+      "action": {
+        "name": "buy",
+        "arguments": {
+          "symbol": "MSFT",
+          "target_weight": 0.2
+        }
+      },
+      "visible_weight": 0.20137266,
+      "last_error": "buy target_weight must be above the current weight",
+      "first_error": "buy target_weight must be above the current weight",
+      "same_response_count": 253,
+      "tail_len": 253,
+      "same_terminal_prompt_count": 250,
+      "request_tokens_truncated": false,
+      "obs_truncated": false,
+      "all_error_same": true,
+      "last_recent_events": [
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        },
+        {
+          "arguments": {
+            "error": "buy target_weight must be above the current weight"
+          },
+          "session_index": 3,
+          "tool": "invalid"
+        }
+      ],
+      "source_record_sha256": "b3d2b2c7c884159d1d69e42b83f8ef738b01163ea75c8a81d3a175e404951303"
+    }
+  ]
+}

@@ -118,3 +118,25 @@ def test_invalid_initialization_seed_fails_before_loading(seed):
     PATCH.patch_critic_initialization(worker_type, mode=PATCH.MODE)
     with pytest.raises(ValueError, match="fsdp_config.seed"):
         worker_type()._build_critic_model_optimizer(settings(Path("does-not-exist"), seed))
+
+
+@pytest.mark.parametrize("arm", ["M1", "M2-plain", "M2"])
+def test_actual_critic_head_evidence_accepts_all_three_common_initializations(
+    tiny_causal_checkpoint, tmp_path, monkeypatch, arm,
+):
+    import json
+
+    path, _ = tiny_causal_checkpoint
+    worker_type = worker_class()
+    PATCH.patch_critic_initialization(worker_type, mode=PATCH.MODE)
+    model = worker_type()._build_critic_model_optimizer(settings(path))
+    monkeypatch.setenv("FINANCE_SCREENING_IDENTITY_SHA256", "a" * 64)
+    monkeypatch.setenv("FINANCE_SCREENING_ARM", arm)
+    before = torch.get_rng_state().clone()
+    directory = tmp_path / "head-evidence"
+    PATCH._record_head(model, seed=42, model_path=str(path), rank=0, directory=directory)
+    record = json.loads((directory / "head-rank0.json").read_text())
+    assert record["arm"] == arm and record["seed"] == 42
+    assert len(record["head_sha256"]) == 64
+    assert sum(p["numel"] for p in record["parameters"]) == 17
+    assert torch.equal(before, torch.get_rng_state())

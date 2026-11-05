@@ -12,6 +12,7 @@ from typing import Any
 import pytest
 
 from src.agents import screening_launcher
+from src.agents.rollout_seed import derive_request_seed
 
 CALIBRATION = "a" * 64
 EXECUTION = "b" * 64
@@ -429,3 +430,143 @@ def test_checkpoint_validator_failure_propagates_after_valid_evidence(tmp_path, 
     monkeypatch.setattr(screening_launcher, "validate_checkpoint", reject_checkpoint)
     with pytest.raises(RuntimeError, match="checkpoint is missing data.pt"):
         case.validate()
+
+
+def _retained_prefix(record):
+    """Three genuine advances followed by an exhausted rejected-buy loop."""
+    record = copy.deepcopy(record)
+    record.update(
+        status="INCOMPLETE", complete=False, terminal_score=None, metrics=None, credits=None,
+        error_type="ScreeningIncompleteError",
+        error="screening rollout stopped before its exact terminal",
+        evaluation_failure_profile="retain_prefix_v1", failure_kind="trajectory_max_steps",
+        max_steps_limit=256, transport_output_returned=True, transport_step_count=256,
+        transport_rewards_are_not_financial=True,
+    )
+    record["steps"], record["requests"] = [], []
+    for index in range(256):
+        record["steps"].append(dict(
+            step_index=index, decision_session_index=min(index, 3),
+            result_session_index=min(index + 1, 3), done=False, reward=0.0,
+            invalid_action=index >= 3, action="hold" if index < 3 else "invalid",
+        ))
+        seed = derive_request_seed(record["base_seed"], record["identity"], index)
+        record["requests"].append(dict(
+            request_index=index, request_seed=seed, status="COMPLETE", stop_reason="completed",
+            finish_reason=None, response_token_count=22, prompt_token_count=100,
+            response_cap=4096, forwarded_sampling_params={"seed": seed, "max_tokens": 4096},
+        ))
+    record.update(generated_response_tokens=256 * 22, prompt_tokens=256 * 100)
+    return record
+
+
+def test_retained_prefix_requires_opt_in_and_preserves_frozen_attempt_grid(tmp_path, monkeypatch):
+    case = _case(tmp_path, monkeypatch, stage="zero-shot", arm="M1")
+    case.records[-1] = _retained_prefix(case.records[-1])
+    with pytest.raises(RuntimeError, match="INCOMPLETE screening trajectory"):
+        case.validate()
+    case.options["allow_incomplete_evaluation"] = True
+    result = case.validate()
+    assert result["trajectories"] == {"eval": 12}
+    assert result["evaluation_completion"] == {"attempted": 12, "complete": 11, "incomplete": 1}
+    assert result["financial_status"] == "INCOMPLETE"
+    assert result["optimizer_evidence"]["optimizer_step_count"] == 0
+    case.records.pop(0)
+    with pytest.raises(RuntimeError, match="trajectory count mismatch"):
+        case.validate()
+
+
+def test_prefix_opt_in_preserves_training_complete_requirement(tmp_path, monkeypatch):
+    case = _case(tmp_path, monkeypatch, stage="wiring")
+    case.records[0] = _retained_prefix(case.records[0])
+    case.options["allow_incomplete_evaluation"] = True
+    with pytest.raises(RuntimeError, match="INCOMPLETE screening trajectory"):
+        case.validate()
+    assert not case.checkpoint_calls
+
+
+@pytest.mark.parametrize("damage", [
+    "missing_marker", "wrong_marker", "runtime_error", "financial_metrics", "financial_score",
+    "credits", "short_prefix", "missing_request", "response_cap", "request_seed", "done",
+    "hidden_terminal", "request_failed", "token_total", "missing_transport", "extra_advance",
+    "fake_complete",
+])
+def test_prefix_marker_cannot_hide_other_failures(tmp_path, monkeypatch, damage):
+    case = _case(tmp_path, monkeypatch, stage="zero-shot")
+    row = case.records[-1] = _retained_prefix(case.records[-1])
+    case.options["allow_incomplete_evaluation"] = True
+    if damage == "missing_marker":
+        row.pop("evaluation_failure_profile")
+    elif damage == "wrong_marker":
+        row["evaluation_failure_profile"] = "retain_prefix_v0"
+    elif damage == "runtime_error":
+        row.update(status="ERROR", error_type="RuntimeError")
+    elif damage == "financial_metrics":
+        row["metrics"] = {"raw_net_return": 0.02, "terminal_score": 0.0}
+    elif damage == "financial_score":
+        row["terminal_score"] = 0.0
+    elif damage == "credits":
+        row["credits"] = [0.0] * 256
+    elif damage == "short_prefix":
+        row["steps"].pop()
+    elif damage == "missing_request":
+        row["requests"].pop()
+    elif damage == "response_cap":
+        row["requests"][-1]["response_token_count"] = 4096
+    elif damage == "request_seed":
+        row["requests"][-1]["request_seed"] += 1
+    elif damage == "done":
+        row["steps"][-1]["done"] = True
+    elif damage == "hidden_terminal":
+        row["steps"][-1]["result_session_index"] = 20
+    elif damage == "request_failed":
+        row["requests"][-1]["status"] = "ERROR"
+    elif damage == "token_total":
+        row["generated_response_tokens"] += 1
+    elif damage == "missing_transport":
+        row["transport_output_returned"] = False
+    elif damage == "fake_complete":
+        row.update(complete=True, terminal_score=0.0)
+        row["metrics"] = {"terminal_score": 0.0, "calibration_sha256": CALIBRATION}
+    else:
+        row["steps"][-1]["result_session_index"] = 4
+    with pytest.raises(RuntimeError, match="INCOMPLETE evaluation"):
+        case.validate()
+
+
+def test_opt_in_success_still_records_complete_financial_status(tmp_path, monkeypatch):
+    case = _case(tmp_path, monkeypatch, stage="wiring")
+    case.options["allow_incomplete_evaluation"] = True
+    result = case.validate()
+    assert result["evaluation_completion"] == {"attempted": 2, "complete": 2, "incomplete": 0}
+    assert result["financial_status"] == "COMPLETE"
+    case.options["allow_incomplete_evaluation"] = "true"
+    with pytest.raises(ValueError, match="must be boolean"):
+        case.validate()
+
+
+def test_actual_grid_failure_can_be_retained_only_under_new_contract(tmp_path, monkeypatch):
+    source = (
+        screening_launcher.REPO_ROOT / "runs/m2-parameter-grid-20261006/seed42/sft0"
+        / "artifacts/screening_evidence/screening-3512529.jsonl"
+    )
+    if not source.is_file():
+        pytest.skip("requires preserved local grid failure, absent from a clean clone")
+    failed = next(json.loads(line) for line in source.open() if '"status": "INCOMPLETE"' in line)
+    case = _case(tmp_path, monkeypatch, stage="zero-shot", arm="M1")
+    index = failed["identity"]["sample_index"]
+    case.records[index] = copy.deepcopy(failed)
+    with pytest.raises(RuntimeError, match="INCOMPLETE screening trajectory"):
+        case.validate()
+    case.options["allow_incomplete_evaluation"] = True
+    with pytest.raises(RuntimeError, match="retain-prefix contract"):
+        case.validate()
+    # Amend the in-memory test copy; the original failed experiment stays immutable.
+    case.records[index].update(
+        evaluation_failure_profile="retain_prefix_v1", failure_kind="trajectory_max_steps",
+        max_steps_limit=256, transport_output_returned=True, transport_step_count=256,
+        transport_rewards_are_not_financial=True,
+    )
+    assert case.validate()["evaluation_completion"] == {
+        "attempted": 12, "complete": 11, "incomplete": 1,
+    }

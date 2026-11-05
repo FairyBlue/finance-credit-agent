@@ -16,6 +16,8 @@ checkpoints/
 outputs/
 wandb/
 logs/
+# Selected run reports and small result receipts are explicitly tracked.
+# See docs/results/2026-11-05-backup/manifest.json for the migration snapshot.
 runs/
 
 # Local secrets.

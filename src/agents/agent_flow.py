@@ -32,6 +32,9 @@ from .screening_prompt import (
 )
 
 SCREENING_EVIDENCE_DIR_ENV = "FINANCE_SCREENING_EVIDENCE_DIR"
+EVALUATION_INCOMPLETE_ENV = "FINANCE_GRID_EVALUATION_INCOMPLETE"
+EVALUATION_INCOMPLETE_PROFILE = "retain_prefix_v1"
+_RETAINABLE_MAX_STEPS = 256
 _MAX_SCREENING_FAILURE_TOKEN_IDS = 4096
 _MAX_SCREENING_PROMPT_TOKEN_IDS = 8192
 
@@ -375,6 +378,9 @@ class ScreeningTradingAgentEnvLoop(TradingAgentEnvLoop):
 
     async def run(self, sampling_params: dict[str, Any], **kwargs: Any):
         identity = normalize_rollout_identity(kwargs[ROLLOUT_IDENTITY_KWARG])
+        evaluation_profile = os.environ.get(EVALUATION_INCOMPLETE_ENV)
+        if evaluation_profile not in {None, EVALUATION_INCOMPLETE_PROFILE}:
+            raise RuntimeError("unregistered evaluation incomplete profile")
         root_value = os.environ.get(SCREENING_EVIDENCE_DIR_ENV, "")
         root = Path(root_value).expanduser()
         if not root_value or not root.is_absolute():
@@ -432,6 +438,7 @@ class ScreeningTradingAgentEnvLoop(TradingAgentEnvLoop):
         # construction of this trajectory's environment fails.
         if hasattr(self, "_active_trading_env"):
             del self._active_trading_env
+        output = None
         try:
             output = await super().run(sampling_params, **kwargs)
             env = self._active_trading_env
@@ -525,6 +532,59 @@ class ScreeningTradingAgentEnvLoop(TradingAgentEnvLoop):
             )
             record["error_type"] = type(error).__name__
             record["error"] = str(error)
+            env = getattr(self, "_active_trading_env", None)
+            trace = env.credit_step_trace if env is not None else ()
+            if (
+                evaluation_profile == EVALUATION_INCOMPLETE_PROFILE
+                and identity.validate
+                and isinstance(error, ScreeningIncompleteError)
+                and str(error) == "screening rollout stopped before its exact terminal"
+                and output is not None
+                and self.max_steps == _RETAINABLE_MAX_STEPS
+                and len(output.steps) == len(trace) == len(manager.requests) == self.max_steps
+                and not env.episode_complete
+                and env.current_session_index < env.episode_session_count - 1
+                and all(not step.done for step in trace)
+                and all(request["status"] == "COMPLETE" for request in manager.requests)
+            ):
+                # These are the real generated steps. No extra request, action,
+                # terminal or financial score is manufactured. Numeric zero is
+                # solely a transport value for upstream's tensor-only validator.
+                for step in output.steps:
+                    step.reward_score = 0.0
+                    step.extra_fields.update(
+                        {
+                            "finance_grid_evaluation_failure": True,
+                            "finance_grid_evaluation_transport_only": True,
+                            "finance_grid_evaluation_failure_profile": evaluation_profile,
+                            "finance_grid_evaluation_failure_kind": "trajectory_max_steps",
+                            "finance_screening_arm": self._screening_arm,
+                            "finance_screening_group_uid": group_uid,
+                            "finance_screening_policy_step": identity.step,
+                            "finance_screening_rollout_id": identity.rollout_n,
+                            "finance_screening_rollout_n": rollout_n,
+                            "finance_screening_terminal_score": None,
+                            "finance_screening_net_return": None,
+                            "finance_screening_trajectory_complete": False,
+                            "finance_screening_step_count": len(trace),
+                            "finance_screening_episode_id": episode_id,
+                            "finance_screening_credit_semantics": (
+                                "evaluation_incomplete_transport_only_v1"
+                            ),
+                        }
+                    )
+                record.update(
+                    evaluation_failure_profile=evaluation_profile,
+                    failure_kind="trajectory_max_steps",
+                    max_steps_limit=self.max_steps,
+                    terminal_score=None,
+                    metrics=None,
+                    credits=None,
+                    transport_output_returned=True,
+                    transport_step_count=len(output.steps),
+                    transport_rewards_are_not_financial=True,
+                )
+                return output
             raise
         finally:
             self.server_manager = original_manager

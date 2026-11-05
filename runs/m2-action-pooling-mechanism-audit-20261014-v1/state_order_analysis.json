@@ -1,0 +1,1019 @@
+{
+  "schema_version": 1,
+  "status": "COMPLETE",
+  "cpu_only": true,
+  "input_run": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6",
+  "historical_run_mutations": false,
+  "method": {
+    "scope": "four M2/M2-plain cells, 128 completed training trajectories; no evaluation trajectories",
+    "pre_state": "previous interaction post-request observation; initial decision_session_index=0 excluded",
+    "portfolio_distance": "L1 across reported symbol weights plus cash/equity fraction",
+    "state_difference_tolerance": 1e-06,
+    "order_signature": "successful advancing action name and canonical arguments JSON; the observed buy/sell arguments contain symbol and target_weight. All arguments are compared, including any amount if present.",
+    "excluded_order_rows": "invalid, retrieve, compute do not enter action-family groups; every included step has invalid_action=false and result_session_index=decision_session_index+1",
+    "eligible_pool_cell": "same-family size >=2 and session has >=2 families",
+    "interpretation": "observed heterogeneity; does not establish causal contribution or explain final performance causally"
+  },
+  "source_inventory_sha256": {
+    "runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3795287.jsonl": "463c58dd5391722797217319160d547b6ce10d14c27c16256a478fec79080a4d",
+    "runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3774573.jsonl": "8abfe086c182c2c39a41f86649d941fb05f673c3dba6e330ef8dbae21189c8e6",
+    "runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3816286.jsonl": "850cdec0f86740e0e6f7f405dec370eb96ae5e22a68e7329bf63077d3f96d87b",
+    "runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3837190.jsonl": "0742f97afe5a3e5a5ad1ad0f884be1a090fccd4e1debaffea2e24c660d1bf2ac"
+  },
+  "analysis_source_sha256": "41204f53022f7f67defbb2d5735cc6af00163fb63b1e455cca259f0bba8c3a28",
+  "cells": [
+    {
+      "seed": 42,
+      "cell": "m2_lr1e7_eta025",
+      "counts": {
+        "training_trajectories": 32,
+        "session_groups": 160,
+        "diverse_sessions": 79,
+        "unanimous_sessions": 81,
+        "unanimous_sessions_multiple_order_signatures": 61,
+        "repeated_family_cells": 186,
+        "repeated_family_cells_multiple_order_signatures": 124,
+        "post_initial_prestate_groups": 152,
+        "same_day_market_equal_groups": 152,
+        "different_portfolio_state_groups": 141,
+        "portfolio_max_L1_gt_0_1_groups": 122,
+        "repeated_family_prestate_cells": 178,
+        "repeated_family_different_state_cells": 161,
+        "diverse_state_groups": 79,
+        "diverse_different_state_groups": 77,
+        "eligible_pooled_family_cells": 105,
+        "eligible_pooled_cells_multiple_order_signatures": 63,
+        "eligible_pooled_cells_multiple_symbols": 62,
+        "eligible_pooled_cells_same_symbol_different_targets": 4,
+        "eligible_pooled_prestate_cells": 105,
+        "eligible_pooled_different_prestate_cells": 97,
+        "eligible_pooled_portfolio_L1_gt_0_1_cells": 64,
+        "eligible_pool_order_and_state_different_cells": 61
+      },
+      "post_initial_max_prestate_L1_mean": 0.4507758001481055,
+      "eligible_poolcell_max_prestate_L1_mean": 0.2849374048235374,
+      "eligible_poolcell_max_prestate_L1_median": 0.3996031957519076,
+      "examples": [
+        {
+          "policy_step": 1,
+          "episode_id": "formal-train-0065",
+          "decision_session_index": 5,
+          "family": "buy",
+          "decision_at": "2023-04-13T20:00:00+00:00",
+          "max_prestate_portfolio_L1": 0.8030610001321535,
+          "siblings": [
+            {
+              "sibling_id": 3,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20440217,
+                "MSFT": 0.20325428,
+                "$cash": 0.5923435462580096
+              },
+              "terminal_Y": 3.9915310992210813,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3795287.jsonl",
+              "raw_line": 2,
+              "interaction_step_index": 5
+            },
+            {
+              "sibling_id": 2,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20004136,
+                "HD": 0.19844512,
+                "MSFT": 0.20308538,
+                "$cash": 0.39842813731621796
+              },
+              "terminal_Y": 5.175266751077613,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3795287.jsonl",
+              "raw_line": 4,
+              "interaction_step_index": 6
+            },
+            {
+              "sibling_id": 1,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20643789,
+                "$cash": 0.7935621074483715
+              },
+              "terminal_Y": 2.7242007509959705,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3795287.jsonl",
+              "raw_line": 6,
+              "interaction_step_index": 5
+            }
+          ]
+        },
+        {
+          "policy_step": 1,
+          "episode_id": "formal-train-0065",
+          "decision_session_index": 6,
+          "family": "buy",
+          "decision_at": "2023-04-14T20:00:00+00:00",
+          "max_prestate_portfolio_L1": 0.4114257542303298,
+          "siblings": [
+            {
+              "sibling_id": 0,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20280049,
+                "HD": 0.19834918,
+                "$cash": 0.5988503320232136
+              },
+              "terminal_Y": 4.863664191734778,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3795287.jsonl",
+              "raw_line": 1,
+              "interaction_step_index": 7
+            },
+            {
+              "sibling_id": 1,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20898144,
+                "MSFT": 0.19953193,
+                "$cash": 0.5914866377928838
+              },
+              "terminal_Y": 2.7242007509959705,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3795287.jsonl",
+              "raw_line": 6,
+              "interaction_step_index": 6
+            }
+          ]
+        },
+        {
+          "policy_step": 1,
+          "episode_id": "formal-train-0065",
+          "decision_session_index": 7,
+          "family": "buy",
+          "decision_at": "2023-04-17T20:00:00+00:00",
+          "max_prestate_portfolio_L1": 0.41546701356743443,
+          "siblings": [
+            {
+              "sibling_id": 3,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20773351,
+                "HD": 0.20109662,
+                "$cash": 0.5911698685917193
+              },
+              "terminal_Y": 3.9915310992210813,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3795287.jsonl",
+              "raw_line": 2,
+              "interaction_step_index": 8
+            },
+            {
+              "sibling_id": 2,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"GS\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "HD": 0.20164807,
+                "MSFT": 0.20164636,
+                "$cash": 0.5967055621591537
+              },
+              "terminal_Y": 5.175266751077613,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3795287.jsonl",
+              "raw_line": 4,
+              "interaction_step_index": 8
+            }
+          ]
+        },
+        {
+          "policy_step": 1,
+          "episode_id": "formal-train-0065",
+          "decision_session_index": 9,
+          "family": "sell",
+          "decision_at": "2023-04-19T20:00:00+00:00",
+          "max_prestate_portfolio_L1": 0.41875912305399765,
+          "siblings": [
+            {
+              "sibling_id": 0,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.0}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20254666,
+                "MSFT": 0.19857155,
+                "$cash": 0.5988817915561974
+              },
+              "terminal_Y": 4.863664191734778,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3795287.jsonl",
+              "raw_line": 1,
+              "interaction_step_index": 10
+            },
+            {
+              "sibling_id": 2,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"GS\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20473499,
+                "HD": 0.20148602,
+                "MSFT": 0.20021668,
+                "$cash": 0.39356231337580927
+              },
+              "terminal_Y": 5.175266751077613,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3795287.jsonl",
+              "raw_line": 4,
+              "interaction_step_index": 11
+            },
+            {
+              "sibling_id": 1,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"GS\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.2072699,
+                "HD": 0.20234132,
+                "MSFT": 0.20088655,
+                "$cash": 0.3895022285021997
+              },
+              "terminal_Y": 2.7242007509959705,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3795287.jsonl",
+              "raw_line": 6,
+              "interaction_step_index": 10
+            }
+          ]
+        },
+        {
+          "policy_step": 1,
+          "episode_id": "formal-train-0065",
+          "decision_session_index": 11,
+          "family": "sell",
+          "decision_at": "2023-04-21T20:00:00+00:00",
+          "max_prestate_portfolio_L1": 0.4068385771588964,
+          "siblings": [
+            {
+              "sibling_id": 3,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.0}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20246254,
+                "MSFT": 0.19494382,
+                "$cash": 0.6025936333405492
+              },
+              "terminal_Y": 3.9915310992210813,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3795287.jsonl",
+              "raw_line": 2,
+              "interaction_step_index": 12
+            },
+            {
+              "sibling_id": 2,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.0}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20272775,
+                "HD": 0.20315408,
+                "$cash": 0.5941181661816528
+              },
+              "terminal_Y": 5.175266751077613,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3795287.jsonl",
+              "raw_line": 4,
+              "interaction_step_index": 13
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "seed": 42,
+      "cell": "m2_plain_lr1e7_eta025",
+      "counts": {
+        "training_trajectories": 32,
+        "session_groups": 160,
+        "diverse_sessions": 78,
+        "unanimous_sessions": 82,
+        "unanimous_sessions_multiple_order_signatures": 61,
+        "repeated_family_cells": 180,
+        "repeated_family_cells_multiple_order_signatures": 119,
+        "post_initial_prestate_groups": 152,
+        "same_day_market_equal_groups": 152,
+        "different_portfolio_state_groups": 142,
+        "portfolio_max_L1_gt_0_1_groups": 125,
+        "repeated_family_prestate_cells": 172,
+        "repeated_family_different_state_cells": 155,
+        "diverse_state_groups": 78,
+        "diverse_different_state_groups": 77,
+        "eligible_pooled_family_cells": 98,
+        "eligible_pooled_cells_multiple_order_signatures": 58,
+        "eligible_pooled_cells_multiple_symbols": 55,
+        "eligible_pooled_cells_same_symbol_different_targets": 4,
+        "eligible_pooled_prestate_cells": 98,
+        "eligible_pooled_different_prestate_cells": 90,
+        "eligible_pooled_portfolio_L1_gt_0_1_cells": 63,
+        "eligible_pool_order_and_state_different_cells": 58
+      },
+      "post_initial_max_prestate_L1_mean": 0.4444456378227705,
+      "eligible_poolcell_max_prestate_L1_mean": 0.3050465662748115,
+      "eligible_poolcell_max_prestate_L1_median": 0.3995720169339795,
+      "examples": [
+        {
+          "policy_step": 1,
+          "episode_id": "formal-train-0065",
+          "decision_session_index": 5,
+          "family": "buy",
+          "decision_at": "2023-04-13T20:00:00+00:00",
+          "max_prestate_portfolio_L1": 0.8030610001321535,
+          "siblings": [
+            {
+              "sibling_id": 3,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20440217,
+                "MSFT": 0.20325428,
+                "$cash": 0.5923435462580096
+              },
+              "terminal_Y": 3.9915310992210813,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3774573.jsonl",
+              "raw_line": 2,
+              "interaction_step_index": 5
+            },
+            {
+              "sibling_id": 2,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20004136,
+                "HD": 0.19844512,
+                "MSFT": 0.20308538,
+                "$cash": 0.39842813731621796
+              },
+              "terminal_Y": 5.175266751077613,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3774573.jsonl",
+              "raw_line": 3,
+              "interaction_step_index": 6
+            },
+            {
+              "sibling_id": 1,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20643789,
+                "$cash": 0.7935621074483715
+              },
+              "terminal_Y": 2.7242007509959705,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3774573.jsonl",
+              "raw_line": 7,
+              "interaction_step_index": 5
+            }
+          ]
+        },
+        {
+          "policy_step": 1,
+          "episode_id": "formal-train-0065",
+          "decision_session_index": 6,
+          "family": "buy",
+          "decision_at": "2023-04-14T20:00:00+00:00",
+          "max_prestate_portfolio_L1": 0.4114257542303298,
+          "siblings": [
+            {
+              "sibling_id": 0,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20280049,
+                "HD": 0.19834918,
+                "$cash": 0.5988503320232136
+              },
+              "terminal_Y": 4.863664191734778,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3774573.jsonl",
+              "raw_line": 1,
+              "interaction_step_index": 7
+            },
+            {
+              "sibling_id": 1,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20898144,
+                "MSFT": 0.19953193,
+                "$cash": 0.5914866377928838
+              },
+              "terminal_Y": 2.7242007509959705,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3774573.jsonl",
+              "raw_line": 7,
+              "interaction_step_index": 6
+            }
+          ]
+        },
+        {
+          "policy_step": 1,
+          "episode_id": "formal-train-0065",
+          "decision_session_index": 7,
+          "family": "buy",
+          "decision_at": "2023-04-17T20:00:00+00:00",
+          "max_prestate_portfolio_L1": 0.41546701356743443,
+          "siblings": [
+            {
+              "sibling_id": 3,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20773351,
+                "HD": 0.20109662,
+                "$cash": 0.5911698685917193
+              },
+              "terminal_Y": 3.9915310992210813,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3774573.jsonl",
+              "raw_line": 2,
+              "interaction_step_index": 8
+            },
+            {
+              "sibling_id": 2,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"GS\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "HD": 0.20164807,
+                "MSFT": 0.20164636,
+                "$cash": 0.5967055621591537
+              },
+              "terminal_Y": 5.175266751077613,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3774573.jsonl",
+              "raw_line": 3,
+              "interaction_step_index": 8
+            }
+          ]
+        },
+        {
+          "policy_step": 1,
+          "episode_id": "formal-train-0065",
+          "decision_session_index": 9,
+          "family": "sell",
+          "decision_at": "2023-04-19T20:00:00+00:00",
+          "max_prestate_portfolio_L1": 0.41875912305399765,
+          "siblings": [
+            {
+              "sibling_id": 0,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.0}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20254666,
+                "MSFT": 0.19857155,
+                "$cash": 0.5988817915561974
+              },
+              "terminal_Y": 4.863664191734778,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3774573.jsonl",
+              "raw_line": 1,
+              "interaction_step_index": 10
+            },
+            {
+              "sibling_id": 2,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"GS\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20473499,
+                "HD": 0.20148602,
+                "MSFT": 0.20021668,
+                "$cash": 0.39356231337580927
+              },
+              "terminal_Y": 5.175266751077613,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3774573.jsonl",
+              "raw_line": 3,
+              "interaction_step_index": 11
+            },
+            {
+              "sibling_id": 1,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"GS\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.2072699,
+                "HD": 0.20234132,
+                "MSFT": 0.20088655,
+                "$cash": 0.3895022285021997
+              },
+              "terminal_Y": 2.7242007509959705,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3774573.jsonl",
+              "raw_line": 7,
+              "interaction_step_index": 10
+            }
+          ]
+        },
+        {
+          "policy_step": 1,
+          "episode_id": "formal-train-0065",
+          "decision_session_index": 11,
+          "family": "sell",
+          "decision_at": "2023-04-21T20:00:00+00:00",
+          "max_prestate_portfolio_L1": 0.4068385771588964,
+          "siblings": [
+            {
+              "sibling_id": 3,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.0}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20246254,
+                "MSFT": 0.19494382,
+                "$cash": 0.6025936333405492
+              },
+              "terminal_Y": 3.9915310992210813,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3774573.jsonl",
+              "raw_line": 2,
+              "interaction_step_index": 12
+            },
+            {
+              "sibling_id": 2,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.0}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20272775,
+                "HD": 0.20315408,
+                "$cash": 0.5941181661816528
+              },
+              "terminal_Y": 5.175266751077613,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3774573.jsonl",
+              "raw_line": 3,
+              "interaction_step_index": 13
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "seed": 43,
+      "cell": "m2_lr1e7_eta025",
+      "counts": {
+        "training_trajectories": 32,
+        "session_groups": 160,
+        "diverse_sessions": 78,
+        "unanimous_sessions": 82,
+        "unanimous_sessions_multiple_order_signatures": 57,
+        "repeated_family_cells": 186,
+        "repeated_family_cells_multiple_order_signatures": 120,
+        "post_initial_prestate_groups": 152,
+        "same_day_market_equal_groups": 152,
+        "different_portfolio_state_groups": 135,
+        "portfolio_max_L1_gt_0_1_groups": 117,
+        "repeated_family_prestate_cells": 178,
+        "repeated_family_different_state_cells": 152,
+        "diverse_state_groups": 78,
+        "diverse_different_state_groups": 77,
+        "eligible_pooled_family_cells": 104,
+        "eligible_pooled_cells_multiple_order_signatures": 63,
+        "eligible_pooled_cells_multiple_symbols": 60,
+        "eligible_pooled_cells_same_symbol_different_targets": 5,
+        "eligible_pooled_prestate_cells": 104,
+        "eligible_pooled_different_prestate_cells": 94,
+        "eligible_pooled_portfolio_L1_gt_0_1_cells": 68,
+        "eligible_pool_order_and_state_different_cells": 60
+      },
+      "post_initial_max_prestate_L1_mean": 0.41905727987982605,
+      "eligible_poolcell_max_prestate_L1_mean": 0.3035149318582663,
+      "eligible_poolcell_max_prestate_L1_median": 0.40065998329555563,
+      "examples": [
+        {
+          "policy_step": 1,
+          "episode_id": "formal-train-0065",
+          "decision_session_index": 7,
+          "family": "sell",
+          "decision_at": "2023-04-17T20:00:00+00:00",
+          "max_prestate_portfolio_L1": 0.3970546051653254,
+          "siblings": [
+            {
+              "sibling_id": 2,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.0}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20773351,
+                "HD": 0.20109662,
+                "$cash": 0.5911698685917193
+              },
+              "terminal_Y": 3.9538707766785057,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3816286.jsonl",
+              "raw_line": 1,
+              "interaction_step_index": 7
+            },
+            {
+              "sibling_id": 3,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.0}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20639098,
+                "HD": 0.20119537,
+                "MSFT": 0.19842856,
+                "$cash": 0.39398510342639387
+              },
+              "terminal_Y": 4.966522324446563,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3816286.jsonl",
+              "raw_line": 3,
+              "interaction_step_index": 8
+            },
+            {
+              "sibling_id": 0,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20737829,
+                "HD": 0.20109728,
+                "$cash": 0.5915244311012712
+              },
+              "terminal_Y": 3.2088578467175886,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3816286.jsonl",
+              "raw_line": 5,
+              "interaction_step_index": 8
+            }
+          ]
+        },
+        {
+          "policy_step": 1,
+          "episode_id": "formal-train-0065",
+          "decision_session_index": 8,
+          "family": "buy",
+          "decision_at": "2023-04-18T20:00:00+00:00",
+          "max_prestate_portfolio_L1": 0.40138184060235993,
+          "siblings": [
+            {
+              "sibling_id": 2,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20486139,
+                "$cash": 0.7951386124351675
+              },
+              "terminal_Y": 3.9538707766785057,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3816286.jsonl",
+              "raw_line": 1,
+              "interaction_step_index": 8
+            },
+            {
+              "sibling_id": 0,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20408776,
+                "HD": 0.20069092,
+                "$cash": 0.5952213218328075
+              },
+              "terminal_Y": 3.2088578467175886,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3816286.jsonl",
+              "raw_line": 5,
+              "interaction_step_index": 9
+            }
+          ]
+        },
+        {
+          "policy_step": 1,
+          "episode_id": "formal-train-0065",
+          "decision_session_index": 9,
+          "family": "sell",
+          "decision_at": "2023-04-19T20:00:00+00:00",
+          "max_prestate_portfolio_L1": 0.4038247742810399,
+          "siblings": [
+            {
+              "sibling_id": 3,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20450434,
+                "HD": 0.2020347,
+                "$cash": 0.5934609559044836
+              },
+              "terminal_Y": 4.966522324446563,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3816286.jsonl",
+              "raw_line": 3,
+              "interaction_step_index": 11
+            },
+            {
+              "sibling_id": 0,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20552504,
+                "HD": 0.19894959,
+                "MSFT": 0.20089169,
+                "$cash": 0.39463368162344364
+              },
+              "terminal_Y": 3.2088578467175886,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3816286.jsonl",
+              "raw_line": 5,
+              "interaction_step_index": 11
+            }
+          ]
+        },
+        {
+          "policy_step": 1,
+          "episode_id": "formal-train-0065",
+          "decision_session_index": 10,
+          "family": "sell",
+          "decision_at": "2023-04-20T20:00:00+00:00",
+          "max_prestate_portfolio_L1": 0.401004693359342,
+          "siblings": [
+            {
+              "sibling_id": 2,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"GS\",\"target_weight\":0.0}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20696304,
+                "HD": 0.20049841,
+                "$cash": 0.5925385520295446
+              },
+              "terminal_Y": 3.9538707766785057,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3816286.jsonl",
+              "raw_line": 1,
+              "interaction_step_index": 10
+            },
+            {
+              "sibling_id": 3,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.0}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20515445,
+                "HD": 0.20094494,
+                "$cash": 0.5939006045779266
+              },
+              "terminal_Y": 4.966522324446563,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3816286.jsonl",
+              "raw_line": 3,
+              "interaction_step_index": 12
+            },
+            {
+              "sibling_id": 0,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"GS\",\"target_weight\":0.0}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.2065129,
+                "HD": 0.19994336,
+                "MSFT": 0.1991439,
+                "$cash": 0.3943998412185846
+              },
+              "terminal_Y": 3.2088578467175886,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3816286.jsonl",
+              "raw_line": 5,
+              "interaction_step_index": 12
+            }
+          ]
+        },
+        {
+          "policy_step": 1,
+          "episode_id": "formal-train-0065",
+          "decision_session_index": 13,
+          "family": "buy",
+          "decision_at": "2023-04-25T20:00:00+00:00",
+          "max_prestate_portfolio_L1": 0.8289539290222218,
+          "siblings": [
+            {
+              "sibling_id": 1,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20958846,
+                "HD": 0.20400047,
+                "MSFT": 0.19854131,
+                "$cash": 0.3878697661207014
+              },
+              "terminal_Y": 3.6212083620465734,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3816286.jsonl",
+              "raw_line": 2,
+              "interaction_step_index": 13
+            },
+            {
+              "sibling_id": 3,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20620936,
+                "MSFT": 0.19783476,
+                "$cash": 0.595955880784484
+              },
+              "terminal_Y": 4.966522324446563,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3816286.jsonl",
+              "raw_line": 3,
+              "interaction_step_index": 15
+            },
+            {
+              "sibling_id": 0,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"GS\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "MSFT": 0.19765327,
+                "$cash": 0.8023467251429232
+              },
+              "terminal_Y": 3.2088578467175886,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3816286.jsonl",
+              "raw_line": 5,
+              "interaction_step_index": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "seed": 43,
+      "cell": "m2_plain_lr1e7_eta025",
+      "counts": {
+        "training_trajectories": 32,
+        "session_groups": 160,
+        "diverse_sessions": 82,
+        "unanimous_sessions": 78,
+        "unanimous_sessions_multiple_order_signatures": 57,
+        "repeated_family_cells": 185,
+        "repeated_family_cells_multiple_order_signatures": 123,
+        "post_initial_prestate_groups": 152,
+        "same_day_market_equal_groups": 152,
+        "different_portfolio_state_groups": 134,
+        "portfolio_max_L1_gt_0_1_groups": 122,
+        "repeated_family_prestate_cells": 177,
+        "repeated_family_different_state_cells": 155,
+        "diverse_state_groups": 82,
+        "diverse_different_state_groups": 81,
+        "eligible_pooled_family_cells": 107,
+        "eligible_pooled_cells_multiple_order_signatures": 66,
+        "eligible_pooled_cells_multiple_symbols": 61,
+        "eligible_pooled_cells_same_symbol_different_targets": 8,
+        "eligible_pooled_prestate_cells": 107,
+        "eligible_pooled_different_prestate_cells": 102,
+        "eligible_pooled_portfolio_L1_gt_0_1_cells": 79,
+        "eligible_pool_order_and_state_different_cells": 66
+      },
+      "post_initial_max_prestate_L1_mean": 0.4468950514106198,
+      "eligible_poolcell_max_prestate_L1_mean": 0.3396874192200597,
+      "eligible_poolcell_max_prestate_L1_median": 0.4015139615200064,
+      "examples": [
+        {
+          "policy_step": 1,
+          "episode_id": "formal-train-0065",
+          "decision_session_index": 8,
+          "family": "buy",
+          "decision_at": "2023-04-18T20:00:00+00:00",
+          "max_prestate_portfolio_L1": 0.4070131544692813,
+          "siblings": [
+            {
+              "sibling_id": 2,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20486139,
+                "$cash": 0.7951386124351675
+              },
+              "terminal_Y": 3.9538707766785057,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3837190.jsonl",
+              "raw_line": 1,
+              "interaction_step_index": 8
+            },
+            {
+              "sibling_id": 1,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.19992918,
+                "HD": 0.20350658,
+                "$cash": 0.5965642479658861
+              },
+              "terminal_Y": 5.838181906486684,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3837190.jsonl",
+              "raw_line": 2,
+              "interaction_step_index": 9
+            },
+            {
+              "sibling_id": 0,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20408776,
+                "HD": 0.20069092,
+                "$cash": 0.5952213218328075
+              },
+              "terminal_Y": 3.2088578467175886,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3837190.jsonl",
+              "raw_line": 5,
+              "interaction_step_index": 9
+            }
+          ]
+        },
+        {
+          "policy_step": 1,
+          "episode_id": "formal-train-0065",
+          "decision_session_index": 9,
+          "family": "sell",
+          "decision_at": "2023-04-19T20:00:00+00:00",
+          "max_prestate_portfolio_L1": 0.4038247742810399,
+          "siblings": [
+            {
+              "sibling_id": 1,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.0}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20134849,
+                "HD": 0.20175216,
+                "MSFT": 0.20090058,
+                "$cash": 0.3959987651439261
+              },
+              "terminal_Y": 5.838181906486684,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3837190.jsonl",
+              "raw_line": 2,
+              "interaction_step_index": 10
+            },
+            {
+              "sibling_id": 3,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20450434,
+                "HD": 0.2020347,
+                "$cash": 0.5934609559044836
+              },
+              "terminal_Y": 4.966522324446563,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3837190.jsonl",
+              "raw_line": 3,
+              "interaction_step_index": 11
+            },
+            {
+              "sibling_id": 0,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20552504,
+                "HD": 0.19894959,
+                "MSFT": 0.20089169,
+                "$cash": 0.39463368162344364
+              },
+              "terminal_Y": 3.2088578467175886,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3837190.jsonl",
+              "raw_line": 5,
+              "interaction_step_index": 11
+            }
+          ]
+        },
+        {
+          "policy_step": 1,
+          "episode_id": "formal-train-0065",
+          "decision_session_index": 13,
+          "family": "buy",
+          "decision_at": "2023-04-25T20:00:00+00:00",
+          "max_prestate_portfolio_L1": 0.41278358308527535,
+          "siblings": [
+            {
+              "sibling_id": 1,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"GS\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "MSFT": 0.19765233,
+                "$cash": 0.8023476738697594
+              },
+              "terminal_Y": 5.838181906486684,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3837190.jsonl",
+              "raw_line": 2,
+              "interaction_step_index": 14
+            },
+            {
+              "sibling_id": 3,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20620936,
+                "MSFT": 0.19783476,
+                "$cash": 0.595955880784484
+              },
+              "terminal_Y": 4.966522324446563,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3837190.jsonl",
+              "raw_line": 3,
+              "interaction_step_index": 15
+            },
+            {
+              "sibling_id": 0,
+              "response": "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"GS\",\"target_weight\":0.2}}</tool_call>",
+              "pre_weights": {
+                "MSFT": 0.19765327,
+                "$cash": 0.8023467251429232
+              },
+              "terminal_Y": 3.2088578467175886,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3837190.jsonl",
+              "raw_line": 5,
+              "interaction_step_index": 15
+            }
+          ]
+        },
+        {
+          "policy_step": 1,
+          "episode_id": "formal-train-0065",
+          "decision_session_index": 14,
+          "family": "sell",
+          "decision_at": "2023-04-26T20:00:00+00:00",
+          "max_prestate_portfolio_L1": 0.4021013686780467,
+          "siblings": [
+            {
+              "sibling_id": 3,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.0}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.20297443,
+                "HD": 0.19635969,
+                "MSFT": 0.21064839,
+                "$cash": 0.39001749357112153
+              },
+              "terminal_Y": 4.966522324446563,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3837190.jsonl",
+              "raw_line": 3,
+              "interaction_step_index": 16
+            },
+            {
+              "sibling_id": 0,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.0}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.19976417,
+                "MSFT": 0.20916765,
+                "$cash": 0.5910681722491682
+              },
+              "terminal_Y": 3.2088578467175886,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3837190.jsonl",
+              "raw_line": 5,
+              "interaction_step_index": 16
+            }
+          ]
+        },
+        {
+          "policy_step": 1,
+          "episode_id": "formal-train-0001",
+          "decision_session_index": 12,
+          "family": "sell",
+          "decision_at": "2023-01-20T21:00:00+00:00",
+          "max_prestate_portfolio_L1": 0.4073518975119509,
+          "siblings": [
+            {
+              "sibling_id": 0,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.0}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.19546988,
+                "MSFT": 0.20544455,
+                "$cash": 0.5990855749357311
+              },
+              "terminal_Y": 0.7912409670355482,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3837190.jsonl",
+              "raw_line": 4,
+              "interaction_step_index": 15
+            },
+            {
+              "sibling_id": 1,
+              "response": "<tool_call>{\"name\":\"sell\",\"arguments\":{\"symbol\":\"GS\",\"target_weight\":0.0}}</tool_call>",
+              "pre_weights": {
+                "GS": 0.19648314,
+                "HD": 0.20266269,
+                "MSFT": 0.19912398,
+                "$cash": 0.4017301974237802
+              },
+              "terminal_Y": 1.2483244537909852,
+              "raw_path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_plain_lr1e7_eta025/artifacts/screening_evidence/screening-3837190.jsonl",
+              "raw_line": 8,
+              "interaction_step_index": 14
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "status": "COMPLETE_CACHED_HEAD_DEMO",
+  "training_directory": "/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-training-demo-20261022-v2",
+  "evaluation_directory": "/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-training-demo-20261022-v3-eval",
+  "checkpoint": "/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-training-demo-20261022-v2/checkpoint",
+  "optimizer_updates": 4,
+  "trainable_parameters": 4022468096,
+  "training_head_samples": 16,
+  "alpha": 0.5,
+  "learning_rate": 2e-06,
+  "training_update_elapsed_seconds": 31.614177864044905,
+  "training_cuda_peak_allocated_GiB": 39.422417640686035,
+  "BF16_parameter_probe_delta": {
+    "RMS_delta": 1.3838399817379904e-06,
+    "changed_elements": 314,
+    "maximum_absolute_delta": 1.52587890625e-05,
+    "sampled_elements": 6766
+  },
+  "greedy_probe_changed": 1,
+  "greedy_probe_count": 2,
+  "post_update_trajectories_complete": 2,
+  "post_update_trajectories_requested": 2,
+  "post_update_model_calls": 10,
+  "post_update_nonadvancing_requests": 0,
+  "post_update_input_tokens": 46204,
+  "post_update_output_tokens": 198,
+  "scope": "Fixed cached EST head-only policy-gradient demo. No GAE/critic, eta, whitening, or paired return-improvement claim. The continuations inherit cached prefixes; terminal metrics cover each whole window.",
+  "REF_labels_used": false,
+  "formal_valid_oos_access": false,
+  "failure_history_preserved": [
+    "v1: pre-training float probe index failure; zero updates",
+    "v2: all four updates and checkpoint finished, then post-rollout import failed; original failed process/state retained",
+    "v3-eval: fixed import and loaded existing v2 checkpoint; evaluation only, exit0"
+  ],
+  "holder_restored": true
+}

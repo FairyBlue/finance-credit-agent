@@ -1,0 +1,19 @@
+{
+  "status": "FROZEN",
+  "frozen_at": "2026-11-05T17:30:32.299203+08:00",
+  "scope": "PANEL_K4_ONLY",
+  "measured_native_mean_tokens": 26318.1875,
+  "panel_plus_holdout_forecast_tokens": 6466416,
+  "panel_only_forecast_tokens": 4529398,
+  "evaluation_cap": 5000000,
+  "primary_metric": "full_task_success",
+  "panel_tasks": 16,
+  "panel_repetitions": 4,
+  "holdout_tasks": 32,
+  "holdout_repetitions": 1,
+  "dev_evaluated": false,
+  "reserved_test_evaluated": false,
+  "selected_before_any_stage3_model_generation": true,
+  "panel_is_training_positive_control": true,
+  "holdout_already_used_to_select_lr": true
+}

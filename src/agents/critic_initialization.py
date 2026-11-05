@@ -30,8 +30,8 @@ def _record_head(model: Any, *, seed: int, model_path: str, rank: int, directory
         raise RuntimeError("critic head evidence requires the pinned Qwen score head")
     identity = os.environ.get("FINANCE_SCREENING_IDENTITY_SHA256", "")
     arm = os.environ.get("FINANCE_SCREENING_ARM", "")
-    if re.fullmatch(r"[0-9a-f]{64}", identity) is None or arm not in {"M1", "M2"}:
-        raise RuntimeError("critic head evidence requires the run identity and M1/M2 arm")
+    if re.fullmatch(r"[0-9a-f]{64}", identity) is None or arm not in {"M1", "M2-plain", "M2"}:
+        raise RuntimeError("critic head evidence requires run identity and a registered critic arm")
     digest = hashlib.sha256()
     parameters = []
     for name, parameter in sorted(head.named_parameters()):

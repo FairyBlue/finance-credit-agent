@@ -1,0 +1,22 @@
+{
+  "status": "COMPLETE",
+  "paired_trajectories": 64,
+  "report_clusters": 8,
+  "full_success_difference_mc_minus_rloo": -0.03125,
+  "descriptive_report_bootstrap_95_interval": [
+    -0.109375,
+    0.03125
+  ],
+  "report_differences": {
+    "ECL/2017": 0.0,
+    "ZBH/2008": 0.0,
+    "AMT/2012": -0.25,
+    "IP/2012": 0.125,
+    "MRO/2003": -0.125,
+    "MRO/2018": 0.0,
+    "PKG/2013": 0.0,
+    "PPG/2010": 0.0
+  },
+  "all_thresholds_and_replicas_kept_in_cluster": true,
+  "training_positive_control_not_independent_confirmation": true
+}

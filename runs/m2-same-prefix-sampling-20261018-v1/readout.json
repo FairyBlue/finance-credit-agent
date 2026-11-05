@@ -1,0 +1,277 @@
+{
+  "profile": "m2_same_prefix_first_request_independent_readout_v1",
+  "status": "PASS",
+  "scope": "descriptive first-request support only",
+  "counts": {
+    "planned_requests": 128,
+    "planned_groups": 32,
+    "generation_complete": 128,
+    "generation_incomplete": 0,
+    "env_status_counts": {
+      "ADVANCING": 124,
+      "INVALID": 4
+    },
+    "family_counts_among_valid_requests": {
+      "buy": 74,
+      "hold": 6,
+      "sell": 44
+    },
+    "k_advancing_histogram_all_groups": {
+      "0": 0,
+      "1": 0,
+      "2": 1,
+      "3": 2,
+      "4": 29
+    },
+    "full_n4_support_groups": 29,
+    "full_n4_support_rate": 0.90625,
+    "full_n4_family_gate_open_groups": 4,
+    "full_n4_order_gate_open_groups": 11,
+    "full_n4_order_partition_counts": {
+      "2+1+1": 4,
+      "3+1": 7,
+      "4": 18
+    },
+    "full_n4_family_pool_opportunity_groups": 4,
+    "full_n4_exact_pool_same_family_gate_opportunity_groups": 4,
+    "full_n4_exact_pool_order_gate_opportunity_groups": 11,
+    "legal_advancing_slots": 124,
+    "legal_subset_peer_slots": 108,
+    "legal_subset_singleton_slots": 16,
+    "legal_subset_peer_rate_all_planned_slots": 0.84375,
+    "legal_subset_peer_rate_given_advancing": 0.8709677419354839,
+    "legal_trading_slots": 118,
+    "legal_off_grid_trading_slots": 0,
+    "legal_orders_in_anchor_menu": 124,
+    "legal_orders_outside_anchor_menu": 0,
+    "legal_zero_fill_slots": 10,
+    "legal_slots_with_skip": 4
+  },
+  "checks": {
+    "same_state_order_duplicate_label_checks": 76,
+    "status": "PASS",
+    "planned_requests_verified": 128,
+    "planned_groups_verified": 32,
+    "noncolliding_request_seeds": 128,
+    "partial_groups_not_recentered": true,
+    "native_finish_and_eos_reclassified": true,
+    "raw_to_submission_mapping_verified": true,
+    "original_text_independently_Hermes_parsed": true,
+    "economic_keys_independently_normalized": true
+  },
+  "day_summary": [
+    {
+      "decision_session_index": 0,
+      "planned_requests": 32,
+      "planned_groups": 8,
+      "generation_complete": 32,
+      "generation_incomplete": 0,
+      "env_status_counts": {
+        "ADVANCING": 31,
+        "INVALID": 1
+      },
+      "family_counts_among_valid_requests": {
+        "buy": 27,
+        "hold": 4
+      },
+      "k_advancing_histogram_all_groups": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 1,
+        "4": 7
+      },
+      "full_n4_support_groups": 7,
+      "full_n4_support_rate": 0.875,
+      "full_n4_family_gate_open_groups": 0,
+      "full_n4_order_gate_open_groups": 3,
+      "full_n4_order_partition_counts": {
+        "3+1": 3,
+        "4": 4
+      },
+      "full_n4_family_pool_opportunity_groups": 0,
+      "full_n4_exact_pool_same_family_gate_opportunity_groups": 0,
+      "full_n4_exact_pool_order_gate_opportunity_groups": 3,
+      "legal_advancing_slots": 31,
+      "legal_subset_peer_slots": 28,
+      "legal_subset_singleton_slots": 3,
+      "legal_subset_peer_rate_all_planned_slots": 0.875,
+      "legal_subset_peer_rate_given_advancing": 0.9032258064516129,
+      "legal_trading_slots": 27,
+      "legal_off_grid_trading_slots": 0,
+      "legal_orders_in_anchor_menu": 31,
+      "legal_orders_outside_anchor_menu": 0,
+      "legal_zero_fill_slots": 4,
+      "legal_slots_with_skip": 0
+    },
+    {
+      "decision_session_index": 5,
+      "planned_requests": 32,
+      "planned_groups": 8,
+      "generation_complete": 32,
+      "generation_incomplete": 0,
+      "env_status_counts": {
+        "ADVANCING": 32
+      },
+      "family_counts_among_valid_requests": {
+        "buy": 11,
+        "sell": 21
+      },
+      "k_advancing_histogram_all_groups": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 8
+      },
+      "full_n4_support_groups": 8,
+      "full_n4_support_rate": 1.0,
+      "full_n4_family_gate_open_groups": 2,
+      "full_n4_order_gate_open_groups": 2,
+      "full_n4_order_partition_counts": {
+        "2+1+1": 1,
+        "3+1": 1,
+        "4": 6
+      },
+      "full_n4_family_pool_opportunity_groups": 2,
+      "full_n4_exact_pool_same_family_gate_opportunity_groups": 2,
+      "full_n4_exact_pool_order_gate_opportunity_groups": 2,
+      "legal_advancing_slots": 32,
+      "legal_subset_peer_slots": 29,
+      "legal_subset_singleton_slots": 3,
+      "legal_subset_peer_rate_all_planned_slots": 0.90625,
+      "legal_subset_peer_rate_given_advancing": 0.90625,
+      "legal_trading_slots": 32,
+      "legal_off_grid_trading_slots": 0,
+      "legal_orders_in_anchor_menu": 32,
+      "legal_orders_outside_anchor_menu": 0,
+      "legal_zero_fill_slots": 0,
+      "legal_slots_with_skip": 0
+    },
+    {
+      "decision_session_index": 10,
+      "planned_requests": 32,
+      "planned_groups": 8,
+      "generation_complete": 32,
+      "generation_incomplete": 0,
+      "env_status_counts": {
+        "ADVANCING": 29,
+        "INVALID": 3
+      },
+      "family_counts_among_valid_requests": {
+        "buy": 20,
+        "hold": 2,
+        "sell": 7
+      },
+      "k_advancing_histogram_all_groups": {
+        "0": 0,
+        "1": 0,
+        "2": 1,
+        "3": 1,
+        "4": 6
+      },
+      "full_n4_support_groups": 6,
+      "full_n4_support_rate": 0.75,
+      "full_n4_family_gate_open_groups": 2,
+      "full_n4_order_gate_open_groups": 2,
+      "full_n4_order_partition_counts": {
+        "2+1+1": 2,
+        "4": 4
+      },
+      "full_n4_family_pool_opportunity_groups": 2,
+      "full_n4_exact_pool_same_family_gate_opportunity_groups": 2,
+      "full_n4_exact_pool_order_gate_opportunity_groups": 2,
+      "legal_advancing_slots": 29,
+      "legal_subset_peer_slots": 24,
+      "legal_subset_singleton_slots": 5,
+      "legal_subset_peer_rate_all_planned_slots": 0.75,
+      "legal_subset_peer_rate_given_advancing": 0.8275862068965517,
+      "legal_trading_slots": 27,
+      "legal_off_grid_trading_slots": 0,
+      "legal_orders_in_anchor_menu": 29,
+      "legal_orders_outside_anchor_menu": 0,
+      "legal_zero_fill_slots": 2,
+      "legal_slots_with_skip": 0
+    },
+    {
+      "decision_session_index": 15,
+      "planned_requests": 32,
+      "planned_groups": 8,
+      "generation_complete": 32,
+      "generation_incomplete": 0,
+      "env_status_counts": {
+        "ADVANCING": 32
+      },
+      "family_counts_among_valid_requests": {
+        "buy": 16,
+        "sell": 16
+      },
+      "k_advancing_histogram_all_groups": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 8
+      },
+      "full_n4_support_groups": 8,
+      "full_n4_support_rate": 1.0,
+      "full_n4_family_gate_open_groups": 0,
+      "full_n4_order_gate_open_groups": 4,
+      "full_n4_order_partition_counts": {
+        "2+1+1": 1,
+        "3+1": 3,
+        "4": 4
+      },
+      "full_n4_family_pool_opportunity_groups": 0,
+      "full_n4_exact_pool_same_family_gate_opportunity_groups": 0,
+      "full_n4_exact_pool_order_gate_opportunity_groups": 4,
+      "legal_advancing_slots": 32,
+      "legal_subset_peer_slots": 27,
+      "legal_subset_singleton_slots": 5,
+      "legal_subset_peer_rate_all_planned_slots": 0.84375,
+      "legal_subset_peer_rate_given_advancing": 0.84375,
+      "legal_trading_slots": 32,
+      "legal_off_grid_trading_slots": 0,
+      "legal_orders_in_anchor_menu": 32,
+      "legal_orders_outside_anchor_menu": 0,
+      "legal_zero_fill_slots": 4,
+      "legal_slots_with_skip": 4
+    }
+  ],
+  "definitions": {
+    "full_n4_support": "all four planned requests generation-complete, legal advancing and complete fixed-hold labels",
+    "partial_group": "n4 diversity/gate/repetition is NA, never a recentered smaller credit group",
+    "legal_subset": "coverage only, conditional on legal advancing; all planned-slot denominator separately retained",
+    "economic_order": "buy/sell symbol stripped+uppercased and numerical target; 0/0.0/-0 identical; abstain reason excluded",
+    "off_grid": "legal advancing buy/sell numerical target outside exact {0,.1,.2}; not an illegality test",
+    "in_anchor_menu": "semantic order match against the finite visible-state menu, separate from legality",
+    "finish": "nonempty response below4096, engine stop+finished, recognized EOS only at last token"
+  },
+  "limits": [
+    "Common recovered SFT on M2 historical off-policy states, not a replay of the original M2 policies.",
+    "Only one first request per planned slot; no recovery, followup, retry or resampling.",
+    "Information requests, rejected calls and incomplete outputs have no invented zero/hold financial label.",
+    "Fixed-hold deterministic labels and exact repeats do not establish denoising, learning, gradient correctness or financial gains.",
+    "Peers are within one identical-prefix anchor only; no cross-anchor pooling or independent-sample claim.",
+    "The 32 anchors share original windows and dates; this is descriptive Train evidence, not OOS inference."
+  ],
+  "input_sha256": {
+    "contract.json": "fcf69363ec0f60bf55f0f486990fcbc901ad2fcca3ef8d9b698dc24ada66843c",
+    "proposal.json": "17a7c26c8b01bf19d9a6be5cc307cf51c56e363c13e79b831f078f24129c8df4",
+    "inputs.jsonl": "446982b469612271b754ee7c2e7e3eb3cc0f184f5cdacc56f52af5d4e6daa833",
+    "generation_completion.json": "5328b9ed748c9467184687429ab5af2c91c3199598a57f418ade5fe29e2b9c38",
+    "evaluation_completion.json": "d64875896d6eb3b2d2a2ba29be95a0f0eadc751bfe2c99a0ec08ac544c6853a3",
+    "generations.jsonl": "3515e7e5998e1a20b9639c4a81eb839b3ca25bbac6b9a011751493caa2ede24f",
+    "evaluations.jsonl": "567efc8c3ccbb299fe2f8f701609796298b761b6c3deb51a44c477d3e61d7d10",
+    "raw_generations.jsonl": "2b6196894ec9e92a7518128aa518df76e924cd4f2a3adaaadce13c408668f17c",
+    "submissions.jsonl": "83dc0f713246d16d1a28612cb094b8b91b89ec5a22d93a984115f0243a382d69",
+    "worker_config.json": "feebd51590ac67aa85d19ad00fab6be36f4be821c3c4aad489282766bf9dca76"
+  },
+  "readout_source_sha256": "dd075e3096330249ca4c2dd2503702e2f845bec7de6b2775b3c86851ee81f621",
+  "output_sha256": {
+    "slot_metrics.csv": "d89daaac2482772631568a1353b880d80f8903c635ae2895ae67430fafefc0d0",
+    "group_metrics.csv": "4a7f15e8c58ac9d64f5cf226ddf41e712f493a76113a2072d834f998421489b4",
+    "day_summary.csv": "b76277e99a61832471822f81ed2704f2b1042673ae3d5ea3bf29bca6fa9e2b3b",
+    "checks.json": "a91d60a95968f886752f3a25255f21761e5fc6ab984651d77f8197fb06ce1380"
+  }
+}

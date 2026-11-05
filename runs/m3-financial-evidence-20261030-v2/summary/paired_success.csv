@@ -1,0 +1,11 @@
+model,reference,split,paired_tasks,wins,losses,common_success_N,common_success_calls_before,common_success_calls_after,common_success_call_reduction,strict_equal_actual_compute_claim
+common,original,dev,100,41,0,0,NA,NA,NA,False
+sft,common,dev,100,45,4,37,6.0,6.0,0.0,False
+rloo_seed42,common,dev,100,4,1,40,6.0,6.0,0.0,False
+m3_seed42,rloo_seed42,dev,100,1,4,40,6.0,6.0,0.0,False
+m3_seed42,sham_seed42,dev,100,2,2,39,6.0,6.0,0.0,False
+common,original,test,100,31,0,0,NA,NA,NA,False
+sft,common,test,100,41,0,31,6.0,6.0,0.0,False
+rloo_seed42,common,test,100,4,1,30,6.0,6.0,0.0,False
+m3_seed42,rloo_seed42,test,100,2,4,30,6.0,6.0,0.0,False
+m3_seed42,sham_seed42,test,100,3,2,29,6.0,6.0,0.0,False

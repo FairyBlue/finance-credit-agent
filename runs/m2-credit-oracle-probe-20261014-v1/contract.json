@@ -1,0 +1,113 @@
+{
+  "status": "SEALED_BEFORE_SIMULATION",
+  "sealed_at_UTC": "2026-10-14T14:20:54.722802+00:00",
+  "config": {
+    "schema_version": 1,
+    "profile": "cpu_local_order_credit_oracle_v1",
+    "seeds": [
+      1729,
+      1730
+    ],
+    "group_sizes": [
+      4,
+      8,
+      16
+    ],
+    "groups_per_condition_seed": 4096,
+    "market_sigma": [
+      0.0,
+      0.03,
+      0.1
+    ],
+    "future_sigma_pp": [
+      0.0,
+      0.25,
+      1.0
+    ],
+    "common_shift_pp": [
+      0.0,
+      2.0,
+      8.0
+    ],
+    "initial_cash": 1000000.0,
+    "commission_bps": 10.0,
+    "slippage_bps": 5.0,
+    "open_prices": {
+      "A": 100.0,
+      "B": 100.0
+    },
+    "base_close_prices": {
+      "A": 104.0,
+      "B": 97.0
+    },
+    "state_targets": [
+      [
+        0.2,
+        0.2
+      ],
+      [
+        0.1,
+        0.1
+      ],
+      [
+        0.3,
+        0.1
+      ],
+      [
+        0.1,
+        0.3
+      ]
+    ],
+    "patterns": {
+      "homogeneous": [
+        "buy_A",
+        "buy_A",
+        "hold",
+        "hold"
+      ],
+      "heterogeneous": [
+        "buy_A",
+        "buy_B",
+        "hold",
+        "hold"
+      ],
+      "singleton": [
+        "buy_A",
+        "buy_B",
+        "sell_A",
+        "sell_B"
+      ],
+      "unanimous": [
+        "buy_A",
+        "buy_A",
+        "buy_B",
+        "buy_B"
+      ],
+      "state_mismatch": [
+        "buy_A",
+        "buy_B",
+        "hold",
+        "hold"
+      ]
+    },
+    "methods": [
+      "plain",
+      "family_pool",
+      "exact_same_gate",
+      "exact_order_gate"
+    ],
+    "rank_tolerance": 1e-10,
+    "scientific_claim": "Conditional synthetic credit diagnosis only, no financial superiority"
+  },
+  "source_sha256": {
+    "/home/tianming/projects/finance-credit-agent/scripts/diagnostics/m2_credit_oracle_probe.py": "427cd0a73b889e76da5c1b4019fdd3c108c09518772d646d92177ee5771b5d3e",
+    "/home/tianming/projects/finance-credit-agent/docs/2026-10-14_M2_CREDIT_ORACLE_PROBE_PLAN.md": "4da2069f077a3d8f7201a99eff23e0c297357912cf9b0dfc78de8bf5f566bf7b",
+    "/home/tianming/projects/finance-credit-agent/src/env/accounting.py": "42198c7e9d6c6fc082189c7942806637acb198f793c903637f32f61f65acecb4",
+    "/home/tianming/projects/finance-credit-agent/src/env/__init__.py": "457fab3a1c0ec1052d75bce986c3384006d3993eba39298c7423ba54b8039171",
+    "/home/tianming/projects/finance-credit-agent/src/rewards/sibling_credit.py": "d8d4a634dd4317d647d113165515a0b73e952b4366df9579c9d2852c0cf32a96"
+  },
+  "python": "3.10.20 | packaged by conda-forge | (main, Mar  5 2026, 16:42:22) [GCC 14.3.0]",
+  "numpy": "1.26.4",
+  "production_changes": false,
+  "formal_valid_oos_access": false
+}

@@ -1,0 +1,68 @@
+{
+  "status": "COMPLETE",
+  "stage": null,
+  "evaluations": {
+    "sft": {
+      "successes": 43,
+      "complete": 64,
+      "planned": 64,
+      "metric_correct": 43,
+      "portfolio_correct": 60,
+      "condition_correct": 55,
+      "tokens": 1641480,
+      "evaluation_reused": false
+    },
+    "rloo_high": {
+      "successes": 42,
+      "complete": 64,
+      "planned": 64,
+      "metric_correct": 42,
+      "portfolio_correct": 61,
+      "condition_correct": 55,
+      "tokens": 1641560,
+      "evaluation_reused": false
+    }
+  },
+  "costs": {
+    "generation_tokens_by_model": {
+      "sft": 1641480,
+      "rloo_high": 1641560
+    },
+    "diagnostic_generation_tokens": 3283040,
+    "parent_generation_tokens": 36770753,
+    "total_new_generation_tokens": 40053793,
+    "gpu_stage_seconds": 10491.989937007427,
+    "diagnostic_gpu_stage_seconds": 370.86827233433723,
+    "raw_failures_included": true
+  },
+  "comparison": {
+    "paired_trajectories": 64,
+    "report_clusters": 16,
+    "success_difference_high_rl_minus_sft": -0.015625,
+    "descriptive_report_bootstrap_95_interval": [
+      -0.0625,
+      0.03125
+    ],
+    "report_differences": {
+      "MKTX/2014": -0.25,
+      "UPS/2015": 0.0,
+      "MSI/2012": 0.0,
+      "AAL/2014": 0.0,
+      "ETR/2004": 0.0,
+      "AAL/2018": 0.0,
+      "AWK/2017": 0.0,
+      "AMT/2007": 0.0,
+      "RL/2014": 0.0,
+      "UAA/2016": 0.0,
+      "MSI/2007": 0.0,
+      "PNC/2014": 0.0,
+      "GPN/2010": 0.0,
+      "PNC/2008": -0.25,
+      "SNA/2012": 0.25,
+      "MRO/2014": 0.0
+    },
+    "independently_held_out_confirmation": false,
+    "threshold_versions_and_replicas_clustered": true
+  },
+  "reserved_test_read": false
+}

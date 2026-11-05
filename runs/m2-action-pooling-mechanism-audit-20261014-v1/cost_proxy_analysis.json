@@ -1,0 +1,3573 @@
+{
+  "status": "DESCRIBED",
+  "initial_nav": 1000000.0,
+  "nav_receipts": [
+    {
+      "seed": 42,
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/prepared/dev.parquet",
+      "sha256": "37dbdad0e887c4d6287dda7c1fdd42e34ad2488ba6e59bad367452d0d9f6f2d5",
+      "windows": 12,
+      "initial_cash": 1000000.0,
+      "initial_positions_specified": false
+    },
+    {
+      "seed": 43,
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/prepared/dev.parquet",
+      "sha256": "37dbdad0e887c4d6287dda7c1fdd42e34ad2488ba6e59bad367452d0d9f6f2d5",
+      "windows": 12,
+      "initial_cash": 1000000.0,
+      "initial_positions_specified": false
+    }
+  ],
+  "ledger_initial_positions_evidence": "src/env/accounting.py:87-93 constructor starts with cash and empty positions; src/env/trading.py:516-528 resets ledger and initial equity curve",
+  "formula": "proxy_return = raw_net_return + total_transaction_cost / initial_NAV; proxy_difference_pp = net_difference_pp + cost_difference_USD / 10000",
+  "interpretation_limit": "Fixed-path arithmetic cost addback, not a rerun with zero commission/slippage, not a reconstructed compounded gross portfolio return. Cost changes can change cash, shares, timing, and subsequent gains. Same 12 reused development windows and 2 training seeds; no significance claim.",
+  "source_sha256": {
+    "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/stage2_paired_comparisons.csv": "c343876c3372cd36363255d5c75c3847b9b82a5abf41ffa945450ac2ce338d5d",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/stage2_window_comparisons.csv": "6050406db8b079cb545baf1b97aad4581bf2e89f50d0f8b8fc72d644378e59f5"
+  },
+  "paired_by_seed": [
+    {
+      "comparison": "M2_minus_M2plain",
+      "seed": 42,
+      "step": 2,
+      "lane": "greedy",
+      "paired_trajectory_slots": 12,
+      "windows": 12,
+      "net_difference_pp": 0.07108172245608532,
+      "cost_difference_usd": -145.7557842263882,
+      "cost_addback_difference_pp": -0.014575578422638819,
+      "fixed_path_cost_addback_proxy_difference_pp": 0.056506144033446504
+    },
+    {
+      "comparison": "M2_minus_M1_same_lr",
+      "seed": 42,
+      "step": 2,
+      "lane": "greedy",
+      "paired_trajectory_slots": 12,
+      "windows": 12,
+      "net_difference_pp": 0.2356997563352503,
+      "cost_difference_usd": -92.97636691799926,
+      "cost_addback_difference_pp": -0.009297636691799926,
+      "fixed_path_cost_addback_proxy_difference_pp": 0.2264021196434504
+    },
+    {
+      "comparison": "M2_minus_M1_high_lr",
+      "seed": 42,
+      "step": 2,
+      "lane": "greedy",
+      "paired_trajectory_slots": 12,
+      "windows": 12,
+      "net_difference_pp": 0.12722599166459236,
+      "cost_difference_usd": -67.84802353448276,
+      "cost_addback_difference_pp": -0.006784802353448276,
+      "fixed_path_cost_addback_proxy_difference_pp": 0.12044118931114409
+    },
+    {
+      "comparison": "M2_minus_M2plain",
+      "seed": 42,
+      "step": 2,
+      "lane": "sampled",
+      "paired_trajectory_slots": 48,
+      "windows": 12,
+      "net_difference_pp": -0.12283669474441958,
+      "cost_difference_usd": -3.624136393716981,
+      "cost_addback_difference_pp": -0.00036241363937169807,
+      "fixed_path_cost_addback_proxy_difference_pp": -0.12319910838379128
+    },
+    {
+      "comparison": "M2_minus_M1_same_lr",
+      "seed": 42,
+      "step": 2,
+      "lane": "sampled",
+      "paired_trajectory_slots": 48,
+      "windows": 12,
+      "net_difference_pp": 0.06436884127840395,
+      "cost_difference_usd": -4.549007435279236,
+      "cost_addback_difference_pp": -0.00045490074352792364,
+      "fixed_path_cost_addback_proxy_difference_pp": 0.06391394053487602
+    },
+    {
+      "comparison": "M2_minus_M1_high_lr",
+      "seed": 42,
+      "step": 2,
+      "lane": "sampled",
+      "paired_trajectory_slots": 48,
+      "windows": 12,
+      "net_difference_pp": -0.0037960024131387937,
+      "cost_difference_usd": -51.29428981756428,
+      "cost_addback_difference_pp": -0.005129428981756428,
+      "fixed_path_cost_addback_proxy_difference_pp": -0.008925431394895222
+    },
+    {
+      "comparison": "M2_minus_M2plain",
+      "seed": 42,
+      "step": 4,
+      "lane": "greedy",
+      "paired_trajectory_slots": 12,
+      "windows": 12,
+      "net_difference_pp": -0.3786380525051368,
+      "cost_difference_usd": -74.04072056729183,
+      "cost_addback_difference_pp": -0.007404072056729182,
+      "fixed_path_cost_addback_proxy_difference_pp": -0.386042124561866
+    },
+    {
+      "comparison": "M2_minus_M1_same_lr",
+      "seed": 42,
+      "step": 4,
+      "lane": "greedy",
+      "paired_trajectory_slots": 12,
+      "windows": 12,
+      "net_difference_pp": -0.03599932061016291,
+      "cost_difference_usd": 29.820596300776288,
+      "cost_addback_difference_pp": 0.0029820596300776285,
+      "fixed_path_cost_addback_proxy_difference_pp": -0.033017260980085276
+    },
+    {
+      "comparison": "M2_minus_M1_high_lr",
+      "seed": 42,
+      "step": 4,
+      "lane": "greedy",
+      "paired_trajectory_slots": 12,
+      "windows": 12,
+      "net_difference_pp": -0.25127633369370256,
+      "cost_difference_usd": -224.74449939534497,
+      "cost_addback_difference_pp": -0.022474449939534496,
+      "fixed_path_cost_addback_proxy_difference_pp": -0.27375078363323707
+    },
+    {
+      "comparison": "M2_minus_M2plain",
+      "seed": 42,
+      "step": 4,
+      "lane": "sampled",
+      "paired_trajectory_slots": 48,
+      "windows": 12,
+      "net_difference_pp": -0.0380861544309696,
+      "cost_difference_usd": -33.414850394120094,
+      "cost_addback_difference_pp": -0.0033414850394120096,
+      "fixed_path_cost_addback_proxy_difference_pp": -0.041427639470381604
+    },
+    {
+      "comparison": "M2_minus_M1_same_lr",
+      "seed": 42,
+      "step": 4,
+      "lane": "sampled",
+      "paired_trajectory_slots": 48,
+      "windows": 12,
+      "net_difference_pp": -0.05546013022033648,
+      "cost_difference_usd": -220.27299591496194,
+      "cost_addback_difference_pp": -0.022027299591496192,
+      "fixed_path_cost_addback_proxy_difference_pp": -0.07748742981183268
+    },
+    {
+      "comparison": "M2_minus_M1_high_lr",
+      "seed": 42,
+      "step": 4,
+      "lane": "sampled",
+      "paired_trajectory_slots": 48,
+      "windows": 12,
+      "net_difference_pp": -0.10171942123134853,
+      "cost_difference_usd": -120.74936183413638,
+      "cost_addback_difference_pp": -0.012074936183413638,
+      "fixed_path_cost_addback_proxy_difference_pp": -0.11379435741476217
+    },
+    {
+      "comparison": "M2_minus_M2plain",
+      "seed": 43,
+      "step": 2,
+      "lane": "greedy",
+      "paired_trajectory_slots": 12,
+      "windows": 12,
+      "net_difference_pp": -0.2653241878980953,
+      "cost_difference_usd": 89.36082763453942,
+      "cost_addback_difference_pp": 0.008936082763453942,
+      "fixed_path_cost_addback_proxy_difference_pp": -0.2563881051346414
+    },
+    {
+      "comparison": "M2_minus_M1_same_lr",
+      "seed": 43,
+      "step": 2,
+      "lane": "greedy",
+      "paired_trajectory_slots": 12,
+      "windows": 12,
+      "net_difference_pp": -0.09593340634374654,
+      "cost_difference_usd": 52.62836173990945,
+      "cost_addback_difference_pp": 0.005262836173990945,
+      "fixed_path_cost_addback_proxy_difference_pp": -0.0906705701697556
+    },
+    {
+      "comparison": "M2_minus_M1_high_lr",
+      "seed": 43,
+      "step": 2,
+      "lane": "greedy",
+      "paired_trajectory_slots": 12,
+      "windows": 12,
+      "net_difference_pp": 0.08069294553925133,
+      "cost_difference_usd": 172.81444566598157,
+      "cost_addback_difference_pp": 0.017281444566598157,
+      "fixed_path_cost_addback_proxy_difference_pp": 0.09797439010584949
+    },
+    {
+      "comparison": "M2_minus_M2plain",
+      "seed": 43,
+      "step": 2,
+      "lane": "sampled",
+      "paired_trajectory_slots": 48,
+      "windows": 12,
+      "net_difference_pp": 0.2368864650534268,
+      "cost_difference_usd": -84.43785107703934,
+      "cost_addback_difference_pp": -0.008443785107703935,
+      "fixed_path_cost_addback_proxy_difference_pp": 0.22844267994572287
+    },
+    {
+      "comparison": "M2_minus_M1_same_lr",
+      "seed": 43,
+      "step": 2,
+      "lane": "sampled",
+      "paired_trajectory_slots": 48,
+      "windows": 12,
+      "net_difference_pp": 0.1220060070785259,
+      "cost_difference_usd": 10.411072208986297,
+      "cost_addback_difference_pp": 0.0010411072208986298,
+      "fixed_path_cost_addback_proxy_difference_pp": 0.12304711429942453
+    },
+    {
+      "comparison": "M2_minus_M1_high_lr",
+      "seed": 43,
+      "step": 2,
+      "lane": "sampled",
+      "paired_trajectory_slots": 48,
+      "windows": 12,
+      "net_difference_pp": -0.002901348685251798,
+      "cost_difference_usd": -88.65549952114907,
+      "cost_addback_difference_pp": -0.008865549952114906,
+      "fixed_path_cost_addback_proxy_difference_pp": -0.011766898637366704
+    },
+    {
+      "comparison": "M2_minus_M2plain",
+      "seed": 43,
+      "step": 4,
+      "lane": "greedy",
+      "paired_trajectory_slots": 12,
+      "windows": 12,
+      "net_difference_pp": 0.0632799039788837,
+      "cost_difference_usd": -47.48329735911466,
+      "cost_addback_difference_pp": -0.004748329735911466,
+      "fixed_path_cost_addback_proxy_difference_pp": 0.05853157424297223
+    },
+    {
+      "comparison": "M2_minus_M1_same_lr",
+      "seed": 43,
+      "step": 4,
+      "lane": "greedy",
+      "paired_trajectory_slots": 12,
+      "windows": 12,
+      "net_difference_pp": 0.13831470274042929,
+      "cost_difference_usd": -252.7286820842237,
+      "cost_addback_difference_pp": -0.02527286820842237,
+      "fixed_path_cost_addback_proxy_difference_pp": 0.11304183453200692
+    },
+    {
+      "comparison": "M2_minus_M1_high_lr",
+      "seed": 43,
+      "step": 4,
+      "lane": "greedy",
+      "paired_trajectory_slots": 12,
+      "windows": 12,
+      "net_difference_pp": -0.08427343051483722,
+      "cost_difference_usd": -153.01125212560692,
+      "cost_addback_difference_pp": -0.015301125212560692,
+      "fixed_path_cost_addback_proxy_difference_pp": -0.09957455572739791
+    },
+    {
+      "comparison": "M2_minus_M2plain",
+      "seed": 43,
+      "step": 4,
+      "lane": "sampled",
+      "paired_trajectory_slots": 48,
+      "windows": 12,
+      "net_difference_pp": -0.09301746110273292,
+      "cost_difference_usd": 121.2052438529463,
+      "cost_addback_difference_pp": 0.01212052438529463,
+      "fixed_path_cost_addback_proxy_difference_pp": -0.08089693671743828
+    },
+    {
+      "comparison": "M2_minus_M1_same_lr",
+      "seed": 43,
+      "step": 4,
+      "lane": "sampled",
+      "paired_trajectory_slots": 48,
+      "windows": 12,
+      "net_difference_pp": -0.0657314788059961,
+      "cost_difference_usd": -2.9015635029536497,
+      "cost_addback_difference_pp": -0.000290156350295365,
+      "fixed_path_cost_addback_proxy_difference_pp": -0.06602163515629146
+    },
+    {
+      "comparison": "M2_minus_M1_high_lr",
+      "seed": 43,
+      "step": 4,
+      "lane": "sampled",
+      "paired_trajectory_slots": 48,
+      "windows": 12,
+      "net_difference_pp": -0.11419829045779635,
+      "cost_difference_usd": 109.68610692162702,
+      "cost_addback_difference_pp": 0.010968610692162702,
+      "fixed_path_cost_addback_proxy_difference_pp": -0.10322967976563364
+    }
+  ],
+  "window_summaries": [
+    {
+      "comparison": "M2_minus_M1_high_lr",
+      "step": 2,
+      "lane": "greedy",
+      "windows": 12,
+      "seed_window_rows": 24,
+      "paired_trajectory_slots": 24,
+      "mean_net_difference_pp": 0.10395946860192185,
+      "mean_cost_difference_usd": 52.48321106574925,
+      "mean_fixed_path_cost_addback_proxy_difference_pp": 0.10920778970849677,
+      "net_positive_negative_zero_windows": [
+        8,
+        2,
+        2
+      ],
+      "proxy_positive_negative_zero_windows": [
+        8,
+        2,
+        2
+      ],
+      "net_leave_one_window_out_range_pp": [
+        0.04771638407852219,
+        0.1565201584846763
+      ],
+      "proxy_leave_one_window_out_range_pp": [
+        0.053399459362055264,
+        0.1580741717626067
+      ],
+      "all_windows": [
+        {
+          "episode": "formal-train-0399",
+          "net_difference_pp": -0.474208120108377,
+          "cost_difference_usd": 458.8570722166444,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.4283224128867125,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.9553417209363646,
+              "cost_difference_usd": 917.5023074028209,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.8635914901960825
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.006925480719610633,
+              "cost_difference_usd": 0.2118370304679047,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.006946664422657423
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0210",
+          "net_difference_pp": -0.04022846739981656,
+          "cost_difference_usd": 4.892102505086314,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.03973925714930793,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.2980747812621587,
+              "cost_difference_usd": -1.5844336222648963,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.2982332246243852
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.21761784646252558,
+              "cost_difference_usd": 11.368638632437523,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.21875471032576932
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0252",
+          "net_difference_pp": 0.0,
+          "cost_difference_usd": 0.0,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.0,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0294",
+          "net_difference_pp": 0.0,
+          "cost_difference_usd": 0.0,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.0,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0315",
+          "net_difference_pp": 0.04174387636100563,
+          "cost_difference_usd": -147.397816909016,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.027004094670104027,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.08348775272201125,
+              "cost_difference_usd": -294.795633818032,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.054008189340208054
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0336",
+          "net_difference_pp": 0.07790645675480601,
+          "cost_difference_usd": -143.4004637739165,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.06356641037741435,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.15581291350961202,
+              "cost_difference_usd": -286.800927547833,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.1271328207548287
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0378",
+          "net_difference_pp": 0.10636221753517194,
+          "cost_difference_usd": 897.6661718126318,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.1961288347164351,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.2127244350703439,
+              "cost_difference_usd": 1795.3323436252635,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.3922576694328702
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0441",
+          "net_difference_pp": 0.13038760126322102,
+          "cost_difference_usd": -289.0881119479077,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.10147879006843025,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.015871862845828755,
+              "cost_difference_usd": 3.9939331647174185,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.016271256162300497
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.24490333968061329,
+              "cost_difference_usd": -582.1701570605328,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.18668632397456
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0420",
+          "net_difference_pp": 0.1600228984585228,
+          "cost_difference_usd": 149.77201701862464,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.17500010016038525,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 1.0373496665258664,
+              "cost_difference_usd": -844.127431274906,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.9529369233983758
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.7173038696088208,
+              "cost_difference_usd": 1143.6714653121553,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.6029367230776053
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0273",
+          "net_difference_pp": 0.2162489606950091,
+          "cost_difference_usd": -8.9871498105324,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.21535024571395586,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.4324979213900182,
+              "cost_difference_usd": -17.9742996210648,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.4307004914279117
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0231",
+          "net_difference_pp": 0.30664480130420113,
+          "cost_difference_usd": -297.17553992297667,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.27692724731190344,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.33247488682097703,
+              "cost_difference_usd": -295.0500486975852,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.3029698819512185
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.28081471578742523,
+              "cost_difference_usd": -299.3010311483681,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.25088461267258844
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0357",
+          "net_difference_pp": 0.7226333983593181,
+          "cost_difference_usd": 4.660251600353149,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.7230994235193534,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.7226333983593181,
+              "cost_difference_usd": 4.660251600353149,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.7230994235193534
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.7226333983593181,
+              "cost_difference_usd": 4.660251600353149,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.7230994235193534
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "comparison": "M2_minus_M1_high_lr",
+      "step": 2,
+      "lane": "sampled",
+      "windows": 12,
+      "seed_window_rows": 24,
+      "paired_trajectory_slots": 96,
+      "mean_net_difference_pp": -0.0033486755491952958,
+      "mean_cost_difference_usd": -69.97489466935673,
+      "mean_fixed_path_cost_addback_proxy_difference_pp": -0.010346165016130972,
+      "net_positive_negative_zero_windows": [
+        5,
+        7,
+        0
+      ],
+      "proxy_positive_negative_zero_windows": [
+        5,
+        7,
+        0
+      ],
+      "net_leave_one_window_out_range_pp": [
+        -0.02618703274495522,
+        0.017997943322201438
+      ],
+      "proxy_leave_one_window_out_range_pp": [
+        -0.0338814408759979,
+        0.010365052252026387
+      ],
+      "all_windows": [
+        {
+          "episode": "formal-train-0357",
+          "net_difference_pp": -0.23816148313455937,
+          "cost_difference_usd": -0.08071831302504506,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.2381695549658619,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.11363632903177712,
+              "cost_difference_usd": 152.60634163593022,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.12889696319537014
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.5899592953008959,
+              "cost_difference_usd": -152.7677782619803,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.6052360731270939
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0252",
+          "net_difference_pp": -0.1724042155927502,
+          "cost_difference_usd": -83.30119945765773,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.18073433553851598,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.1989993213347363,
+              "cost_difference_usd": 145.04820757448488,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.1844945005772878
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.14580910985076412,
+              "cost_difference_usd": -311.65060648980034,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.17697417049974415
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0420",
+          "net_difference_pp": -0.12786451286858902,
+          "cost_difference_usd": -248.2621270107693,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.15269072556966595,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.06180158455652007,
+              "cost_difference_usd": -151.06904036512606,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.04669468052000747
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.3175306102936981,
+              "cost_difference_usd": -345.4552136564125,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.3520761316593394
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0315",
+          "net_difference_pp": -0.06789785313010832,
+          "cost_difference_usd": -37.3136321247473,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.07162921634258304,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.13149920602326393,
+              "cost_difference_usd": -147.4346083472451,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.14624266685798842
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.004296500236952716,
+              "cost_difference_usd": 72.8073440977505,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0029842341728223342
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0273",
+          "net_difference_pp": -0.020848181174143443,
+          "cost_difference_usd": -148.90973664872809,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.035739154839016254,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.05480525970574246,
+              "cost_difference_usd": 74.92369102529119,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.06229762880827158
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.09650162205402935,
+              "cost_difference_usd": -372.74316432274736,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.1337759384863041
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0210",
+          "net_difference_pp": -0.018756633886499174,
+          "cost_difference_usd": -156.83089378456043,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.034439723264955216,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.04754264974512479,
+              "cost_difference_usd": 229.8573718593084,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.02455691255919395
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.010029381972126439,
+              "cost_difference_usd": -543.5191594284292,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.044322533970716484
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0231",
+          "net_difference_pp": -0.010524447196497144,
+          "cost_difference_usd": -112.17752269274388,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.021742199465771533,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.05223275291261209,
+              "cost_difference_usd": -314.96418564239957,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.08372917147685205
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.031183858519617802,
+              "cost_difference_usd": 90.60914025691181,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.040244772545308984
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0399",
+          "net_difference_pp": 0.02974565839857224,
+          "cost_difference_usd": -170.72414856660885,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.012673243541911353,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.017379723173466255,
+              "cost_difference_usd": -608.2430655696603,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.043444583383499775
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.04211159362367822,
+              "cost_difference_usd": 266.7947684364426,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.06879107046732248
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0336",
+          "net_difference_pp": 0.06127363913583511,
+          "cost_difference_usd": 37.85613913809425,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.06505925304964452,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.5150427740536118,
+              "cost_difference_usd": 212.9497529568198,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.4937477987579298
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.637590052325282,
+              "cost_difference_usd": -137.2374746806313,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.6238663048572188
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0441",
+          "net_difference_pp": 0.08377786214115585,
+          "cost_difference_usd": 41.26610446351515,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.08790447258750736,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.03329035148298409,
+              "cost_difference_usd": 74.34206112151878,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.04072455759513597
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.1342653727993276,
+              "cost_difference_usd": 8.190147805511515,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.13508438757987876
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0294",
+          "net_difference_pp": 0.19360280711307604,
+          "cost_difference_usd": 32.09284058253638,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.19681209117132967,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.32948867378983504,
+              "cost_difference_usd": -154.96933823433073,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.31399173996640195
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.05771694043631703,
+              "cost_difference_usd": 219.1550193994035,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.07963244237625738
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0378",
+          "net_difference_pp": 0.2478732536041639,
+          "cost_difference_usd": 6.686158382414078,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.2485418694424053,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.2893627533713583,
+              "cost_difference_usd": -128.57866582536144,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.2765048867888222
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.2063837538369695,
+              "cost_difference_usd": 141.9509825901896,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.22057885209598846
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "comparison": "M2_minus_M1_high_lr",
+      "step": 4,
+      "lane": "greedy",
+      "windows": 12,
+      "seed_window_rows": 24,
+      "paired_trajectory_slots": 24,
+      "mean_net_difference_pp": -0.16777488210426988,
+      "mean_cost_difference_usd": -188.8778757604763,
+      "mean_fixed_path_cost_addback_proxy_difference_pp": -0.1866626696803175,
+      "net_positive_negative_zero_windows": [
+        4,
+        6,
+        2
+      ],
+      "proxy_positive_negative_zero_windows": [
+        4,
+        6,
+        2
+      ],
+      "net_leave_one_window_out_range_pp": [
+        -0.20504476310066266,
+        -0.08947990054482902
+      ],
+      "proxy_leave_one_window_out_range_pp": [
+        -0.22423720722713522,
+        -0.10981991701498521
+      ],
+      "all_windows": [
+        {
+          "episode": "formal-train-0378",
+          "net_difference_pp": -1.0290196792581197,
+          "cost_difference_usd": -29.132697408525132,
+          "fixed_path_cost_addback_proxy_difference_pp": -1.0319329489989721,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.4108216047997937,
+              "cost_difference_usd": -1206.9674909660685,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.5315183538964006
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -1.6472177537164456,
+              "cost_difference_usd": 1148.7020961490182,
+              "fixed_path_cost_addback_proxy_difference_pp": -1.5323475441015437
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0273",
+          "net_difference_pp": -0.9174432143713052,
+          "cost_difference_usd": -618.6434576205565,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.9793075601333607,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.7410429793973883,
+              "cost_difference_usd": -618.796002171814,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.8029225796145697
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -1.093843449345222,
+              "cost_difference_usd": -618.490913069299,
+              "fixed_path_cost_addback_proxy_difference_pp": -1.1556925406521519
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0315",
+          "net_difference_pp": -0.2966355514373298,
+          "cost_difference_usd": -595.2189690415435,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.3561574483414841,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.2966355514373298,
+              "cost_difference_usd": -595.2189690415435,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.3561574483414841
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.2966355514373298,
+              "cost_difference_usd": -595.2189690415435,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.3561574483414841
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0357",
+          "net_difference_pp": -0.20031476566917394,
+          "cost_difference_usd": -304.727005013513,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.23078746617052526,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.4006295313383479,
+              "cost_difference_usd": -609.454010027026,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.4615749323410505
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0210",
+          "net_difference_pp": -0.10880892323126279,
+          "cost_difference_usd": -5.684319316218762,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.10937735516288466,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.21761784646252558,
+              "cost_difference_usd": -11.368638632437523,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.21875471032576932
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0336",
+          "net_difference_pp": -0.01963476499329264,
+          "cost_difference_usd": 453.57098191301293,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.02572233319800865,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.03926952998658528,
+              "cost_difference_usd": 907.1419638260259,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0514446663960173
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0252",
+          "net_difference_pp": 0.0,
+          "cost_difference_usd": 0.0,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.0,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0294",
+          "net_difference_pp": 0.0,
+          "cost_difference_usd": 0.0,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.0,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0441",
+          "net_difference_pp": 0.0006051346003177471,
+          "cost_difference_usd": -592.1220758115253,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.058607072980834785,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.0012102692006354943,
+              "cost_difference_usd": -1184.2441516230506,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.11721414596166957
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0231",
+          "net_difference_pp": 0.14040735789371261,
+          "cost_difference_usd": -149.65051557418406,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.12544230633629422,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.28081471578742523,
+              "cost_difference_usd": -299.3010311483681,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.25088461267258844
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0420",
+          "net_difference_pp": 0.17535201235916453,
+          "cost_difference_usd": -269.56079603894045,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.14839593275527047,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.8230176371341491,
+              "cost_difference_usd": -593.6134075171781,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.8823789778858669
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 1.1737216618524782,
+              "cost_difference_usd": 54.49181543929717,
+              "fixed_path_cost_addback_proxy_difference_pp": 1.1791708433964079
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0399",
+          "net_difference_pp": 0.24219380885605046,
+          "cost_difference_usd": -155.36565521372177,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.2266572433346783,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.7689358400947199,
+              "cost_difference_usd": 905.4337345302924,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.6783924666416907
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 1.2533234578068209,
+              "cost_difference_usd": -1216.165044957736,
+              "fixed_path_cost_addback_proxy_difference_pp": 1.1317069533110473
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "comparison": "M2_minus_M1_high_lr",
+      "step": 4,
+      "lane": "sampled",
+      "windows": 12,
+      "seed_window_rows": 24,
+      "paired_trajectory_slots": 96,
+      "mean_net_difference_pp": -0.10795885584457242,
+      "mean_cost_difference_usd": -5.531627456254607,
+      "mean_fixed_path_cost_addback_proxy_difference_pp": -0.10851201859019789,
+      "net_positive_negative_zero_windows": [
+        4,
+        8,
+        0
+      ],
+      "proxy_positive_negative_zero_windows": [
+        2,
+        10,
+        0
+      ],
+      "net_leave_one_window_out_range_pp": [
+        -0.14101614455867703,
+        -0.07663842662953496
+      ],
+      "proxy_leave_one_window_out_range_pp": [
+        -0.14672573012583612,
+        -0.08261035153448319
+      ],
+      "all_windows": [
+        {
+          "episode": "formal-train-0357",
+          "net_difference_pp": -0.4524835772099847,
+          "cost_difference_usd": 590.532210069251,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.39343035620305966,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.17829112906874722,
+              "cost_difference_usd": 602.6656960988803,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.1180245594588592
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.7266760253512222,
+              "cost_difference_usd": 578.3987240396218,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.6688361529472601
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0336",
+          "net_difference_pp": -0.33793021540634294,
+          "cost_difference_usd": -84.72832169589446,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.34640304757593243,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.6027544939117141,
+              "cost_difference_usd": -245.5114521924247,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.6273056391309566
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.07310593690097178,
+              "cost_difference_usd": 76.05480880063578,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.0655004560209082
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0378",
+          "net_difference_pp": -0.2909674162353659,
+          "cost_difference_usd": -449.05664520449545,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.33587308075581546,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.26801709853693234,
+              "cost_difference_usd": 5.2607817186171815,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.2674910203650706
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.3139177339337995,
+              "cost_difference_usd": -903.3740721276081,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.4042551411465603
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0399",
+          "net_difference_pp": -0.21900681581815684,
+          "cost_difference_usd": -118.05903632079935,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.2308127194502368,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.04765302720569631,
+              "cost_difference_usd": -997.196513510296,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.14737267855672592
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.3903606044306174,
+              "cost_difference_usd": 761.0784408686973,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.31425276034374766
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0273",
+          "net_difference_pp": -0.2016431234410046,
+          "cost_difference_usd": 108.69218146170283,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.19077390529483432,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.020791694430463692,
+              "cost_difference_usd": -7.014473067948984,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.02149314173725859
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.3824945524515455,
+              "cost_difference_usd": 224.39883599135464,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.36005466885241005
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0294",
+          "net_difference_pp": -0.17891102507773815,
+          "cost_difference_usd": -392.88914355318707,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.21819993943305685,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.32327599622204717,
+              "cost_difference_usd": -307.0433439801618,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.35398033062006334
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.03454605393342913,
+              "cost_difference_usd": -478.73494312621233,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.08241954824605036
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0252",
+          "net_difference_pp": -0.03244805578127008,
+          "cost_difference_usd": -1.762225179978941,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.03262427829926797,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.07025418576876996,
+              "cost_difference_usd": -606.697274711838,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.009584458297586168
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.13515029733131012,
+              "cost_difference_usd": 603.1728243518801,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.07483301489612211
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0315",
+          "net_difference_pp": -0.024300345419139835,
+          "cost_difference_usd": 224.5838851371925,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.0018419569054205914,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.21838907379557737,
+              "cost_difference_usd": 365.31721845914944,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.18185735194966243
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.1697883829572977,
+              "cost_difference_usd": 83.85055181523558,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.17817343813882125
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0210",
+          "net_difference_pp": 0.0021304199264798873,
+          "cost_difference_usd": -175.78015091363181,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.015447595164883296,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.15809341841884206,
+              "cost_difference_usd": -505.97858046958436,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.10749556037188363
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.15383257856588228,
+              "cost_difference_usd": 154.41827864232073,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.13839075070165022
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0231",
+          "net_difference_pp": 0.005546148606189183,
+          "cost_difference_usd": -156.4006022933968,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.010093911623150497,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.04203487180928778,
+              "cost_difference_usd": -658.9811765333329,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.02386324584404552
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.03094257459690941,
+              "cost_difference_usd": 346.17997194653935,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.003675422597744525
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0420",
+          "net_difference_pp": 0.17883641571088682,
+          "cost_difference_usd": -173.1865638942636,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.16151775932146045,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.3607773149074678,
+              "cost_difference_usd": 16.143219557649445,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.3623916368632327
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.003104483485694143,
+              "cost_difference_usd": -362.51634734617664,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.039356118220311806
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0441",
+          "net_difference_pp": 0.25567132001057813,
+          "cost_difference_usd": 561.6748829124458,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.3118388083018227,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.19262033250937172,
+              "cost_difference_usd": 890.0435566216538,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.10361597684720633
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.703962972530528,
+              "cost_difference_usd": 233.3062092032378,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.7272935934508518
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "comparison": "M2_minus_M1_same_lr",
+      "step": 2,
+      "lane": "greedy",
+      "windows": 12,
+      "seed_window_rows": 24,
+      "paired_trajectory_slots": 24,
+      "mean_net_difference_pp": 0.0698831749957519,
+      "mean_cost_difference_usd": -20.174002589044903,
+      "mean_fixed_path_cost_addback_proxy_difference_pp": 0.0678657747368474,
+      "net_positive_negative_zero_windows": [
+        7,
+        4,
+        1
+      ],
+      "proxy_positive_negative_zero_windows": [
+        7,
+        4,
+        1
+      ],
+      "net_leave_one_window_out_range_pp": [
+        0.011116941468623166,
+        0.13408647208770372
+      ],
+      "proxy_leave_one_window_out_range_pp": [
+        0.010223407375010717,
+        0.13198553323238696
+      ],
+      "all_windows": [
+        {
+          "episode": "formal-train-0252",
+          "net_difference_pp": -0.636353093015718,
+          "cost_difference_usd": -10.984756983696116,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.6374515687140876,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -1.272706186031436,
+              "cost_difference_usd": -21.96951396739223,
+              "fixed_path_cost_addback_proxy_difference_pp": -1.2749031374281752
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0399",
+          "net_difference_pp": -0.4834402719221753,
+          "cost_difference_usd": 6.629057187336684,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.4827773662034417,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.33528867422927267,
+              "cost_difference_usd": -0.5794252792870793,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.3353466167572014
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.631591869615078,
+              "cost_difference_usd": 13.837539653960448,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.6302081156496819
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0420",
+          "net_difference_pp": -0.1619909997790825,
+          "cost_difference_usd": 15.051403449775535,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.16048585943410493,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.323981999558165,
+              "cost_difference_usd": 30.10280689955107,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.32097171886820985
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0210",
+          "net_difference_pp": -0.0004883433202929055,
+          "cost_difference_usd": -0.13388718506848818,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.0005017320387997543,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.0004883433202929055,
+              "cost_difference_usd": -0.13388718506848818,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.0005017320387997543
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.0004883433202929055,
+              "cost_difference_usd": -0.13388718506848818,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.0005017320387997543
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0294",
+          "net_difference_pp": 0.0,
+          "cost_difference_usd": 0.0,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.0,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0378",
+          "net_difference_pp": 0.0002307435586990092,
+          "cost_difference_usd": 306.8973736459682,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.030920480923295825,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0004614871173980184,
+              "cost_difference_usd": 613.7947472919363,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.06184096184659165
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0336",
+          "net_difference_pp": 0.12503729949745468,
+          "cost_difference_usd": 8.350617939128597,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.12587236129136753,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.15581291350961202,
+              "cost_difference_usd": -286.800927547833,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.1271328207548287
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.09426168548529734,
+              "cost_difference_usd": 303.5021634260902,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.12461190182790637
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0231",
+          "net_difference_pp": 0.22814653943119545,
+          "cost_difference_usd": -148.32877470284689,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.21331366196091078,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.28081471578742523,
+              "cost_difference_usd": -299.3010311483681,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.25088461267258844
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.17547836307496567,
+              "cost_difference_usd": 2.6434817426743393,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.1757427112492331
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0315",
+          "net_difference_pp": 0.30797648685270684,
+          "cost_difference_usd": -279.8110683066632,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.2799953800220405,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.6174079660597132,
+              "cost_difference_usd": -575.0940340782681,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.5598985626518863
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.001454992354299467,
+              "cost_difference_usd": 15.471897464941776,
+              "fixed_path_cost_addback_proxy_difference_pp": 9.219739219471076e-05
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0357",
+          "net_difference_pp": 0.36131669917965903,
+          "cost_difference_usd": 2.3301258001765746,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.3615497117596767,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.7226333983593181,
+              "cost_difference_usd": 4.660251600353149,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.7230994235193534
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0441",
+          "net_difference_pp": 0.3818512956724085,
+          "cost_difference_usd": 1.7111588585203208,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.38202241155826056,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.3818512956724085,
+              "cost_difference_usd": 1.7111588585203208,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.38202241155826056
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.3818512956724085,
+              "cost_difference_usd": 1.7111588585203208,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.38202241155826056
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0273",
+          "net_difference_pp": 0.716311743794168,
+          "cost_difference_usd": -143.79928077117006,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.701931815717051,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 1.3296358037422573,
+              "cost_difference_usd": 9.718684864410534,
+              "fixed_path_cost_addback_proxy_difference_pp": 1.3306076722286984
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.10298768384607859,
+              "cost_difference_usd": -297.31724640675066,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.07325595920540352
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "comparison": "M2_minus_M1_same_lr",
+      "step": 2,
+      "lane": "sampled",
+      "windows": 12,
+      "seed_window_rows": 24,
+      "paired_trajectory_slots": 96,
+      "mean_net_difference_pp": 0.09318742417846494,
+      "mean_cost_difference_usd": 2.931032386853625,
+      "mean_fixed_path_cost_addback_proxy_difference_pp": 0.0934805274171503,
+      "net_positive_negative_zero_windows": [
+        8,
+        4,
+        0
+      ],
+      "proxy_positive_negative_zero_windows": [
+        8,
+        4,
+        0
+      ],
+      "net_leave_one_window_out_range_pp": [
+        0.06772671354477253,
+        0.10918138845423252
+      ],
+      "proxy_leave_one_window_out_range_pp": [
+        0.0660452881184972,
+        0.11096292726195355
+      ],
+      "all_windows": [
+        {
+          "episode": "formal-train-0210",
+          "net_difference_pp": -0.08274618285497859,
+          "cost_difference_usd": -160.79688020706908,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.09882587087568549,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.05854750928658836,
+              "cost_difference_usd": 76.1391227961999,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.050933597006968374
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.10694485642336882,
+              "cost_difference_usd": -397.73288321033806,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.14671814474440262
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0420",
+          "net_difference_pp": -0.04971577876256017,
+          "cost_difference_usd": 133.4060279105911,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.03637517597150106,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.0913797145542794,
+              "cost_difference_usd": 224.59860624501698,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.0689198539297777
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.008051842970840939,
+              "cost_difference_usd": 42.2134495761652,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.003830498013224419
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0378",
+          "net_difference_pp": -0.04445268216394377,
+          "cost_difference_usd": 160.52153614112785,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.02840052854983098,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.03900904349006529,
+              "cost_difference_usd": 330.4611940113664,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.07205516289120192
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.12791440781795282,
+              "cost_difference_usd": -9.41812172911068,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.12885621999086389
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0231",
+          "net_difference_pp": -0.029632089986342258,
+          "cost_difference_usd": -141.4551091591493,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.043777600902257185,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.11686885844127137,
+              "cost_difference_usd": -316.3594660337749,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.14850480504464886
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.057604678468586856,
+              "cost_difference_usd": 33.449247715476304,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.06094960324013449
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0252",
+          "net_difference_pp": 0.018279447398272808,
+          "cost_difference_usd": -154.19553848533678,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.0028598935497391315,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.17574025261434256,
+              "cost_difference_usd": -6.023313440549828,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.17634258395839755
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.21229914741088818,
+              "cost_difference_usd": -302.36776353012374,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.18206237105787582
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0294",
+          "net_difference_pp": 0.05773936562629978,
+          "cost_difference_usd": 181.08163876643903,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.07584752950294368,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.22682110737113903,
+              "cost_difference_usd": -459.29668467225065,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.18089143890391396
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.11134237611853948,
+              "cost_difference_usd": 821.4599622051287,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.029196379898026606
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0399",
+          "net_difference_pp": 0.062365059634261755,
+          "cost_difference_usd": -146.94395775267026,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.047670663858994725,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.0020134011341321756,
+              "cost_difference_usd": -335.0606489929519,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.03149266376516301
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.12271671813439133,
+              "cost_difference_usd": 41.17273348761137,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.12683399148315247
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0315",
+          "net_difference_pp": 0.1426971324484702,
+          "cost_difference_usd": -73.43693452910838,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.13535343899555938,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.03997332391570685,
+              "cost_difference_usd": 0.3740822221925555,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0400107321379261
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.24542094098123357,
+              "cost_difference_usd": -147.24795128040932,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.23069614585319265
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0336",
+          "net_difference_pp": 0.17444359006868054,
+          "cost_difference_usd": -111.67524764291875,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.16327606530438865,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.10996448565015471,
+              "cost_difference_usd": -155.31876022528013,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.12549636167268272
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.4588516657875158,
+              "cost_difference_usd": -68.03173506055737,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.45204849228146005
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0273",
+          "net_difference_pp": 0.23505043427056033,
+          "cost_difference_usd": -104.08322077799653,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.22464211219276067,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.5246546417544934,
+              "cost_difference_usd": -212.06739141238268,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.5034479026132551
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.054553773213372736,
+              "cost_difference_usd": 3.900949856389616,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.054163678227733776
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0441",
+          "net_difference_pp": 0.26096555331377724,
+          "cost_difference_usd": 232.62088884580658,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.2842276421983579,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.23725271541734927,
+              "cost_difference_usd": 226.88540065620555,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.2599412554829698
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.2846783912102052,
+              "cost_difference_usd": 238.3563770354076,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.30851402891374596
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0357",
+          "net_difference_pp": 0.3732552411490814,
+          "cost_difference_usd": 220.12918553252803,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.3952681597023342,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.2552026828045978,
+              "cost_difference_usd": 571.079769622861,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.3123106597668839
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.49130779949356496,
+              "cost_difference_usd": -130.82139855780497,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.47822565963778446
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "comparison": "M2_minus_M1_same_lr",
+      "step": 4,
+      "lane": "greedy",
+      "windows": 12,
+      "seed_window_rows": 24,
+      "paired_trajectory_slots": 24,
+      "mean_net_difference_pp": 0.05115769106513318,
+      "mean_cost_difference_usd": -111.45404289172394,
+      "mean_fixed_path_cost_addback_proxy_difference_pp": 0.04001228677596079,
+      "net_positive_negative_zero_windows": [
+        5,
+        4,
+        3
+      ],
+      "proxy_positive_negative_zero_windows": [
+        7,
+        2,
+        3
+      ],
+      "net_leave_one_window_out_range_pp": [
+        0.0044244573705639915,
+        0.08773074065465075
+      ],
+      "proxy_leave_one_window_out_range_pp": [
+        -0.009158759348077578,
+        0.08372784633175863
+      ],
+      "all_windows": [
+        {
+          "episode": "formal-train-0378",
+          "net_difference_pp": -0.35114585441956003,
+          "cost_difference_usd": -897.1301391825534,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.4408588683378154,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.8121542895618505,
+              "cost_difference_usd": -598.1088043820309,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.8719651700000537
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.10986258072273047,
+              "cost_difference_usd": -1196.151473983076,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.009752566675577112
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0357",
+          "net_difference_pp": -0.20031476566917394,
+          "cost_difference_usd": -304.727005013513,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.23078746617052526,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.7226333983593181,
+              "cost_difference_usd": -4.660251600353149,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.7230994235193534
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.32200386702097017,
+              "cost_difference_usd": -604.7937584266729,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.2615244911783029
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0336",
+          "net_difference_pp": -0.01963476499329264,
+          "cost_difference_usd": 453.57098191301293,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.02572233319800865,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.03926952998658528,
+              "cost_difference_usd": 907.1419638260259,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0514446663960173
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0420",
+          "net_difference_pp": -4.385964422759514e-05,
+          "cost_difference_usd": 4.822253384237683,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.00043836569419617236,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.024454717015554017,
+              "cost_difference_usd": -292.5133170302747,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.05370604871858149
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.024366997727098827,
+              "cost_difference_usd": 302.1578237987501,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.05458278010697384
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0231",
+          "net_difference_pp": 0.0,
+          "cost_difference_usd": 0.0,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.0,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0294",
+          "net_difference_pp": 0.0,
+          "cost_difference_usd": 0.0,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.0,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0315",
+          "net_difference_pp": 0.0,
+          "cost_difference_usd": 0.0,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.0,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0399",
+          "net_difference_pp": 0.041993477861279604,
+          "cost_difference_usd": 609.7345806921364,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.10296693593049326,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.4004006619895417,
+              "cost_difference_usd": 1530.2004718117164,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.24738061480837006
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.4843876177121009,
+              "cost_difference_usd": -310.73131042744353,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.4533144866693566
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0273",
+          "net_difference_pp": 0.15416573228199115,
+          "cost_difference_usd": -446.87774944631474,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.10947795733735968,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.2053437807179037,
+              "cost_difference_usd": -596.4382524858788,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.14569995546931583
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.10298768384607859,
+              "cost_difference_usd": -297.31724640675066,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.07325595920540352
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0441",
+          "net_difference_pp": 0.20019275638827883,
+          "cost_difference_usd": -296.1754895829347,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.17057520742998536,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.5873674089799663,
+              "cost_difference_usd": -599.0863349158594,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.5274587754883804
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.18698189620340866,
+              "cost_difference_usd": 6.735355749990049,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.18630836062840966
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0210",
+          "net_difference_pp": 0.22345630927090854,
+          "cost_difference_usd": -617.3712718146446,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.16171918208944408,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.21810618978281848,
+              "cost_difference_usd": -11.502525817506012,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.2192564423645691
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.6650188083246356,
+              "cost_difference_usd": -1223.2400178117832,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.5426948065434573
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0252",
+          "net_difference_pp": 0.5652232617053943,
+          "cost_difference_usd": 156.70532434988604,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.5808937941403829,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.9923157496758428,
+              "cost_difference_usd": 22.814206203472168,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.99459717029619
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.13813077373494576,
+              "cost_difference_usd": 290.5964424962999,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.16719041798457573
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "comparison": "M2_minus_M1_same_lr",
+      "step": 4,
+      "lane": "sampled",
+      "windows": 12,
+      "seed_window_rows": 24,
+      "paired_trajectory_slots": 96,
+      "mean_net_difference_pp": -0.06059580451316624,
+      "mean_cost_difference_usd": -111.58727970895784,
+      "mean_fixed_path_cost_addback_proxy_difference_pp": -0.07175453248406202,
+      "net_positive_negative_zero_windows": [
+        5,
+        7,
+        0
+      ],
+      "proxy_positive_negative_zero_windows": [
+        5,
+        7,
+        0
+      ],
+      "net_leave_one_window_out_range_pp": [
+        -0.10387303534728952,
+        -0.0053018969399086895
+      ],
+      "proxy_leave_one_window_out_range_pp": [
+        -0.11253421045362257,
+        -0.01869337017406331
+      ],
+      "all_windows": [
+        {
+          "episode": "formal-train-0357",
+          "net_difference_pp": -0.6688287878189993,
+          "cost_difference_usd": 134.0146992495138,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.655427317894048,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.40567346098340784,
+              "cost_difference_usd": 291.2137870661227,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.3765520822767956
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.931984114654591,
+              "cost_difference_usd": -23.184388567095084,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.9343025535113004
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0336",
+          "net_difference_pp": -0.38207670633105123,
+          "cost_difference_usd": -387.6175065617799,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.4208384569872292,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.7513444424118693,
+              "cost_difference_usd": -622.7411674646146,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.8136185591583307
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.012808970250233198,
+              "cost_difference_usd": -152.49384565894525,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.02805835481612772
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0252",
+          "net_difference_pp": -0.3263917464911448,
+          "cost_difference_usd": -500.86496459794967,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.3764782429509398,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.6849584986261481,
+              "cost_difference_usd": -851.831672673517,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.7701416658934999
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.032175005643858556,
+              "cost_difference_usd": -149.89825652238233,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.017185179991620322
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0294",
+          "net_difference_pp": -0.3119544222200357,
+          "cost_difference_usd": 22.106208736588997,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.3097438013463768,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.10626839169558533,
+              "cost_difference_usd": 61.84863018350916,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.10008352867723441
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.5176404527444861,
+              "cost_difference_usd": -17.636212710331165,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.5194040740155192
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0378",
+          "net_difference_pp": -0.24586681128166699,
+          "cost_difference_usd": -464.88395252322334,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.29235520653398933,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.03656279004693175,
+              "cost_difference_usd": -248.20664433452566,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.011742125613479183
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.5282964126102657,
+              "cost_difference_usd": -681.561260711921,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.5964525386814579
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0273",
+          "net_difference_pp": -0.07927309155340706,
+          "cost_difference_usd": 450.5603850144257,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.034217053051964486,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.08364269412290404,
+              "cost_difference_usd": 295.0646278940394,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.11314915691230798
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.24218887722971816,
+              "cost_difference_usd": 606.056142134812,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.18158326301623695
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0315",
+          "net_difference_pp": -0.030542186800801285,
+          "cost_difference_usd": -106.88867166493856,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.041231053967295136,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.15990401304200597,
+              "cost_difference_usd": -213.52519140975664,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.18125653218298163
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0988196394404034,
+              "cost_difference_usd": -0.2521519201204683,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.09879442424839135
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0231",
+          "net_difference_pp": 0.08152042763207301,
+          "cost_difference_usd": -386.0923543695817,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.04291119219511484,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.11497424583111204,
+              "cost_difference_usd": -805.6092785867659,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.03441331797243545
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.04806660943303398,
+              "cost_difference_usd": 33.42456984760247,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.051409066417794226
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0210",
+          "net_difference_pp": 0.13622552880782068,
+          "cost_difference_usd": 361.22843733466516,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.1723483725412872,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.34893358757007165,
+              "cost_difference_usd": 101.45615475643626,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.3590792030457153
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.07648252995443028,
+              "cost_difference_usd": 621.000719912894,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.014382457963140874
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0420",
+          "net_difference_pp": 0.33104176582188505,
+          "cost_difference_usd": 208.71098988440303,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.35191286481032535,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.5678148616897583,
+              "cost_difference_usd": 266.5646748781319,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.5944713291775714
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.09426866995401184,
+              "cost_difference_usd": 150.8573048906742,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.10935440044307926
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0441",
+          "net_difference_pp": 0.35354264141514297,
+          "cost_difference_usd": 232.79283765960895,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.37682192518110386,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.28329385649285,
+              "cost_difference_usd": 375.3679110955377,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.24575706538329622
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.9903791393231359,
+              "cost_difference_usd": 90.2177642236802,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.9994009157455039
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0399",
+          "net_difference_pp": 0.41545373466218977,
+          "cost_difference_usd": -902.1134646692265,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.32524238819526713,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.5739929213470524,
+              "cost_difference_usd": -1292.8777823841351,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.44470514310863885
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.25691454797732716,
+              "cost_difference_usd": -511.3491469543178,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.20577963328189539
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "comparison": "M2_minus_M2plain",
+      "step": 2,
+      "lane": "greedy",
+      "windows": 12,
+      "seed_window_rows": 24,
+      "paired_trajectory_slots": 24,
+      "mean_net_difference_pp": -0.09712123272100498,
+      "mean_cost_difference_usd": -28.197478295924082,
+      "mean_fixed_path_cost_addback_proxy_difference_pp": -0.0999409805505974,
+      "net_positive_negative_zero_windows": [
+        3,
+        8,
+        1
+      ],
+      "proxy_positive_negative_zero_windows": [
+        3,
+        8,
+        1
+      ],
+      "net_leave_one_window_out_range_pp": [
+        -0.19738723545301753,
+        -0.02819912803465557
+      ],
+      "proxy_leave_one_window_out_range_pp": [
+        -0.20054594122470126,
+        -0.03391254287723689
+      ],
+      "all_windows": [
+        {
+          "episode": "formal-train-0378",
+          "net_difference_pp": -0.8552643842708485,
+          "cost_difference_usd": 290.1058931328539,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.8262537949575631,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.13396069098688956,
+              "cost_difference_usd": -1179.6637613968237,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.2519270671265719
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -1.5765680775548074,
+              "cost_difference_usd": 1759.8755476625315,
+              "fixed_path_cost_addback_proxy_difference_pp": -1.4005805227885544
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0399",
+          "net_difference_pp": -0.8074727719018404,
+          "cost_difference_usd": 924.3882234463188,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.7150339495572086,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.9703273055289952,
+              "cost_difference_usd": 1225.718462962302,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.847755459232765
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.6446182382746857,
+              "cost_difference_usd": 623.0579839303355,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.5823124398816522
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0420",
+          "net_difference_pp": -0.3586519348044104,
+          "cost_difference_usd": 571.8357326560777,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.30146836153880263,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.7173038696088208,
+              "cost_difference_usd": 1143.6714653121553,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.6029367230776053
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0252",
+          "net_difference_pp": -0.20413437491537678,
+          "cost_difference_usd": -317.11817515869143,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.23584619243124594,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.3240467469444397,
+              "cost_difference_usd": -26.864654418174723,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.3267332123862572
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.08422200288631387,
+              "cost_difference_usd": -607.3716958992081,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.1449591724762347
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0210",
+          "net_difference_pp": -0.16082589282909732,
+          "cost_difference_usd": -187.41851825835897,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.17956774465493325,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.21761784646252558,
+              "cost_difference_usd": 11.368638632437523,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.21875471032576932
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.5392696321207202,
+              "cost_difference_usd": -386.20567514915547,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.5778901996356358
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0441",
+          "net_difference_pp": -0.0706310666947263,
+          "cost_difference_usd": -584.2889148636173,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.129059958181088,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.42902314354404947,
+              "cost_difference_usd": -587.4139461847608,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.3702817489255734
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.5702852769335021,
+              "cost_difference_usd": -581.1638835424737,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.6284016652877494
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0315",
+          "net_difference_pp": -0.05336572128929462,
+          "cost_difference_usd": -294.572006801239,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.08282292196941853,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.10673144257858924,
+              "cost_difference_usd": -589.144013602478,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.16564584393883705
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0273",
+          "net_difference_pp": -0.04546470133660607,
+          "cost_difference_usd": -309.8138653416547,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.07644608787077155,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.09092940267321215,
+              "cost_difference_usd": -619.6277306833094,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.1528921757415431
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0294",
+          "net_difference_pp": 0.0,
+          "cost_difference_usd": 0.0,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.0,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0336",
+          "net_difference_pp": 0.07790645675480601,
+          "cost_difference_usd": -143.4004637739165,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.06356641037741435,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.15581291350961202,
+              "cost_difference_usd": -286.800927547833,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.1271328207548287
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0231",
+          "net_difference_pp": 0.30664480130420113,
+          "cost_difference_usd": -297.17553992297667,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.27692724731190344,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.28081471578742523,
+              "cost_difference_usd": -299.3010311483681,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.25088461267258844
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.33247488682097703,
+              "cost_difference_usd": -295.0500486975852,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.3029698819512185
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0357",
+          "net_difference_pp": 1.0058047973311335,
+          "cost_difference_usd": 9.087895334115274,
+          "fixed_path_cost_addback_proxy_difference_pp": 1.006713586864545,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 1.288976196302949,
+              "cost_difference_usd": 13.515539067877398,
+              "fixed_path_cost_addback_proxy_difference_pp": 1.2903277502097366
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.7226333983593181,
+              "cost_difference_usd": 4.660251600353149,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.7230994235193534
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "comparison": "M2_minus_M2plain",
+      "step": 2,
+      "lane": "sampled",
+      "windows": 12,
+      "seed_window_rows": 24,
+      "paired_trajectory_slots": 96,
+      "mean_net_difference_pp": 0.057024885154503595,
+      "mean_cost_difference_usd": -44.030993735378125,
+      "mean_fixed_path_cost_addback_proxy_difference_pp": 0.05262178578096578,
+      "net_positive_negative_zero_windows": [
+        8,
+        4,
+        0
+      ],
+      "proxy_positive_negative_zero_windows": [
+        8,
+        4,
+        0
+      ],
+      "net_leave_one_window_out_range_pp": [
+        0.02231057836363728,
+        0.08230620224911812
+      ],
+      "proxy_leave_one_window_out_range_pp": [
+        0.01676227776173927,
+        0.08015997960679354
+      ],
+      "all_windows": [
+        {
+          "episode": "formal-train-0420",
+          "net_difference_pp": -0.22106960288625632,
+          "cost_difference_usd": -292.2874341688296,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.2502983463031393,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.6005501489900089,
+              "cost_difference_usd": -316.41256354293137,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.6321914053443021
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.15841094321749627,
+              "cost_difference_usd": -268.1623047947278,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.13159471273802348
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0336",
+          "net_difference_pp": -0.12278822291098279,
+          "cost_difference_usd": -146.9289953540656,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.13748112244638935,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.5373523474708042,
+              "cost_difference_usd": 67.79278630292356,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.5305730688405118
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.2917759016488386,
+              "cost_difference_usd": -361.65077701105474,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.2556108239477331
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0252",
+          "net_difference_pp": -0.09905336008328713,
+          "cost_difference_usd": -304.01601426478874,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.129454961509766,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.3618773031250966,
+              "cost_difference_usd": -1.2153935005790117,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.36199884247515446
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.16377058295852231,
+              "cost_difference_usd": -606.8166350289985,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.10308891945562247
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0210",
+          "net_difference_pp": -0.04326419590617303,
+          "cost_difference_usd": -175.16867677244522,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.060781063583417554,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.08771604658632248,
+              "cost_difference_usd": 37.55626608872353,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.08396041997745013
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.001187654773976421,
+              "cost_difference_usd": -387.893619633614,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.03760170718938498
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0273",
+          "net_difference_pp": 0.002113350340721132,
+          "cost_difference_usd": 112.97790749917522,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.013411141090638654,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.03370020534728124,
+              "cost_difference_usd": -67.50499717873299,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.026949705629407943
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.02947350466583898,
+              "cost_difference_usd": 293.4608121770834,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.0001274234481306348
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0231",
+          "net_difference_pp": 0.02848596917935653,
+          "cost_difference_usd": -254.02359732732612,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.0030836094466239194,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.06251528483333657,
+              "cost_difference_usd": -276.6761099663927,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.09018289582997584
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.11948722319204963,
+              "cost_difference_usd": -231.37108468825954,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.09635011472322368
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0378",
+          "net_difference_pp": 0.03462847076050185,
+          "cost_difference_usd": 570.3603789591568,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.09166450865641754,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.023043618717435987,
+              "cost_difference_usd": 470.03954025227586,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.07004757274266357
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.046213322803567713,
+              "cost_difference_usd": 670.6812176660378,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.11328144457017149
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0357",
+          "net_difference_pp": 0.036094054152849275,
+          "cost_difference_usd": 19.0987349714419,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.03800392764999347,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.4021833277598613,
+              "cost_difference_usd": 443.89864330035834,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.3577934634298255
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.47437143606555987,
+              "cost_difference_usd": -405.70117335747454,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.4338013187298124
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0399",
+          "net_difference_pp": 0.09623376523400229,
+          "cost_difference_usd": -227.41515608297118,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.07349224962570518,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.04326761483576247,
+              "cost_difference_usd": -337.9171690144476,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.07705933173720722
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.23573514530376705,
+              "cost_difference_usd": -116.91314315149475,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.22404383098861758
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0441",
+          "net_difference_pp": 0.13238976354277426,
+          "cost_difference_usd": 121.82816394807924,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.14457257993758219,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.12733590012976026,
+              "cost_difference_usd": 232.36787450525662,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.1505726875802859
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.13744362695578827,
+              "cost_difference_usd": 11.28845339090185,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.13857247229487846
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0294",
+          "net_difference_pp": 0.40164637057650415,
+          "cost_difference_usd": -34.73837761621121,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.3981725328148831,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.5134065409399535,
+              "cost_difference_usd": -451.7788370230892,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.4682286572376446
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.2898862002130548,
+              "cost_difference_usd": 382.30208179066676,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.3281164083921215
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0315",
+          "net_difference_pp": 0.4388822598540329,
+          "cost_difference_usd": 81.94114138424698,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.4470763739924576,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.0760645284662742,
+              "cost_difference_usd": 156.36032305203298,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.060428496161070905
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.95382904817434,
+              "cost_difference_usd": 7.5219597164609695,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.9545812441459861
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "comparison": "M2_minus_M2plain",
+      "step": 4,
+      "lane": "greedy",
+      "windows": 12,
+      "seed_window_rows": 24,
+      "paired_trajectory_slots": 24,
+      "mean_net_difference_pp": -0.15767907426312658,
+      "mean_cost_difference_usd": -60.76200896320368,
+      "mean_fixed_path_cost_addback_proxy_difference_pp": -0.16375527515944696,
+      "net_positive_negative_zero_windows": [
+        2,
+        7,
+        3
+      ],
+      "proxy_positive_negative_zero_windows": [
+        3,
+        6,
+        3
+      ],
+      "net_leave_one_window_out_range_pp": [
+        -0.20684830581446254,
+        -0.1037661001699174
+      ],
+      "proxy_leave_one_window_out_range_pp": [
+        -0.21077400791284812,
+        -0.10230335236774185
+      ],
+      "all_windows": [
+        {
+          "episode": "formal-train-0378",
+          "net_difference_pp": -0.7507217892884277,
+          "cost_difference_usd": -890.0463657977575,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.8397264258682035,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -1.1213736953535114,
+              "cost_difference_usd": -603.4875477006722,
+              "fixed_path_cost_addback_proxy_difference_pp": -1.1817224501235786
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.380069883223344,
+              "cost_difference_usd": -1176.6051838948429,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.4977304016128283
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0273",
+          "net_difference_pp": -0.6126392892718213,
+          "cost_difference_usd": -155.49385257876315,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.6281886745296977,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -1.019934797825739,
+              "cost_difference_usd": -907.4259576434051,
+              "fixed_path_cost_addback_proxy_difference_pp": -1.1106773935900796
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.2053437807179037,
+              "cost_difference_usd": 596.4382524858788,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.14569995546931583
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0210",
+          "net_difference_pp": -0.2957388208548184,
+          "cost_difference_usd": -2.8094651723370134,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.2960197673720521,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.3733714519268183,
+              "cost_difference_usd": 5.883595472831985,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.3727830923795351
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.21810618978281848,
+              "cost_difference_usd": -11.502525817506012,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.2192564423645691
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0420",
+          "net_difference_pp": -0.2616500146620959,
+          "cost_difference_usd": -1.978445377556909,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.2618478591998516,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.5476670270512907,
+              "cost_difference_usd": -306.1147145538639,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.578278498506677
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.024366997727098827,
+              "cost_difference_usd": 302.1578237987501,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.05458278010697384
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0357",
+          "net_difference_pp": -0.20031476566917394,
+          "cost_difference_usd": -304.727005013513,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.23078746617052526,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.7226333983593181,
+              "cost_difference_usd": -4.660251600353149,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.7230994235193534
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.32200386702097017,
+              "cost_difference_usd": -604.7937584266729,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.2615244911783029
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0399",
+          "net_difference_pp": -0.18103526578495677,
+          "cost_difference_usd": 310.1698907589878,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.15001827670905798,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -1.2533234578068209,
+              "cost_difference_usd": 1216.165044957736,
+              "fixed_path_cost_addback_proxy_difference_pp": -1.1317069533110473
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.8912529262369073,
+              "cost_difference_usd": -595.8252634397604,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.8316703998929313
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0315",
+          "net_difference_pp": -0.0007274961771497335,
+          "cost_difference_usd": 7.735948732470888,
+          "fixed_path_cost_addback_proxy_difference_pp": 4.609869609735538e-05,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.001454992354299467,
+              "cost_difference_usd": 15.471897464941776,
+              "fixed_path_cost_addback_proxy_difference_pp": 9.219739219471076e-05
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0231",
+          "net_difference_pp": 0.0,
+          "cost_difference_usd": 0.0,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.0,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0252",
+          "net_difference_pp": 0.0,
+          "cost_difference_usd": 0.0,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.0,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0294",
+          "net_difference_pp": 0.0,
+          "cost_difference_usd": 0.0,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.0,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.0,
+              "cost_difference_usd": 0.0,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0336",
+          "net_difference_pp": 0.02749607774935603,
+          "cost_difference_usd": 605.322063626058,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.08802828411196184,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.09426168548529734,
+              "cost_difference_usd": 303.5021634260902,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.12461190182790637
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.03926952998658528,
+              "cost_difference_usd": 907.1419638260259,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.0514446663960173
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0441",
+          "net_difference_pp": 0.3831824728015687,
+          "cost_difference_usd": -297.31687673603324,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.35345078512796535,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.40038551277655765,
+              "cost_difference_usd": -592.3509791658694,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.3411504148599707
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.36597943282657974,
+              "cost_difference_usd": -2.2827743061970978,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.36575115539596004
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "comparison": "M2_minus_M2plain",
+      "step": 4,
+      "lane": "sampled",
+      "windows": 12,
+      "seed_window_rows": 24,
+      "paired_trajectory_slots": 96,
+      "mean_net_difference_pp": -0.06555180776685125,
+      "mean_cost_difference_usd": 43.895196729412966,
+      "mean_fixed_path_cost_addback_proxy_difference_pp": -0.061162288093909944,
+      "net_positive_negative_zero_windows": [
+        5,
+        7,
+        0
+      ],
+      "proxy_positive_negative_zero_windows": [
+        6,
+        6,
+        0
+      ],
+      "net_leave_one_window_out_range_pp": [
+        -0.09068844281727176,
+        -0.01934996571924228
+      ],
+      "proxy_leave_one_window_out_range_pp": [
+        -0.08712889631205245,
+        -0.018523673708850653
+      ],
+      "all_windows": [
+        {
+          "episode": "formal-train-0357",
+          "net_difference_pp": -0.57377207029055,
+          "cost_difference_usd": 435.8502396098784,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.5301870463295622,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.19621692372834842,
+              "cost_difference_usd": 444.75510148801095,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.15174141357954735
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.9513272168527515,
+              "cost_difference_usd": 426.9453777317458,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.9086326790795769
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0378",
+          "net_difference_pp": -0.3052099862216315,
+          "cost_difference_usd": -486.83444130516386,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.3538934303521478,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.26824982683994747,
+              "cost_difference_usd": -62.72646414479186,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.27452247325442664
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.3421701456033155,
+              "cost_difference_usd": -910.9424184655359,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.43326438744986906
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0252",
+          "net_difference_pp": -0.21758122017192516,
+          "cost_difference_usd": -305.2272243946104,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.24810394261138619,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.4451601531725413,
+              "cost_difference_usd": -535.6956817486171,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.498729721347403
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.009997712828690997,
+              "cost_difference_usd": -74.75876704060374,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.002521836124630622
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0399",
+          "net_difference_pp": -0.19825187479859951,
+          "cost_difference_usd": -256.46894526105143,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.22389876932470465,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.1399924086078419,
+              "cost_difference_usd": -694.0693373510271,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.2093993423429446
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.25651134098935713,
+              "cost_difference_usd": 181.13144682892425,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.2383981963064647
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0336",
+          "net_difference_pp": -0.12394822029216934,
+          "cost_difference_usd": -116.2165857136099,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.13556987886353034,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.434696798012954,
+              "cost_difference_usd": -533.6337711374308,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.4880601751266971
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.18680035742861534,
+              "cost_difference_usd": 301.200599710211,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.21692041739963644
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0315",
+          "net_difference_pp": -0.027543085822931412,
+          "cost_difference_usd": 147.56921451722246,
+          "fixed_path_cost_addback_proxy_difference_pp": -0.012786164371209165,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.006687070882269164,
+              "cost_difference_usd": 149.53753864596501,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.021640824746865666
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.06177324252813199,
+              "cost_difference_usd": 145.6008903884799,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.047213153489283996
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0273",
+          "net_difference_pp": -0.007586566092010472,
+          "cost_difference_usd": 709.8560760103016,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.06339904150901969,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.060251912865416646,
+              "cost_difference_usd": 219.51172884902508,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.08220308575031915
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.07542504504943759,
+              "cost_difference_usd": 1200.2004231715782,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.04459499726772023
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0294",
+          "net_difference_pp": 0.06224193230403158,
+          "cost_difference_usd": -48.01780641122059,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.057440151662909514,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": -0.011080148794004319,
+              "cost_difference_usd": -62.16781625799467,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.017296930419803784
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.13556401340206747,
+              "cost_difference_usd": -33.86779656444651,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.13217723374562282
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0231",
+          "net_difference_pp": 0.09529733597362644,
+          "cost_difference_usd": 43.137911592009914,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.09961112713282742,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.20613660411627488,
+              "cost_difference_usd": -265.2118869021424,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.17961541542606063
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.015541932169022,
+              "cost_difference_usd": 351.4877100861622,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.019606838839594222
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0420",
+          "net_difference_pp": 0.14862221095699457,
+          "cost_difference_usd": 48.522423782332,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.15347445333522777,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.21345175519433823,
+              "cost_difference_usd": 541.3949879238517,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.2675912539867234
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.08379266671965091,
+              "cost_difference_usd": -444.35014035918766,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.03935765268373215
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0441",
+          "net_difference_pp": 0.15015867346517553,
+          "cost_difference_usd": 219.3792531480335,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.1720965987799789,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.07848489464988839,
+              "cost_difference_usd": 514.0652283761092,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.12989141748749933
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": 0.22183245228046267,
+              "cost_difference_usd": -75.30672208004216,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.21430178007245845
+            }
+          ]
+        },
+        {
+          "episode": "formal-train-0210",
+          "net_difference_pp": 0.21095117778777428,
+          "cost_difference_usd": 135.1922451788339,
+          "fixed_path_cost_addback_proxy_difference_pp": 0.22447040230565765,
+          "by_seed": [
+            {
+              "seed": 42,
+              "net_difference_pp": 0.47335016827581566,
+              "cost_difference_usd": -116.7378324703991,
+              "fixed_path_cost_addback_proxy_difference_pp": 0.4616763850287757
+            },
+            {
+              "seed": 43,
+              "net_difference_pp": -0.051447812700267104,
+              "cost_difference_usd": 387.1223228280669,
+              "fixed_path_cost_addback_proxy_difference_pp": -0.012735580417460417
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

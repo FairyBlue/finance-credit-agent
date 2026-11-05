@@ -1,0 +1,1851 @@
+{
+  "profile": "independent_sft_panel_detail_v2",
+  "status": "COMPLETE",
+  "new_generation_tokens": 0,
+  "reserved_test_read": false,
+  "totals": {
+    "trajectories": 64,
+    "successes": 41,
+    "business_correct": 41,
+    "metric_correct": 41,
+    "condition_correct": 51,
+    "execution_correct": 58,
+    "evidence_valid": 64,
+    "mixed_success": true,
+    "mixed_business": true,
+    "mixed_metric": true,
+    "mixed_reward": true
+  },
+  "variant_group_counts": {
+    "mixed_success": 9,
+    "mixed_business": 9,
+    "mixed_metric": 9,
+    "mixed_reward": 11
+  },
+  "base_group_counts": {
+    "mixed_success": 7,
+    "mixed_business": 7,
+    "mixed_metric": 7,
+    "mixed_reward": 8
+  },
+  "failures": 23,
+  "error_overlap_counts": {
+    "metric_wrong_or_unsubmitted": 23,
+    "execution_wrong_or_unsubmitted": 6,
+    "both_metric_and_execution_wrong_or_unsubmitted": 6,
+    "metric_wrong_execution_correct": 17,
+    "metric_correct_execution_wrong": 0,
+    "metric_and_execution_correct_but_other_failure": 0,
+    "missing_metric_flag": 0,
+    "not_submitted": 0,
+    "condition_wrong_or_unsubmitted": 13,
+    "evidence_invalid": 0
+  },
+  "failure_categories": {
+    "business_or_proof_failure": 23
+  },
+  "per_variant": [
+    {
+      "task_id": "financial-credit-10042-v0",
+      "base_scenario_id": "financial-credit-base-10042",
+      "source_id": "MRO/2003/page_84.pdf-1",
+      "report_id": "MRO/2003",
+      "variant": 0,
+      "trajectories": 4,
+      "successes": 0,
+      "business_correct": 0,
+      "metric_correct": 0,
+      "condition_correct": 0,
+      "execution_correct": 0,
+      "evidence_valid": 4,
+      "mixed_success": false,
+      "mixed_business": false,
+      "mixed_metric": false,
+      "mixed_reward": false,
+      "rewards": [
+        -0.015000000000000003,
+        -0.015000000000000003,
+        -0.015000000000000003,
+        -0.015000000000000003
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "success_pattern": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "task_id": "financial-credit-10042-v1",
+      "base_scenario_id": "financial-credit-base-10042",
+      "source_id": "MRO/2003/page_84.pdf-1",
+      "report_id": "MRO/2003",
+      "variant": 1,
+      "trajectories": 4,
+      "successes": 1,
+      "business_correct": 1,
+      "metric_correct": 1,
+      "condition_correct": 2,
+      "execution_correct": 4,
+      "evidence_valid": 4,
+      "mixed_success": true,
+      "mixed_business": true,
+      "mixed_metric": true,
+      "mixed_reward": true,
+      "rewards": [
+        -0.015000000000000003,
+        0.985,
+        -0.016499724883746226,
+        -0.016499724883746226
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        false,
+        true,
+        false,
+        false
+      ],
+      "success_pattern": [
+        false,
+        true,
+        false,
+        false
+      ]
+    },
+    {
+      "task_id": "financial-credit-10046-v0",
+      "base_scenario_id": "financial-credit-base-10046",
+      "source_id": "MRO/2018/page_96.pdf-1",
+      "report_id": "MRO/2018",
+      "variant": 0,
+      "trajectories": 4,
+      "successes": 4,
+      "business_correct": 4,
+      "metric_correct": 4,
+      "condition_correct": 4,
+      "execution_correct": 4,
+      "evidence_valid": 4,
+      "mixed_success": false,
+      "mixed_business": false,
+      "mixed_metric": false,
+      "mixed_reward": false,
+      "rewards": [
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success_pattern": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "task_id": "financial-credit-10046-v1",
+      "base_scenario_id": "financial-credit-base-10046",
+      "source_id": "MRO/2018/page_96.pdf-1",
+      "report_id": "MRO/2018",
+      "variant": 1,
+      "trajectories": 4,
+      "successes": 4,
+      "business_correct": 4,
+      "metric_correct": 4,
+      "condition_correct": 4,
+      "execution_correct": 4,
+      "evidence_valid": 4,
+      "mixed_success": false,
+      "mixed_business": false,
+      "mixed_metric": false,
+      "mixed_reward": false,
+      "rewards": [
+        0.985,
+        0.985,
+        0.985,
+        0.985
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success_pattern": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "task_id": "financial-credit-10112-v0",
+      "base_scenario_id": "financial-credit-base-10112",
+      "source_id": "PPG/2010/page_68.pdf-3",
+      "report_id": "PPG/2010",
+      "variant": 0,
+      "trajectories": 4,
+      "successes": 4,
+      "business_correct": 4,
+      "metric_correct": 4,
+      "condition_correct": 4,
+      "execution_correct": 4,
+      "evidence_valid": 4,
+      "mixed_success": false,
+      "mixed_business": false,
+      "mixed_metric": false,
+      "mixed_reward": false,
+      "rewards": [
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success_pattern": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "task_id": "financial-credit-10112-v1",
+      "base_scenario_id": "financial-credit-base-10112",
+      "source_id": "PPG/2010/page_68.pdf-3",
+      "report_id": "PPG/2010",
+      "variant": 1,
+      "trajectories": 4,
+      "successes": 3,
+      "business_correct": 3,
+      "metric_correct": 3,
+      "condition_correct": 3,
+      "execution_correct": 4,
+      "evidence_valid": 4,
+      "mixed_success": true,
+      "mixed_business": true,
+      "mixed_metric": true,
+      "mixed_reward": true,
+      "rewards": [
+        0.985,
+        0.985,
+        -0.01649972488374632,
+        0.985
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        true,
+        true,
+        false,
+        true
+      ],
+      "success_pattern": [
+        true,
+        true,
+        false,
+        true
+      ]
+    },
+    {
+      "task_id": "financial-credit-10013-v0",
+      "base_scenario_id": "financial-credit-base-10013",
+      "source_id": "ZBH/2008/page_57.pdf-3",
+      "report_id": "ZBH/2008",
+      "variant": 0,
+      "trajectories": 4,
+      "successes": 3,
+      "business_correct": 3,
+      "metric_correct": 3,
+      "condition_correct": 3,
+      "execution_correct": 3,
+      "evidence_valid": 4,
+      "mixed_success": true,
+      "mixed_business": true,
+      "mixed_metric": true,
+      "mixed_reward": true,
+      "rewards": [
+        -0.015000000000000003,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        false,
+        true,
+        true,
+        true
+      ],
+      "success_pattern": [
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "task_id": "financial-credit-10013-v1",
+      "base_scenario_id": "financial-credit-base-10013",
+      "source_id": "ZBH/2008/page_57.pdf-3",
+      "report_id": "ZBH/2008",
+      "variant": 1,
+      "trajectories": 4,
+      "successes": 3,
+      "business_correct": 3,
+      "metric_correct": 3,
+      "condition_correct": 4,
+      "execution_correct": 4,
+      "evidence_valid": 4,
+      "mixed_success": true,
+      "mixed_business": true,
+      "mixed_metric": true,
+      "mixed_reward": true,
+      "rewards": [
+        0.985,
+        0.985,
+        -0.015000000000000003,
+        0.985
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        true,
+        true,
+        false,
+        true
+      ],
+      "success_pattern": [
+        true,
+        true,
+        false,
+        true
+      ]
+    },
+    {
+      "task_id": "financial-credit-10030-v0",
+      "base_scenario_id": "financial-credit-base-10030",
+      "source_id": "IP/2012/page_55.pdf-2",
+      "report_id": "IP/2012",
+      "variant": 0,
+      "trajectories": 4,
+      "successes": 3,
+      "business_correct": 3,
+      "metric_correct": 3,
+      "condition_correct": 4,
+      "execution_correct": 4,
+      "evidence_valid": 4,
+      "mixed_success": true,
+      "mixed_business": true,
+      "mixed_metric": true,
+      "mixed_reward": true,
+      "rewards": [
+        -0.016499724883746257,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        false,
+        true,
+        true,
+        true
+      ],
+      "success_pattern": [
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "task_id": "financial-credit-10030-v1",
+      "base_scenario_id": "financial-credit-base-10030",
+      "source_id": "IP/2012/page_55.pdf-2",
+      "report_id": "IP/2012",
+      "variant": 1,
+      "trajectories": 4,
+      "successes": 4,
+      "business_correct": 4,
+      "metric_correct": 4,
+      "condition_correct": 4,
+      "execution_correct": 4,
+      "evidence_valid": 4,
+      "mixed_success": false,
+      "mixed_business": false,
+      "mixed_metric": false,
+      "mixed_reward": true,
+      "rewards": [
+        0.9825,
+        0.985,
+        0.985,
+        0.985
+      ],
+      "calls": [
+        7,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success_pattern": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "task_id": "financial-credit-10097-v0",
+      "base_scenario_id": "financial-credit-base-10097",
+      "source_id": "PKG/2013/page_83.pdf-1",
+      "report_id": "PKG/2013",
+      "variant": 0,
+      "trajectories": 4,
+      "successes": 3,
+      "business_correct": 3,
+      "metric_correct": 3,
+      "condition_correct": 4,
+      "execution_correct": 4,
+      "evidence_valid": 4,
+      "mixed_success": true,
+      "mixed_business": true,
+      "mixed_metric": true,
+      "mixed_reward": true,
+      "rewards": [
+        0.9835002751162537,
+        0.9835002751162537,
+        -0.016499724883746313,
+        0.9835002751162537
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        true,
+        true,
+        false,
+        true
+      ],
+      "success_pattern": [
+        true,
+        true,
+        false,
+        true
+      ]
+    },
+    {
+      "task_id": "financial-credit-10097-v1",
+      "base_scenario_id": "financial-credit-base-10097",
+      "source_id": "PKG/2013/page_83.pdf-1",
+      "report_id": "PKG/2013",
+      "variant": 1,
+      "trajectories": 4,
+      "successes": 4,
+      "business_correct": 4,
+      "metric_correct": 4,
+      "condition_correct": 4,
+      "execution_correct": 4,
+      "evidence_valid": 4,
+      "mixed_success": false,
+      "mixed_business": false,
+      "mixed_metric": false,
+      "mixed_reward": false,
+      "rewards": [
+        0.985,
+        0.985,
+        0.985,
+        0.985
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success_pattern": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "task_id": "financial-credit-10016-v0",
+      "base_scenario_id": "financial-credit-base-10016",
+      "source_id": "AMT/2012/page_121.pdf-4",
+      "report_id": "AMT/2012",
+      "variant": 0,
+      "trajectories": 4,
+      "successes": 0,
+      "business_correct": 0,
+      "metric_correct": 0,
+      "condition_correct": 2,
+      "execution_correct": 3,
+      "evidence_valid": 4,
+      "mixed_success": false,
+      "mixed_business": false,
+      "mixed_metric": false,
+      "mixed_reward": true,
+      "rewards": [
+        -0.01649972488374619,
+        -0.01649972488374619,
+        -0.01649972488374619,
+        -0.015000000000000003
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "success_pattern": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "task_id": "financial-credit-10016-v1",
+      "base_scenario_id": "financial-credit-base-10016",
+      "source_id": "AMT/2012/page_121.pdf-4",
+      "report_id": "AMT/2012",
+      "variant": 1,
+      "trajectories": 4,
+      "successes": 1,
+      "business_correct": 1,
+      "metric_correct": 1,
+      "condition_correct": 4,
+      "execution_correct": 4,
+      "evidence_valid": 4,
+      "mixed_success": true,
+      "mixed_business": true,
+      "mixed_metric": true,
+      "mixed_reward": true,
+      "rewards": [
+        0.985,
+        -0.01649972488374619,
+        -0.015000000000000003,
+        -0.015000000000000003
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "success_pattern": [
+        true,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "task_id": "financial-credit-10000-v0",
+      "base_scenario_id": "financial-credit-base-10000",
+      "source_id": "ECL/2017/page_95.pdf-4",
+      "report_id": "ECL/2017",
+      "variant": 0,
+      "trajectories": 4,
+      "successes": 3,
+      "business_correct": 3,
+      "metric_correct": 3,
+      "condition_correct": 4,
+      "execution_correct": 4,
+      "evidence_valid": 4,
+      "mixed_success": true,
+      "mixed_business": true,
+      "mixed_metric": true,
+      "mixed_reward": true,
+      "rewards": [
+        -0.016499724883746302,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        false,
+        true,
+        true,
+        true
+      ],
+      "success_pattern": [
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "task_id": "financial-credit-10000-v1",
+      "base_scenario_id": "financial-credit-base-10000",
+      "source_id": "ECL/2017/page_95.pdf-4",
+      "report_id": "ECL/2017",
+      "variant": 1,
+      "trajectories": 4,
+      "successes": 1,
+      "business_correct": 1,
+      "metric_correct": 1,
+      "condition_correct": 1,
+      "execution_correct": 4,
+      "evidence_valid": 4,
+      "mixed_success": true,
+      "mixed_business": true,
+      "mixed_metric": true,
+      "mixed_reward": true,
+      "rewards": [
+        0.985,
+        -0.016499724883746302,
+        -0.016499724883746302,
+        -0.016499724883746302
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "success_pattern": [
+        true,
+        false,
+        false,
+        false
+      ]
+    }
+  ],
+  "per_base_report": [
+    {
+      "source_id": "MRO/2003/page_84.pdf-1",
+      "report_id": "MRO/2003",
+      "task_ids": [
+        "financial-credit-10042-v0",
+        "financial-credit-10042-v1"
+      ],
+      "trajectories": 8,
+      "successes": 1,
+      "business_correct": 1,
+      "metric_correct": 1,
+      "condition_correct": 2,
+      "execution_correct": 4,
+      "evidence_valid": 8,
+      "mixed_success": true,
+      "mixed_business": true,
+      "mixed_metric": true,
+      "mixed_reward": true,
+      "rewards": [
+        -0.015000000000000003,
+        -0.015000000000000003,
+        -0.015000000000000003,
+        -0.015000000000000003,
+        -0.015000000000000003,
+        0.985,
+        -0.016499724883746226,
+        -0.016499724883746226
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "success_pattern": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false
+      ]
+    },
+    {
+      "source_id": "MRO/2018/page_96.pdf-1",
+      "report_id": "MRO/2018",
+      "task_ids": [
+        "financial-credit-10046-v0",
+        "financial-credit-10046-v1"
+      ],
+      "trajectories": 8,
+      "successes": 8,
+      "business_correct": 8,
+      "metric_correct": 8,
+      "condition_correct": 8,
+      "execution_correct": 8,
+      "evidence_valid": 8,
+      "mixed_success": false,
+      "mixed_business": false,
+      "mixed_metric": false,
+      "mixed_reward": true,
+      "rewards": [
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.985,
+        0.985,
+        0.985,
+        0.985
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "success_pattern": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "source_id": "PPG/2010/page_68.pdf-3",
+      "report_id": "PPG/2010",
+      "task_ids": [
+        "financial-credit-10112-v0",
+        "financial-credit-10112-v1"
+      ],
+      "trajectories": 8,
+      "successes": 7,
+      "business_correct": 7,
+      "metric_correct": 7,
+      "condition_correct": 7,
+      "execution_correct": 8,
+      "evidence_valid": 8,
+      "mixed_success": true,
+      "mixed_business": true,
+      "mixed_metric": true,
+      "mixed_reward": true,
+      "rewards": [
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.985,
+        0.985,
+        -0.01649972488374632,
+        0.985
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true
+      ],
+      "success_pattern": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true
+      ]
+    },
+    {
+      "source_id": "ZBH/2008/page_57.pdf-3",
+      "report_id": "ZBH/2008",
+      "task_ids": [
+        "financial-credit-10013-v0",
+        "financial-credit-10013-v1"
+      ],
+      "trajectories": 8,
+      "successes": 6,
+      "business_correct": 6,
+      "metric_correct": 6,
+      "condition_correct": 7,
+      "execution_correct": 7,
+      "evidence_valid": 8,
+      "mixed_success": true,
+      "mixed_business": true,
+      "mixed_metric": true,
+      "mixed_reward": true,
+      "rewards": [
+        -0.015000000000000003,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.985,
+        0.985,
+        -0.015000000000000003,
+        0.985
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true
+      ],
+      "success_pattern": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true
+      ]
+    },
+    {
+      "source_id": "IP/2012/page_55.pdf-2",
+      "report_id": "IP/2012",
+      "task_ids": [
+        "financial-credit-10030-v0",
+        "financial-credit-10030-v1"
+      ],
+      "trajectories": 8,
+      "successes": 7,
+      "business_correct": 7,
+      "metric_correct": 7,
+      "condition_correct": 8,
+      "execution_correct": 8,
+      "evidence_valid": 8,
+      "mixed_success": true,
+      "mixed_business": true,
+      "mixed_metric": true,
+      "mixed_reward": true,
+      "rewards": [
+        -0.016499724883746257,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9825,
+        0.985,
+        0.985,
+        0.985
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6,
+        7,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "success_pattern": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "source_id": "PKG/2013/page_83.pdf-1",
+      "report_id": "PKG/2013",
+      "task_ids": [
+        "financial-credit-10097-v0",
+        "financial-credit-10097-v1"
+      ],
+      "trajectories": 8,
+      "successes": 7,
+      "business_correct": 7,
+      "metric_correct": 7,
+      "condition_correct": 8,
+      "execution_correct": 8,
+      "evidence_valid": 8,
+      "mixed_success": true,
+      "mixed_business": true,
+      "mixed_metric": true,
+      "mixed_reward": true,
+      "rewards": [
+        0.9835002751162537,
+        0.9835002751162537,
+        -0.016499724883746313,
+        0.9835002751162537,
+        0.985,
+        0.985,
+        0.985,
+        0.985
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "success_pattern": [
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "source_id": "AMT/2012/page_121.pdf-4",
+      "report_id": "AMT/2012",
+      "task_ids": [
+        "financial-credit-10016-v0",
+        "financial-credit-10016-v1"
+      ],
+      "trajectories": 8,
+      "successes": 1,
+      "business_correct": 1,
+      "metric_correct": 1,
+      "condition_correct": 6,
+      "execution_correct": 7,
+      "evidence_valid": 8,
+      "mixed_success": true,
+      "mixed_business": true,
+      "mixed_metric": true,
+      "mixed_reward": true,
+      "rewards": [
+        -0.01649972488374619,
+        -0.01649972488374619,
+        -0.01649972488374619,
+        -0.015000000000000003,
+        0.985,
+        -0.01649972488374619,
+        -0.015000000000000003,
+        -0.015000000000000003
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "success_pattern": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "source_id": "ECL/2017/page_95.pdf-4",
+      "report_id": "ECL/2017",
+      "task_ids": [
+        "financial-credit-10000-v0",
+        "financial-credit-10000-v1"
+      ],
+      "trajectories": 8,
+      "successes": 4,
+      "business_correct": 4,
+      "metric_correct": 4,
+      "condition_correct": 5,
+      "execution_correct": 8,
+      "evidence_valid": 8,
+      "mixed_success": true,
+      "mixed_business": true,
+      "mixed_metric": true,
+      "mixed_reward": true,
+      "rewards": [
+        -0.016499724883746302,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.985,
+        -0.016499724883746302,
+        -0.016499724883746302,
+        -0.016499724883746302
+      ],
+      "calls": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "metric_success_pattern": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "success_pattern": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false
+      ]
+    }
+  ],
+  "old_selected_probe_comparison": {
+    "note": "Old eight tasks were selected for mixed outcomes, so comparison is conditional and subject to regression to the mean; independent baseline also adds their opposite-threshold variants. No training/generalization effect is inferred.",
+    "old_selected_tasks": 8,
+    "old_selected_probe_successes": 18,
+    "old_selected_probe_trajectories": 32,
+    "new_same_tasks_successes": 19,
+    "new_same_tasks_trajectories": 32,
+    "per_task": [
+      {
+        "task_id": "financial-credit-10042-v1",
+        "old_selected_probe": {
+          "trajectories": 4,
+          "successes": 1,
+          "business_correct": 1,
+          "metric_correct": 1,
+          "condition_correct": 4,
+          "execution_correct": 4,
+          "evidence_valid": 4,
+          "mixed_success": true,
+          "mixed_business": true,
+          "mixed_metric": true,
+          "mixed_reward": true,
+          "rewards": [
+            -0.015000000000000003,
+            -0.015000000000000003,
+            0.985,
+            -0.015000000000000003
+          ],
+          "calls": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "metric_success_pattern": [
+            false,
+            false,
+            true,
+            false
+          ],
+          "success_pattern": [
+            false,
+            false,
+            true,
+            false
+          ]
+        },
+        "independent_baseline": {
+          "trajectories": 4,
+          "successes": 1,
+          "business_correct": 1,
+          "metric_correct": 1,
+          "condition_correct": 2,
+          "execution_correct": 4,
+          "evidence_valid": 4,
+          "mixed_success": true,
+          "mixed_business": true,
+          "mixed_metric": true,
+          "mixed_reward": true,
+          "rewards": [
+            -0.015000000000000003,
+            0.985,
+            -0.016499724883746226,
+            -0.016499724883746226
+          ],
+          "calls": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "metric_success_pattern": [
+            false,
+            true,
+            false,
+            false
+          ],
+          "success_pattern": [
+            false,
+            true,
+            false,
+            false
+          ]
+        }
+      },
+      {
+        "task_id": "financial-credit-10030-v0",
+        "old_selected_probe": {
+          "trajectories": 4,
+          "successes": 3,
+          "business_correct": 3,
+          "metric_correct": 3,
+          "condition_correct": 3,
+          "execution_correct": 3,
+          "evidence_valid": 4,
+          "mixed_success": true,
+          "mixed_business": true,
+          "mixed_metric": true,
+          "mixed_reward": true,
+          "rewards": [
+            0.9835002751162537,
+            0.9835002751162537,
+            0.9835002751162537,
+            -0.015000000000000003
+          ],
+          "calls": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "metric_success_pattern": [
+            true,
+            true,
+            true,
+            false
+          ],
+          "success_pattern": [
+            true,
+            true,
+            true,
+            false
+          ]
+        },
+        "independent_baseline": {
+          "trajectories": 4,
+          "successes": 3,
+          "business_correct": 3,
+          "metric_correct": 3,
+          "condition_correct": 4,
+          "execution_correct": 4,
+          "evidence_valid": 4,
+          "mixed_success": true,
+          "mixed_business": true,
+          "mixed_metric": true,
+          "mixed_reward": true,
+          "rewards": [
+            -0.016499724883746257,
+            0.9835002751162537,
+            0.9835002751162537,
+            0.9835002751162537
+          ],
+          "calls": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "metric_success_pattern": [
+            false,
+            true,
+            true,
+            true
+          ],
+          "success_pattern": [
+            false,
+            true,
+            true,
+            true
+          ]
+        }
+      },
+      {
+        "task_id": "financial-credit-10016-v1",
+        "old_selected_probe": {
+          "trajectories": 4,
+          "successes": 1,
+          "business_correct": 1,
+          "metric_correct": 1,
+          "condition_correct": 1,
+          "execution_correct": 4,
+          "evidence_valid": 4,
+          "mixed_success": true,
+          "mixed_business": true,
+          "mixed_metric": true,
+          "mixed_reward": true,
+          "rewards": [
+            -0.01649972488374619,
+            -0.015000000000000003,
+            0.985,
+            -0.015000000000000003
+          ],
+          "calls": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "metric_success_pattern": [
+            false,
+            false,
+            true,
+            false
+          ],
+          "success_pattern": [
+            false,
+            false,
+            true,
+            false
+          ]
+        },
+        "independent_baseline": {
+          "trajectories": 4,
+          "successes": 1,
+          "business_correct": 1,
+          "metric_correct": 1,
+          "condition_correct": 4,
+          "execution_correct": 4,
+          "evidence_valid": 4,
+          "mixed_success": true,
+          "mixed_business": true,
+          "mixed_metric": true,
+          "mixed_reward": true,
+          "rewards": [
+            0.985,
+            -0.01649972488374619,
+            -0.015000000000000003,
+            -0.015000000000000003
+          ],
+          "calls": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "metric_success_pattern": [
+            true,
+            false,
+            false,
+            false
+          ],
+          "success_pattern": [
+            true,
+            false,
+            false,
+            false
+          ]
+        }
+      },
+      {
+        "task_id": "financial-credit-10046-v1",
+        "old_selected_probe": {
+          "trajectories": 4,
+          "successes": 3,
+          "business_correct": 3,
+          "metric_correct": 3,
+          "condition_correct": 3,
+          "execution_correct": 4,
+          "evidence_valid": 4,
+          "mixed_success": true,
+          "mixed_business": true,
+          "mixed_metric": true,
+          "mixed_reward": true,
+          "rewards": [
+            0.985,
+            0.985,
+            -0.016499724883746267,
+            0.985
+          ],
+          "calls": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "metric_success_pattern": [
+            true,
+            true,
+            false,
+            true
+          ],
+          "success_pattern": [
+            true,
+            true,
+            false,
+            true
+          ]
+        },
+        "independent_baseline": {
+          "trajectories": 4,
+          "successes": 4,
+          "business_correct": 4,
+          "metric_correct": 4,
+          "condition_correct": 4,
+          "execution_correct": 4,
+          "evidence_valid": 4,
+          "mixed_success": false,
+          "mixed_business": false,
+          "mixed_metric": false,
+          "mixed_reward": false,
+          "rewards": [
+            0.985,
+            0.985,
+            0.985,
+            0.985
+          ],
+          "calls": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "metric_success_pattern": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "success_pattern": [
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      },
+      {
+        "task_id": "financial-credit-10000-v1",
+        "old_selected_probe": {
+          "trajectories": 4,
+          "successes": 3,
+          "business_correct": 3,
+          "metric_correct": 3,
+          "condition_correct": 3,
+          "execution_correct": 4,
+          "evidence_valid": 4,
+          "mixed_success": true,
+          "mixed_business": true,
+          "mixed_metric": true,
+          "mixed_reward": true,
+          "rewards": [
+            0.985,
+            0.985,
+            0.985,
+            -0.016499724883746302
+          ],
+          "calls": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "metric_success_pattern": [
+            true,
+            true,
+            true,
+            false
+          ],
+          "success_pattern": [
+            true,
+            true,
+            true,
+            false
+          ]
+        },
+        "independent_baseline": {
+          "trajectories": 4,
+          "successes": 1,
+          "business_correct": 1,
+          "metric_correct": 1,
+          "condition_correct": 1,
+          "execution_correct": 4,
+          "evidence_valid": 4,
+          "mixed_success": true,
+          "mixed_business": true,
+          "mixed_metric": true,
+          "mixed_reward": true,
+          "rewards": [
+            0.985,
+            -0.016499724883746302,
+            -0.016499724883746302,
+            -0.016499724883746302
+          ],
+          "calls": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "metric_success_pattern": [
+            true,
+            false,
+            false,
+            false
+          ],
+          "success_pattern": [
+            true,
+            false,
+            false,
+            false
+          ]
+        }
+      },
+      {
+        "task_id": "financial-credit-10013-v0",
+        "old_selected_probe": {
+          "trajectories": 4,
+          "successes": 2,
+          "business_correct": 2,
+          "metric_correct": 2,
+          "condition_correct": 2,
+          "execution_correct": 2,
+          "evidence_valid": 4,
+          "mixed_success": true,
+          "mixed_business": true,
+          "mixed_metric": true,
+          "mixed_reward": true,
+          "rewards": [
+            0.9835002751162537,
+            -0.015000000000000003,
+            -0.015000000000000003,
+            0.9835002751162537
+          ],
+          "calls": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "metric_success_pattern": [
+            true,
+            false,
+            false,
+            true
+          ],
+          "success_pattern": [
+            true,
+            false,
+            false,
+            true
+          ]
+        },
+        "independent_baseline": {
+          "trajectories": 4,
+          "successes": 3,
+          "business_correct": 3,
+          "metric_correct": 3,
+          "condition_correct": 3,
+          "execution_correct": 3,
+          "evidence_valid": 4,
+          "mixed_success": true,
+          "mixed_business": true,
+          "mixed_metric": true,
+          "mixed_reward": true,
+          "rewards": [
+            -0.015000000000000003,
+            0.9835002751162537,
+            0.9835002751162537,
+            0.9835002751162537
+          ],
+          "calls": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "metric_success_pattern": [
+            false,
+            true,
+            true,
+            true
+          ],
+          "success_pattern": [
+            false,
+            true,
+            true,
+            true
+          ]
+        }
+      },
+      {
+        "task_id": "financial-credit-10097-v0",
+        "old_selected_probe": {
+          "trajectories": 4,
+          "successes": 3,
+          "business_correct": 3,
+          "metric_correct": 3,
+          "condition_correct": 3,
+          "execution_correct": 3,
+          "evidence_valid": 4,
+          "mixed_success": true,
+          "mixed_business": true,
+          "mixed_metric": true,
+          "mixed_reward": true,
+          "rewards": [
+            0.9835002751162537,
+            0.9835002751162537,
+            0.9835002751162537,
+            -0.015000000000000003
+          ],
+          "calls": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "metric_success_pattern": [
+            true,
+            true,
+            true,
+            false
+          ],
+          "success_pattern": [
+            true,
+            true,
+            true,
+            false
+          ]
+        },
+        "independent_baseline": {
+          "trajectories": 4,
+          "successes": 3,
+          "business_correct": 3,
+          "metric_correct": 3,
+          "condition_correct": 4,
+          "execution_correct": 4,
+          "evidence_valid": 4,
+          "mixed_success": true,
+          "mixed_business": true,
+          "mixed_metric": true,
+          "mixed_reward": true,
+          "rewards": [
+            0.9835002751162537,
+            0.9835002751162537,
+            -0.016499724883746313,
+            0.9835002751162537
+          ],
+          "calls": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "metric_success_pattern": [
+            true,
+            true,
+            false,
+            true
+          ],
+          "success_pattern": [
+            true,
+            true,
+            false,
+            true
+          ]
+        }
+      },
+      {
+        "task_id": "financial-credit-10112-v1",
+        "old_selected_probe": {
+          "trajectories": 4,
+          "successes": 2,
+          "business_correct": 2,
+          "metric_correct": 2,
+          "condition_correct": 2,
+          "execution_correct": 4,
+          "evidence_valid": 4,
+          "mixed_success": true,
+          "mixed_business": true,
+          "mixed_metric": true,
+          "mixed_reward": true,
+          "rewards": [
+            0.985,
+            0.985,
+            -0.01649972488374632,
+            -0.01649972488374632
+          ],
+          "calls": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "metric_success_pattern": [
+            true,
+            true,
+            false,
+            false
+          ],
+          "success_pattern": [
+            true,
+            true,
+            false,
+            false
+          ]
+        },
+        "independent_baseline": {
+          "trajectories": 4,
+          "successes": 3,
+          "business_correct": 3,
+          "metric_correct": 3,
+          "condition_correct": 3,
+          "execution_correct": 4,
+          "evidence_valid": 4,
+          "mixed_success": true,
+          "mixed_business": true,
+          "mixed_metric": true,
+          "mixed_reward": true,
+          "rewards": [
+            0.985,
+            0.985,
+            -0.01649972488374632,
+            0.985
+          ],
+          "calls": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "metric_success_pattern": [
+            true,
+            true,
+            false,
+            true
+          ],
+          "success_pattern": [
+            true,
+            true,
+            false,
+            true
+          ]
+        }
+      }
+    ]
+  },
+  "seed_and_freeze_checks": {
+    "baseline_collection_seed": 142,
+    "first_training_collection_seed": 1305761194,
+    "collection_seeds_differ": true,
+    "first_training_tasks": 8,
+    "first_training_planned_parents": 32,
+    "common_request_keys": 192,
+    "all_common_request_seeds_differ": true,
+    "common_request_seeds_differ": 192,
+    "frozen_data_sha256_unchanged": {
+      "batch_round000.jsonl": true,
+      "batch_round001.jsonl": true,
+      "batch_round002.jsonl": true,
+      "batch_round003.jsonl": true,
+      "batch_round004.jsonl": true,
+      "batch_round005.jsonl": true,
+      "holdout.jsonl": true,
+      "midpoint_panel.jsonl": true,
+      "teacher_filtered.jsonl": true,
+      "train_panel.jsonl": true
+    },
+    "baseline_data_sha_matches_manifest": true,
+    "first_training_batch_sha_matches_manifest": true,
+    "first_batch_initial_adapter_equals_baseline": true
+  },
+  "sources": {
+    "baseline_results": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/baseline/sft_panel/trajectory_results.jsonl",
+    "baseline_results_sha256": "43c1ab9fd449afbbb9cf180d0b4eefca969bae8e872d2e9f6f0dc94d4a74013d",
+    "old_selected_probe": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-credit-20261030-v1/probe/parents/trajectory_results.jsonl"
+  }
+}

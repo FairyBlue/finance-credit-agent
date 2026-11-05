@@ -1,0 +1,110 @@
+{
+  "NA_groups": 6,
+  "NA_slots": 24,
+  "actual_model_requests": 10788,
+  "actual_paths": 864,
+  "input_small_table_sha256": {
+    "credit_paths.csv": "92b98feff142afe4d3d9ee5aedc338cd92caaa68270ddb52a9912fea30d954c8",
+    "credit_readout.json": "3247f16861f5a4baa6a44e45468c1b3afa26dc925506a6f76d4094be89c2d03f",
+    "credit_references.csv": "295620ba7dc93b016d3fd861f25b9f6f06b827b90940a2c9f3f6de3ed5502e9e",
+    "credit_slots.csv": "e17a1d988249f26ea542fad3f739439c407e7428e503880184912754a8f5f64e",
+    "credit_strata_comparisons.csv": "1bd2b3840866ae0489b47ef70a6b4aca5b9c3d0ea115871734bc321c8546bb6b",
+    "credit_strata_methods.csv": "37ff06407b2ea504b5379c7dd5aa4fa0b32d81bbd1fa40818432482d5bfb8823"
+  },
+  "interpretation": [
+    "Family pooling is closer to the finite reference than exact pooling in this batch; zero residual is closer still.",
+    "This holds separately in both nontrivial order-diverse strata, not only because same-order groups have zero targets.",
+    "Exact versus plain reduction is a projection identity, not empirical reference validation.",
+    "Independent 4+4 reference halves agree on these aggregate directions; this is not significance or exact Q.",
+    "No claim about learning, trading return, full-hold strategy, OOS, or original cross-state training M2 follows."
+  ],
+  "nonstructural_paired_comparisons": {
+    "exact_pool_order_gate minus family_pool_order_gate": {
+      "full8": 0.0614267918918625,
+      "ref0_3": 0.049087058691661294,
+      "ref4_7": 0.07376652509206372
+    },
+    "exact_pool_order_gate minus zero": {
+      "full8": 0.08383891107887045,
+      "ref0_3": 0.08167564938332726,
+      "ref4_7": 0.08600217277441363
+    },
+    "family_pool_order_gate minus zero": {
+      "full8": 0.02241211918700795,
+      "ref0_3": 0.03258859069166596,
+      "ref4_7": 0.012235647682349925
+    }
+  },
+  "planned_groups": 64,
+  "recomputed_MSE_raw_Y_squared": {
+    "exact_pool_order_gate": {
+      "full8": 0.11991885885051434,
+      "ref0_3": 0.13428476799738634,
+      "ref4_7": 0.12936538435377845
+    },
+    "family_gate_plain": {
+      "full8": 0.12933684890093816,
+      "ref0_3": 0.15857265276269922,
+      "ref4_7": 0.1239134796893132
+    },
+    "family_pool_order_gate": {
+      "full8": 0.058492066958651855,
+      "ref0_3": 0.08519770930572505,
+      "ref4_7": 0.055598859261714734
+    },
+    "order_gate_plain": {
+      "full8": 0.26919733600342993,
+      "ref0_3": 0.2835632451503019,
+      "ref4_7": 0.278643861506694
+    },
+    "ungated_plain": {
+      "full8": 0.5930134174067747,
+      "ref0_3": 0.6073793265536467,
+      "ref4_7": 0.6024599429100388
+    },
+    "zero": {
+      "full8": 0.0360799477716439,
+      "ref0_3": 0.05260911861405908,
+      "ref4_7": 0.04336321157936481
+    }
+  },
+  "recomputed_strata_full8_MSE": {
+    "ALL_SAME_ORDER": {
+      "exact_pool_order_gate": 0.0,
+      "family_gate_plain": 0.0,
+      "family_pool_order_gate": 0.0,
+      "order_gate_plain": 0.0,
+      "ungated_plain": 0.5217036867053889,
+      "zero": 0.0
+    },
+    "FAMILY_DIVERSE": {
+      "exact_pool_order_gate": 0.5842932276443842,
+      "family_gate_plain": 0.7957934957036988,
+      "family_pool_order_gate": 0.282168826622123,
+      "order_gate_plain": 0.7957934957036988,
+      "ungated_plain": 0.7957934957036988,
+      "zero": 0.11968096251631538
+    },
+    "ORDER_DIVERSE_SAME_FAMILY": {
+      "exact_pool_order_gate": 0.16292485658391137,
+      "family_gate_plain": 0.0810849479017731,
+      "family_pool_order_gate": 0.0810849479017731,
+      "order_gate_plain": 0.6605069658978103,
+      "ungated_plain": 0.6605069658978103,
+      "zero": 0.0810849479017731
+    }
+  },
+  "review_source_sha256": "4624f5bc2ccc4b836f92faed4f42b35509fea74861547b3f0daee3686a9580c2",
+  "run": "/home/tianming/projects/finance-credit-agent/runs/m2-stochastic-credit-comparison-20261018-v1",
+  "scope": "small derived tables, independent arithmetic only",
+  "status": "PASS",
+  "stratum_group_counts": {
+    "ALL_SAME_ORDER": 36,
+    "FAMILY_DIVERSE": 8,
+    "NA_groups": 6,
+    "ORDER_DIVERSE_SAME_FAMILY": 14
+  },
+  "structurally_zero_family_pool_slots": 200,
+  "supported_groups": 58,
+  "supported_slots": 232
+}

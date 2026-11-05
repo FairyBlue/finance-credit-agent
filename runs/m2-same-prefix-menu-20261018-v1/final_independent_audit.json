@@ -1,0 +1,781 @@
+{
+  "status": "READ_ONLY_FINAL_ENGINEERING_AUDIT_PASS",
+  "created_at_UTC": "2026-10-17T16:44:54.590782+00:00",
+  "directory": "/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-menu-20261018-v1",
+  "source_paths_verified": 135,
+  "source_checks": [
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/docs/2026-10-17_M2_STATE_ORDER_ORACLE_PLAN.md",
+      "sha256": "6f2625768602de2bec9d3870fb13f42dfa6363775e0c1f4dd70ba3531feafdc1"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/docs/2026-10-18_M2_SAME_PREFIX_MENU_PLAN.md",
+      "sha256": "8d0aab300c96360858596c3c54433945b788bb2df8f0f7afcdf2a1ffcc82b4c0"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_lr1e7_eta025/artifacts/actor_update/actor-update-3794626.jsonl",
+      "sha256": "20459054e490e3c03e20d7ae36f9f0884868d51e17d1e2d0e11882e04bf19ae5"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3795287.jsonl",
+      "sha256": "463c58dd5391722797217319160d547b6ce10d14c27c16256a478fec79080a4d"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/prepared/train.parquet",
+      "sha256": "f2939174b7a9d1426e4165c376097b0006bfb5586148718a22c0cbbfadd35579"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_lr1e7_eta025/artifacts/actor_update/actor-update-3815648.jsonl",
+      "sha256": "551ff854b7cb89b9e6d4a198cf3116b51700ac5a652cd0a0653ab317f74bfd02"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3816286.jsonl",
+      "sha256": "850cdec0f86740e0e6f7f405dec370eb96ae5e22a68e7329bf63077d3f96d87b"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/prepared/train.parquet",
+      "sha256": "f2939174b7a9d1426e4165c376097b0006bfb5586148718a22c0cbbfadd35579"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/added_tokens.json",
+      "sha256": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/chat_template.jinja",
+      "sha256": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/config.json",
+      "sha256": "938d961211217b1b58af4c9dc7c52a34f86c9ca8cace368475161cbd063a93d5"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/generation_config.json",
+      "sha256": "475b038504e6cd813ed0a80c3b01200a5fdbd2e3679c2354c01371e83c50a7cc"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/merges.txt",
+      "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/special_tokens_map.json",
+      "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/tokenizer.json",
+      "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/tokenizer_config.json",
+      "sha256": "443bfa629eb16387a12edbf92a76f6a6f10b2af3b53d87ba1550adfcf45f7fa0"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/vocab.json",
+      "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-state-order-oracle-20261017-v1/collection_completion.json",
+      "sha256": "fa68fea9a0bcf1b76b48be08e9053e01e5c3bee9cdd204e2c4121d14aa36780b"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-state-order-oracle-20261017-v1/contract.json",
+      "sha256": "66cb5dd281bb11577b374f5f52fe818a9148d6b9f13bc7d34c63816ebbc91cc9"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-state-order-oracle-20261017-v1/source_manifest.json",
+      "sha256": "ef47f2b6f9c1d77ae34a5316a20c6e860a67cd5e6b3ca5714b3eb239608be68c"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-state-order-oracle-20261017-v1/state_results.jsonl",
+      "sha256": "13532f09bdeb345a6990f42ba0e450dc8971f55bd20588d40a16e2b7c8eedd98"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/scripts/diagnostics/m2_same_prefix_menu.py",
+      "sha256": "49ae55d8d8468b9197de3ec1f1c4b68ca230ab61b2bbe537dd63bcf4c6bcb9b0"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/scripts/diagnostics/m2_same_prefix_menu_readout.py",
+      "sha256": "91ff2230974285bbc91c0f81d4282d00b1e5e497e6818895e5d09ca7753e49b1"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/scripts/diagnostics/m2_state_order_oracle.py",
+      "sha256": "2bd4e2cc85e4af7bb3f771d93f56e110facd0b6980902536bbb60b72d2fb3daf"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/scripts/diagnostics/m2_state_order_readout.py",
+      "sha256": "aa5a7a4fdc796da7e1647295337b55cc8f3850c7f3e29e4289aa17e33d60430f"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/__init__.py",
+      "sha256": "f9dc8091980607009d416a6c9a6d1f03c7fa9c9a41a977ea9fe42a00bc3e70ce"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/__init__.py",
+      "sha256": "c8c12956a2cc58d3ad925c75473bc4b1ce8881807ccb6e1d1f3406f7e2dc1851"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/action_pooling_comparison.py",
+      "sha256": "241e3c5069cdb9eb38a2bdd5f65022fecd76b069afb4b4e8b4eda0d31e0a6589"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/action_pooling_gpu_monitor.py",
+      "sha256": "6436f27de12e6987530b9465f55950fc6535a425a7c6b4fcd79d7741eeb251cf"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/action_pooling_readout.py",
+      "sha256": "256261ff352890885f7b821b65a67a9728b3ade0098ffe3dd8496959f5862d78"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/action_pooling_recovery.py",
+      "sha256": "82fd7adf7049097303c4c195f7b597ef7274e1cef14ec428e1593452ff60199e"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/action_pooling_service.py",
+      "sha256": "d9e028e50852eb65581f5eddcc04f66ad5eeec97326a21c2d97c81a413dba8a9"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/actor_export.py",
+      "sha256": "c4aa85cd9eeda77ec7f46839c15bb2382c3e55d653404784e7e64ec06681e493"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/actor_update_probe.py",
+      "sha256": "9cabd5a58ae1857ccb042ef34c969815b043620d883d9831ff8463bb9ee746a1"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/agent_flow.py",
+      "sha256": "7076dc220559fdefe74042f884199cabaac95d974a8a4c283042fcb213a4b3f3"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/arm_a1.py",
+      "sha256": "115b76a9710103dc9d633e75939f518a60c60c2da1f473a56bc1dfaba8253fe2"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/arm_a2.py",
+      "sha256": "3836403cf4f8aa3c202ddf70fbaff06397e2df09f0649014abb264c300633fd5"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/arm_a3.py",
+      "sha256": "df7cd9419d525299f059ad0b9c24843da7c1a24d45de0bfe428f6f3c62d4780f"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/chunked_adam.py",
+      "sha256": "8ceb6e83a2d4339c9df3bfb47e1366ccddea0a8f8f46902b3812fdef16ad54ce"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/chunked_placement.py",
+      "sha256": "5094e33e4e9376ae36e975d7de70c5ab8c0592eedc78203f08d69c65c9166153"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/coldstart_data.py",
+      "sha256": "97d7f4ded63d44772104cbc9ac57af0ae4fb23fefcc3d8e93de9b2250236a0c1"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/coldstart_eval.py",
+      "sha256": "7b2cbe4a963e3e1e41170f3622f6da6cdac35f78842ef653d2dcb1dcb43d908a"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/coldstart_learning.py",
+      "sha256": "1101e0ee7cb6d3ef1e99284716cb53ffe666675354f1fcb9baae797735b828f7"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/coldstart_onpolicy_collect.py",
+      "sha256": "a2cec998f5e191ade6d13ed124e3f3555fbd7b3a9f47658ff08536298c59de45"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/coldstart_onpolicy_data.py",
+      "sha256": "2eda012fcb2e7215638e40091d62e5608fe88cdbd3c19104b69e68281a549ec2"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/coldstart_sft.py",
+      "sha256": "3e6fc2ba45393318d54b000e7bfd0181bc6d693af4dd02f823fef112dc575549"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/coldstart_v2_data.py",
+      "sha256": "a911aafa04a077b6c296c6b7c45359e0c8dfcdf447070db0ce01660d6ab3b426"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/common_validity_penalty.py",
+      "sha256": "ac2867c49656e64e44fe8b2fd6d17fa355bb2e896d232aa6fa353e041de25187"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/config.py",
+      "sha256": "b6d1e5d804df3a16b99725edd791c7b0a292572b24eb3f432ea2b8b1c95129e3"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/context_budget.py",
+      "sha256": "24bcb61d126aa36333adf0506e8042f7819be7769a60873c03da44145b96286c"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/credit_evidence.py",
+      "sha256": "bf3afd9dd969b944ee58bf59c53f91f77dfcbf15660623d7dd855727170a6770"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/critic_fit_probe.py",
+      "sha256": "127fd6a3814a23e11f313ef3eabe3a3c944a341199e112b8d0ef81fc0c08bd16"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/critic_initialization.py",
+      "sha256": "30a438ac6cbb06e0a6ffdb15393266a45db28b6277b3cf395dbb98fbc245b2d4"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/gpu_handoff.py",
+      "sha256": "8c36830a8392c4ae3677681ba044283a5556a52f64bc556fe52f350f0693ebf8"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/gpu_memory_coordinator.py",
+      "sha256": "4caa6ac46420d53d274e0cb8fe84df72125bf2a10cd590bcea5f7a94a8be5d36"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/gpu_reservation.py",
+      "sha256": "c71de180371705e94446f7e93201db557dc0513b1b62b9063a2edb4dc62cd097"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/gpu_reservation_probe.py",
+      "sha256": "ff4f71b804f1935dfe67b837319a1f28c88d2e4fc79cd0d66a270b9a3564439e"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/gpu_reservation_service.py",
+      "sha256": "103e49926fbbacadf77a5bcc71b64ad242b6b45692bde64cdf4e32b174771cce"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/launcher.py",
+      "sha256": "c8b6e5e4e32e435b44c69c416b54ffca1b9f9e52cf39eb2060226a89e00a5009"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/learning_restart.py",
+      "sha256": "38241954a5e65c4e1c2a2fd59d5c622e96cce1c362ab71d1782eebe369d73e14"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/learning_restart_gate.py",
+      "sha256": "61d84c4f1b60a8fcdf826a08f8b3219ac9fe6ddb84e69acfce82af487a5a7547"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/local_export.py",
+      "sha256": "1a9b9a6f88bc71f8b7029003eabd7476f4948ccc578f525c3b7a440359c3d228"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/local_runs.py",
+      "sha256": "1a59002bfdae5f1dfb2bdfebd1a7b1dd95621c3d30a911d0b529a35357fcfccb"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/low_memory_comparison.py",
+      "sha256": "8a3641c9614c2f9784d86600842104e5bd5f336aacfcf7b870154139cd8492d4"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/low_memory_comparison_seed43.py",
+      "sha256": "c7ecde299f69fa919ab81dbfb74d2891c835b81302598ff8ab3a368c37ea2034"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/low_memory_pilot.py",
+      "sha256": "c663342763c0b77920f8564371bca58a4a019e907753a04c75c3637ea102100d"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/metadata.py",
+      "sha256": "9dfaee140b9e66779f9abae2a451db614a380e129b1535c76420d889e240d4b7"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/optimizer_state_store.py",
+      "sha256": "849b76192d671d7da3ca0b1103cf7bfa5840c190e8e733b66177af374ac5c42b"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_acceptance.py",
+      "sha256": "07198c077a412e953641078c89f25905fdcfd860e35c862fe9a7b52163a020e2"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_acceptance_controller.py",
+      "sha256": "99033cbc85825ce8271dca89748cfe5ccb1fb9990e972b9baa34fce6509e48b7"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_controller.py",
+      "sha256": "075304d79da51d835522be12363a500f7889ef9ab989491331b9273ce669a534"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_episode.py",
+      "sha256": "46165969c70cde8f18cd0b2e25c602594aa488bb9682e2eed35c170de63f6abd"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_gpu_monitor.py",
+      "sha256": "6a552d3c54d5c7be30e0a0b129c38f977454db1cddafce9b356ab3710d2d020e"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_learning.py",
+      "sha256": "5aeadde85d1e706fa6b96a48d0992b71ed72b2d82646bed9a3c046926711133d"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_probe.py",
+      "sha256": "f0273d3f3cf9679d0d10f28d295662b3d06bbf86ecd1e68cbe35b29051cf4eea"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_sft_controller.py",
+      "sha256": "4a54d7725cd34dbd383d8a654b6bb2c190fa6c1c4b2b30574cee7e9728d51224"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_sft_data.py",
+      "sha256": "5085965660f601bacd5422899b63827a36790903a25da7ec52f608f6bfe69ab4"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_sft_validation.py",
+      "sha256": "53b53045dcc030388badbf396cfd1186afb1e817ea48c1209af973427287a1fd"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_sft_worker.py",
+      "sha256": "248d5a6f9bc716b25a18544ba827fd71bfc5bae2e4cda6f0799f370dfd6c8188"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/paired_validation.py",
+      "sha256": "7d2bb6c6cfc46466d9ebac08bdf78d40930335e30e06061f7634388d21bbb9e8"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/parameter_grid.py",
+      "sha256": "15ff41c352c8af4b6fac2a8e57ec90e04b2ed9d5df6e2c540bd203a91237c966"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/parameter_grid_archive.py",
+      "sha256": "b231b71784de470e2e80e258dd8d91b6484ffc9c3f4361bc8d1160384516015a"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/parameter_grid_readout.py",
+      "sha256": "7c0c8d56d4ff0f4cffc43e069779b49d018a1691d3545ac6cf88db62b0af9f63"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/rollout_seed.py",
+      "sha256": "ed58108d76a25622c69d5781de9f8a67869980e76354f8136b5d11a01798c47c"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/run.py",
+      "sha256": "3510f4f618d3b4b87913f458f30adf5cca43207ce9a7bbd63e30f7ddc81a17af"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/screening_archive.py",
+      "sha256": "8c1036d28e9865216b25c8896659237a69360784ade6b0f67f1754963a860ca6"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/screening_checkpoint.py",
+      "sha256": "71885ab5d136768ffce14eee34e272a139770bc9ff0e3051c141db68a9492392"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/screening_exchange.py",
+      "sha256": "326d8c0edfa8ea6372abbc7b52831e1775a8fbce6156b4bf27f39da31867e2bd"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/screening_launcher.py",
+      "sha256": "68721618e17d2cdd398cb73856395f8dc4f6ffe4ff5deca87f0973d8ed827e79"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/screening_placement.py",
+      "sha256": "e81450af890d78f646f04ea4cd7aaab594ab1e245077f50be6a246b44f71f8cc"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/screening_prompt.py",
+      "sha256": "d2c19142d009b6ab74bcf14914a8b602c68022a0f37eace7bec0fe37dc5837d7"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/screening_reference.py",
+      "sha256": "11ca6676afc24401ee7687198736328fafa8f45660a7d61e84772a3f487ba8a7"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/screening_resources.py",
+      "sha256": "5fec32f66d90cb77d314c16db4b7b48d66b31a7159217604d75f56ca61854292"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/screening_runtime.py",
+      "sha256": "68532aaa776d2a1567c46fea0257a39294a34f2e2305595cb93d60cee92a4ec1"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/train_coverage.py",
+      "sha256": "fdd27408d0efd39284e4a5e42e6a8dd096803f96c000d193e0991291e8e32f2d"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/training_tuning.py",
+      "sha256": "20f6b45c7782e56e4e732d8d3eb31798fd82a5c20550c9e1df2b765702592fd6"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/update_probe.py",
+      "sha256": "03ddaefe3f1aa9fb9bf982d21fe7ab0f6d84bf0710f81c91cdba66b5ac2683ee"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/agents/vllm_compat.py",
+      "sha256": "0b396526a380dd33f6b61afe82b24b623f4ccc512e332a993f382735615dbd08"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/data/__init__.py",
+      "sha256": "d87b85003a1c0505277feec778a512b0a1327f00137d48a9db4478db410fcece"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/data/calendar.py",
+      "sha256": "b2858b16caa22aaa0e56a3cb5a3c978b78eddc731278ef38f82d089c76e5c27a"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/data/episodes.py",
+      "sha256": "2548c644f6384519f0d79bf92a3529ddd6e7d6f088fa08671ee2880c37a9859e"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/data/history.py",
+      "sha256": "c98269619317b514688c2b31fe7117fe7996321133be6992f50973ff6f770c30"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/data/integrity.py",
+      "sha256": "c14d9aa640c5a2f71ec244bd93c0941d4fd87986a8063f3ef788b39bc62207d6"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/data/screening.py",
+      "sha256": "341ee1881d92e6ce4feb3ca1e109f05bbd1a7a928d1915f0b95a00ed2c084c8b"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/data/stockbench.py",
+      "sha256": "fac7c970da7c97aa136cce9f00915eb65deba2aa6c145ec212b74badb8c13868"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/data/transforms.py",
+      "sha256": "0c16f1bf3442f2d4e79570905e60a9eb121df9cd78c73aec48cef0fb56e34832"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/env/__init__.py",
+      "sha256": "457fab3a1c0ec1052d75bce986c3384006d3993eba39298c7423ba54b8039171"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/env/accounting.py",
+      "sha256": "42198c7e9d6c6fc082189c7942806637acb198f793c903637f32f61f65acecb4"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/env/observation_features.py",
+      "sha256": "324e2d007294e8268b11cd0ffc7badbe50304393a4e8779be83d733f481e19cb"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/env/observation_memory.py",
+      "sha256": "ed60a240f59efaeefd5fc3369c93f3f827a4318f1a2d08babb098bce2095c4b6"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/env/order_feedback.py",
+      "sha256": "c47298db35d83d60437caaec20f96d25b92b39140e3c20dfa908531a3e792561"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/env/tools.py",
+      "sha256": "184e80c518f96c3a870f22485bb74e21a799dbae12656569ee2a0ce96740fbb6"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/env/trading.py",
+      "sha256": "5fed5686a51c20ca35aaffee3f6c7bf56e89c3344084d613a27a7d19a9b40eb2"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/evaluation/__init__.py",
+      "sha256": "f64cfa437b122adf63c862cc511b7bae39083518f67837cecda03a2556b768dc"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/evaluation/baselines.py",
+      "sha256": "6fc49ac22481e93b4cad657e277f39d198467c9f1d76793ed8b3f80f31df4889"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/evaluation/leakage_probe.py",
+      "sha256": "dc4709adc90334825c9c69cf42d0cbb0e132463bdcedf00c12b68303d6a04083"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/evaluation/leakage_probe_v2.py",
+      "sha256": "09e706223245ca7499bbd7f10b61c321e08c037056c7ae5b970acad6cf4decdd"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/evaluation/metrics.py",
+      "sha256": "20a44a321f09bb430104515f4358a9d643e3591925fa8a9a4e4d95a70594b0ac"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/evaluation/plots.py",
+      "sha256": "e7dcd2149ea8f1969d5703e7fb20e4ddb835f2158630ee234bb7e81b1bfafe06"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/evaluation/screening.py",
+      "sha256": "4bc274426fb7c9fd48867bffd11381d94c345a5e24114c4764084623e4e0e18d"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/evaluation/t2_v2.py",
+      "sha256": "3eb57a927de19921580b216767c3f5e20f45f3cdb787c1b0906ed607c3ca03c3"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/rewards/__init__.py",
+      "sha256": "13fd240367f003f156739e31a2a6e8647822b576a86847b19168371323e5bf8e"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/rewards/calibration.py",
+      "sha256": "733e31cd732b49b1268be64d1a3f2b1b06a152354c77845468c8ff9d782eaac0"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/rewards/finance.py",
+      "sha256": "078aadbce87bd9bc65037e36f4fbd9f452f4a0687156568d27dc693bc55e627c"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/rewards/screening.py",
+      "sha256": "326fb4c7f519fc00819825f8d9f8244220f2629cbdcf16c533dd9b9db5d8f965"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/rewards/sibling_credit.py",
+      "sha256": "d8d4a634dd4317d647d113165515a0b73e952b4366df9579c9d2852c0cf32a96"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/src/rewards/step_credit.py",
+      "sha256": "b4b233d8e47fac67301a3674448ea6edc1a21d6e4684b1beb8912cba433317d6"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/third_party/agent-r1/agent_r1/env/__init__.py",
+      "sha256": "6e562e870e20420276702806f21a076d35a414606c484ecb62e2cfdfbfafb933"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/third_party/agent-r1/agent_r1/env/base.py",
+      "sha256": "91b91efa712a6074093f4dcbb90f13317ef115fa48c6bc8e0737d757755b70b3"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/third_party/agent-r1/agent_r1/env/envs/__init__.py",
+      "sha256": "d1794d413d1b48542a00f171c2357d5ef7f0c3eb556906927d4f4a691df9301f"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/third_party/agent-r1/agent_r1/env/envs/tool.py",
+      "sha256": "701e888ab94e4cf0c57ee53f1181bf3aca1e0ac2c3f4615521fbac272b16813c"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/third_party/agent-r1/agent_r1/env/tool_format.py",
+      "sha256": "f27c1772769794f7817c118be8b521553cf813f56630f97e56673d679fff0f21"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/third_party/agent-r1/agent_r1/tool/__init__.py",
+      "sha256": "19c8e2a62fdcb9a02c0fc7f3bb4045707cd45f7b0a84a591dde13268a85c5f9a"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/third_party/agent-r1/agent_r1/tool/base.py",
+      "sha256": "2ee5bb6b9d03921287cf00fd4d3562322fe68e72777a49f684564d43f39e7ccd"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/third_party/agent-r1/agent_r1/tool/schema.py",
+      "sha256": "3dfcc83246d32da0254bd88674ab24df387d6e4d0256488db0b342fde3a06724"
+    }
+  ],
+  "source_manifest_sha256": "ef47f2b6f9c1d77ae34a5316a20c6e860a67cd5e6b3ca5714b3eb239608be68c",
+  "collection_completion_sha256": "2a6a0a4b10fd27f45a984ef373aa17087d5f36910f6dd5d5c6d937c7e6e587bb",
+  "collector_output_sha256": {
+    "anchors.jsonl": "26e0770b6c0aaa4d2d4e6233bf5b457c56ae29e0ed5d9e17e68d62d46e19154f",
+    "branches.jsonl": "bc1d38be7bee68563be3b79bca3e9e149e3359cdda0267281fe9064e2a9f3903",
+    "prompt_packets.jsonl": "e4bd37c396a874f98ee5cf145f2b3c05b9a81e463db545da1f4ba33fda5d63e0",
+    "snapshot_completion.json": "3a9025826e2195b0ee739c43506ece949e462959890455b49b1b952c2364e273"
+  },
+  "snapshot_sha256": {
+    "anchors.jsonl": "26e0770b6c0aaa4d2d4e6233bf5b457c56ae29e0ed5d9e17e68d62d46e19154f",
+    "prompt_packets.jsonl": "e4bd37c396a874f98ee5cf145f2b3c05b9a81e463db545da1f4ba33fda5d63e0"
+  },
+  "reused_snapshot_native_prompt_audit": {
+    "path": "/tmp/m2-same-prefix-snapshot-audit-20261018.json",
+    "sha256": "4bde60f1cd75cc6c4377003460f6f2a048be2d9ad5e9a15c59b3f6da0f1a030c",
+    "snapshot_files_byte_unchanged": true
+  },
+  "readout_status": "PASS",
+  "readout_sha256": "f17beefe04154b35091dbfc734fe7ddac9b6379c671469d32a815b2ca2acbb55",
+  "readout_source_sha256": "91ff2230974285bbc91c0f81d4282d00b1e5e497e6818895e5d09ca7753e49b1",
+  "readout_output_sha256": {
+    "menu_coverage.csv": "cbb0b5ad4cb2e506101699e2f3b5b78d980c6f529af45a829c0382e72216eb94",
+    "branch_summary.csv": "b64eee5874c76a30a79de4ee8db093e96c624c71dc78c0ef1a1f4ca1e16c97b8",
+    "checks.json": "188d60bee976043fc3eb4c2c46186a5d0841502b7c816873edf72719ebc7d9fa"
+  },
+  "role_summaries": {
+    "menu": {
+      "actual_first_steps": 10892,
+      "legal": 10892,
+      "zero_fill": 330,
+      "trade_zero_fill": 74,
+      "hold_no_fill": 256,
+      "with_skip": 74,
+      "skip_events": 74,
+      "positive_cost": 10562,
+      "actual_fills": 10562,
+      "complete_hold_suffix_branches": 768,
+      "suffix_hold_requests": 8832
+    },
+    "repeat_buy": {
+      "actual_first_steps": 256,
+      "legal": 256,
+      "zero_fill": 0,
+      "trade_zero_fill": 0,
+      "hold_no_fill": 0,
+      "with_skip": 0,
+      "skip_events": 0,
+      "positive_cost": 256,
+      "actual_fills": 256,
+      "complete_hold_suffix_branches": 256,
+      "suffix_hold_requests": 2944
+    },
+    "original_control": {
+      "actual_first_steps": 256,
+      "legal": 256,
+      "zero_fill": 21,
+      "trade_zero_fill": 7,
+      "hold_no_fill": 14,
+      "with_skip": 7,
+      "skip_events": 7,
+      "positive_cost": 235,
+      "actual_fills": 235,
+      "complete_hold_suffix_branches": 256,
+      "suffix_hold_requests": 2944
+    }
+  },
+  "role_family_summaries": {
+    "menu:hold": {
+      "actual_first_steps": 256,
+      "legal": 256,
+      "zero_fill": 256,
+      "trade_zero_fill": 0,
+      "hold_no_fill": 256,
+      "with_skip": 0,
+      "skip_events": 0,
+      "positive_cost": 0,
+      "actual_fills": 0,
+      "complete_hold_suffix_branches": 256,
+      "suffix_hold_requests": 2944
+    },
+    "menu:buy": {
+      "actual_first_steps": 9610,
+      "legal": 9610,
+      "zero_fill": 36,
+      "trade_zero_fill": 36,
+      "hold_no_fill": 0,
+      "with_skip": 36,
+      "skip_events": 36,
+      "positive_cost": 9574,
+      "actual_fills": 9574,
+      "complete_hold_suffix_branches": 327,
+      "suffix_hold_requests": 4213
+    },
+    "repeat_buy:buy": {
+      "actual_first_steps": 256,
+      "legal": 256,
+      "zero_fill": 0,
+      "trade_zero_fill": 0,
+      "hold_no_fill": 0,
+      "with_skip": 0,
+      "skip_events": 0,
+      "positive_cost": 256,
+      "actual_fills": 256,
+      "complete_hold_suffix_branches": 256,
+      "suffix_hold_requests": 2944
+    },
+    "original_control:hold": {
+      "actual_first_steps": 14,
+      "legal": 14,
+      "zero_fill": 14,
+      "trade_zero_fill": 0,
+      "hold_no_fill": 14,
+      "with_skip": 0,
+      "skip_events": 0,
+      "positive_cost": 0,
+      "actual_fills": 0,
+      "complete_hold_suffix_branches": 14,
+      "suffix_hold_requests": 201
+    },
+    "menu:sell": {
+      "actual_first_steps": 1026,
+      "legal": 1026,
+      "zero_fill": 38,
+      "trade_zero_fill": 38,
+      "hold_no_fill": 0,
+      "with_skip": 38,
+      "skip_events": 38,
+      "positive_cost": 988,
+      "actual_fills": 988,
+      "complete_hold_suffix_branches": 185,
+      "suffix_hold_requests": 1675
+    },
+    "original_control:sell": {
+      "actual_first_steps": 99,
+      "legal": 99,
+      "zero_fill": 0,
+      "trade_zero_fill": 0,
+      "hold_no_fill": 0,
+      "with_skip": 0,
+      "skip_events": 0,
+      "positive_cost": 99,
+      "actual_fills": 99,
+      "complete_hold_suffix_branches": 99,
+      "suffix_hold_requests": 916
+    },
+    "original_control:buy": {
+      "actual_first_steps": 143,
+      "legal": 143,
+      "zero_fill": 7,
+      "trade_zero_fill": 7,
+      "hold_no_fill": 0,
+      "with_skip": 7,
+      "skip_events": 7,
+      "positive_cost": 136,
+      "actual_fills": 136,
+      "complete_hold_suffix_branches": 143,
+      "suffix_hold_requests": 1827
+    }
+  },
+  "all_branch_summary": {
+    "actual_first_steps": 11404,
+    "legal": 11404,
+    "zero_fill": 351,
+    "trade_zero_fill": 81,
+    "hold_no_fill": 270,
+    "with_skip": 81,
+    "skip_events": 81,
+    "positive_cost": 11053,
+    "actual_fills": 11053,
+    "complete_hold_suffix_branches": 1280,
+    "suffix_hold_requests": 14720
+  },
+  "checks": {
+    "accounting_risk_history_branch_checks": 11404,
+    "fresh_repeat_exact": 256,
+    "own_control_exact_info_and_all_old_terminal_metrics": 256,
+    "hold_reference_all_old_terminal_metrics_exact": 256
+  },
+  "maximum_numeric_identity_absolute_errors": {
+    "first_cost": 0.0,
+    "cost_fraction": 0.0,
+    "turnover": 0.0,
+    "after_equity": 0.0,
+    "net_return": 0.0,
+    "net_return_equity_identity": 0.0,
+    "one_day_drawdown": 0.0,
+    "cash_debit": 0.0,
+    "terminal_Y": 0.0,
+    "terminal_cost": 0.0,
+    "terminal_commission": 0.0,
+    "terminal_slippage": 0.0,
+    "terminal_turnover_sum": 0.0,
+    "terminal_max_turnover": 0.0,
+    "terminal_risk_penalty": 0.0,
+    "terminal_denominator": 0.0,
+    "terminal_benchmark_return": 0.0,
+    "terminal_score_formula": 0.0,
+    "notional": 0.0,
+    "commission": 5.684341886080802e-14,
+    "execution_price": 0.0,
+    "slippage": 0.0,
+    "position_shares": 0.0,
+    "control_old_Y": 0.0,
+    "hold_old_Y": 0.0
+  },
+  "execution_denominators": {
+    "anchor_instances": 256,
+    "finite_menu_first_steps": 10892,
+    "repeat_buy_actual_first_steps": 256,
+    "original_control_actual_first_steps": 256,
+    "total_actual_first_steps": 11404,
+    "selected_unique_menu_hold_completions": 768,
+    "scripted_probe_slots_with_fresh_repeat": 1024,
+    "all_actual_hold_completions": 1280,
+    "first_step_only_branches": 10124,
+    "snapshot_prefix_requests": 2104,
+    "branch_prefix_requests": 94771,
+    "suffix_hold_requests": 14720,
+    "environment_requests_total": 122999,
+    "environments_constructed": 11660,
+    "branch_cache_used": false,
+    "scripted_probes_are_model_samples": false
+  },
+  "limits": [
+    "Persisted evidence/source audit only; no environment, tokenizer, model or GPU invocation.",
+    "First-step-only branches have no terminal Y.",
+    "Terminal cost/turnover/risk/scorer identities independently recomputed; future equity trajectories not re-simulated.",
+    "Repeated deterministic branches verify identity, not independent statistical observations."
+  ],
+  "sealed_files_modified": false,
+  "model_requests": 0,
+  "optimizer_updates": 0,
+  "GPU_used": false
+}

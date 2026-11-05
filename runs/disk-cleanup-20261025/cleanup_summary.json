@@ -1,0 +1,48 @@
+{
+  "status": "COMPLETE",
+  "at_Asia_Shanghai": "2026-10-25T17:25:20.440104+08:00",
+  "completed_groups": [
+    "failed_moments",
+    "failed_screening_v9",
+    "failed_screening_v4",
+    "consumed_critic_zero",
+    "consumed_critic_plain",
+    "consumed_critic_exact",
+    "old_learning_restart",
+    "old_common_sft_rl",
+    "old_training_tuning",
+    "old_recovery_stage1"
+  ],
+  "removed_files": 475,
+  "removed_logical_bytes": 329161949182,
+  "removed_allocated_bytes": 319941654528,
+  "filesystem_before": {
+    "total": 533448359936,
+    "used": 519993294848,
+    "free": 13455065088
+  },
+  "filesystem_after": {
+    "total": 486960398336,
+    "used": 200051916800,
+    "free": 286908481536
+  },
+  "kept_paths": [
+    "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-coldstart-v3-20260914/merged_model",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-rloo-terminal-demo-20261025-v1",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-rloo-terminal-demo-20261025-v2",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-online-demo-20261024-v2/shared_adapter.pkl",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/prepared"
+  ],
+  "training_remains_paused": true,
+  "final_verified_at_Asia_Shanghai": "2026-10-25T17:26:54.657303+08:00",
+  "dependencies_verified": [
+    "current recovery SFT complete HF shards",
+    "coldstart-v3 archive baseline complete HF shards",
+    "recent multistep S0 final actor complete HF shards",
+    "RLOO initial trajectory file",
+    "shared_adapter.pkl",
+    "current prepared Train parquet"
+  ],
+  "historical_weight_restore_note": "Deleted raw checkpoints were not newly archived; small results/logs/configs/trajectories and existing independent compressed archives remain."
+}

@@ -15,6 +15,7 @@ from typing import Any
 GIB = 1024**3
 MIB = 1024**2
 HARD_MAXIMUM_BYTES = 60 * GIB
+PERSISTENT_MAXIMUM_BYTES = 80 * GIB
 
 
 @dataclass
@@ -98,13 +99,19 @@ class Reservation:
         clock: Any = time.monotonic,
         ttl_seconds: float = 6 * 3600,
         oom_backoff_seconds: float = 30,
+        persistent: bool = False,
     ):
         for name, value in (("target_bytes", target_bytes), ("maximum_bytes", maximum_bytes),
                             ("block_bytes", block_bytes), ("reserve_bytes", reserve_bytes)):
             if type(value) is not int or value < 0:
                 raise ValueError(f"{name} must be a nonnegative integer")
-        if not 0 < maximum_bytes <= HARD_MAXIMUM_BYTES or target_bytes > maximum_bytes:
-            raise ValueError("target/maximum exceeds the 60 GiB allocator limit")
+        if type(persistent) is not bool:
+            raise ValueError("persistent must be explicitly boolean")
+        limit = PERSISTENT_MAXIMUM_BYTES if persistent else HARD_MAXIMUM_BYTES
+        if not 0 < maximum_bytes <= limit or target_bytes > maximum_bytes:
+            raise ValueError(f"target/maximum exceeds the {limit // GIB} GiB allocator limit")
+        if persistent and reserve_bytes < 2 * GIB:
+            raise ValueError("persistent reservation requires at least 2 GiB free headroom")
         if not 0 < block_bytes <= maximum_bytes:
             raise ValueError("block_bytes must be positive and no greater than maximum")
         for name, value in (("ttl_seconds", ttl_seconds),
@@ -115,9 +122,10 @@ class Reservation:
         self.target_bytes, self.maximum_bytes = target_bytes, maximum_bytes
         self.block_bytes, self.reserve_bytes = block_bytes, reserve_bytes
         self.clock, self.ttl_seconds = clock, ttl_seconds
+        self.persistent = persistent
         self.oom_backoff_seconds = oom_backoff_seconds
         self.started = clock()
-        self.deadline = self.started + ttl_seconds
+        self.deadline = None if persistent else self.started + ttl_seconds
         self._blocks: list[Allocation] = []
         self._snapshot: dict[str, int] = {}
         self._state = "GROWING"
@@ -168,7 +176,7 @@ class Reservation:
     def _require_open(self) -> None:
         if self._closed:
             raise RuntimeError("reservation is closed; create a new explicit lease")
-        if self.clock() >= self.deadline:
+        if self._expired():
             self._close("EXPIRED")
             raise RuntimeError("reservation lease expired")
 
@@ -181,8 +189,9 @@ class Reservation:
             block_bytes=self.block_bytes, reserve_bytes=self.reserve_bytes,
             **self._snapshot,
             elapsed_seconds=max(0.0, self.clock() - self.started),
-            remaining_seconds=max(0.0, self.deadline - self.clock()),
-            ttl_seconds=self.ttl_seconds,
+            remaining_seconds=None if self.persistent else max(0.0, self.deadline - self.clock()),
+            ttl_seconds=None if self.persistent else self.ttl_seconds,
+            persistent=self.persistent,
             oom_count=self._oom_count,
             retry_in_seconds=max(0.0, self._retry_at - self.clock()),
             error=self._error, cleanup_error=self._cleanup_error,
@@ -192,14 +201,14 @@ class Reservation:
     def tick(self) -> dict[str, Any]:
         if self._closed:
             return self.status()
-        if self.clock() >= self.deadline:
+        if self._expired():
             return self._close("EXPIRED")
         try:
             # Discard only this process's unoccupied cache before budgeting.
             self.backend.release([])
             telemetry = self._read_snapshot()
             # Lazy CUDA initialization/driver calls can outlast a short lease.
-            if self.clock() >= self.deadline:
+            if self._expired():
                 return self._close("EXPIRED")
             if telemetry["allocator_reserved_bytes"] > self.maximum_bytes:
                 raise RuntimeError("existing allocator residency exceeds maximum")
@@ -222,7 +231,7 @@ class Reservation:
             ):
                 self._state = "WAITING_FOR_MEMORY"
                 return self.status()
-            if self.clock() >= self.deadline:
+            if self._expired():
                 return self._close("EXPIRED")
             try:
                 self._blocks.append(self.backend.allocate(nbytes))
@@ -238,7 +247,7 @@ class Reservation:
             if self._blocks[-1].nbytes != nbytes or self._blocks[-1].payload is None:
                 raise RuntimeError("backend returned an invalid allocation")
             telemetry = self._read_snapshot()
-            if self.clock() >= self.deadline:
+            if self._expired():
                 return self._close("EXPIRED")
             if telemetry["allocator_reserved_bytes"] > self.maximum_bytes:
                 raise RuntimeError("actual allocator residency exceeded its estimated maximum")
@@ -253,6 +262,9 @@ class Reservation:
         self._require_open()
         self._paused, self._state = True, "PAUSED"
         return self.status()
+
+    def _expired(self) -> bool:
+        return self.deadline is not None and self.clock() >= self.deadline
 
     def release(self, bytes_to_release: int) -> dict[str, Any]:
         self._require_open()

@@ -1,0 +1,1087 @@
+{
+  "stages": [
+    {
+      "name": "rloo_round000_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/logs/rloo_round000_collect_attempt1.log",
+      "started_at": "2026-11-05T17:30:37.641400+08:00",
+      "gpu_worker": true,
+      "seconds": 59.99940150603652,
+      "finished_at": "2026-11-05T17:31:37.641621+08:00"
+    },
+    {
+      "name": "rloo_round000_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/logs/rloo_round000_train_attempt1.log",
+      "started_at": "2026-11-05T17:31:44.781914+08:00",
+      "gpu_worker": true,
+      "seconds": 233.9384242258966,
+      "finished_at": "2026-11-05T17:35:38.721280+08:00"
+    },
+    {
+      "name": "rloo_round001_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/logs/rloo_round001_collect_attempt1.log",
+      "started_at": "2026-11-05T17:35:51.989295+08:00",
+      "gpu_worker": true,
+      "seconds": 59.99655229970813,
+      "finished_at": "2026-11-05T17:36:51.986743+08:00"
+    },
+    {
+      "name": "rloo_round001_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/logs/rloo_round001_train_attempt1.log",
+      "started_at": "2026-11-05T17:36:59.668488+08:00",
+      "gpu_worker": true,
+      "seconds": 222.19513691961765,
+      "finished_at": "2026-11-05T17:40:41.864491+08:00"
+    },
+    {
+      "name": "rloo_round002_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/logs/rloo_round002_collect_attempt1.log",
+      "started_at": "2026-11-05T17:40:54.451850+08:00",
+      "gpu_worker": true,
+      "seconds": 70.62582297250628,
+      "finished_at": "2026-11-05T17:42:05.078516+08:00"
+    },
+    {
+      "name": "rloo_round002_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/logs/rloo_round002_train_attempt1.log",
+      "started_at": "2026-11-05T17:42:12.640367+08:00",
+      "gpu_worker": true,
+      "seconds": 235.4728240519762,
+      "finished_at": "2026-11-05T17:46:08.114470+08:00"
+    },
+    {
+      "name": "eval_rloo_train_panel",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/logs/eval_rloo_train_panel_attempt1.log",
+      "started_at": "2026-11-05T17:46:21.684990+08:00",
+      "gpu_worker": true,
+      "seconds": 104.874526116997,
+      "finished_at": "2026-11-05T17:48:06.560479+08:00"
+    },
+    {
+      "name": "mc_target_round000_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/logs/mc_target_round000_collect_attempt1.log",
+      "started_at": "2026-11-05T17:48:17.293100+08:00",
+      "gpu_worker": true,
+      "seconds": 114.42964880168438,
+      "finished_at": "2026-11-05T17:50:11.723687+08:00"
+    },
+    {
+      "name": "mc_target_round000_mc",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/logs/mc_target_round000_mc_attempt1.log",
+      "started_at": "2026-11-05T17:50:20.510952+08:00",
+      "gpu_worker": true,
+      "seconds": 114.41996033862233,
+      "finished_at": "2026-11-05T17:52:14.932022+08:00"
+    },
+    {
+      "name": "mc_target_round000_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/logs/mc_target_round000_train_attempt1.log",
+      "started_at": "2026-11-05T17:52:23.531860+08:00",
+      "gpu_worker": true,
+      "seconds": 226.31572419777513,
+      "finished_at": "2026-11-05T17:56:09.848634+08:00"
+    },
+    {
+      "name": "mc_target_round001_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/logs/mc_target_round001_collect_attempt1.log",
+      "started_at": "2026-11-05T17:56:24.012608+08:00",
+      "gpu_worker": true,
+      "seconds": 126.98888325691223,
+      "finished_at": "2026-11-05T17:58:31.002486+08:00"
+    },
+    {
+      "name": "mc_target_round001_mc",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/logs/mc_target_round001_mc_attempt1.log",
+      "started_at": "2026-11-05T17:58:39.677056+08:00",
+      "gpu_worker": true,
+      "seconds": 79.639682687819,
+      "finished_at": "2026-11-05T17:59:59.317630+08:00"
+    },
+    {
+      "name": "mc_target_round001_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/logs/mc_target_round001_train_attempt1.log",
+      "started_at": "2026-11-05T18:00:07.917699+08:00",
+      "gpu_worker": true,
+      "seconds": 230.40843195468187,
+      "finished_at": "2026-11-05T18:03:58.327196+08:00"
+    },
+    {
+      "name": "mc_target_round002_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/logs/mc_target_round002_collect_attempt1.log",
+      "started_at": "2026-11-05T18:04:13.512569+08:00",
+      "gpu_worker": true,
+      "seconds": 115.09568577632308,
+      "finished_at": "2026-11-05T18:06:08.609260+08:00"
+    },
+    {
+      "name": "mc_target_round002_mc",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/logs/mc_target_round002_mc_attempt1.log",
+      "started_at": "2026-11-05T18:06:17.641344+08:00",
+      "gpu_worker": true,
+      "seconds": 37.28019976615906,
+      "finished_at": "2026-11-05T18:06:54.922442+08:00"
+    },
+    {
+      "name": "mc_target_round002_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/logs/mc_target_round002_train_attempt1.log",
+      "started_at": "2026-11-05T18:07:03.776472+08:00",
+      "gpu_worker": true,
+      "seconds": 231.88757777959108,
+      "finished_at": "2026-11-05T18:10:55.665091+08:00"
+    },
+    {
+      "name": "eval_mc_target_train_panel",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/logs/eval_mc_target_train_panel_attempt1.log",
+      "started_at": "2026-11-05T18:11:12.385426+08:00",
+      "gpu_worker": true,
+      "seconds": 127.48193380981684,
+      "finished_at": "2026-11-05T18:13:19.868413+08:00"
+    }
+  ],
+  "arms": {
+    "rloo": {
+      "status": "COMPLETE_LIMITED",
+      "rounds": [
+        {
+          "round": 0,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/training/rloo/round_000/collect",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/training/rloo/round_000/train",
+          "mc": null,
+          "parent_seed": 2054642516,
+          "quota_seed": 999998134,
+          "auxiliary_seed": 1433747386,
+          "parent_tokens": 853345,
+          "auxiliary_tokens": 0,
+          "completed_baselines": 0,
+          "parent_requests": 192,
+          "optimizer_updates": 4,
+          "completed_optimizer_steps": 4,
+          "actual_mc_replaced_requests": 0
+        },
+        {
+          "round": 1,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/training/rloo/round_001/collect",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/training/rloo/round_001/train",
+          "mc": null,
+          "parent_seed": 411222781,
+          "quota_seed": 1635004435,
+          "auxiliary_seed": 511371350,
+          "parent_tokens": 824920,
+          "auxiliary_tokens": 0,
+          "completed_baselines": 0,
+          "parent_requests": 192,
+          "optimizer_updates": 4,
+          "completed_optimizer_steps": 8,
+          "actual_mc_replaced_requests": 0
+        },
+        {
+          "round": 2,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/training/rloo/round_002/collect",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/training/rloo/round_002/train",
+          "mc": null,
+          "parent_seed": 1785670186,
+          "quota_seed": 794377152,
+          "auxiliary_seed": 2017460396,
+          "parent_tokens": 853025,
+          "auxiliary_tokens": 0,
+          "completed_baselines": 0,
+          "parent_requests": 192,
+          "optimizer_updates": 4,
+          "completed_optimizer_steps": 12,
+          "actual_mc_replaced_requests": 0
+        }
+      ],
+      "final_adapter": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/training/rloo/round_002/train/adapter",
+      "completed_optimizer_steps": 12,
+      "cumulative_tokens": 2531290,
+      "learning_rate": 2e-06,
+      "optimizer_seed": 43,
+      "stop_reason": "NO_FULL_FIXED_PARENT_BATCH_FORECAST_ALLOWANCE",
+      "finished_at": "2026-11-05T17:46:16.383264+08:00",
+      "unused_tokens": 1468710
+    },
+    "mc_target": {
+      "status": "COMPLETE_LIMITED",
+      "rounds": [
+        {
+          "round": 0,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/training/mc_target/round_000/collect",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/training/mc_target/round_000/train",
+          "mc": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/training/mc_target/round_000/mc",
+          "parent_seed": 506090480,
+          "quota_seed": 1917750,
+          "auxiliary_seed": 789842361,
+          "parent_tokens": 853639,
+          "auxiliary_tokens": 289822,
+          "completed_baselines": 8,
+          "parent_requests": 192,
+          "optimizer_updates": 4,
+          "completed_optimizer_steps": 4,
+          "actual_mc_replaced_requests": 8
+        },
+        {
+          "round": 1,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/training/mc_target/round_001/collect",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/training/mc_target/round_001/train",
+          "mc": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/training/mc_target/round_001/mc",
+          "parent_seed": 747896474,
+          "quota_seed": 523486926,
+          "auxiliary_seed": 654529698,
+          "parent_tokens": 824915,
+          "auxiliary_tokens": 169486,
+          "completed_baselines": 5,
+          "parent_requests": 192,
+          "optimizer_updates": 4,
+          "completed_optimizer_steps": 8,
+          "actual_mc_replaced_requests": 5
+        },
+        {
+          "round": 2,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/training/mc_target/round_002/collect",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/training/mc_target/round_002/train",
+          "mc": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/training/mc_target/round_002/mc",
+          "parent_seed": 1045141931,
+          "quota_seed": 209910146,
+          "auxiliary_seed": 385147776,
+          "parent_tokens": 853449,
+          "auxiliary_tokens": 32383,
+          "completed_baselines": 1,
+          "parent_requests": 192,
+          "optimizer_updates": 4,
+          "completed_optimizer_steps": 12,
+          "actual_mc_replaced_requests": 1
+        }
+      ],
+      "final_adapter": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/training/mc_target/round_002/train/adapter",
+      "completed_optimizer_steps": 12,
+      "cumulative_tokens": 3023694,
+      "learning_rate": 2e-06,
+      "optimizer_seed": 43,
+      "stop_reason": "NO_FULL_FIXED_PARENT_BATCH_FORECAST_ALLOWANCE",
+      "finished_at": "2026-11-05T18:11:05.882433+08:00",
+      "unused_tokens": 976306
+    }
+  },
+  "evaluations": {},
+  "started_at": "2026-11-05T17:30:31.260506+08:00",
+  "experiment": "financial_learning_v2_conditional_step3",
+  "formal_valid_access": false,
+  "formal_final_oos_access": false,
+  "reserved_test_access": false,
+  "initial_adapter": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-evidence-20261030-v2/teacher_sft/adapter",
+  "plan": "/home/tianming/projects/finance-credit-agent/docs/2026-10-30_AGENTIC_RL_THREE_STEP_PLAN_V2.md",
+  "plan_sha256": "78245926c28ec0d246744529b766c959ae8b4d9bab67cce6759a86f3ee0a6215",
+  "generation_caps": {
+    "per_arm": 4000000,
+    "evaluation": 5000000,
+    "global_total": 44000000
+  },
+  "gpu_stage_seconds_cap": 43200,
+  "step1_status": "SEE_SIGNAL_REPORT",
+  "step2_status": "COMPLETE_IN_PARENT_RUN",
+  "step3_status": "COMPLETE",
+  "status": "COMPLETE",
+  "attempt": 1,
+  "baseline_only": false,
+  "updated_at": "2026-11-05T18:13:38.795636+08:00",
+  "authorized_steps": [
+    3
+  ],
+  "current_step": 3,
+  "source_root": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2",
+  "protocol_sha256": "6ea89bea1ad859ed49c610ceb4f786f0179931e75703e76b28e2c2e95ce80ce0",
+  "learning_rate": 2e-06,
+  "parent_step2_decision_sha256": "775055623bcb86861b7ece13009d15c3b8144cd6fb790de2f309bf912bff7bf5",
+  "controller_sha256": "583ecc5c1218f86f482193f8b30cfe5ff73df40baff09e2397c2fb9fe7e20ecb",
+  "controller_source": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/frozen_sources/controller_attempt1.py",
+  "gate": {
+    "status": "PASS",
+    "branch": "A_FIXED_TARGET_MC",
+    "evaluated_at": "2026-11-05T17:30:32.282255+08:00",
+    "mixed_business_task_ids": [
+      "financial-credit-10000-v0",
+      "financial-credit-10000-v1",
+      "financial-credit-10013-v0",
+      "financial-credit-10013-v1",
+      "financial-credit-10016-v1",
+      "financial-credit-10030-v0",
+      "financial-credit-10042-v1",
+      "financial-credit-10097-v0",
+      "financial-credit-10112-v1"
+    ],
+    "supporting_calculation_requests": [
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_000",
+        "request_key": "financial-credit-10042-v0/rep0/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": 1.0765860625581594,
+        "mean_logprob_delta": 0.027763985097408295,
+        "aligned": true
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_000",
+        "request_key": "financial-credit-10042-v0/rep1/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": -3.2291500564486766,
+        "mean_logprob_delta": -0.1214121263474226,
+        "aligned": true
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_000",
+        "request_key": "financial-credit-10013-v0/rep0/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": 0.00015203280645055393,
+        "mean_logprob_delta": -0.002558792009949684,
+        "aligned": false
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_000",
+        "request_key": "financial-credit-10042-v0/rep2/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": 1.0765860625581594,
+        "mean_logprob_delta": 0.027763985097408295,
+        "aligned": true
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_000",
+        "request_key": "financial-credit-10042-v1/rep0/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": -2.1559495859464963,
+        "mean_logprob_delta": -0.1265372410416603,
+        "aligned": true
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_000",
+        "request_key": "financial-credit-10013-v0/rep1/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": 0.00015203280645055393,
+        "mean_logprob_delta": 0.007707782089710236,
+        "aligned": true
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_005",
+        "request_key": "financial-credit-10000-v0/rep1/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": 0.894829579034788,
+        "mean_logprob_delta": 0.002812082413583994,
+        "aligned": true
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_005",
+        "request_key": "financial-credit-10000-v0/rep0/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": -2.6844887371043646,
+        "mean_logprob_delta": -0.12784652411937714,
+        "aligned": true
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_005",
+        "request_key": "financial-credit-10000-v1/rep0/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": 1.862738253300109e-17,
+        "mean_logprob_delta": 0.002246513497084379,
+        "aligned": true
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_005",
+        "request_key": "financial-credit-10000-v0/rep2/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": 0.894829579034788,
+        "mean_logprob_delta": 0.002812082413583994,
+        "aligned": true
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_005",
+        "request_key": "financial-credit-10016-v0/rep1/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": -2.6804627425451932,
+        "mean_logprob_delta": -0.024507947266101837,
+        "aligned": true
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_005",
+        "request_key": "financial-credit-10000-v1/rep1/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": 1.862738253300109e-17,
+        "mean_logprob_delta": 0.002246513497084379,
+        "aligned": true
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_000",
+        "request_key": "financial-credit-10013-v0/rep0/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": 1.2111628190811543,
+        "mean_logprob_delta": 0.0034212572500109673,
+        "aligned": true
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_000",
+        "request_key": "financial-credit-10013-v0/rep1/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": -1.1863074023692861,
+        "mean_logprob_delta": -0.03612488508224487,
+        "aligned": true
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_000",
+        "request_key": "financial-credit-10013-v0/rep3/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": 1.2111628190811543,
+        "mean_logprob_delta": 0.0034212572500109673,
+        "aligned": true
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_000",
+        "request_key": "financial-credit-10013-v0/rep2/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": -1.1863074023692861,
+        "mean_logprob_delta": -0.03612488508224487,
+        "aligned": true
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_000",
+        "request_key": "financial-credit-10013-v1/rep0/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": 0.6126955002629786,
+        "mean_logprob_delta": 0.004458068870007992,
+        "aligned": true
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_000",
+        "request_key": "financial-credit-10013-v1/rep3/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": -1.7883756673651996,
+        "mean_logprob_delta": -0.00767160952091217,
+        "aligned": true
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_005",
+        "request_key": "financial-credit-10000-v0/rep1/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": 0.0017304340847303704,
+        "mean_logprob_delta": 0.002407750114798546,
+        "aligned": true
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_005",
+        "request_key": "financial-credit-10000-v0/rep0/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": -0.005191302254190976,
+        "mean_logprob_delta": -0.0081537626683712,
+        "aligned": true
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_005",
+        "request_key": "financial-credit-10030-v0/rep0/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": 3.5465558214417857e-17,
+        "mean_logprob_delta": -0.0004118536598980427,
+        "aligned": false
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_005",
+        "request_key": "financial-credit-10000-v0/rep2/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": 0.0017304340847303704,
+        "mean_logprob_delta": 0.002407750114798546,
+        "aligned": true
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_005",
+        "request_key": "financial-credit-10000-v1/rep0/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": -3.4666943488817767,
+        "mean_logprob_delta": -0.009335219860076904,
+        "aligned": true
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_005",
+        "request_key": "financial-credit-10030-v0/rep1/call3",
+        "genuine_updated_calculation": true,
+        "changed_weights": true,
+        "actor_advantage": 3.5465558214417857e-17,
+        "mean_logprob_delta": -0.0004118536598980427,
+        "aligned": false
+      }
+    ],
+    "rejected_calculation_diagnostics": [],
+    "inspected_training_rounds": [
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_000",
+        "actual_updates": 4,
+        "changed_weights": true,
+        "probability_diagnostics": 16
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_001",
+        "actual_updates": 4,
+        "changed_weights": true,
+        "probability_diagnostics": 0
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_002",
+        "actual_updates": 4,
+        "changed_weights": true,
+        "probability_diagnostics": 0
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_003",
+        "actual_updates": 4,
+        "changed_weights": true,
+        "probability_diagnostics": 0
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_004",
+        "actual_updates": 4,
+        "changed_weights": true,
+        "probability_diagnostics": 0
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_005",
+        "actual_updates": 4,
+        "changed_weights": true,
+        "probability_diagnostics": 16
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_000",
+        "actual_updates": 4,
+        "changed_weights": true,
+        "probability_diagnostics": 16
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_001",
+        "actual_updates": 4,
+        "changed_weights": true,
+        "probability_diagnostics": 0
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_002",
+        "actual_updates": 4,
+        "changed_weights": true,
+        "probability_diagnostics": 0
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_003",
+        "actual_updates": 4,
+        "changed_weights": true,
+        "probability_diagnostics": 0
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_004",
+        "actual_updates": 4,
+        "changed_weights": true,
+        "probability_diagnostics": 0
+      },
+      {
+        "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_005",
+        "actual_updates": 4,
+        "changed_weights": true,
+        "probability_diagnostics": 16
+      }
+    ],
+    "dev_or_holdout_score_used": false,
+    "advantage_alignment_required": false,
+    "finite_zero_probability_change_sufficient": false,
+    "conclusion": "local update responsiveness only; not evidence of learning generalization"
+  },
+  "evaluation_contract": {
+    "status": "FROZEN",
+    "frozen_at": "2026-11-05T17:30:32.299203+08:00",
+    "scope": "PANEL_K4_ONLY",
+    "measured_native_mean_tokens": 26318.1875,
+    "panel_plus_holdout_forecast_tokens": 6466416,
+    "panel_only_forecast_tokens": 4529398,
+    "evaluation_cap": 5000000,
+    "primary_metric": "full_task_success",
+    "panel_tasks": 16,
+    "panel_repetitions": 4,
+    "holdout_tasks": 32,
+    "holdout_repetitions": 1,
+    "dev_evaluated": false,
+    "reserved_test_evaluated": false,
+    "selected_before_any_stage3_model_generation": true,
+    "panel_is_training_positive_control": true,
+    "holdout_already_used_to_select_lr": true
+  },
+  "training_contract": {
+    "frozen_at": "2026-11-05T17:30:32.359212+08:00",
+    "parent_batch_allowance_floor": 1526429,
+    "formula": "max Stage2 full32parent batch cost plus one K4worstgroup reserve",
+    "arm_cap": 4000000,
+    "maximum_batches": 4,
+    "maximum_parent_quota": 8
+  },
+  "source_receipts": {
+    "src/agents/mandate_repair_collect.py": {
+      "sha256": "cf88a2df68844bdb7d0c999be49fefc91364de39b3ba6f5aebb7479af0f36e2e",
+      "frozen_at": "2026-11-05T17:30:37.637936+08:00"
+    },
+    "src/agents/financial_evidence_env.py": {
+      "sha256": "a9c17b524d072e84a3039437c7a2a4a20bb9513afa8432599bc91b5de5eba17c",
+      "frozen_at": "2026-11-05T17:30:37.638609+08:00"
+    },
+    "src/agents/mandate_repair_env.py": {
+      "sha256": "9fdc61814436909284388c95a2c55efa1127f55e1a81ffbcb817a4ddfddf8817",
+      "frozen_at": "2026-11-05T17:30:37.639180+08:00"
+    },
+    "src/agents/mandate_repair_metrics.py": {
+      "sha256": "18ed947291e1f436e3423764ae6bc372c43be274270584969808f4870ef0302d",
+      "frozen_at": "2026-11-05T17:30:37.639718+08:00"
+    },
+    "src/agents/mandate_repair_verifier.py": {
+      "sha256": "b20c79771f758ecce9bebc8bce8aa505794446e7d302b996c6fba7fa6c2d5a52",
+      "frozen_at": "2026-11-05T17:30:37.640324+08:00"
+    },
+    "src/agents/mandate_repair_train.py": {
+      "sha256": "8b47ed22403b8abeed38fafb7062d23e9f58b94efb8de0654220d9d8c66fc12d",
+      "frozen_at": "2026-11-05T17:31:44.780854+08:00"
+    },
+    "src/agents/financial_learning_collect.py": {
+      "sha256": "5b4a1127d8a9134c7454feeda9676d025751f1e7c302331acff7d0ab31cfeda8",
+      "frozen_at": "2026-11-05T17:48:17.285889+08:00"
+    },
+    "src/agents/financial_mc_selection.py": {
+      "sha256": "81f74c566e0da485c4a24067c3151f84ce23a1773ee09a9c361f8a061ca0091e",
+      "frozen_at": "2026-11-05T17:48:17.290450+08:00"
+    },
+    "src/agents/financial_credit_probe.py": {
+      "sha256": "9929bde922f724f41ed586e28abd3eb928de70da53011c32683725419302eecf",
+      "frozen_at": "2026-11-05T17:48:17.292160+08:00"
+    },
+    "src/agents/financial_mc_probe.py": {
+      "sha256": "c36bd47b84faad47ab80195ecdd2a92b00497ae56ff677f6ebb527cdf8f30a97",
+      "frozen_at": "2026-11-05T17:50:20.498741+08:00"
+    }
+  },
+  "current_stage": null,
+  "costs": {
+    "stage2_generation_tokens": 27798224,
+    "stage3_training_generation_tokens": {
+      "rloo": 2531290,
+      "mc_target": 3023694
+    },
+    "stage3_evaluation_generation_tokens": 1709169,
+    "total_new_generation_tokens": 35062377,
+    "step3_gpu_stage_seconds": 2263.5684826523066,
+    "parent_gpu_stage_seconds": 7730.071248210967,
+    "gpu_stage_seconds": 9993.639730863273,
+    "includes_failed_requests": true,
+    "supervision_accounted_separately": true
+  },
+  "decision": {
+    "status": "COMPLETE",
+    "decision": "LOCAL_MC_COMPARISON_RECORDED",
+    "finished_at": "2026-11-05T18:13:26.113737+08:00",
+    "gate": {
+      "status": "PASS",
+      "branch": "A_FIXED_TARGET_MC",
+      "evaluated_at": "2026-11-05T17:30:32.282255+08:00",
+      "mixed_business_task_ids": [
+        "financial-credit-10000-v0",
+        "financial-credit-10000-v1",
+        "financial-credit-10013-v0",
+        "financial-credit-10013-v1",
+        "financial-credit-10016-v1",
+        "financial-credit-10030-v0",
+        "financial-credit-10042-v1",
+        "financial-credit-10097-v0",
+        "financial-credit-10112-v1"
+      ],
+      "supporting_calculation_requests": [
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_000",
+          "request_key": "financial-credit-10042-v0/rep0/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": 1.0765860625581594,
+          "mean_logprob_delta": 0.027763985097408295,
+          "aligned": true
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_000",
+          "request_key": "financial-credit-10042-v0/rep1/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": -3.2291500564486766,
+          "mean_logprob_delta": -0.1214121263474226,
+          "aligned": true
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_000",
+          "request_key": "financial-credit-10013-v0/rep0/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": 0.00015203280645055393,
+          "mean_logprob_delta": -0.002558792009949684,
+          "aligned": false
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_000",
+          "request_key": "financial-credit-10042-v0/rep2/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": 1.0765860625581594,
+          "mean_logprob_delta": 0.027763985097408295,
+          "aligned": true
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_000",
+          "request_key": "financial-credit-10042-v1/rep0/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": -2.1559495859464963,
+          "mean_logprob_delta": -0.1265372410416603,
+          "aligned": true
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_000",
+          "request_key": "financial-credit-10013-v0/rep1/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": 0.00015203280645055393,
+          "mean_logprob_delta": 0.007707782089710236,
+          "aligned": true
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_005",
+          "request_key": "financial-credit-10000-v0/rep1/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": 0.894829579034788,
+          "mean_logprob_delta": 0.002812082413583994,
+          "aligned": true
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_005",
+          "request_key": "financial-credit-10000-v0/rep0/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": -2.6844887371043646,
+          "mean_logprob_delta": -0.12784652411937714,
+          "aligned": true
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_005",
+          "request_key": "financial-credit-10000-v1/rep0/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": 1.862738253300109e-17,
+          "mean_logprob_delta": 0.002246513497084379,
+          "aligned": true
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_005",
+          "request_key": "financial-credit-10000-v0/rep2/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": 0.894829579034788,
+          "mean_logprob_delta": 0.002812082413583994,
+          "aligned": true
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_005",
+          "request_key": "financial-credit-10016-v0/rep1/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": -2.6804627425451932,
+          "mean_logprob_delta": -0.024507947266101837,
+          "aligned": true
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_005",
+          "request_key": "financial-credit-10000-v1/rep1/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": 1.862738253300109e-17,
+          "mean_logprob_delta": 0.002246513497084379,
+          "aligned": true
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_000",
+          "request_key": "financial-credit-10013-v0/rep0/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": 1.2111628190811543,
+          "mean_logprob_delta": 0.0034212572500109673,
+          "aligned": true
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_000",
+          "request_key": "financial-credit-10013-v0/rep1/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": -1.1863074023692861,
+          "mean_logprob_delta": -0.03612488508224487,
+          "aligned": true
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_000",
+          "request_key": "financial-credit-10013-v0/rep3/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": 1.2111628190811543,
+          "mean_logprob_delta": 0.0034212572500109673,
+          "aligned": true
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_000",
+          "request_key": "financial-credit-10013-v0/rep2/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": -1.1863074023692861,
+          "mean_logprob_delta": -0.03612488508224487,
+          "aligned": true
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_000",
+          "request_key": "financial-credit-10013-v1/rep0/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": 0.6126955002629786,
+          "mean_logprob_delta": 0.004458068870007992,
+          "aligned": true
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_000",
+          "request_key": "financial-credit-10013-v1/rep3/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": -1.7883756673651996,
+          "mean_logprob_delta": -0.00767160952091217,
+          "aligned": true
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_005",
+          "request_key": "financial-credit-10000-v0/rep1/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": 0.0017304340847303704,
+          "mean_logprob_delta": 0.002407750114798546,
+          "aligned": true
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_005",
+          "request_key": "financial-credit-10000-v0/rep0/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": -0.005191302254190976,
+          "mean_logprob_delta": -0.0081537626683712,
+          "aligned": true
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_005",
+          "request_key": "financial-credit-10030-v0/rep0/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": 3.5465558214417857e-17,
+          "mean_logprob_delta": -0.0004118536598980427,
+          "aligned": false
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_005",
+          "request_key": "financial-credit-10000-v0/rep2/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": 0.0017304340847303704,
+          "mean_logprob_delta": 0.002407750114798546,
+          "aligned": true
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_005",
+          "request_key": "financial-credit-10000-v1/rep0/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": -3.4666943488817767,
+          "mean_logprob_delta": -0.009335219860076904,
+          "aligned": true
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_005",
+          "request_key": "financial-credit-10030-v0/rep1/call3",
+          "genuine_updated_calculation": true,
+          "changed_weights": true,
+          "actor_advantage": 3.5465558214417857e-17,
+          "mean_logprob_delta": -0.0004118536598980427,
+          "aligned": false
+        }
+      ],
+      "rejected_calculation_diagnostics": [],
+      "inspected_training_rounds": [
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_000",
+          "actual_updates": 4,
+          "changed_weights": true,
+          "probability_diagnostics": 16
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_001",
+          "actual_updates": 4,
+          "changed_weights": true,
+          "probability_diagnostics": 0
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_002",
+          "actual_updates": 4,
+          "changed_weights": true,
+          "probability_diagnostics": 0
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_003",
+          "actual_updates": 4,
+          "changed_weights": true,
+          "probability_diagnostics": 0
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_004",
+          "actual_updates": 4,
+          "changed_weights": true,
+          "probability_diagnostics": 0
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_005",
+          "actual_updates": 4,
+          "changed_weights": true,
+          "probability_diagnostics": 16
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_000",
+          "actual_updates": 4,
+          "changed_weights": true,
+          "probability_diagnostics": 16
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_001",
+          "actual_updates": 4,
+          "changed_weights": true,
+          "probability_diagnostics": 0
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_002",
+          "actual_updates": 4,
+          "changed_weights": true,
+          "probability_diagnostics": 0
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_003",
+          "actual_updates": 4,
+          "changed_weights": true,
+          "probability_diagnostics": 0
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_004",
+          "actual_updates": 4,
+          "changed_weights": true,
+          "probability_diagnostics": 0
+        },
+        {
+          "round": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr2e6/round_005",
+          "actual_updates": 4,
+          "changed_weights": true,
+          "probability_diagnostics": 16
+        }
+      ],
+      "dev_or_holdout_score_used": false,
+      "advantage_alignment_required": false,
+      "finite_zero_probability_change_sufficient": false,
+      "conclusion": "local update responsiveness only; not evidence of learning generalization"
+    },
+    "evaluation_contract": {
+      "status": "FROZEN",
+      "frozen_at": "2026-11-05T17:30:32.299203+08:00",
+      "scope": "PANEL_K4_ONLY",
+      "measured_native_mean_tokens": 26318.1875,
+      "panel_plus_holdout_forecast_tokens": 6466416,
+      "panel_only_forecast_tokens": 4529398,
+      "evaluation_cap": 5000000,
+      "primary_metric": "full_task_success",
+      "panel_tasks": 16,
+      "panel_repetitions": 4,
+      "holdout_tasks": 32,
+      "holdout_repetitions": 1,
+      "dev_evaluated": false,
+      "reserved_test_evaluated": false,
+      "selected_before_any_stage3_model_generation": true,
+      "panel_is_training_positive_control": true,
+      "holdout_already_used_to_select_lr": true
+    },
+    "costs": {
+      "stage2_generation_tokens": 27798224,
+      "stage3_training_generation_tokens": {
+        "rloo": 2531290,
+        "mc_target": 3023694
+      },
+      "stage3_evaluation_generation_tokens": 3417545,
+      "total_new_generation_tokens": 36770753,
+      "step3_gpu_stage_seconds": 2391.0504164621234,
+      "parent_gpu_stage_seconds": 7730.071248210967,
+      "gpu_stage_seconds": 10121.12166467309,
+      "includes_failed_requests": true,
+      "supervision_accounted_separately": true
+    },
+    "credit_method_claim_supported": false,
+    "fresh_test_opened": false,
+    "independent_method_confirmation": false,
+    "paired_panel_comparison": {
+      "status": "COMPLETE",
+      "paired_trajectories": 64,
+      "report_clusters": 8,
+      "full_success_difference_mc_minus_rloo": -0.03125,
+      "descriptive_report_bootstrap_95_interval": [
+        -0.109375,
+        0.03125
+      ],
+      "report_differences": {
+        "ECL/2017": 0.0,
+        "ZBH/2008": 0.0,
+        "AMT/2012": -0.25,
+        "IP/2012": 0.125,
+        "MRO/2003": -0.125,
+        "MRO/2018": 0.0,
+        "PKG/2013": 0.0,
+        "PPG/2010": 0.0
+      },
+      "all_thresholds_and_replicas_kept_in_cluster": true,
+      "training_positive_control_not_independent_confirmation": true
+    }
+  },
+  "holder_restore": "REFILLING_76_GIB"
+}

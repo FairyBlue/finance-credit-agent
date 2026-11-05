@@ -1,7 +1,6 @@
 # M2 v1 MVP Specification（精简讨论稿）
 
-> 新版实验安排讨论稿见 [M2 实验计划 v2（2026-09-05）](docs/2026-09-05_M2_EXPERIMENT_PLAN_V2.md)。
-> 新稿含 scorer 候选、same-gate plain 对照与新的抽样/判读提案，尚未冻结；本文保留原 v1 定义供对照。
+> 本文与 [M2 实验计划 v2（2026-09-05）](docs/history/FOUNDATIONS_AND_DIAGNOSTICS.md)均为历史筛选设计；正文中的“当前目标”“开工前”和暂缓事项属于原稿时点。本文不是正式预注册。最新实现、10 月 14 日结果及具体订单 credit 的后续验证见[文档导航](docs/README.md)，不以旧提案代替当前执行计划。
 
 > **状态：算法筛选规格，不是最终 preregistration。**
 >

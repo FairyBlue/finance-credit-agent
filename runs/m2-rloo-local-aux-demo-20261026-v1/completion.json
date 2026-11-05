@@ -1,0 +1,31 @@
+{
+  "status": "COMPLETE",
+  "arm": "exact_aux",
+  "seed": 42,
+  "planned_updates": 16,
+  "completed_updates": 16,
+  "completed_rounds": 4,
+  "stage_wall_seconds": 3602.9938396029174,
+  "training_state": "/home/tianming/projects/finance-credit-agent/runs/m2-rloo-local-aux-demo-20261026-v1/exact_aux/training_state",
+  "actor_checkpoint": "/home/tianming/projects/finance-credit-agent/runs/m2-rloo-local-aux-demo-20261026-v1/exact_aux/current_actor",
+  "training_state_is_host_reboot_volatile": false,
+  "critic_updates": 0,
+  "shared_initial_reused": true,
+  "new_initial_generation_cost": 0,
+  "new_collection_cost": {
+    "model_requests": 3488,
+    "prompt_tokens": 16163180,
+    "response_tokens": 74063
+  },
+  "final_namespace0_collection_path": "/home/tianming/projects/finance-credit-agent/runs/m2-rloo-local-aux-demo-20261026-v1/exact_aux/round4/eval",
+  "fresh_namespace4_collection_path": "/home/tianming/projects/finance-credit-agent/runs/m2-rloo-local-aux-demo-20261026-v1/exact_aux/fresh_eval",
+  "fresh_namespace4_collected": true,
+  "best_round_selection": false,
+  "model_failure_resampling": false,
+  "old_references_reused": true,
+  "old_checkpoint_retirement_performed": false,
+  "optimizer_moments_retired": true,
+  "lossless_training_resume_available": false,
+  "FP32_master_retained": true,
+  "optimizer_moment_retirement": "/home/tianming/projects/finance-credit-agent/runs/m2-rloo-local-aux-demo-20261026-v1/terminal_optimizer_retirement.json"
+}

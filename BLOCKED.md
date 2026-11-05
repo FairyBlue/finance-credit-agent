@@ -12,4 +12,5 @@ Do **not** fork, patch, or edit files under `third_party/`.
 
 ## Entries
 
-None.
+None recorded. The research limitations and next experiment are maintained in
+[current status](docs/CURRENT_STATUS.md); they do not require an upstream framework change.

@@ -1,0 +1,4920 @@
+{
+  "profile": "financial_learning_existing_signal_inspection_v2",
+  "source_run": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-mc-20261030-v1",
+  "status": "COMPLETE",
+  "new_generation_tokens": 0,
+  "gpu_used": false,
+  "reserved_test_read": false,
+  "stages_are_diagnostic_actual_parent_actions_not_selection_inputs": true,
+  "normalization": "recomputed whole usable-request batch population mean/std, matching historical trainer",
+  "mean_ratio_not_kl": true,
+  "post_update_per_request_probabilities_available": false,
+  "gradient_norm_is_optimizer_minibatch_not_isolated_action_gradient": true,
+  "arms": {
+    "rloo_seed42": {
+      "totals": {
+        "tasks": 23,
+        "parent_trajectories": 92,
+        "parent_requests": 565,
+        "optimizer_updates": 20,
+        "backprop_request_uses": 445,
+        "backprop_response_token_uses": 24773,
+        "training_trajectory_uses": 80,
+        "mixed_reward_groups": 11,
+        "mixed_success_groups": 10,
+        "mixed_metric_groups": 10,
+        "mc_complete": 0,
+        "selected_anchor_decisions": 0,
+        "rounds": 6,
+        "zero_advantage_rounds": [],
+        "mc_aux_return_disagreement_pairs": 0,
+        "mc_raw_sign_changes": 0,
+        "mc_normalized_sign_changes": 0,
+        "mc_coverage": 0.0
+      },
+      "stages": {
+        "constraint_execution": {
+          "parent_requests": 89,
+          "raw_nonzero_advantage_requests": 41,
+          "normalized_nonzero_advantage_requests": 49,
+          "actual_backprop_request_uses": 69,
+          "actual_backprop_response_tokens": 8999,
+          "mc_replacements": 0
+        },
+        "invalid_or_missing": {
+          "parent_requests": 1,
+          "raw_nonzero_advantage_requests": 1,
+          "normalized_nonzero_advantage_requests": 1,
+          "actual_backprop_request_uses": 1,
+          "actual_backprop_response_tokens": 36,
+          "mc_replacements": 0
+        },
+        "metric_calculation": {
+          "parent_requests": 110,
+          "raw_nonzero_advantage_requests": 62,
+          "normalized_nonzero_advantage_requests": 70,
+          "actual_backprop_request_uses": 90,
+          "actual_backprop_response_tokens": 2938,
+          "mc_replacements": 0
+        },
+        "read_financial_report": {
+          "parent_requests": 92,
+          "raw_nonzero_advantage_requests": 44,
+          "normalized_nonzero_advantage_requests": 52,
+          "actual_backprop_request_uses": 72,
+          "actual_backprop_response_tokens": 2136,
+          "mc_replacements": 0
+        },
+        "read_other_evidence": {
+          "parent_requests": 92,
+          "raw_nonzero_advantage_requests": 44,
+          "normalized_nonzero_advantage_requests": 52,
+          "actual_backprop_request_uses": 72,
+          "actual_backprop_response_tokens": 2124,
+          "mc_replacements": 0
+        },
+        "search": {
+          "parent_requests": 92,
+          "raw_nonzero_advantage_requests": 44,
+          "normalized_nonzero_advantage_requests": 52,
+          "actual_backprop_request_uses": 72,
+          "actual_backprop_response_tokens": 1696,
+          "mc_replacements": 0
+        },
+        "submission": {
+          "parent_requests": 89,
+          "raw_nonzero_advantage_requests": 41,
+          "normalized_nonzero_advantage_requests": 49,
+          "actual_backprop_request_uses": 69,
+          "actual_backprop_response_tokens": 6844,
+          "mc_replacements": 0
+        }
+      },
+      "rounds": [
+        {
+          "round": "round_000",
+          "train_status": "COMPLETE",
+          "tasks": 4,
+          "parent_trajectories": 16,
+          "parent_requests": 108,
+          "successes": 9,
+          "business_correct": 9,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10117-v0",
+              "rewards": [
+                -0.025,
+                0.9835002751162537,
+                -0.025,
+                -0.025
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                10,
+                6,
+                10,
+                10
+              ],
+              "transaction_costs": [
+                null,
+                224.95873256194267,
+                null,
+                null
+              ]
+            },
+            {
+              "task_id": "financial-credit-10004-v1",
+              "rewards": [
+                -0.015000000000000003,
+                0.985,
+                -0.015000000000000003,
+                -0.015000000000000003
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "task_id": "financial-credit-10051-v1",
+              "rewards": [
+                0.985,
+                0.985,
+                0.985,
+                0.985
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "task_id": "financial-credit-10030-v0",
+              "rewards": [
+                0.9835002751162537,
+                0.9835002751162537,
+                0.9835002751162537,
+                -0.015000000000000003
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                224.95873256193832,
+                224.95873256193832,
+                224.95873256193832,
+                0.0
+              ]
+            }
+          ],
+          "mixed_reward_groups": 3,
+          "mixed_success_groups": 3,
+          "mixed_metric_groups": 3,
+          "advantages_std": 0.4841757453267003,
+          "optimizer_updates": 4,
+          "trainable_hash_changed": true,
+          "backprop_request_uses": 108,
+          "backprop_response_token_uses": 5326,
+          "training_trajectory_uses": 16,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 13,
+              "raw_nonzero_advantage_requests": 9,
+              "normalized_nonzero_advantage_requests": 13,
+              "actual_backprop_request_uses": 13,
+              "actual_backprop_response_tokens": 1695,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 34,
+              "raw_nonzero_advantage_requests": 30,
+              "normalized_nonzero_advantage_requests": 34,
+              "actual_backprop_request_uses": 34,
+              "actual_backprop_response_tokens": 1057,
+              "mc_replacements": 0
+            },
+            "read_financial_report": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 12,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 452,
+              "mc_replacements": 0
+            },
+            "read_other_evidence": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 12,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 460,
+              "mc_replacements": 0
+            },
+            "search": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 12,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 372,
+              "mc_replacements": 0
+            },
+            "submission": {
+              "parent_requests": 13,
+              "raw_nonzero_advantage_requests": 9,
+              "normalized_nonzero_advantage_requests": 13,
+              "actual_backprop_request_uses": 13,
+              "actual_backprop_response_tokens": 1290,
+              "mc_replacements": 0
+            }
+          },
+          "mc_records": 0,
+          "mc_complete": 0,
+          "mc_impact": [],
+          "selected_anchor_decisions": 0,
+          "selection_block_reasons": {},
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "elapsed_seconds": 22.216794837266207,
+              "gradient_norm_before_clip": 0.08348255604505539,
+              "loss": 0.09668967477045953,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 0.9999999978712627,
+              "optimizer_step": 1,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10051-v1/rep0",
+                "financial-credit-10117-v0/rep0",
+                "financial-credit-10030-v0/rep0",
+                "financial-credit-10004-v1/rep0"
+              ]
+            },
+            {
+              "batch_index": 1,
+              "elapsed_seconds": 40.226653661578894,
+              "gradient_norm_before_clip": 0.2502801716327667,
+              "loss": -1.2862675085198134,
+              "mean_request_clip_fraction": 0.0017361111628512542,
+              "mean_request_ratio": 1.0003830616672833,
+              "optimizer_step": 2,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10051-v1/rep1",
+                "financial-credit-10004-v1/rep1",
+                "financial-credit-10030-v0/rep1",
+                "financial-credit-10117-v0/rep1"
+              ]
+            },
+            {
+              "batch_index": 2,
+              "elapsed_seconds": 62.34111496806145,
+              "gradient_norm_before_clip": 0.1352580338716507,
+              "loss": 0.09657114022411406,
+              "mean_request_clip_fraction": 0.0010204081689672811,
+              "mean_request_ratio": 0.9997770679848534,
+              "optimizer_step": 3,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10030-v0/rep2",
+                "financial-credit-10051-v1/rep2",
+                "financial-credit-10004-v1/rep2",
+                "financial-credit-10117-v0/rep2"
+              ]
+            },
+            {
+              "batch_index": 3,
+              "elapsed_seconds": 84.39610711485147,
+              "gradient_norm_before_clip": 0.12729835510253906,
+              "loss": 0.7833891941700131,
+              "mean_request_clip_fraction": 0.0014285713966403688,
+              "mean_request_ratio": 0.9991673891033445,
+              "optimizer_step": 4,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10051-v1/rep3",
+                "financial-credit-10030-v0/rep3",
+                "financial-credit-10004-v1/rep3",
+                "financial-credit-10117-v0/rep3"
+              ]
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        },
+        {
+          "round": "round_001",
+          "train_status": "COMPLETE",
+          "tasks": 4,
+          "parent_trajectories": 16,
+          "parent_requests": 97,
+          "successes": 14,
+          "business_correct": 14,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10002-v1",
+              "rewards": [
+                0.985,
+                0.985,
+                0.985,
+                0.985
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "task_id": "financial-credit-10039-v1",
+              "rewards": [
+                0.985,
+                -0.016499724883746222,
+                0.985,
+                0.985
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                299.94497674924366,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "task_id": "financial-credit-10116-v0",
+              "rewards": [
+                0.9835002751162537,
+                0.9810002751162538,
+                0.9835002751162537,
+                0.9835002751162537
+              ],
+              "mixed_reward": true,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                7,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                224.9587325619486,
+                224.9587325619486,
+                224.9587325619486,
+                224.9587325619486
+              ]
+            },
+            {
+              "task_id": "financial-credit-10114-v1",
+              "rewards": [
+                0.985,
+                0.985,
+                0.985,
+                -0.016499724883746257
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                299.9449767492511
+              ]
+            }
+          ],
+          "mixed_reward_groups": 3,
+          "mixed_success_groups": 2,
+          "mixed_metric_groups": 2,
+          "advantages_std": 0.4067482740462627,
+          "optimizer_updates": 4,
+          "trainable_hash_changed": true,
+          "backprop_request_uses": 97,
+          "backprop_response_token_uses": 5630,
+          "training_trajectory_uses": 16,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 12,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 2080,
+              "mc_replacements": 0
+            },
+            "invalid_or_missing": {
+              "parent_requests": 1,
+              "raw_nonzero_advantage_requests": 1,
+              "normalized_nonzero_advantage_requests": 1,
+              "actual_backprop_request_uses": 1,
+              "actual_backprop_response_tokens": 36,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 12,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 583,
+              "mc_replacements": 0
+            },
+            "read_financial_report": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 12,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 480,
+              "mc_replacements": 0
+            },
+            "read_other_evidence": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 12,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 480,
+              "mc_replacements": 0
+            },
+            "search": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 12,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 384,
+              "mc_replacements": 0
+            },
+            "submission": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 12,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 1587,
+              "mc_replacements": 0
+            }
+          },
+          "mc_records": 0,
+          "mc_complete": 0,
+          "mc_impact": [],
+          "selected_anchor_decisions": 0,
+          "selection_block_reasons": {},
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "elapsed_seconds": 18.400387551635504,
+              "gradient_norm_before_clip": 0.07661831378936768,
+              "loss": -0.41094393339403723,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 0.9999999975164732,
+              "optimizer_step": 5,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10002-v1/rep0",
+                "financial-credit-10116-v0/rep0",
+                "financial-credit-10039-v1/rep0",
+                "financial-credit-10114-v1/rep0"
+              ]
+            },
+            {
+              "batch_index": 1,
+              "elapsed_seconds": 37.885531697422266,
+              "gradient_norm_before_clip": 0.38252121210098267,
+              "loss": 0.41217869502065696,
+              "mean_request_clip_fraction": 0.001111111119389534,
+              "mean_request_ratio": 1.0002803587913514,
+              "optimizer_step": 6,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10039-v1/rep1",
+                "financial-credit-10002-v1/rep1",
+                "financial-credit-10114-v1/rep1",
+                "financial-credit-10116-v0/rep1"
+              ]
+            },
+            {
+              "batch_index": 2,
+              "elapsed_seconds": 56.19008123129606,
+              "gradient_norm_before_clip": 0.14528919756412506,
+              "loss": -0.41105264882753545,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 1.000148557126522,
+              "optimizer_step": 7,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10039-v1/rep2",
+                "financial-credit-10116-v0/rep2",
+                "financial-credit-10002-v1/rep2",
+                "financial-credit-10114-v1/rep2"
+              ]
+            },
+            {
+              "batch_index": 3,
+              "elapsed_seconds": 74.55507430061698,
+              "gradient_norm_before_clip": 0.6647408604621887,
+              "loss": 0.41053555296502964,
+              "mean_request_clip_fraction": 0.0008680555814256271,
+              "mean_request_ratio": 1.0004096974929173,
+              "optimizer_step": 8,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10002-v1/rep3",
+                "financial-credit-10039-v1/rep3",
+                "financial-credit-10116-v0/rep3",
+                "financial-credit-10114-v1/rep3"
+              ]
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        },
+        {
+          "round": "round_002",
+          "train_status": "COMPLETE",
+          "tasks": 4,
+          "parent_trajectories": 16,
+          "parent_requests": 96,
+          "successes": 12,
+          "business_correct": 12,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10022-v1",
+              "rewards": [
+                -0.016499724883746316,
+                0.985,
+                0.985,
+                -0.016499724883746316
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                374.93122093657837,
+                0.0,
+                0.0,
+                374.93122093657837
+              ]
+            },
+            {
+              "task_id": "financial-credit-10025-v1",
+              "rewards": [
+                0.985,
+                0.985,
+                0.985,
+                0.985
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "task_id": "financial-credit-10065-v1",
+              "rewards": [
+                -0.015000000000000003,
+                0.985,
+                -0.015000000000000003,
+                0.985
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "task_id": "financial-credit-10001-v1",
+              "rewards": [
+                0.985,
+                0.985,
+                0.985,
+                0.985
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          ],
+          "mixed_reward_groups": 2,
+          "mixed_success_groups": 2,
+          "mixed_metric_groups": 2,
+          "advantages_std": 0.47175814177066755,
+          "optimizer_updates": 4,
+          "trainable_hash_changed": true,
+          "backprop_request_uses": 48,
+          "backprop_response_token_uses": 2792,
+          "training_trajectory_uses": 16,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 8,
+              "actual_backprop_request_uses": 8,
+              "actual_backprop_response_tokens": 1052,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 8,
+              "actual_backprop_request_uses": 8,
+              "actual_backprop_response_tokens": 264,
+              "mc_replacements": 0
+            },
+            "read_financial_report": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 8,
+              "actual_backprop_request_uses": 8,
+              "actual_backprop_response_tokens": 244,
+              "mc_replacements": 0
+            },
+            "read_other_evidence": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 8,
+              "actual_backprop_request_uses": 8,
+              "actual_backprop_response_tokens": 232,
+              "mc_replacements": 0
+            },
+            "search": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 8,
+              "actual_backprop_request_uses": 8,
+              "actual_backprop_response_tokens": 188,
+              "mc_replacements": 0
+            },
+            "submission": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 8,
+              "actual_backprop_request_uses": 8,
+              "actual_backprop_response_tokens": 812,
+              "mc_replacements": 0
+            }
+          },
+          "mc_records": 0,
+          "mc_complete": 0,
+          "mc_impact": [],
+          "selected_anchor_decisions": 0,
+          "selection_block_reasons": {},
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "elapsed_seconds": 8.588567398488522,
+              "gradient_norm_before_clip": 0.3594432473182678,
+              "loss": 0.7071066312491894,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 0.9999999950329462,
+              "optimizer_step": 9,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10022-v1/rep0",
+                "financial-credit-10025-v1/rep0",
+                "financial-credit-10065-v1/rep0",
+                "financial-credit-10001-v1/rep0"
+              ]
+            },
+            {
+              "batch_index": 1,
+              "elapsed_seconds": 17.106561191380024,
+              "gradient_norm_before_clip": 0.07021494954824448,
+              "loss": -0.7071218825876713,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 1.0000217109918594,
+              "optimizer_step": 10,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10022-v1/rep1",
+                "financial-credit-10025-v1/rep1",
+                "financial-credit-10065-v1/rep1",
+                "financial-credit-10001-v1/rep1"
+              ]
+            },
+            {
+              "batch_index": 2,
+              "elapsed_seconds": 25.593924950808287,
+              "gradient_norm_before_clip": 0.19311471283435822,
+              "loss": -0.0006638392806053162,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 0.9997417877117792,
+              "optimizer_step": 11,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10065-v1/rep2",
+                "financial-credit-10025-v1/rep2",
+                "financial-credit-10022-v1/rep2",
+                "financial-credit-10001-v1/rep2"
+              ]
+            },
+            {
+              "batch_index": 3,
+              "elapsed_seconds": 34.19753313437104,
+              "gradient_norm_before_clip": 0.20348197221755981,
+              "loss": 0.0006409585475921631,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 1.0002982318401337,
+              "optimizer_step": 12,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10025-v1/rep3",
+                "financial-credit-10001-v1/rep3",
+                "financial-credit-10065-v1/rep3",
+                "financial-credit-10022-v1/rep3"
+              ]
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        },
+        {
+          "round": "round_003",
+          "train_status": "COMPLETE",
+          "tasks": 4,
+          "parent_trajectories": 16,
+          "parent_requests": 96,
+          "successes": 5,
+          "business_correct": 5,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10084-v0",
+              "rewards": [
+                0.9835002751162537,
+                0.9835002751162537,
+                0.9835002751162537,
+                0.9835002751162537
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                224.95873256193698,
+                224.95873256193698,
+                224.95873256193698,
+                224.95873256193698
+              ]
+            },
+            {
+              "task_id": "financial-credit-10014-v1",
+              "rewards": [
+                -0.015000000000000003,
+                -0.015000000000000003,
+                -0.015000000000000003,
+                -0.015000000000000003
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "task_id": "financial-credit-10085-v0",
+              "rewards": [
+                -0.015000000000000003,
+                -0.016499724883746247,
+                -0.015000000000000003,
+                0.9835002751162537
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                374.93122093656063,
+                0.0,
+                374.93122093656063
+              ]
+            },
+            {
+              "task_id": "financial-credit-10108-v0",
+              "rewards": [
+                -0.01649972488374625,
+                -0.01649972488374625,
+                -0.01649972488374625,
+                -0.01649972488374625
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                374.9312209365619,
+                374.9312209365619,
+                374.9312209365619,
+                374.9312209365619
+              ]
+            }
+          ],
+          "mixed_reward_groups": 1,
+          "mixed_success_groups": 1,
+          "mixed_metric_groups": 1,
+          "advantages_std": 0.2883868012642782,
+          "optimizer_updates": 4,
+          "trainable_hash_changed": true,
+          "backprop_request_uses": 96,
+          "backprop_response_token_uses": 5348,
+          "training_trajectory_uses": 16,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 4,
+              "normalized_nonzero_advantage_requests": 4,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 2084,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 4,
+              "normalized_nonzero_advantage_requests": 4,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 457,
+              "mc_replacements": 0
+            },
+            "read_financial_report": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 4,
+              "normalized_nonzero_advantage_requests": 4,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 472,
+              "mc_replacements": 0
+            },
+            "read_other_evidence": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 4,
+              "normalized_nonzero_advantage_requests": 4,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 468,
+              "mc_replacements": 0
+            },
+            "search": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 4,
+              "normalized_nonzero_advantage_requests": 4,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 376,
+              "mc_replacements": 0
+            },
+            "submission": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 4,
+              "normalized_nonzero_advantage_requests": 4,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 1491,
+              "mc_replacements": 0
+            }
+          },
+          "mc_records": 0,
+          "mc_complete": 0,
+          "mc_impact": [],
+          "selected_anchor_decisions": 0,
+          "selection_block_reasons": {},
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "elapsed_seconds": 17.128103621304035,
+              "gradient_norm_before_clip": 0.19431614875793457,
+              "loss": 0.2880970425903797,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 1.0,
+              "optimizer_step": 13,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10084-v0/rep0",
+                "financial-credit-10085-v0/rep0",
+                "financial-credit-10108-v0/rep0",
+                "financial-credit-10014-v1/rep0"
+              ]
+            },
+            {
+              "batch_index": 1,
+              "elapsed_seconds": 34.27821198105812,
+              "gradient_norm_before_clip": 0.36690986156463623,
+              "loss": 0.28978072479367256,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 0.9998022665580114,
+              "optimizer_step": 14,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10084-v0/rep1",
+                "financial-credit-10014-v1/rep1",
+                "financial-credit-10085-v0/rep1",
+                "financial-credit-10108-v0/rep1"
+              ]
+            },
+            {
+              "batch_index": 2,
+              "elapsed_seconds": 51.45278285071254,
+              "gradient_norm_before_clip": 0.12552988529205322,
+              "loss": 0.2880501076579094,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 0.9998611708482107,
+              "optimizer_step": 15,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10108-v0/rep2",
+                "financial-credit-10084-v0/rep2",
+                "financial-credit-10085-v0/rep2",
+                "financial-credit-10014-v1/rep2"
+              ]
+            },
+            {
+              "batch_index": 3,
+              "elapsed_seconds": 68.68477042019367,
+              "gradient_norm_before_clip": 0.42224109172821045,
+              "loss": -0.8654400706291199,
+              "mean_request_clip_fraction": 0.002083333364377419,
+              "mean_request_ratio": 1.000575837989648,
+              "optimizer_step": 16,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10108-v0/rep3",
+                "financial-credit-10085-v0/rep3",
+                "financial-credit-10014-v1/rep3",
+                "financial-credit-10084-v0/rep3"
+              ]
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        },
+        {
+          "round": "round_004",
+          "train_status": "COMPLETE",
+          "tasks": 4,
+          "parent_trajectories": 16,
+          "parent_requests": 96,
+          "successes": 9,
+          "business_correct": 9,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10049-v1",
+              "rewards": [
+                0.985,
+                0.985,
+                -0.016499724883746337,
+                0.985
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                374.9312209365838,
+                0.0
+              ]
+            },
+            {
+              "task_id": "financial-credit-10080-v1",
+              "rewards": [
+                0.985,
+                0.985,
+                0.985,
+                0.985
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "task_id": "financial-credit-10055-v1",
+              "rewards": [
+                -0.015000000000000003,
+                -0.015000000000000003,
+                -0.015000000000000003,
+                -0.015000000000000003
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "task_id": "financial-credit-10102-v0",
+              "rewards": [
+                -0.016499724883746222,
+                -0.016499724883746222,
+                0.9835002751162538,
+                0.9835002751162538
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                299.9449767492438,
+                299.9449767492438,
+                299.9449767492438,
+                299.9449767492438
+              ]
+            }
+          ],
+          "mixed_reward_groups": 2,
+          "mixed_success_groups": 2,
+          "mixed_metric_groups": 2,
+          "advantages_std": 0.4412420945727671,
+          "optimizer_updates": 4,
+          "trainable_hash_changed": true,
+          "backprop_request_uses": 96,
+          "backprop_response_token_uses": 5677,
+          "training_trajectory_uses": 16,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 8,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 2088,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 8,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 577,
+              "mc_replacements": 0
+            },
+            "read_financial_report": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 8,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 488,
+              "mc_replacements": 0
+            },
+            "read_other_evidence": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 8,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 484,
+              "mc_replacements": 0
+            },
+            "search": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 8,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 376,
+              "mc_replacements": 0
+            },
+            "submission": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 8,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 1664,
+              "mc_replacements": 0
+            }
+          },
+          "mc_records": 0,
+          "mc_complete": 0,
+          "mc_impact": [],
+          "selected_anchor_decisions": 0,
+          "selection_block_reasons": {},
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "elapsed_seconds": 17.26531220972538,
+              "gradient_norm_before_clip": 0.25397589802742004,
+              "loss": 0.1885775774717331,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 1.0,
+              "optimizer_step": 17,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10102-v0/rep0",
+                "financial-credit-10055-v1/rep0",
+                "financial-credit-10080-v1/rep0",
+                "financial-credit-10049-v1/rep0"
+              ]
+            },
+            {
+              "batch_index": 1,
+              "elapsed_seconds": 34.558600310236216,
+              "gradient_norm_before_clip": 0.18743503093719482,
+              "loss": 0.1886746659874916,
+              "mean_request_clip_fraction": 0.0006613756995648146,
+              "mean_request_ratio": 0.9999491398533186,
+              "optimizer_step": 18,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10080-v1/rep1",
+                "financial-credit-10049-v1/rep1",
+                "financial-credit-10055-v1/rep1",
+                "financial-credit-10102-v0/rep1"
+              ]
+            },
+            {
+              "batch_index": 2,
+              "elapsed_seconds": 51.85452036187053,
+              "gradient_norm_before_clip": 0.2804914116859436,
+              "loss": 0.1902504712343216,
+              "mean_request_clip_fraction": 0.0009057971183210611,
+              "mean_request_ratio": 1.0000286102294922,
+              "optimizer_step": 19,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10080-v1/rep2",
+                "financial-credit-10049-v1/rep2",
+                "financial-credit-10102-v0/rep2",
+                "financial-credit-10055-v1/rep2"
+              ]
+            },
+            {
+              "batch_index": 3,
+              "elapsed_seconds": 69.13680329546332,
+              "gradient_norm_before_clip": 0.07263457775115967,
+              "loss": -0.5669393725693226,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 1.0000838140646617,
+              "optimizer_step": 20,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10049-v1/rep3",
+                "financial-credit-10080-v1/rep3",
+                "financial-credit-10055-v1/rep3",
+                "financial-credit-10102-v0/rep3"
+              ]
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        },
+        {
+          "round": "round_005",
+          "train_status": "COMPLETE_NO_EFFECTIVE_UPDATES",
+          "tasks": 3,
+          "parent_trajectories": 12,
+          "parent_requests": 72,
+          "successes": 8,
+          "business_correct": 8,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10110-v0",
+              "rewards": [
+                -0.016499724883746254,
+                -0.016499724883746254,
+                -0.016499724883746254,
+                -0.016499724883746254
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                224.95873256193778,
+                224.95873256193778,
+                224.95873256193778,
+                224.95873256193778
+              ]
+            },
+            {
+              "task_id": "financial-credit-10104-v1",
+              "rewards": [
+                0.985,
+                0.985,
+                0.985,
+                0.985
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "task_id": "financial-credit-10039-v0",
+              "rewards": [
+                0.9835002751162538,
+                0.9835002751162538,
+                0.9835002751162538,
+                0.9835002751162538
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                299.94497674924366,
+                299.94497674924366,
+                299.94497674924366,
+                299.94497674924366
+              ]
+            }
+          ],
+          "mixed_reward_groups": 0,
+          "mixed_success_groups": 0,
+          "mixed_metric_groups": 0,
+          "advantages_std": 5.233641528945917e-17,
+          "optimizer_updates": 0,
+          "trainable_hash_changed": false,
+          "backprop_request_uses": 0,
+          "backprop_response_token_uses": 0,
+          "training_trajectory_uses": 0,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 12,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 12,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "read_financial_report": {
+              "parent_requests": 12,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "read_other_evidence": {
+              "parent_requests": 12,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "search": {
+              "parent_requests": 12,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "submission": {
+              "parent_requests": 12,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            }
+          },
+          "mc_records": 0,
+          "mc_complete": 0,
+          "mc_impact": [],
+          "selected_anchor_decisions": 0,
+          "selection_block_reasons": {},
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "optimizer_step": 20,
+              "status": "SKIPPED_NO_ADVANTAGE"
+            },
+            {
+              "batch_index": 1,
+              "optimizer_step": 20,
+              "status": "SKIPPED_NO_ADVANTAGE"
+            },
+            {
+              "batch_index": 2,
+              "optimizer_step": 20,
+              "status": "SKIPPED_NO_ADVANTAGE"
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        }
+      ]
+    },
+    "mc_uniform_seed42": {
+      "totals": {
+        "tasks": 18,
+        "parent_trajectories": 72,
+        "parent_requests": 445,
+        "optimizer_updates": 13,
+        "backprop_request_uses": 325,
+        "backprop_response_token_uses": 17901,
+        "training_trajectory_uses": 52,
+        "mixed_reward_groups": 9,
+        "mixed_success_groups": 8,
+        "mixed_metric_groups": 8,
+        "mc_complete": 12,
+        "selected_anchor_decisions": 12,
+        "rounds": 9,
+        "zero_advantage_rounds": [
+          "round_003",
+          "round_005",
+          "round_006",
+          "round_007",
+          "round_008"
+        ],
+        "mc_aux_return_disagreement_pairs": 3,
+        "mc_raw_sign_changes": 2,
+        "mc_normalized_sign_changes": 3,
+        "mc_coverage": 0.02696629213483146
+      },
+      "stages": {
+        "constraint_execution": {
+          "parent_requests": 69,
+          "raw_nonzero_advantage_requests": 33,
+          "normalized_nonzero_advantage_requests": 49,
+          "actual_backprop_request_uses": 49,
+          "actual_backprop_response_tokens": 6399,
+          "mc_replacements": 1
+        },
+        "invalid_or_missing": {
+          "parent_requests": 1,
+          "raw_nonzero_advantage_requests": 1,
+          "normalized_nonzero_advantage_requests": 1,
+          "actual_backprop_request_uses": 1,
+          "actual_backprop_response_tokens": 36,
+          "mc_replacements": 0
+        },
+        "metric_calculation": {
+          "parent_requests": 90,
+          "raw_nonzero_advantage_requests": 54,
+          "normalized_nonzero_advantage_requests": 70,
+          "actual_backprop_request_uses": 70,
+          "actual_backprop_response_tokens": 2297,
+          "mc_replacements": 2
+        },
+        "read_financial_report": {
+          "parent_requests": 72,
+          "raw_nonzero_advantage_requests": 36,
+          "normalized_nonzero_advantage_requests": 52,
+          "actual_backprop_request_uses": 52,
+          "actual_backprop_response_tokens": 1536,
+          "mc_replacements": 2
+        },
+        "read_other_evidence": {
+          "parent_requests": 72,
+          "raw_nonzero_advantage_requests": 35,
+          "normalized_nonzero_advantage_requests": 52,
+          "actual_backprop_request_uses": 52,
+          "actual_backprop_response_tokens": 1520,
+          "mc_replacements": 1
+        },
+        "search": {
+          "parent_requests": 72,
+          "raw_nonzero_advantage_requests": 35,
+          "normalized_nonzero_advantage_requests": 52,
+          "actual_backprop_request_uses": 52,
+          "actual_backprop_response_tokens": 1228,
+          "mc_replacements": 5
+        },
+        "submission": {
+          "parent_requests": 69,
+          "raw_nonzero_advantage_requests": 33,
+          "normalized_nonzero_advantage_requests": 49,
+          "actual_backprop_request_uses": 49,
+          "actual_backprop_response_tokens": 4885,
+          "mc_replacements": 1
+        }
+      },
+      "rounds": [
+        {
+          "round": "round_000",
+          "train_status": "COMPLETE",
+          "tasks": 4,
+          "parent_trajectories": 16,
+          "parent_requests": 108,
+          "successes": 9,
+          "business_correct": 9,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10117-v0",
+              "rewards": [
+                -0.025,
+                0.9835002751162537,
+                -0.025,
+                -0.025
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                10,
+                6,
+                10,
+                10
+              ],
+              "transaction_costs": [
+                null,
+                224.95873256194267,
+                null,
+                null
+              ]
+            },
+            {
+              "task_id": "financial-credit-10004-v1",
+              "rewards": [
+                -0.015000000000000003,
+                0.985,
+                -0.015000000000000003,
+                -0.016499724883746337
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                224.95873256195028
+              ]
+            },
+            {
+              "task_id": "financial-credit-10051-v1",
+              "rewards": [
+                0.985,
+                0.985,
+                0.985,
+                0.985
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "task_id": "financial-credit-10030-v0",
+              "rewards": [
+                0.9835002751162537,
+                0.9835002751162537,
+                0.9835002751162537,
+                -0.015000000000000003
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                224.95873256193832,
+                224.95873256193832,
+                224.95873256193832,
+                0.0
+              ]
+            }
+          ],
+          "mixed_reward_groups": 3,
+          "mixed_success_groups": 3,
+          "mixed_metric_groups": 3,
+          "advantages_std": 0.4846365877825273,
+          "optimizer_updates": 4,
+          "trainable_hash_changed": true,
+          "backprop_request_uses": 108,
+          "backprop_response_token_uses": 5318,
+          "training_trajectory_uses": 16,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 13,
+              "raw_nonzero_advantage_requests": 9,
+              "normalized_nonzero_advantage_requests": 13,
+              "actual_backprop_request_uses": 13,
+              "actual_backprop_response_tokens": 1695,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 34,
+              "raw_nonzero_advantage_requests": 30,
+              "normalized_nonzero_advantage_requests": 34,
+              "actual_backprop_request_uses": 34,
+              "actual_backprop_response_tokens": 1064,
+              "mc_replacements": 0
+            },
+            "read_financial_report": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 12,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 452,
+              "mc_replacements": 0
+            },
+            "read_other_evidence": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 11,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 460,
+              "mc_replacements": 1
+            },
+            "search": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 12,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 372,
+              "mc_replacements": 1
+            },
+            "submission": {
+              "parent_requests": 13,
+              "raw_nonzero_advantage_requests": 9,
+              "normalized_nonzero_advantage_requests": 13,
+              "actual_backprop_request_uses": 13,
+              "actual_backprop_response_tokens": 1275,
+              "mc_replacements": 0
+            }
+          },
+          "mc_records": 2,
+          "mc_complete": 2,
+          "mc_impact": [
+            {
+              "request_key": "financial-credit-10117-v0/rep2/call0",
+              "stage": "search",
+              "rloo_raw_advantage": -0.3361667583720846,
+              "mc_raw_advantage": -0.5017501375581268,
+              "rloo_normalized_advantage": -0.6170643678317989,
+              "mc_normalized_advantage": -0.9614356381642885,
+              "raw_sign_changed": false,
+              "normalized_sign_changed": false,
+              "aux_returns": [
+                -0.025,
+                0.9785002751162537
+              ],
+              "auxiliary_returns_differ": true,
+              "mc_baseline": 0.47675013755812684
+            },
+            {
+              "request_key": "financial-credit-10004-v1/rep0/call1",
+              "stage": "read_other_evidence",
+              "rloo_raw_advantage": -0.33283342503875124,
+              "mc_raw_advantage": 0.0,
+              "rloo_normalized_advantage": -0.6101809050213326,
+              "mc_normalized_advantage": 0.07387649097953708,
+              "raw_sign_changed": true,
+              "normalized_sign_changed": true,
+              "aux_returns": [
+                -0.015000000000000003,
+                -0.015000000000000003
+              ],
+              "auxiliary_returns_differ": false,
+              "mc_baseline": -0.015000000000000003
+            }
+          ],
+          "selected_anchor_decisions": 2,
+          "selection_block_reasons": {
+            "ONE_ANCHOR_PER_PARENT": 13,
+            "ANCHOR_CAP": 79
+          },
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "elapsed_seconds": 22.15804784744978,
+              "gradient_norm_before_clip": 0.08149775117635727,
+              "loss": 0.07091989228501916,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 0.9999999978712627,
+              "optimizer_step": 1,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10030-v0/rep0",
+                "financial-credit-10004-v1/rep0",
+                "financial-credit-10117-v0/rep0",
+                "financial-credit-10051-v1/rep0"
+              ]
+            },
+            {
+              "batch_index": 1,
+              "elapsed_seconds": 40.196196902543306,
+              "gradient_norm_before_clip": 0.24086008965969086,
+              "loss": -1.2819760031998158,
+              "mean_request_clip_fraction": 0.0017361111628512542,
+              "mean_request_ratio": 1.000618226826191,
+              "optimizer_step": 2,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10051-v1/rep1",
+                "financial-credit-10117-v0/rep1",
+                "financial-credit-10004-v1/rep1",
+                "financial-credit-10030-v0/rep1"
+              ]
+            },
+            {
+              "batch_index": 2,
+              "elapsed_seconds": 62.24968782812357,
+              "gradient_norm_before_clip": 0.12734849750995636,
+              "loss": 0.1078654364682734,
+              "mean_request_clip_fraction": 0.003062891840402569,
+              "mean_request_ratio": 0.9995301770312446,
+              "optimizer_step": 3,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10051-v1/rep2",
+                "financial-credit-10117-v0/rep2",
+                "financial-credit-10004-v1/rep2",
+                "financial-credit-10030-v0/rep2"
+              ]
+            },
+            {
+              "batch_index": 3,
+              "elapsed_seconds": 84.37399388477206,
+              "gradient_norm_before_clip": 0.11744381487369537,
+              "loss": 0.7867453887593001,
+              "mean_request_clip_fraction": 0.0014285713966403688,
+              "mean_request_ratio": 0.9993906893900463,
+              "optimizer_step": 4,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10004-v1/rep3",
+                "financial-credit-10051-v1/rep3",
+                "financial-credit-10117-v0/rep3",
+                "financial-credit-10030-v0/rep3"
+              ]
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        },
+        {
+          "round": "round_001",
+          "train_status": "COMPLETE",
+          "tasks": 4,
+          "parent_trajectories": 16,
+          "parent_requests": 97,
+          "successes": 14,
+          "business_correct": 14,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10002-v1",
+              "rewards": [
+                0.985,
+                0.985,
+                0.985,
+                0.985
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "task_id": "financial-credit-10039-v1",
+              "rewards": [
+                0.985,
+                -0.016499724883746222,
+                0.985,
+                0.985
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                299.94497674924366,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "task_id": "financial-credit-10116-v0",
+              "rewards": [
+                0.9835002751162537,
+                0.9810002751162538,
+                0.9835002751162537,
+                0.9835002751162537
+              ],
+              "mixed_reward": true,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                7,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                224.9587325619486,
+                224.9587325619486,
+                224.9587325619486,
+                224.9587325619486
+              ]
+            },
+            {
+              "task_id": "financial-credit-10114-v1",
+              "rewards": [
+                0.985,
+                0.985,
+                0.985,
+                -0.016499724883746257
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                299.9449767492511
+              ]
+            }
+          ],
+          "mixed_reward_groups": 3,
+          "mixed_success_groups": 2,
+          "mixed_metric_groups": 2,
+          "advantages_std": 0.4085063380204058,
+          "optimizer_updates": 4,
+          "trainable_hash_changed": true,
+          "backprop_request_uses": 97,
+          "backprop_response_token_uses": 5630,
+          "training_trajectory_uses": 16,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 12,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 2080,
+              "mc_replacements": 0
+            },
+            "invalid_or_missing": {
+              "parent_requests": 1,
+              "raw_nonzero_advantage_requests": 1,
+              "normalized_nonzero_advantage_requests": 1,
+              "actual_backprop_request_uses": 1,
+              "actual_backprop_response_tokens": 36,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 12,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 583,
+              "mc_replacements": 0
+            },
+            "read_financial_report": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 12,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 480,
+              "mc_replacements": 0
+            },
+            "read_other_evidence": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 12,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 480,
+              "mc_replacements": 0
+            },
+            "search": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 12,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 384,
+              "mc_replacements": 2
+            },
+            "submission": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 12,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 1587,
+              "mc_replacements": 0
+            }
+          },
+          "mc_records": 2,
+          "mc_complete": 2,
+          "mc_impact": [
+            {
+              "request_key": "financial-credit-10002-v1/rep3/call0",
+              "stage": "search",
+              "rloo_raw_advantage": 0.0,
+              "mc_raw_advantage": 0.0,
+              "rloo_normalized_advantage": 6.336399567213454e-05,
+              "mc_normalized_advantage": -0.004149303331831165,
+              "raw_sign_changed": false,
+              "normalized_sign_changed": true,
+              "aux_returns": [
+                0.985,
+                0.985
+              ],
+              "auxiliary_returns_differ": false,
+              "mc_baseline": 0.985
+            },
+            {
+              "request_key": "financial-credit-10039-v1/rep2/call0",
+              "stage": "search",
+              "rloo_raw_advantage": 0.3338332416279154,
+              "mc_raw_advantage": 0.5007498624418731,
+              "rloo_normalized_advantage": 0.8208000774105788,
+              "mc_normalized_advantage": 1.2216575344971072,
+              "raw_sign_changed": false,
+              "normalized_sign_changed": false,
+              "aux_returns": [
+                0.985,
+                -0.016499724883746222
+              ],
+              "auxiliary_returns_differ": true,
+              "mc_baseline": 0.4842501375581269
+            }
+          ],
+          "selected_anchor_decisions": 2,
+          "selection_block_reasons": {
+            "ANCHOR_CAP": 80,
+            "ONE_ANCHOR_PER_PARENT": 10
+          },
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "elapsed_seconds": 18.201578989624977,
+              "gradient_norm_before_clip": 0.0741746723651886,
+              "loss": -0.40496300444647204,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 0.9999999975164732,
+              "optimizer_step": 5,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10039-v1/rep0",
+                "financial-credit-10002-v1/rep0",
+                "financial-credit-10116-v0/rep0",
+                "financial-credit-10114-v1/rep0"
+              ]
+            },
+            {
+              "batch_index": 1,
+              "elapsed_seconds": 37.60570336133242,
+              "gradient_norm_before_clip": 0.40870800614356995,
+              "loss": 0.41425868433725554,
+              "mean_request_clip_fraction": 0.001111111119389534,
+              "mean_request_ratio": 1.0000617289543152,
+              "optimizer_step": 6,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10039-v1/rep1",
+                "financial-credit-10002-v1/rep1",
+                "financial-credit-10114-v1/rep1",
+                "financial-credit-10116-v0/rep1"
+              ]
+            },
+            {
+              "batch_index": 2,
+              "elapsed_seconds": 55.878380101174116,
+              "gradient_norm_before_clip": 0.14246705174446106,
+              "loss": -0.42208507029135944,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 1.0001412803928058,
+              "optimizer_step": 7,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10039-v1/rep2",
+                "financial-credit-10116-v0/rep2",
+                "financial-credit-10002-v1/rep2",
+                "financial-credit-10114-v1/rep2"
+              ]
+            },
+            {
+              "batch_index": 3,
+              "elapsed_seconds": 74.20932604372501,
+              "gradient_norm_before_clip": 0.6072902083396912,
+              "loss": 0.4131995912248385,
+              "mean_request_clip_fraction": 0.0008680555814256271,
+              "mean_request_ratio": 1.0005790988604228,
+              "optimizer_step": 8,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10114-v1/rep3",
+                "financial-credit-10039-v1/rep3",
+                "financial-credit-10116-v0/rep3",
+                "financial-credit-10002-v1/rep3"
+              ]
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        },
+        {
+          "round": "round_002",
+          "train_status": "COMPLETE",
+          "tasks": 4,
+          "parent_trajectories": 16,
+          "parent_requests": 96,
+          "successes": 12,
+          "business_correct": 12,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10022-v1",
+              "rewards": [
+                -0.016499724883746316,
+                0.985,
+                0.985,
+                -0.016499724883746316
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                374.93122093657837,
+                0.0,
+                0.0,
+                374.93122093657837
+              ]
+            },
+            {
+              "task_id": "financial-credit-10025-v1",
+              "rewards": [
+                0.985,
+                0.985,
+                0.985,
+                0.985
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "task_id": "financial-credit-10065-v1",
+              "rewards": [
+                -0.015000000000000003,
+                0.985,
+                -0.015000000000000003,
+                0.985
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "task_id": "financial-credit-10001-v1",
+              "rewards": [
+                0.985,
+                0.985,
+                0.985,
+                0.985
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          ],
+          "mixed_reward_groups": 2,
+          "mixed_success_groups": 2,
+          "mixed_metric_groups": 2,
+          "advantages_std": 0.4695968253776431,
+          "optimizer_updates": 4,
+          "trainable_hash_changed": true,
+          "backprop_request_uses": 96,
+          "backprop_response_token_uses": 5530,
+          "training_trajectory_uses": 16,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 2096,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 514,
+              "mc_replacements": 0
+            },
+            "read_financial_report": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 480,
+              "mc_replacements": 1
+            },
+            "read_other_evidence": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 456,
+              "mc_replacements": 0
+            },
+            "search": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 376,
+              "mc_replacements": 1
+            },
+            "submission": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 1608,
+              "mc_replacements": 0
+            }
+          },
+          "mc_records": 2,
+          "mc_complete": 2,
+          "mc_impact": [
+            {
+              "request_key": "financial-credit-10022-v1/rep1/call2",
+              "stage": "read_financial_report",
+              "rloo_raw_advantage": 0.6676664832558308,
+              "mc_raw_advantage": 0.5007498624418731,
+              "rloo_normalized_advantage": 1.4152728360974398,
+              "mc_normalized_advantage": 1.070042534546362,
+              "raw_sign_changed": false,
+              "normalized_sign_changed": false,
+              "aux_returns": [
+                -0.016499724883746316,
+                0.985
+              ],
+              "auxiliary_returns_differ": true,
+              "mc_baseline": 0.48425013755812685
+            },
+            {
+              "request_key": "financial-credit-10025-v1/rep2/call0",
+              "stage": "search",
+              "rloo_raw_advantage": 0.0,
+              "mc_raw_advantage": 0.0,
+              "rloo_normalized_advantage": 0.0,
+              "mc_normalized_advantage": 0.003702569323689832,
+              "raw_sign_changed": false,
+              "normalized_sign_changed": true,
+              "aux_returns": [
+                0.985,
+                0.985
+              ],
+              "auxiliary_returns_differ": false,
+              "mc_baseline": 0.985
+            }
+          ],
+          "selected_anchor_decisions": 2,
+          "selection_block_reasons": {
+            "ONE_ANCHOR_PER_PARENT": 8,
+            "ANCHOR_CAP": 64
+          },
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "elapsed_seconds": 17.156172897666693,
+              "gradient_norm_before_clip": 0.4358225166797638,
+              "loss": 0.7066584808635525,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 0.9999999975164732,
+              "optimizer_step": 9,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10025-v1/rep0",
+                "financial-credit-10022-v1/rep0",
+                "financial-credit-10001-v1/rep0",
+                "financial-credit-10065-v1/rep0"
+              ]
+            },
+            {
+              "batch_index": 1,
+              "elapsed_seconds": 34.287704430520535,
+              "gradient_norm_before_clip": 0.0703333243727684,
+              "loss": -0.6993246377096511,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 1.0000685527920723,
+              "optimizer_step": 10,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10065-v1/rep1",
+                "financial-credit-10025-v1/rep1",
+                "financial-credit-10001-v1/rep1",
+                "financial-credit-10022-v1/rep1"
+              ]
+            },
+            {
+              "batch_index": 2,
+              "elapsed_seconds": 51.42169876396656,
+              "gradient_norm_before_clip": 0.25275877118110657,
+              "loss": -0.004552891026833095,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 0.9999649524688721,
+              "optimizer_step": 11,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10022-v1/rep2",
+                "financial-credit-10001-v1/rep2",
+                "financial-credit-10065-v1/rep2",
+                "financial-credit-10025-v1/rep2"
+              ]
+            },
+            {
+              "batch_index": 3,
+              "elapsed_seconds": 68.63727563619614,
+              "gradient_norm_before_clip": 0.2261296659708023,
+              "loss": -0.003124497947283089,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 1.000098134080569,
+              "optimizer_step": 12,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10065-v1/rep3",
+                "financial-credit-10025-v1/rep3",
+                "financial-credit-10022-v1/rep3",
+                "financial-credit-10001-v1/rep3"
+              ]
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        },
+        {
+          "round": "round_003",
+          "train_status": "COMPLETE_NO_EFFECTIVE_UPDATES",
+          "tasks": 1,
+          "parent_trajectories": 4,
+          "parent_requests": 24,
+          "successes": 4,
+          "business_correct": 4,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10084-v0",
+              "rewards": [
+                0.9835002751162537,
+                0.9835002751162537,
+                0.9835002751162537,
+                0.9835002751162537
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                224.95873256193698,
+                224.95873256193698,
+                224.95873256193698,
+                224.95873256193698
+              ]
+            }
+          ],
+          "mixed_reward_groups": 0,
+          "mixed_success_groups": 0,
+          "mixed_metric_groups": 0,
+          "advantages_std": 0.0,
+          "optimizer_updates": 0,
+          "trainable_hash_changed": false,
+          "backprop_request_uses": 0,
+          "backprop_response_token_uses": 0,
+          "training_trajectory_uses": 0,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 1
+            },
+            "metric_calculation": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 1
+            },
+            "read_financial_report": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "read_other_evidence": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "search": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "submission": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            }
+          },
+          "mc_records": 2,
+          "mc_complete": 2,
+          "mc_impact": [
+            {
+              "request_key": "financial-credit-10084-v0/rep3/call3",
+              "stage": "metric_calculation",
+              "rloo_raw_advantage": 0.0,
+              "mc_raw_advantage": 0.0,
+              "rloo_normalized_advantage": 0.0,
+              "mc_normalized_advantage": 0.0,
+              "raw_sign_changed": false,
+              "normalized_sign_changed": false,
+              "aux_returns": [
+                0.9835002751162537,
+                0.9835002751162537
+              ],
+              "auxiliary_returns_differ": false,
+              "mc_baseline": 0.9835002751162537
+            },
+            {
+              "request_key": "financial-credit-10084-v0/rep1/call4",
+              "stage": "constraint_execution",
+              "rloo_raw_advantage": 0.0,
+              "mc_raw_advantage": 0.0,
+              "rloo_normalized_advantage": 0.0,
+              "mc_normalized_advantage": 0.0,
+              "raw_sign_changed": false,
+              "normalized_sign_changed": false,
+              "aux_returns": [
+                0.9835002751162537,
+                0.9835002751162537
+              ],
+              "auxiliary_returns_differ": false,
+              "mc_baseline": 0.9835002751162537
+            }
+          ],
+          "selected_anchor_decisions": 2,
+          "selection_block_reasons": {
+            "ANCHOR_CAP": 3,
+            "ONE_ANCHOR_PER_PARENT": 3
+          },
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "optimizer_step": 12,
+              "status": "SKIPPED_NO_ADVANTAGE"
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        },
+        {
+          "round": "round_004",
+          "train_status": "COMPLETE",
+          "tasks": 1,
+          "parent_trajectories": 4,
+          "parent_requests": 24,
+          "successes": 3,
+          "business_correct": 3,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10049-v1",
+              "rewards": [
+                0.985,
+                0.985,
+                -0.016499724883746337,
+                0.985
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                374.9312209365838,
+                0.0
+              ]
+            }
+          ],
+          "mixed_reward_groups": 1,
+          "mixed_success_groups": 1,
+          "mixed_metric_groups": 1,
+          "advantages_std": 0.5740181991865895,
+          "optimizer_updates": 1,
+          "trainable_hash_changed": true,
+          "backprop_request_uses": 24,
+          "backprop_response_token_uses": 1423,
+          "training_trajectory_uses": 4,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 4,
+              "normalized_nonzero_advantage_requests": 4,
+              "actual_backprop_request_uses": 4,
+              "actual_backprop_response_tokens": 528,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 4,
+              "normalized_nonzero_advantage_requests": 4,
+              "actual_backprop_request_uses": 4,
+              "actual_backprop_response_tokens": 136,
+              "mc_replacements": 0
+            },
+            "read_financial_report": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 4,
+              "normalized_nonzero_advantage_requests": 4,
+              "actual_backprop_request_uses": 4,
+              "actual_backprop_response_tokens": 124,
+              "mc_replacements": 0
+            },
+            "read_other_evidence": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 4,
+              "normalized_nonzero_advantage_requests": 4,
+              "actual_backprop_request_uses": 4,
+              "actual_backprop_response_tokens": 124,
+              "mc_replacements": 0
+            },
+            "search": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 3,
+              "normalized_nonzero_advantage_requests": 4,
+              "actual_backprop_request_uses": 4,
+              "actual_backprop_response_tokens": 96,
+              "mc_replacements": 1
+            },
+            "submission": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 4,
+              "normalized_nonzero_advantage_requests": 4,
+              "actual_backprop_request_uses": 4,
+              "actual_backprop_response_tokens": 415,
+              "mc_replacements": 0
+            }
+          },
+          "mc_records": 1,
+          "mc_complete": 1,
+          "mc_impact": [
+            {
+              "request_key": "financial-credit-10049-v1/rep1/call0",
+              "stage": "search",
+              "rloo_raw_advantage": 0.3338332416279154,
+              "mc_raw_advantage": 0.0,
+              "rloo_normalized_advantage": 0.5773502691896256,
+              "mc_normalized_advantage": 0.024232190583632865,
+              "raw_sign_changed": true,
+              "normalized_sign_changed": false,
+              "aux_returns": [
+                0.985,
+                0.985
+              ],
+              "auxiliary_returns_differ": false,
+              "mc_baseline": 0.985
+            }
+          ],
+          "selected_anchor_decisions": 1,
+          "selection_block_reasons": {
+            "PAIR_BUDGET_RESERVATION": 8,
+            "ONE_ANCHOR_PER_PARENT": 5
+          },
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "elapsed_seconds": 16.01707323640585,
+              "gradient_norm_before_clip": 0.1793404370546341,
+              "loss": 3.923196345567703e-08,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 1.0,
+              "optimizer_step": 13,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10049-v1/rep0",
+                "financial-credit-10049-v1/rep1",
+                "financial-credit-10049-v1/rep2",
+                "financial-credit-10049-v1/rep3"
+              ]
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        },
+        {
+          "round": "round_005",
+          "train_status": "COMPLETE_NO_EFFECTIVE_UPDATES",
+          "tasks": 1,
+          "parent_trajectories": 4,
+          "parent_requests": 24,
+          "successes": 0,
+          "business_correct": 0,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10110-v0",
+              "rewards": [
+                -0.016499724883746254,
+                -0.016499724883746254,
+                -0.016499724883746254,
+                -0.016499724883746254
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                224.95873256193778,
+                224.95873256193778,
+                224.95873256193778,
+                224.95873256193778
+              ]
+            }
+          ],
+          "mixed_reward_groups": 0,
+          "mixed_success_groups": 0,
+          "mixed_metric_groups": 0,
+          "advantages_std": 0.0,
+          "optimizer_updates": 0,
+          "trainable_hash_changed": false,
+          "backprop_request_uses": 0,
+          "backprop_response_token_uses": 0,
+          "training_trajectory_uses": 0,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 1
+            },
+            "read_financial_report": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "read_other_evidence": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "search": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "submission": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 1
+            }
+          },
+          "mc_records": 2,
+          "mc_complete": 2,
+          "mc_impact": [
+            {
+              "request_key": "financial-credit-10110-v0/rep2/call3",
+              "stage": "metric_calculation",
+              "rloo_raw_advantage": 0.0,
+              "mc_raw_advantage": 0.0,
+              "rloo_normalized_advantage": 0.0,
+              "mc_normalized_advantage": 0.0,
+              "raw_sign_changed": false,
+              "normalized_sign_changed": false,
+              "aux_returns": [
+                -0.016499724883746254,
+                -0.016499724883746254
+              ],
+              "auxiliary_returns_differ": false,
+              "mc_baseline": -0.016499724883746254
+            },
+            {
+              "request_key": "financial-credit-10110-v0/rep1/call5",
+              "stage": "submission",
+              "rloo_raw_advantage": 0.0,
+              "mc_raw_advantage": 0.0,
+              "rloo_normalized_advantage": 0.0,
+              "mc_normalized_advantage": 0.0,
+              "raw_sign_changed": false,
+              "normalized_sign_changed": false,
+              "aux_returns": [
+                -0.016499724883746254,
+                -0.016499724883746254
+              ],
+              "auxiliary_returns_differ": false,
+              "mc_baseline": -0.016499724883746254
+            }
+          ],
+          "selected_anchor_decisions": 2,
+          "selection_block_reasons": {
+            "PAIR_BUDGET_RESERVATION": 4,
+            "ONE_ANCHOR_PER_PARENT": 2,
+            "ANCHOR_CAP": 1
+          },
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "optimizer_step": 13,
+              "status": "SKIPPED_NO_ADVANTAGE"
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        },
+        {
+          "round": "round_006",
+          "train_status": "COMPLETE_NO_EFFECTIVE_UPDATES",
+          "tasks": 1,
+          "parent_trajectories": 4,
+          "parent_requests": 24,
+          "successes": 4,
+          "business_correct": 4,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10036-v0",
+              "rewards": [
+                0.9835002751162537,
+                0.9835002751162537,
+                0.9835002751162537,
+                0.9835002751162537
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                374.93122093656666,
+                374.93122093656666,
+                374.93122093656666,
+                374.93122093656666
+              ]
+            }
+          ],
+          "mixed_reward_groups": 0,
+          "mixed_success_groups": 0,
+          "mixed_metric_groups": 0,
+          "advantages_std": 0.0,
+          "optimizer_updates": 0,
+          "trainable_hash_changed": false,
+          "backprop_request_uses": 0,
+          "backprop_response_token_uses": 0,
+          "training_trajectory_uses": 0,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "read_financial_report": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 1
+            },
+            "read_other_evidence": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "search": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "submission": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            }
+          },
+          "mc_records": 1,
+          "mc_complete": 1,
+          "mc_impact": [
+            {
+              "request_key": "financial-credit-10036-v0/rep0/call2",
+              "stage": "read_financial_report",
+              "rloo_raw_advantage": 0.0,
+              "mc_raw_advantage": 0.0,
+              "rloo_normalized_advantage": 0.0,
+              "mc_normalized_advantage": 0.0,
+              "raw_sign_changed": false,
+              "normalized_sign_changed": false,
+              "aux_returns": [
+                0.9835002751162537,
+                0.9835002751162537
+              ],
+              "auxiliary_returns_differ": false,
+              "mc_baseline": 0.9835002751162537
+            }
+          ],
+          "selected_anchor_decisions": 1,
+          "selection_block_reasons": {
+            "PAIR_BUDGET_RESERVATION": 20,
+            "ONE_ANCHOR_PER_PARENT": 3
+          },
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "optimizer_step": 13,
+              "status": "SKIPPED_NO_ADVANTAGE"
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        },
+        {
+          "round": "round_007",
+          "train_status": "COMPLETE_NO_EFFECTIVE_UPDATES",
+          "tasks": 1,
+          "parent_trajectories": 4,
+          "parent_requests": 24,
+          "successes": 4,
+          "business_correct": 4,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10113-v0",
+              "rewards": [
+                0.9835002751162537,
+                0.9835002751162537,
+                0.9835002751162537,
+                0.9835002751162537
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                224.9587325619397,
+                224.9587325619397,
+                224.9587325619397,
+                224.9587325619397
+              ]
+            }
+          ],
+          "mixed_reward_groups": 0,
+          "mixed_success_groups": 0,
+          "mixed_metric_groups": 0,
+          "advantages_std": 0.0,
+          "optimizer_updates": 0,
+          "trainable_hash_changed": false,
+          "backprop_request_uses": 0,
+          "backprop_response_token_uses": 0,
+          "training_trajectory_uses": 0,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "read_financial_report": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "read_other_evidence": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "search": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "submission": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            }
+          },
+          "mc_records": 0,
+          "mc_complete": 0,
+          "mc_impact": [],
+          "selected_anchor_decisions": 0,
+          "selection_block_reasons": {
+            "PAIR_BUDGET_RESERVATION": 24
+          },
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "optimizer_step": 13,
+              "status": "SKIPPED_NO_ADVANTAGE"
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        },
+        {
+          "round": "round_008",
+          "train_status": "COMPLETE_NO_EFFECTIVE_UPDATES",
+          "tasks": 1,
+          "parent_trajectories": 4,
+          "parent_requests": 24,
+          "successes": 0,
+          "business_correct": 0,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10010-v1",
+              "rewards": [
+                -0.015000000000000003,
+                -0.015000000000000003,
+                -0.015000000000000003,
+                -0.015000000000000003
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          ],
+          "mixed_reward_groups": 0,
+          "mixed_success_groups": 0,
+          "mixed_metric_groups": 0,
+          "advantages_std": 0.0,
+          "optimizer_updates": 0,
+          "trainable_hash_changed": false,
+          "backprop_request_uses": 0,
+          "backprop_response_token_uses": 0,
+          "training_trajectory_uses": 0,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "read_financial_report": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "read_other_evidence": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "search": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "submission": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            }
+          },
+          "mc_records": 0,
+          "mc_complete": 0,
+          "mc_impact": [],
+          "selected_anchor_decisions": 0,
+          "selection_block_reasons": {
+            "PAIR_BUDGET_RESERVATION": 24
+          },
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "optimizer_step": 13,
+              "status": "SKIPPED_NO_ADVANTAGE"
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        }
+      ]
+    },
+    "mc_priority_seed42": {
+      "totals": {
+        "tasks": 18,
+        "parent_trajectories": 72,
+        "parent_requests": 444,
+        "optimizer_updates": 13,
+        "backprop_request_uses": 324,
+        "backprop_response_token_uses": 17853,
+        "training_trajectory_uses": 52,
+        "mixed_reward_groups": 8,
+        "mixed_success_groups": 7,
+        "mixed_metric_groups": 8,
+        "mc_complete": 13,
+        "selected_anchor_decisions": 13,
+        "rounds": 9,
+        "zero_advantage_rounds": [
+          "round_003",
+          "round_005",
+          "round_006",
+          "round_007",
+          "round_008"
+        ],
+        "mc_aux_return_disagreement_pairs": 4,
+        "mc_raw_sign_changes": 4,
+        "mc_normalized_sign_changes": 2,
+        "mc_coverage": 0.02927927927927928
+      },
+      "stages": {
+        "constraint_execution": {
+          "parent_requests": 69,
+          "raw_nonzero_advantage_requests": 29,
+          "normalized_nonzero_advantage_requests": 49,
+          "actual_backprop_request_uses": 49,
+          "actual_backprop_response_tokens": 6399,
+          "mc_replacements": 1
+        },
+        "metric_calculation": {
+          "parent_requests": 90,
+          "raw_nonzero_advantage_requests": 51,
+          "normalized_nonzero_advantage_requests": 70,
+          "actual_backprop_request_uses": 70,
+          "actual_backprop_response_tokens": 2285,
+          "mc_replacements": 5
+        },
+        "read_financial_report": {
+          "parent_requests": 72,
+          "raw_nonzero_advantage_requests": 32,
+          "normalized_nonzero_advantage_requests": 52,
+          "actual_backprop_request_uses": 52,
+          "actual_backprop_response_tokens": 1536,
+          "mc_replacements": 1
+        },
+        "read_other_evidence": {
+          "parent_requests": 72,
+          "raw_nonzero_advantage_requests": 32,
+          "normalized_nonzero_advantage_requests": 52,
+          "actual_backprop_request_uses": 52,
+          "actual_backprop_response_tokens": 1520,
+          "mc_replacements": 2
+        },
+        "search": {
+          "parent_requests": 72,
+          "raw_nonzero_advantage_requests": 31,
+          "normalized_nonzero_advantage_requests": 52,
+          "actual_backprop_request_uses": 52,
+          "actual_backprop_response_tokens": 1228,
+          "mc_replacements": 2
+        },
+        "submission": {
+          "parent_requests": 69,
+          "raw_nonzero_advantage_requests": 29,
+          "normalized_nonzero_advantage_requests": 49,
+          "actual_backprop_request_uses": 49,
+          "actual_backprop_response_tokens": 4885,
+          "mc_replacements": 2
+        }
+      },
+      "rounds": [
+        {
+          "round": "round_000",
+          "train_status": "COMPLETE",
+          "tasks": 4,
+          "parent_trajectories": 16,
+          "parent_requests": 108,
+          "successes": 8,
+          "business_correct": 8,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10117-v0",
+              "rewards": [
+                -0.025,
+                -0.015000000000000003,
+                -0.025,
+                -0.025
+              ],
+              "mixed_reward": true,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": true,
+              "calls": [
+                10,
+                6,
+                10,
+                10
+              ],
+              "transaction_costs": [
+                null,
+                0.0,
+                null,
+                null
+              ]
+            },
+            {
+              "task_id": "financial-credit-10004-v1",
+              "rewards": [
+                -0.015000000000000003,
+                0.985,
+                -0.015000000000000003,
+                -0.016499724883746337
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                224.95873256195028
+              ]
+            },
+            {
+              "task_id": "financial-credit-10051-v1",
+              "rewards": [
+                0.985,
+                0.985,
+                0.985,
+                0.985
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "task_id": "financial-credit-10030-v0",
+              "rewards": [
+                0.9835002751162537,
+                0.9835002751162537,
+                0.9835002751162537,
+                -0.015000000000000003
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                224.95873256193832,
+                224.95873256193832,
+                224.95873256193832,
+                0.0
+              ]
+            }
+          ],
+          "mixed_reward_groups": 3,
+          "mixed_success_groups": 2,
+          "mixed_metric_groups": 3,
+          "advantages_std": 0.38471912989400364,
+          "optimizer_updates": 4,
+          "trainable_hash_changed": true,
+          "backprop_request_uses": 108,
+          "backprop_response_token_uses": 5311,
+          "training_trajectory_uses": 16,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 13,
+              "raw_nonzero_advantage_requests": 9,
+              "normalized_nonzero_advantage_requests": 13,
+              "actual_backprop_request_uses": 13,
+              "actual_backprop_response_tokens": 1695,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 34,
+              "raw_nonzero_advantage_requests": 30,
+              "normalized_nonzero_advantage_requests": 34,
+              "actual_backprop_request_uses": 34,
+              "actual_backprop_response_tokens": 1057,
+              "mc_replacements": 1
+            },
+            "read_financial_report": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 12,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 452,
+              "mc_replacements": 0
+            },
+            "read_other_evidence": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 11,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 460,
+              "mc_replacements": 1
+            },
+            "search": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 12,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 372,
+              "mc_replacements": 0
+            },
+            "submission": {
+              "parent_requests": 13,
+              "raw_nonzero_advantage_requests": 9,
+              "normalized_nonzero_advantage_requests": 13,
+              "actual_backprop_request_uses": 13,
+              "actual_backprop_response_tokens": 1275,
+              "mc_replacements": 0
+            }
+          },
+          "mc_records": 2,
+          "mc_complete": 2,
+          "mc_impact": [
+            {
+              "request_key": "financial-credit-10117-v0/rep2/call1",
+              "stage": "read_other_evidence",
+              "rloo_raw_advantage": -0.003333333333333334,
+              "mc_raw_advantage": 0.0,
+              "rloo_normalized_advantage": -0.007701624820351939,
+              "mc_normalized_advantage": 0.000892506170996677,
+              "raw_sign_changed": true,
+              "normalized_sign_changed": true,
+              "aux_returns": [
+                -0.025,
+                -0.025
+              ],
+              "auxiliary_returns_differ": false,
+              "mc_baseline": -0.025
+            },
+            {
+              "request_key": "financial-credit-10117-v0/rep0/call3",
+              "stage": "metric_calculation",
+              "rloo_raw_advantage": -0.003333333333333334,
+              "mc_raw_advantage": -0.00375,
+              "rloo_normalized_advantage": -0.007701624820351939,
+              "mc_normalized_advantage": -0.00885486459539382,
+              "raw_sign_changed": false,
+              "normalized_sign_changed": false,
+              "aux_returns": [
+                -0.025,
+                -0.0175
+              ],
+              "auxiliary_returns_differ": true,
+              "mc_baseline": -0.02125
+            }
+          ],
+          "selected_anchor_decisions": 2,
+          "selection_block_reasons": {
+            "ONE_ANCHOR_PER_PARENT": 14,
+            "ANCHOR_CAP": 58
+          },
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "elapsed_seconds": 22.108626410365105,
+              "gradient_norm_before_clip": 0.09546446800231934,
+              "loss": 0.0013006565677642357,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 0.9999999978712627,
+              "optimizer_step": 1,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10117-v0/rep0",
+                "financial-credit-10051-v1/rep0",
+                "financial-credit-10030-v0/rep0",
+                "financial-credit-10004-v1/rep0"
+              ]
+            },
+            {
+              "batch_index": 1,
+              "elapsed_seconds": 40.20087765529752,
+              "gradient_norm_before_clip": 0.12192676216363907,
+              "loss": -0.8746822744578822,
+              "mean_request_clip_fraction": 0.0035422726262671254,
+              "mean_request_ratio": 1.0008386398355167,
+              "optimizer_step": 2,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10004-v1/rep1",
+                "financial-credit-10051-v1/rep1",
+                "financial-credit-10117-v0/rep1",
+                "financial-credit-10030-v0/rep1"
+              ]
+            },
+            {
+              "batch_index": 2,
+              "elapsed_seconds": 62.21319596096873,
+              "gradient_norm_before_clip": 0.10178453475236893,
+              "loss": 0.001013271421470563,
+              "mean_request_clip_fraction": 0.0010204081689672811,
+              "mean_request_ratio": 0.9997045142310006,
+              "optimizer_step": 3,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10030-v0/rep2",
+                "financial-credit-10004-v1/rep2",
+                "financial-credit-10051-v1/rep2",
+                "financial-credit-10117-v0/rep2"
+              ]
+            },
+            {
+              "batch_index": 3,
+              "elapsed_seconds": 84.26299592107534,
+              "gradient_norm_before_clip": 0.13229994475841522,
+              "loss": 0.8671140038932208,
+              "mean_request_clip_fraction": 0.0014285713966403688,
+              "mean_request_ratio": 0.9994399505002158,
+              "optimizer_step": 4,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10051-v1/rep3",
+                "financial-credit-10030-v0/rep3",
+                "financial-credit-10117-v0/rep3",
+                "financial-credit-10004-v1/rep3"
+              ]
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        },
+        {
+          "round": "round_001",
+          "train_status": "COMPLETE",
+          "tasks": 4,
+          "parent_trajectories": 16,
+          "parent_requests": 96,
+          "successes": 14,
+          "business_correct": 14,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10002-v1",
+              "rewards": [
+                0.985,
+                0.985,
+                0.985,
+                0.985
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "task_id": "financial-credit-10039-v1",
+              "rewards": [
+                0.985,
+                -0.016499724883746222,
+                0.985,
+                0.985
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                299.94497674924366,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "task_id": "financial-credit-10116-v0",
+              "rewards": [
+                0.9835002751162537,
+                0.9835002751162537,
+                0.9835002751162537,
+                0.9835002751162537
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                224.9587325619486,
+                224.9587325619486,
+                224.9587325619486,
+                224.9587325619486
+              ]
+            },
+            {
+              "task_id": "financial-credit-10114-v1",
+              "rewards": [
+                0.985,
+                0.985,
+                0.985,
+                -0.016499724883746257
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                299.9449767492511
+              ]
+            }
+          ],
+          "mixed_reward_groups": 2,
+          "mixed_success_groups": 2,
+          "mixed_metric_groups": 2,
+          "advantages_std": 0.415059550360359,
+          "optimizer_updates": 4,
+          "trainable_hash_changed": true,
+          "backprop_request_uses": 96,
+          "backprop_response_token_uses": 5587,
+          "training_trajectory_uses": 16,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 2080,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 9,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 576,
+              "mc_replacements": 1
+            },
+            "read_financial_report": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 480,
+              "mc_replacements": 0
+            },
+            "read_other_evidence": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 9,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 480,
+              "mc_replacements": 1
+            },
+            "search": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 384,
+              "mc_replacements": 0
+            },
+            "submission": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 1587,
+              "mc_replacements": 0
+            }
+          },
+          "mc_records": 2,
+          "mc_complete": 2,
+          "mc_impact": [
+            {
+              "request_key": "financial-credit-10002-v1/rep2/call1",
+              "stage": "read_other_evidence",
+              "rloo_raw_advantage": 0.0,
+              "mc_raw_advantage": 0.5007498624418731,
+              "rloo_normalized_advantage": 3.394259433442072e-17,
+              "mc_normalized_advantage": 1.1813374352725965,
+              "raw_sign_changed": true,
+              "normalized_sign_changed": false,
+              "aux_returns": [
+                0.985,
+                -0.016499724883746333
+              ],
+              "auxiliary_returns_differ": true,
+              "mc_baseline": 0.48425013755812685
+            },
+            {
+              "request_key": "financial-credit-10002-v1/rep0/call3",
+              "stage": "metric_calculation",
+              "rloo_raw_advantage": 0.0,
+              "mc_raw_advantage": 0.5,
+              "rloo_normalized_advantage": 3.394259433442072e-17,
+              "mc_normalized_advantage": 1.179530797065568,
+              "raw_sign_changed": true,
+              "normalized_sign_changed": false,
+              "aux_returns": [
+                -0.015000000000000003,
+                0.985
+              ],
+              "auxiliary_returns_differ": true,
+              "mc_baseline": 0.485
+            }
+          ],
+          "selected_anchor_decisions": 2,
+          "selection_block_reasons": {
+            "ONE_ANCHOR_PER_PARENT": 6,
+            "ANCHOR_CAP": 66
+          },
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "elapsed_seconds": 18.245327066630125,
+              "gradient_norm_before_clip": 0.07772654294967651,
+              "loss": -0.4272290124790743,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 0.9999999975164732,
+              "optimizer_step": 5,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10114-v1/rep0",
+                "financial-credit-10002-v1/rep0",
+                "financial-credit-10039-v1/rep0",
+                "financial-credit-10116-v0/rep0"
+              ]
+            },
+            {
+              "batch_index": 1,
+              "elapsed_seconds": 36.49366495013237,
+              "gradient_norm_before_clip": 0.37396708130836487,
+              "loss": 0.42636492557357997,
+              "mean_request_clip_fraction": 0.0003229974148174127,
+              "mean_request_ratio": 0.9996599555015564,
+              "optimizer_step": 6,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10039-v1/rep1",
+                "financial-credit-10002-v1/rep1",
+                "financial-credit-10114-v1/rep1",
+                "financial-credit-10116-v0/rep1"
+              ]
+            },
+            {
+              "batch_index": 2,
+              "elapsed_seconds": 54.750503461807966,
+              "gradient_norm_before_clip": 0.0727517306804657,
+              "loss": -0.4274582853540778,
+              "mean_request_clip_fraction": 0.0010964912362396717,
+              "mean_request_ratio": 1.0003446340560913,
+              "optimizer_step": 7,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10002-v1/rep2",
+                "financial-credit-10039-v1/rep2",
+                "financial-credit-10114-v1/rep2",
+                "financial-credit-10116-v0/rep2"
+              ]
+            },
+            {
+              "batch_index": 3,
+              "elapsed_seconds": 73.10031789168715,
+              "gradient_norm_before_clip": 0.5752222537994385,
+              "loss": 0.42739788023754954,
+              "mean_request_clip_fraction": 0.0008680555814256271,
+              "mean_request_ratio": 1.0002614135543506,
+              "optimizer_step": 8,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10114-v1/rep3",
+                "financial-credit-10039-v1/rep3",
+                "financial-credit-10002-v1/rep3",
+                "financial-credit-10116-v0/rep3"
+              ]
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        },
+        {
+          "round": "round_002",
+          "train_status": "COMPLETE",
+          "tasks": 4,
+          "parent_trajectories": 16,
+          "parent_requests": 96,
+          "successes": 12,
+          "business_correct": 12,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10022-v1",
+              "rewards": [
+                -0.016499724883746316,
+                0.985,
+                0.985,
+                -0.016499724883746316
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                374.93122093657837,
+                0.0,
+                0.0,
+                374.93122093657837
+              ]
+            },
+            {
+              "task_id": "financial-credit-10025-v1",
+              "rewards": [
+                0.985,
+                0.985,
+                0.985,
+                0.985
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "task_id": "financial-credit-10065-v1",
+              "rewards": [
+                -0.015000000000000003,
+                0.985,
+                -0.015000000000000003,
+                0.985
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "task_id": "financial-credit-10001-v1",
+              "rewards": [
+                0.985,
+                0.985,
+                0.985,
+                0.985
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          ],
+          "mixed_reward_groups": 2,
+          "mixed_success_groups": 2,
+          "mixed_metric_groups": 2,
+          "advantages_std": 0.4695968253776431,
+          "optimizer_updates": 4,
+          "trainable_hash_changed": true,
+          "backprop_request_uses": 96,
+          "backprop_response_token_uses": 5532,
+          "training_trajectory_uses": 16,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 2096,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 516,
+              "mc_replacements": 0
+            },
+            "read_financial_report": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 480,
+              "mc_replacements": 1
+            },
+            "read_other_evidence": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 456,
+              "mc_replacements": 0
+            },
+            "search": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 376,
+              "mc_replacements": 1
+            },
+            "submission": {
+              "parent_requests": 16,
+              "raw_nonzero_advantage_requests": 8,
+              "normalized_nonzero_advantage_requests": 16,
+              "actual_backprop_request_uses": 16,
+              "actual_backprop_response_tokens": 1608,
+              "mc_replacements": 0
+            }
+          },
+          "mc_records": 2,
+          "mc_complete": 2,
+          "mc_impact": [
+            {
+              "request_key": "financial-credit-10022-v1/rep1/call2",
+              "stage": "read_financial_report",
+              "rloo_raw_advantage": 0.6676664832558308,
+              "mc_raw_advantage": 0.5007498624418731,
+              "rloo_normalized_advantage": 1.4152728360974398,
+              "mc_normalized_advantage": 1.070042534546362,
+              "raw_sign_changed": false,
+              "normalized_sign_changed": false,
+              "aux_returns": [
+                -0.016499724883746316,
+                0.985
+              ],
+              "auxiliary_returns_differ": true,
+              "mc_baseline": 0.48425013755812685
+            },
+            {
+              "request_key": "financial-credit-10025-v1/rep2/call0",
+              "stage": "search",
+              "rloo_raw_advantage": 0.0,
+              "mc_raw_advantage": 0.0,
+              "rloo_normalized_advantage": 0.0,
+              "mc_normalized_advantage": 0.003702569323689832,
+              "raw_sign_changed": false,
+              "normalized_sign_changed": true,
+              "aux_returns": [
+                0.985,
+                0.985
+              ],
+              "auxiliary_returns_differ": false,
+              "mc_baseline": 0.985
+            }
+          ],
+          "selected_anchor_decisions": 2,
+          "selection_block_reasons": {
+            "ONE_ANCHOR_PER_PARENT": 8,
+            "ANCHOR_CAP": 64
+          },
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "elapsed_seconds": 17.16882299259305,
+              "gradient_norm_before_clip": 0.3625873327255249,
+              "loss": 0.7066584808635525,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 0.9999999975164732,
+              "optimizer_step": 9,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10025-v1/rep0",
+                "financial-credit-10065-v1/rep0",
+                "financial-credit-10001-v1/rep0",
+                "financial-credit-10022-v1/rep0"
+              ]
+            },
+            {
+              "batch_index": 1,
+              "elapsed_seconds": 34.353871423751116,
+              "gradient_norm_before_clip": 0.0776870995759964,
+              "loss": -0.6994203220383497,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 1.000100702047348,
+              "optimizer_step": 10,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10022-v1/rep1",
+                "financial-credit-10065-v1/rep1",
+                "financial-credit-10025-v1/rep1",
+                "financial-credit-10001-v1/rep1"
+              ]
+            },
+            {
+              "batch_index": 2,
+              "elapsed_seconds": 51.4958751052618,
+              "gradient_norm_before_clip": 0.17979088425636292,
+              "loss": -0.00431057735113427,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 0.9999222432573637,
+              "optimizer_step": 11,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10001-v1/rep2",
+                "financial-credit-10025-v1/rep2",
+                "financial-credit-10065-v1/rep2",
+                "financial-credit-10022-v1/rep2"
+              ]
+            },
+            {
+              "batch_index": 3,
+              "elapsed_seconds": 68.71537278965116,
+              "gradient_norm_before_clip": 0.16183096170425415,
+              "loss": -0.0033742096566129476,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 0.9999938110510508,
+              "optimizer_step": 12,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10065-v1/rep3",
+                "financial-credit-10001-v1/rep3",
+                "financial-credit-10025-v1/rep3",
+                "financial-credit-10022-v1/rep3"
+              ]
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        },
+        {
+          "round": "round_003",
+          "train_status": "COMPLETE_NO_EFFECTIVE_UPDATES",
+          "tasks": 1,
+          "parent_trajectories": 4,
+          "parent_requests": 24,
+          "successes": 4,
+          "business_correct": 4,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10084-v0",
+              "rewards": [
+                0.9835002751162537,
+                0.9835002751162537,
+                0.9835002751162537,
+                0.9835002751162537
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                224.95873256193698,
+                224.95873256193698,
+                224.95873256193698,
+                224.95873256193698
+              ]
+            }
+          ],
+          "mixed_reward_groups": 0,
+          "mixed_success_groups": 0,
+          "mixed_metric_groups": 0,
+          "advantages_std": 0.0,
+          "optimizer_updates": 0,
+          "trainable_hash_changed": false,
+          "backprop_request_uses": 0,
+          "backprop_response_token_uses": 0,
+          "training_trajectory_uses": 0,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 1
+            },
+            "metric_calculation": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 1
+            },
+            "read_financial_report": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "read_other_evidence": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "search": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "submission": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            }
+          },
+          "mc_records": 2,
+          "mc_complete": 2,
+          "mc_impact": [
+            {
+              "request_key": "financial-credit-10084-v0/rep3/call3",
+              "stage": "metric_calculation",
+              "rloo_raw_advantage": 0.0,
+              "mc_raw_advantage": 0.0,
+              "rloo_normalized_advantage": 0.0,
+              "mc_normalized_advantage": 0.0,
+              "raw_sign_changed": false,
+              "normalized_sign_changed": false,
+              "aux_returns": [
+                0.9835002751162537,
+                0.9835002751162537
+              ],
+              "auxiliary_returns_differ": false,
+              "mc_baseline": 0.9835002751162537
+            },
+            {
+              "request_key": "financial-credit-10084-v0/rep1/call4",
+              "stage": "constraint_execution",
+              "rloo_raw_advantage": 0.0,
+              "mc_raw_advantage": 0.0,
+              "rloo_normalized_advantage": 0.0,
+              "mc_normalized_advantage": 0.0,
+              "raw_sign_changed": false,
+              "normalized_sign_changed": false,
+              "aux_returns": [
+                0.9835002751162537,
+                0.9835002751162537
+              ],
+              "auxiliary_returns_differ": false,
+              "mc_baseline": 0.9835002751162537
+            }
+          ],
+          "selected_anchor_decisions": 2,
+          "selection_block_reasons": {
+            "ANCHOR_CAP": 3,
+            "ONE_ANCHOR_PER_PARENT": 3
+          },
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "optimizer_step": 12,
+              "status": "SKIPPED_NO_ADVANTAGE"
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        },
+        {
+          "round": "round_004",
+          "train_status": "COMPLETE",
+          "tasks": 1,
+          "parent_trajectories": 4,
+          "parent_requests": 24,
+          "successes": 3,
+          "business_correct": 3,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10049-v1",
+              "rewards": [
+                0.985,
+                0.985,
+                -0.016499724883746337,
+                0.985
+              ],
+              "mixed_reward": true,
+              "mixed_success": true,
+              "mixed_business": true,
+              "mixed_metric": true,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                374.9312209365838,
+                0.0
+              ]
+            }
+          ],
+          "mixed_reward_groups": 1,
+          "mixed_success_groups": 1,
+          "mixed_metric_groups": 1,
+          "advantages_std": 0.5740181991865895,
+          "optimizer_updates": 1,
+          "trainable_hash_changed": true,
+          "backprop_request_uses": 24,
+          "backprop_response_token_uses": 1423,
+          "training_trajectory_uses": 4,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 4,
+              "normalized_nonzero_advantage_requests": 4,
+              "actual_backprop_request_uses": 4,
+              "actual_backprop_response_tokens": 528,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 4,
+              "normalized_nonzero_advantage_requests": 4,
+              "actual_backprop_request_uses": 4,
+              "actual_backprop_response_tokens": 136,
+              "mc_replacements": 0
+            },
+            "read_financial_report": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 4,
+              "normalized_nonzero_advantage_requests": 4,
+              "actual_backprop_request_uses": 4,
+              "actual_backprop_response_tokens": 124,
+              "mc_replacements": 0
+            },
+            "read_other_evidence": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 4,
+              "normalized_nonzero_advantage_requests": 4,
+              "actual_backprop_request_uses": 4,
+              "actual_backprop_response_tokens": 124,
+              "mc_replacements": 0
+            },
+            "search": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 3,
+              "normalized_nonzero_advantage_requests": 4,
+              "actual_backprop_request_uses": 4,
+              "actual_backprop_response_tokens": 96,
+              "mc_replacements": 1
+            },
+            "submission": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 4,
+              "normalized_nonzero_advantage_requests": 4,
+              "actual_backprop_request_uses": 4,
+              "actual_backprop_response_tokens": 415,
+              "mc_replacements": 0
+            }
+          },
+          "mc_records": 1,
+          "mc_complete": 1,
+          "mc_impact": [
+            {
+              "request_key": "financial-credit-10049-v1/rep1/call0",
+              "stage": "search",
+              "rloo_raw_advantage": 0.3338332416279154,
+              "mc_raw_advantage": 0.0,
+              "rloo_normalized_advantage": 0.5773502691896256,
+              "mc_normalized_advantage": 0.024232190583632865,
+              "raw_sign_changed": true,
+              "normalized_sign_changed": false,
+              "aux_returns": [
+                0.985,
+                0.985
+              ],
+              "auxiliary_returns_differ": false,
+              "mc_baseline": 0.985
+            }
+          ],
+          "selected_anchor_decisions": 1,
+          "selection_block_reasons": {
+            "PAIR_BUDGET_RESERVATION": 8,
+            "ONE_ANCHOR_PER_PARENT": 5
+          },
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "elapsed_seconds": 16.012930162250996,
+              "gradient_norm_before_clip": 0.20974944531917572,
+              "loss": 3.923196345567703e-08,
+              "mean_request_clip_fraction": 0.0,
+              "mean_request_ratio": 1.0,
+              "optimizer_step": 13,
+              "status": "UPDATED",
+              "trajectories": [
+                "financial-credit-10049-v1/rep0",
+                "financial-credit-10049-v1/rep1",
+                "financial-credit-10049-v1/rep2",
+                "financial-credit-10049-v1/rep3"
+              ]
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        },
+        {
+          "round": "round_005",
+          "train_status": "COMPLETE_NO_EFFECTIVE_UPDATES",
+          "tasks": 1,
+          "parent_trajectories": 4,
+          "parent_requests": 24,
+          "successes": 0,
+          "business_correct": 0,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10110-v0",
+              "rewards": [
+                -0.016499724883746254,
+                -0.016499724883746254,
+                -0.016499724883746254,
+                -0.016499724883746254
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                224.95873256193778,
+                224.95873256193778,
+                224.95873256193778,
+                224.95873256193778
+              ]
+            }
+          ],
+          "mixed_reward_groups": 0,
+          "mixed_success_groups": 0,
+          "mixed_metric_groups": 0,
+          "advantages_std": 0.0,
+          "optimizer_updates": 0,
+          "trainable_hash_changed": false,
+          "backprop_request_uses": 0,
+          "backprop_response_token_uses": 0,
+          "training_trajectory_uses": 0,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 1
+            },
+            "read_financial_report": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "read_other_evidence": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "search": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "submission": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 1
+            }
+          },
+          "mc_records": 2,
+          "mc_complete": 2,
+          "mc_impact": [
+            {
+              "request_key": "financial-credit-10110-v0/rep2/call3",
+              "stage": "metric_calculation",
+              "rloo_raw_advantage": 0.0,
+              "mc_raw_advantage": 0.0,
+              "rloo_normalized_advantage": 0.0,
+              "mc_normalized_advantage": 0.0,
+              "raw_sign_changed": false,
+              "normalized_sign_changed": false,
+              "aux_returns": [
+                -0.016499724883746254,
+                -0.016499724883746254
+              ],
+              "auxiliary_returns_differ": false,
+              "mc_baseline": -0.016499724883746254
+            },
+            {
+              "request_key": "financial-credit-10110-v0/rep1/call5",
+              "stage": "submission",
+              "rloo_raw_advantage": 0.0,
+              "mc_raw_advantage": 0.0,
+              "rloo_normalized_advantage": 0.0,
+              "mc_normalized_advantage": 0.0,
+              "raw_sign_changed": false,
+              "normalized_sign_changed": false,
+              "aux_returns": [
+                -0.016499724883746254,
+                -0.016499724883746254
+              ],
+              "auxiliary_returns_differ": false,
+              "mc_baseline": -0.016499724883746254
+            }
+          ],
+          "selected_anchor_decisions": 2,
+          "selection_block_reasons": {
+            "PAIR_BUDGET_RESERVATION": 1,
+            "ONE_ANCHOR_PER_PARENT": 2,
+            "ANCHOR_CAP": 1
+          },
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "optimizer_step": 13,
+              "status": "SKIPPED_NO_ADVANTAGE"
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        },
+        {
+          "round": "round_006",
+          "train_status": "COMPLETE_NO_EFFECTIVE_UPDATES",
+          "tasks": 1,
+          "parent_trajectories": 4,
+          "parent_requests": 24,
+          "successes": 4,
+          "business_correct": 4,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10036-v0",
+              "rewards": [
+                0.9835002751162537,
+                0.9835002751162537,
+                0.9835002751162537,
+                0.9835002751162537
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                374.93122093656666,
+                374.93122093656666,
+                374.93122093656666,
+                374.93122093656666
+              ]
+            }
+          ],
+          "mixed_reward_groups": 0,
+          "mixed_success_groups": 0,
+          "mixed_metric_groups": 0,
+          "advantages_std": 0.0,
+          "optimizer_updates": 0,
+          "trainable_hash_changed": false,
+          "backprop_request_uses": 0,
+          "backprop_response_token_uses": 0,
+          "training_trajectory_uses": 0,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 1
+            },
+            "read_financial_report": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "read_other_evidence": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "search": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "submission": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            }
+          },
+          "mc_records": 1,
+          "mc_complete": 1,
+          "mc_impact": [
+            {
+              "request_key": "financial-credit-10036-v0/rep2/call3",
+              "stage": "metric_calculation",
+              "rloo_raw_advantage": 0.0,
+              "mc_raw_advantage": 0.0,
+              "rloo_normalized_advantage": 0.0,
+              "mc_normalized_advantage": 0.0,
+              "raw_sign_changed": false,
+              "normalized_sign_changed": false,
+              "aux_returns": [
+                0.9835002751162537,
+                0.9835002751162537
+              ],
+              "auxiliary_returns_differ": false,
+              "mc_baseline": 0.9835002751162537
+            }
+          ],
+          "selected_anchor_decisions": 1,
+          "selection_block_reasons": {
+            "PAIR_BUDGET_RESERVATION": 15,
+            "ONE_ANCHOR_PER_PARENT": 2
+          },
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "optimizer_step": 13,
+              "status": "SKIPPED_NO_ADVANTAGE"
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        },
+        {
+          "round": "round_007",
+          "train_status": "COMPLETE_NO_EFFECTIVE_UPDATES",
+          "tasks": 1,
+          "parent_trajectories": 4,
+          "parent_requests": 24,
+          "successes": 4,
+          "business_correct": 4,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10113-v0",
+              "rewards": [
+                0.9835002751162537,
+                0.9835002751162537,
+                0.9835002751162537,
+                0.9835002751162537
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                224.9587325619397,
+                224.9587325619397,
+                224.9587325619397,
+                224.9587325619397
+              ]
+            }
+          ],
+          "mixed_reward_groups": 0,
+          "mixed_success_groups": 0,
+          "mixed_metric_groups": 0,
+          "advantages_std": 0.0,
+          "optimizer_updates": 0,
+          "trainable_hash_changed": false,
+          "backprop_request_uses": 0,
+          "backprop_response_token_uses": 0,
+          "training_trajectory_uses": 0,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "read_financial_report": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "read_other_evidence": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "search": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "submission": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 1
+            }
+          },
+          "mc_records": 1,
+          "mc_complete": 1,
+          "mc_impact": [
+            {
+              "request_key": "financial-credit-10113-v0/rep2/call5",
+              "stage": "submission",
+              "rloo_raw_advantage": 0.0,
+              "mc_raw_advantage": 0.0,
+              "rloo_normalized_advantage": 0.0,
+              "mc_normalized_advantage": 0.0,
+              "raw_sign_changed": false,
+              "normalized_sign_changed": false,
+              "aux_returns": [
+                0.9835002751162537,
+                0.9835002751162537
+              ],
+              "auxiliary_returns_differ": false,
+              "mc_baseline": 0.9835002751162537
+            }
+          ],
+          "selected_anchor_decisions": 1,
+          "selection_block_reasons": {
+            "PAIR_BUDGET_RESERVATION": 21
+          },
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "optimizer_step": 13,
+              "status": "SKIPPED_NO_ADVANTAGE"
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        },
+        {
+          "round": "round_008",
+          "train_status": "COMPLETE_NO_EFFECTIVE_UPDATES",
+          "tasks": 1,
+          "parent_trajectories": 4,
+          "parent_requests": 24,
+          "successes": 0,
+          "business_correct": 0,
+          "task_diversity": [
+            {
+              "task_id": "financial-credit-10010-v1",
+              "rewards": [
+                -0.015000000000000003,
+                -0.015000000000000003,
+                -0.015000000000000003,
+                -0.015000000000000003
+              ],
+              "mixed_reward": false,
+              "mixed_success": false,
+              "mixed_business": false,
+              "mixed_metric": false,
+              "calls": [
+                6,
+                6,
+                6,
+                6
+              ],
+              "transaction_costs": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          ],
+          "mixed_reward_groups": 0,
+          "mixed_success_groups": 0,
+          "mixed_metric_groups": 0,
+          "advantages_std": 0.0,
+          "optimizer_updates": 0,
+          "trainable_hash_changed": false,
+          "backprop_request_uses": 0,
+          "backprop_response_token_uses": 0,
+          "training_trajectory_uses": 0,
+          "stages": {
+            "constraint_execution": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "metric_calculation": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "read_financial_report": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "read_other_evidence": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "search": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            },
+            "submission": {
+              "parent_requests": 4,
+              "raw_nonzero_advantage_requests": 0,
+              "normalized_nonzero_advantage_requests": 0,
+              "actual_backprop_request_uses": 0,
+              "actual_backprop_response_tokens": 0,
+              "mc_replacements": 0
+            }
+          },
+          "mc_records": 0,
+          "mc_complete": 0,
+          "mc_impact": [],
+          "selected_anchor_decisions": 0,
+          "selection_block_reasons": {
+            "PAIR_BUDGET_RESERVATION": 24
+          },
+          "optimizer_records": [
+            {
+              "batch_index": 0,
+              "optimizer_step": 13,
+              "status": "SKIPPED_NO_ADVANTAGE"
+            }
+          ],
+          "actual_new_generation": 0,
+          "reserved_test_read": false
+        }
+      ]
+    }
+  }
+}

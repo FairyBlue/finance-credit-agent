@@ -175,7 +175,13 @@ def screening_module(monkeypatch):
                     sampling_params=sampling_params,
                 )
                 obs, reward, done, _info = await env.step(response.action)
-                steps.append(SimpleNamespace(reward_score=reward, extra_fields={}))
+                steps.append(
+                    SimpleNamespace(
+                        reward_score=reward, extra_fields={}, prompt_ids=ids,
+                        response_ids=list(response.token_ids),
+                        generated_action=response.action.text,
+                    )
+                )
                 if done:
                     break
             return SimpleNamespace(steps=steps)
@@ -208,7 +214,9 @@ class FakeManager:
             token_ids=list(range(count)),
             stop_reason="aborted" if self.failure == "abort" else "completed",
             finish_reason="length" if self.failure == "length" else None,
-            action=Action(text="invalid")
+            action=_action("buy", {"symbol": "AAA", "target_weight": 0.4})
+            if self.failure == "invalid_cap" and len(self.calls) > 3
+            else Action(text="invalid")
             if self.invalid_first and len(self.calls) == 1
             else (
                 _action("buy", {"symbol": "AAA", "target_weight": 0.3})
@@ -299,6 +307,106 @@ def _records(root: Path):
         for path in (root / "evidence").glob("*.jsonl")
         for line in path.read_text().splitlines()
     ]
+
+
+def test_opt_in_retains_only_the_real_validation_prefix_at_256_step_cap(
+    screening_module, monkeypatch, tmp_path, environment_kwargs,
+):
+    monkeypatch.setenv(screening_module.EVALUATION_INCOMPLETE_ENV, "retain_prefix_v1")
+    output, manager = _run_flow(
+        screening_module, monkeypatch, tmp_path, environment_kwargs,
+        validate=True, failure="invalid_cap", max_steps=256, capture_interactions=True,
+    )
+    assert len(output.steps) == len(manager.calls) == 256
+    assert all(step.response_ids == [0, 1] for step in output.steps)
+    assert [step.generated_action for step in output.steps[:3]] == [_action("hold").text] * 3
+    assert all("buy" in step.generated_action for step in output.steps[3:])
+    assert all(step.reward_score == 0.0 for step in output.steps)
+    assert all(step.extra_fields["finance_screening_trajectory_complete"] is False
+               for step in output.steps)
+    assert all(step.extra_fields["trading_episode_complete"] is False for step in output.steps)
+    assert all(step.extra_fields["finance_screening_terminal_score"] is None
+               and step.extra_fields["finance_screening_net_return"] is None
+               for step in output.steps)
+    row, = _records(tmp_path)
+    assert row["status"] == "INCOMPLETE" and row["complete"] is False
+    assert row["evaluation_failure_profile"] == "retain_prefix_v1"
+    assert row["failure_kind"] == "trajectory_max_steps"
+    assert row["metrics"] is row["terminal_score"] is row["credits"] is None
+    assert row["transport_output_returned"] is row["transport_rewards_are_not_financial"] is True
+    assert row["transport_step_count"] == row["max_steps_limit"] == 256
+    assert len(row["requests"]) == len(row["steps"]) == len(row["interactions"]) == 256
+    assert row["steps"][-1]["decision_session_index"] == 4
+    assert row["steps"][-1]["result_session_index"] == 4
+    assert sum(step["invalid_action"] for step in row["steps"]) == 252
+    assert sum(len(item["info"].get("fills", [])) for item in row["interactions"]) == 1
+    assert all(not step["done"] for step in row["steps"])
+
+
+@pytest.mark.parametrize("validate", [False, True])
+def test_256_step_prefix_keeps_the_original_strict_default(
+    screening_module, monkeypatch, tmp_path, environment_kwargs, validate,
+):
+    monkeypatch.delenv(screening_module.EVALUATION_INCOMPLETE_ENV, raising=False)
+    with pytest.raises(screening_module.ScreeningIncompleteError, match="exact terminal"):
+        _run_flow(
+            screening_module, monkeypatch, tmp_path, environment_kwargs,
+            validate=validate, failure="invalid_cap", max_steps=256,
+        )
+    row, = _records(tmp_path)
+    assert row["status"] == "INCOMPLETE" and "evaluation_failure_profile" not in row
+
+
+def test_opt_in_still_hard_fails_training_trajectory_and_never_scores_it(
+    screening_module, monkeypatch, tmp_path, environment_kwargs,
+):
+    monkeypatch.setenv(screening_module.EVALUATION_INCOMPLETE_ENV, "retain_prefix_v1")
+    with pytest.raises(screening_module.ScreeningIncompleteError, match="exact terminal"):
+        _run_flow(
+            screening_module, monkeypatch, tmp_path, environment_kwargs,
+            validate=False, failure="invalid_cap", max_steps=256,
+        )
+    row, = _records(tmp_path)
+    assert row["identity"]["validate"] is False
+    assert "evaluation_failure_profile" not in row and "terminal_score" not in row
+
+
+@pytest.mark.parametrize("failure,max_steps", [("cap", 256), (None, 2)])
+def test_opt_in_does_not_isolate_response_caps_or_unregistered_prefix_budgets(
+    screening_module, monkeypatch, tmp_path, environment_kwargs, failure, max_steps,
+):
+    monkeypatch.setenv(screening_module.EVALUATION_INCOMPLETE_ENV, "retain_prefix_v1")
+    with pytest.raises(screening_module.ScreeningIncompleteError):
+        _run_flow(
+            screening_module, monkeypatch, tmp_path, environment_kwargs,
+            validate=True, failure=failure, max_steps=max_steps,
+        )
+    row, = _records(tmp_path)
+    assert row["status"] == "INCOMPLETE" and "evaluation_failure_profile" not in row
+
+
+def test_opt_in_leaves_complete_validation_requests_rewards_and_financial_metrics_unchanged(
+    screening_module, monkeypatch, tmp_path, environment_kwargs,
+):
+    monkeypatch.delenv(screening_module.EVALUATION_INCOMPLETE_ENV, raising=False)
+    original, original_manager = _run_flow(
+        screening_module, monkeypatch, tmp_path / "strict", environment_kwargs,
+        validate=True, trade_first=True, capture_interactions=True,
+    )
+    monkeypatch.setenv(screening_module.EVALUATION_INCOMPLETE_ENV, "retain_prefix_v1")
+    opted, opted_manager = _run_flow(
+        screening_module, monkeypatch, tmp_path / "opted", environment_kwargs,
+        validate=True, trade_first=True, capture_interactions=True,
+    )
+    assert opted_manager.calls == original_manager.calls
+    assert [step.reward_score for step in opted.steps] == [
+        step.reward_score for step in original.steps
+    ]
+    assert [step.extra_fields for step in opted.steps] == [
+        step.extra_fields for step in original.steps
+    ]
+    assert _records(tmp_path / "strict") == _records(tmp_path / "opted")
+    assert _records(tmp_path / "opted")[0]["status"] == "COMPLETE"
 
 
 @pytest.mark.parametrize("arm", ["A2", "M1", "M2", "M2-plain"])

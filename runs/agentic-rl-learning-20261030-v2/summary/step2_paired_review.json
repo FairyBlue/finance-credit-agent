@@ -1,0 +1,1062 @@
+{
+  "scope": "completed V2 step2 only; step3 reported separately",
+  "reserved_test_read": false,
+  "market_final_oos_read": false,
+  "train_pairing_caveat": "baseline native seed142 versus endpoint seed43; matching trajectory keys do not imply common random draws or causal fixes",
+  "regions": {
+    "train_panel": {
+      "sft": {
+        "successes": 41,
+        "complete": 64,
+        "metric_correct": 41,
+        "changes_against_sft": {
+          "success": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "metric_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "financial_business_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "portfolio_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "condition_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "evidence_valid": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          }
+        },
+        "source": "runs/agentic-rl-learning-20261030-v2/baseline/sft_panel",
+        "seed": 142
+      },
+      "rloo_lr2e6": {
+        "successes": 41,
+        "complete": 64,
+        "metric_correct": 42,
+        "changes_against_sft": {
+          "success": {
+            "fixed": [
+              "financial-credit-10042-v1/rep0",
+              "financial-credit-10042-v1/rep2",
+              "financial-credit-10112-v1/rep2",
+              "financial-credit-10013-v0/rep0",
+              "financial-credit-10013-v1/rep2",
+              "financial-credit-10030-v0/rep0",
+              "financial-credit-10097-v0/rep2",
+              "financial-credit-10016-v1/rep1",
+              "financial-credit-10000-v0/rep0"
+            ],
+            "regressed": [
+              "financial-credit-10042-v1/rep1",
+              "financial-credit-10046-v0/rep3",
+              "financial-credit-10112-v0/rep0",
+              "financial-credit-10112-v1/rep1",
+              "financial-credit-10112-v1/rep3",
+              "financial-credit-10013-v0/rep1",
+              "financial-credit-10016-v1/rep0",
+              "financial-credit-10000-v0/rep2",
+              "financial-credit-10000-v1/rep0"
+            ],
+            "fixed_count": 9,
+            "regressed_count": 9,
+            "exact_labels_equal": false
+          },
+          "metric_correct": {
+            "fixed": [
+              "financial-credit-10042-v1/rep0",
+              "financial-credit-10042-v1/rep2",
+              "financial-credit-10112-v1/rep2",
+              "financial-credit-10013-v0/rep0",
+              "financial-credit-10013-v1/rep2",
+              "financial-credit-10030-v0/rep0",
+              "financial-credit-10097-v0/rep2",
+              "financial-credit-10016-v1/rep1",
+              "financial-credit-10000-v0/rep0"
+            ],
+            "regressed": [
+              "financial-credit-10042-v1/rep1",
+              "financial-credit-10046-v0/rep3",
+              "financial-credit-10112-v0/rep0",
+              "financial-credit-10112-v1/rep1",
+              "financial-credit-10112-v1/rep3",
+              "financial-credit-10013-v0/rep1",
+              "financial-credit-10016-v1/rep0",
+              "financial-credit-10000-v1/rep0"
+            ],
+            "fixed_count": 9,
+            "regressed_count": 8,
+            "exact_labels_equal": false
+          },
+          "financial_business_correct": {
+            "fixed": [
+              "financial-credit-10042-v1/rep0",
+              "financial-credit-10042-v1/rep2",
+              "financial-credit-10112-v1/rep2",
+              "financial-credit-10013-v0/rep0",
+              "financial-credit-10013-v1/rep2",
+              "financial-credit-10030-v0/rep0",
+              "financial-credit-10097-v0/rep2",
+              "financial-credit-10016-v1/rep1",
+              "financial-credit-10000-v0/rep0"
+            ],
+            "regressed": [
+              "financial-credit-10042-v1/rep1",
+              "financial-credit-10046-v0/rep3",
+              "financial-credit-10112-v0/rep0",
+              "financial-credit-10112-v1/rep1",
+              "financial-credit-10112-v1/rep3",
+              "financial-credit-10013-v0/rep1",
+              "financial-credit-10016-v1/rep0",
+              "financial-credit-10000-v1/rep0"
+            ],
+            "fixed_count": 9,
+            "regressed_count": 8,
+            "exact_labels_equal": false
+          },
+          "portfolio_correct": {
+            "fixed": [
+              "financial-credit-10013-v0/rep0"
+            ],
+            "regressed": [
+              "financial-credit-10112-v0/rep0",
+              "financial-credit-10013-v0/rep1",
+              "financial-credit-10016-v0/rep0",
+              "financial-credit-10016-v0/rep2",
+              "financial-credit-10000-v0/rep2"
+            ],
+            "fixed_count": 1,
+            "regressed_count": 5,
+            "exact_labels_equal": false
+          },
+          "condition_correct": {
+            "fixed": [
+              "financial-credit-10042-v0/rep3",
+              "financial-credit-10042-v1/rep2",
+              "financial-credit-10042-v1/rep3",
+              "financial-credit-10112-v1/rep2",
+              "financial-credit-10013-v0/rep0"
+            ],
+            "regressed": [
+              "financial-credit-10042-v1/rep1",
+              "financial-credit-10112-v0/rep0",
+              "financial-credit-10112-v1/rep1",
+              "financial-credit-10016-v0/rep0",
+              "financial-credit-10000-v1/rep0"
+            ],
+            "fixed_count": 5,
+            "regressed_count": 5,
+            "exact_labels_equal": false
+          },
+          "evidence_valid": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          }
+        },
+        "source": "runs/agentic-rl-learning-20261030-v2/eval/rloo_lr2e6_train_panel",
+        "seed": 43
+      },
+      "rloo_lr1e5": {
+        "successes": 59,
+        "complete": 64,
+        "metric_correct": 59,
+        "changes_against_sft": {
+          "success": {
+            "fixed": [
+              "financial-credit-10042-v0/rep0",
+              "financial-credit-10042-v0/rep1",
+              "financial-credit-10042-v0/rep2",
+              "financial-credit-10042-v0/rep3",
+              "financial-credit-10042-v1/rep0",
+              "financial-credit-10042-v1/rep2",
+              "financial-credit-10112-v1/rep2",
+              "financial-credit-10013-v0/rep0",
+              "financial-credit-10013-v1/rep2",
+              "financial-credit-10030-v0/rep0",
+              "financial-credit-10097-v0/rep2",
+              "financial-credit-10016-v0/rep0",
+              "financial-credit-10016-v0/rep1",
+              "financial-credit-10016-v0/rep2",
+              "financial-credit-10016-v0/rep3",
+              "financial-credit-10016-v1/rep1",
+              "financial-credit-10016-v1/rep2",
+              "financial-credit-10016-v1/rep3",
+              "financial-credit-10000-v0/rep0",
+              "financial-credit-10000-v1/rep2"
+            ],
+            "regressed": [
+              "financial-credit-10013-v0/rep1",
+              "financial-credit-10000-v1/rep0"
+            ],
+            "fixed_count": 20,
+            "regressed_count": 2,
+            "exact_labels_equal": false
+          },
+          "metric_correct": {
+            "fixed": [
+              "financial-credit-10042-v0/rep0",
+              "financial-credit-10042-v0/rep1",
+              "financial-credit-10042-v0/rep2",
+              "financial-credit-10042-v0/rep3",
+              "financial-credit-10042-v1/rep0",
+              "financial-credit-10042-v1/rep2",
+              "financial-credit-10112-v1/rep2",
+              "financial-credit-10013-v0/rep0",
+              "financial-credit-10013-v1/rep2",
+              "financial-credit-10030-v0/rep0",
+              "financial-credit-10097-v0/rep2",
+              "financial-credit-10016-v0/rep0",
+              "financial-credit-10016-v0/rep1",
+              "financial-credit-10016-v0/rep2",
+              "financial-credit-10016-v0/rep3",
+              "financial-credit-10016-v1/rep1",
+              "financial-credit-10016-v1/rep2",
+              "financial-credit-10016-v1/rep3",
+              "financial-credit-10000-v0/rep0",
+              "financial-credit-10000-v1/rep2"
+            ],
+            "regressed": [
+              "financial-credit-10013-v0/rep1",
+              "financial-credit-10000-v1/rep0"
+            ],
+            "fixed_count": 20,
+            "regressed_count": 2,
+            "exact_labels_equal": false
+          },
+          "financial_business_correct": {
+            "fixed": [
+              "financial-credit-10042-v0/rep0",
+              "financial-credit-10042-v0/rep1",
+              "financial-credit-10042-v0/rep2",
+              "financial-credit-10042-v0/rep3",
+              "financial-credit-10042-v1/rep0",
+              "financial-credit-10042-v1/rep2",
+              "financial-credit-10112-v1/rep2",
+              "financial-credit-10013-v0/rep0",
+              "financial-credit-10013-v1/rep2",
+              "financial-credit-10030-v0/rep0",
+              "financial-credit-10097-v0/rep2",
+              "financial-credit-10016-v0/rep0",
+              "financial-credit-10016-v0/rep1",
+              "financial-credit-10016-v0/rep2",
+              "financial-credit-10016-v0/rep3",
+              "financial-credit-10016-v1/rep1",
+              "financial-credit-10016-v1/rep2",
+              "financial-credit-10016-v1/rep3",
+              "financial-credit-10000-v0/rep0",
+              "financial-credit-10000-v1/rep2"
+            ],
+            "regressed": [
+              "financial-credit-10013-v0/rep1",
+              "financial-credit-10000-v1/rep0"
+            ],
+            "fixed_count": 20,
+            "regressed_count": 2,
+            "exact_labels_equal": false
+          },
+          "portfolio_correct": {
+            "fixed": [
+              "financial-credit-10042-v0/rep0",
+              "financial-credit-10042-v0/rep1",
+              "financial-credit-10042-v0/rep2",
+              "financial-credit-10042-v0/rep3",
+              "financial-credit-10013-v0/rep0",
+              "financial-credit-10016-v0/rep3"
+            ],
+            "regressed": [
+              "financial-credit-10013-v0/rep1"
+            ],
+            "fixed_count": 6,
+            "regressed_count": 1,
+            "exact_labels_equal": false
+          },
+          "condition_correct": {
+            "fixed": [
+              "financial-credit-10042-v0/rep0",
+              "financial-credit-10042-v0/rep1",
+              "financial-credit-10042-v0/rep2",
+              "financial-credit-10042-v0/rep3",
+              "financial-credit-10042-v1/rep2",
+              "financial-credit-10042-v1/rep3",
+              "financial-credit-10112-v1/rep2",
+              "financial-credit-10013-v0/rep0",
+              "financial-credit-10016-v0/rep2",
+              "financial-credit-10016-v0/rep3",
+              "financial-credit-10000-v1/rep2"
+            ],
+            "regressed": [
+              "financial-credit-10000-v1/rep0"
+            ],
+            "fixed_count": 11,
+            "regressed_count": 1,
+            "exact_labels_equal": false
+          },
+          "evidence_valid": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          }
+        },
+        "source": "runs/agentic-rl-learning-20261030-v2/eval/rloo_lr1e5_train_panel",
+        "seed": 43
+      },
+      "continued_sft": {
+        "successes": 34,
+        "complete": 64,
+        "metric_correct": 34,
+        "changes_against_sft": {
+          "success": {
+            "fixed": [
+              "financial-credit-10042-v0/rep3",
+              "financial-credit-10112-v1/rep2",
+              "financial-credit-10030-v0/rep0",
+              "financial-credit-10097-v0/rep2",
+              "financial-credit-10016-v0/rep1",
+              "financial-credit-10000-v0/rep0",
+              "financial-credit-10000-v1/rep2"
+            ],
+            "regressed": [
+              "financial-credit-10042-v1/rep1",
+              "financial-credit-10046-v0/rep1",
+              "financial-credit-10112-v0/rep0",
+              "financial-credit-10112-v1/rep3",
+              "financial-credit-10013-v0/rep1",
+              "financial-credit-10013-v0/rep2",
+              "financial-credit-10013-v0/rep3",
+              "financial-credit-10013-v1/rep0",
+              "financial-credit-10013-v1/rep1",
+              "financial-credit-10013-v1/rep3",
+              "financial-credit-10030-v0/rep1",
+              "financial-credit-10030-v1/rep0",
+              "financial-credit-10016-v1/rep0",
+              "financial-credit-10000-v0/rep1"
+            ],
+            "fixed_count": 7,
+            "regressed_count": 14,
+            "exact_labels_equal": false
+          },
+          "metric_correct": {
+            "fixed": [
+              "financial-credit-10042-v0/rep3",
+              "financial-credit-10112-v1/rep2",
+              "financial-credit-10030-v0/rep0",
+              "financial-credit-10097-v0/rep2",
+              "financial-credit-10016-v0/rep1",
+              "financial-credit-10000-v0/rep0",
+              "financial-credit-10000-v1/rep2"
+            ],
+            "regressed": [
+              "financial-credit-10042-v1/rep1",
+              "financial-credit-10046-v0/rep1",
+              "financial-credit-10112-v0/rep0",
+              "financial-credit-10112-v1/rep3",
+              "financial-credit-10013-v0/rep1",
+              "financial-credit-10013-v0/rep2",
+              "financial-credit-10013-v0/rep3",
+              "financial-credit-10013-v1/rep0",
+              "financial-credit-10013-v1/rep1",
+              "financial-credit-10013-v1/rep3",
+              "financial-credit-10030-v0/rep1",
+              "financial-credit-10030-v1/rep0",
+              "financial-credit-10016-v1/rep0",
+              "financial-credit-10000-v0/rep1"
+            ],
+            "fixed_count": 7,
+            "regressed_count": 14,
+            "exact_labels_equal": false
+          },
+          "financial_business_correct": {
+            "fixed": [
+              "financial-credit-10042-v0/rep3",
+              "financial-credit-10112-v1/rep2",
+              "financial-credit-10030-v0/rep0",
+              "financial-credit-10097-v0/rep2",
+              "financial-credit-10016-v0/rep1",
+              "financial-credit-10000-v0/rep0",
+              "financial-credit-10000-v1/rep2"
+            ],
+            "regressed": [
+              "financial-credit-10042-v1/rep1",
+              "financial-credit-10046-v0/rep1",
+              "financial-credit-10112-v0/rep0",
+              "financial-credit-10112-v1/rep3",
+              "financial-credit-10013-v0/rep1",
+              "financial-credit-10013-v0/rep2",
+              "financial-credit-10013-v0/rep3",
+              "financial-credit-10013-v1/rep0",
+              "financial-credit-10013-v1/rep1",
+              "financial-credit-10013-v1/rep3",
+              "financial-credit-10030-v0/rep1",
+              "financial-credit-10030-v1/rep0",
+              "financial-credit-10016-v1/rep0",
+              "financial-credit-10000-v0/rep1"
+            ],
+            "fixed_count": 7,
+            "regressed_count": 14,
+            "exact_labels_equal": false
+          },
+          "portfolio_correct": {
+            "fixed": [
+              "financial-credit-10042-v0/rep3"
+            ],
+            "regressed": [
+              "financial-credit-10046-v0/rep1",
+              "financial-credit-10112-v0/rep0",
+              "financial-credit-10013-v0/rep1",
+              "financial-credit-10013-v0/rep2",
+              "financial-credit-10013-v0/rep3",
+              "financial-credit-10016-v0/rep0",
+              "financial-credit-10016-v0/rep2"
+            ],
+            "fixed_count": 1,
+            "regressed_count": 7,
+            "exact_labels_equal": false
+          },
+          "condition_correct": {
+            "fixed": [
+              "financial-credit-10042-v0/rep3",
+              "financial-credit-10042-v1/rep2",
+              "financial-credit-10042-v1/rep3",
+              "financial-credit-10112-v1/rep2",
+              "financial-credit-10000-v1/rep2"
+            ],
+            "regressed": [
+              "financial-credit-10046-v0/rep1",
+              "financial-credit-10112-v0/rep0",
+              "financial-credit-10112-v1/rep3",
+              "financial-credit-10013-v0/rep1",
+              "financial-credit-10013-v0/rep2",
+              "financial-credit-10013-v0/rep3",
+              "financial-credit-10016-v0/rep0"
+            ],
+            "fixed_count": 5,
+            "regressed_count": 7,
+            "exact_labels_equal": false
+          },
+          "evidence_valid": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          }
+        },
+        "source": "runs/agentic-rl-learning-20261030-v2/eval/continued_sft_train_panel",
+        "seed": 43
+      }
+    },
+    "holdout": {
+      "sft": {
+        "successes": 22,
+        "complete": 32,
+        "metric_correct": 22,
+        "changes_against_sft": {
+          "success": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "metric_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "financial_business_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "portfolio_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "condition_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "evidence_valid": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          }
+        },
+        "source": "runs/agentic-rl-learning-20261030-v2/eval/sft_holdout",
+        "seed": 43
+      },
+      "rloo_lr2e6": {
+        "successes": 22,
+        "complete": 32,
+        "metric_correct": 22,
+        "changes_against_sft": {
+          "success": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "metric_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "financial_business_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "portfolio_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "condition_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "evidence_valid": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          }
+        },
+        "source": "runs/agentic-rl-learning-20261030-v2/eval/rloo_lr2e6_holdout",
+        "seed": 43
+      },
+      "rloo_lr1e5": {
+        "successes": 22,
+        "complete": 32,
+        "metric_correct": 22,
+        "changes_against_sft": {
+          "success": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "metric_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "financial_business_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "portfolio_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "condition_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "evidence_valid": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          }
+        },
+        "source": "runs/agentic-rl-learning-20261030-v2/eval/rloo_lr1e5_holdout",
+        "seed": 43
+      },
+      "continued_sft": {
+        "successes": 23,
+        "complete": 32,
+        "metric_correct": 23,
+        "changes_against_sft": {
+          "success": {
+            "fixed": [
+              "financial-credit-10071-v0/rep0",
+              "financial-credit-10071-v1/rep0"
+            ],
+            "regressed": [
+              "financial-credit-10045-v0/rep0"
+            ],
+            "fixed_count": 2,
+            "regressed_count": 1,
+            "exact_labels_equal": false
+          },
+          "metric_correct": {
+            "fixed": [
+              "financial-credit-10071-v0/rep0",
+              "financial-credit-10071-v1/rep0"
+            ],
+            "regressed": [
+              "financial-credit-10045-v0/rep0"
+            ],
+            "fixed_count": 2,
+            "regressed_count": 1,
+            "exact_labels_equal": false
+          },
+          "financial_business_correct": {
+            "fixed": [
+              "financial-credit-10071-v0/rep0",
+              "financial-credit-10071-v1/rep0"
+            ],
+            "regressed": [
+              "financial-credit-10045-v0/rep0"
+            ],
+            "fixed_count": 2,
+            "regressed_count": 1,
+            "exact_labels_equal": false
+          },
+          "portfolio_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "condition_correct": {
+            "fixed": [
+              "financial-credit-10071-v1/rep0",
+              "financial-credit-10108-v1/rep0"
+            ],
+            "regressed": [],
+            "fixed_count": 2,
+            "regressed_count": 0,
+            "exact_labels_equal": false
+          },
+          "evidence_valid": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          }
+        },
+        "source": "runs/agentic-rl-learning-20261030-v2/eval/continued_sft_holdout",
+        "seed": 43
+      }
+    },
+    "dev": {
+      "sft": {
+        "successes": 82,
+        "complete": 100,
+        "metric_correct": 82,
+        "changes_against_sft": {
+          "success": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "metric_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "financial_business_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "portfolio_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "condition_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "evidence_valid": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          }
+        },
+        "source": "runs/agentic-rl-learning-20261030-v2/eval/sft_dev",
+        "seed": 43
+      },
+      "rloo_lr2e6": {
+        "successes": 81,
+        "complete": 100,
+        "metric_correct": 82,
+        "changes_against_sft": {
+          "success": {
+            "fixed": [],
+            "regressed": [
+              "financial-0411-v0/rep0"
+            ],
+            "fixed_count": 0,
+            "regressed_count": 1,
+            "exact_labels_equal": false
+          },
+          "metric_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "financial_business_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "portfolio_correct": {
+            "fixed": [],
+            "regressed": [
+              "financial-0411-v0/rep0"
+            ],
+            "fixed_count": 0,
+            "regressed_count": 1,
+            "exact_labels_equal": false
+          },
+          "condition_correct": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          },
+          "evidence_valid": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          }
+        },
+        "source": "runs/agentic-rl-learning-20261030-v2/eval/rloo_lr2e6_dev",
+        "seed": 43
+      },
+      "rloo_lr1e5": {
+        "successes": 80,
+        "complete": 100,
+        "metric_correct": 81,
+        "changes_against_sft": {
+          "success": {
+            "fixed": [
+              "financial-0400-v0/rep0",
+              "financial-0400-v1/rep0"
+            ],
+            "regressed": [
+              "financial-0411-v0/rep0",
+              "financial-0412-v0/rep0",
+              "financial-0412-v1/rep0",
+              "financial-0438-v1/rep0"
+            ],
+            "fixed_count": 2,
+            "regressed_count": 4,
+            "exact_labels_equal": false
+          },
+          "metric_correct": {
+            "fixed": [
+              "financial-0400-v0/rep0",
+              "financial-0400-v1/rep0"
+            ],
+            "regressed": [
+              "financial-0412-v0/rep0",
+              "financial-0412-v1/rep0",
+              "financial-0438-v1/rep0"
+            ],
+            "fixed_count": 2,
+            "regressed_count": 3,
+            "exact_labels_equal": false
+          },
+          "financial_business_correct": {
+            "fixed": [
+              "financial-0400-v0/rep0",
+              "financial-0400-v1/rep0"
+            ],
+            "regressed": [
+              "financial-0412-v0/rep0",
+              "financial-0412-v1/rep0",
+              "financial-0438-v1/rep0"
+            ],
+            "fixed_count": 2,
+            "regressed_count": 3,
+            "exact_labels_equal": false
+          },
+          "portfolio_correct": {
+            "fixed": [
+              "financial-0400-v0/rep0"
+            ],
+            "regressed": [
+              "financial-0411-v0/rep0"
+            ],
+            "fixed_count": 1,
+            "regressed_count": 1,
+            "exact_labels_equal": false
+          },
+          "condition_correct": {
+            "fixed": [
+              "financial-0400-v0/rep0",
+              "financial-0410-v0/rep0"
+            ],
+            "regressed": [
+              "financial-0412-v1/rep0"
+            ],
+            "fixed_count": 2,
+            "regressed_count": 1,
+            "exact_labels_equal": false
+          },
+          "evidence_valid": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          }
+        },
+        "source": "runs/agentic-rl-learning-20261030-v2/eval/rloo_lr1e5_dev",
+        "seed": 43
+      },
+      "continued_sft": {
+        "successes": 81,
+        "complete": 100,
+        "metric_correct": 81,
+        "changes_against_sft": {
+          "success": {
+            "fixed": [
+              "financial-0400-v0/rep0",
+              "financial-0400-v1/rep0",
+              "financial-0403-v0/rep0"
+            ],
+            "regressed": [
+              "financial-0412-v1/rep0",
+              "financial-0438-v1/rep0",
+              "financial-0441-v0/rep0",
+              "financial-0441-v1/rep0"
+            ],
+            "fixed_count": 3,
+            "regressed_count": 4,
+            "exact_labels_equal": false
+          },
+          "metric_correct": {
+            "fixed": [
+              "financial-0400-v0/rep0",
+              "financial-0400-v1/rep0",
+              "financial-0403-v0/rep0"
+            ],
+            "regressed": [
+              "financial-0412-v1/rep0",
+              "financial-0438-v1/rep0",
+              "financial-0441-v0/rep0",
+              "financial-0441-v1/rep0"
+            ],
+            "fixed_count": 3,
+            "regressed_count": 4,
+            "exact_labels_equal": false
+          },
+          "financial_business_correct": {
+            "fixed": [
+              "financial-0400-v0/rep0",
+              "financial-0400-v1/rep0",
+              "financial-0403-v0/rep0"
+            ],
+            "regressed": [
+              "financial-0412-v1/rep0",
+              "financial-0438-v1/rep0",
+              "financial-0441-v0/rep0",
+              "financial-0441-v1/rep0"
+            ],
+            "fixed_count": 3,
+            "regressed_count": 4,
+            "exact_labels_equal": false
+          },
+          "portfolio_correct": {
+            "fixed": [
+              "financial-0400-v0/rep0",
+              "financial-0410-v0/rep0"
+            ],
+            "regressed": [
+              "financial-0424-v0/rep0",
+              "financial-0441-v0/rep0"
+            ],
+            "fixed_count": 2,
+            "regressed_count": 2,
+            "exact_labels_equal": false
+          },
+          "condition_correct": {
+            "fixed": [
+              "financial-0400-v0/rep0",
+              "financial-0410-v0/rep0"
+            ],
+            "regressed": [
+              "financial-0412-v1/rep0",
+              "financial-0424-v0/rep0",
+              "financial-0441-v0/rep0"
+            ],
+            "fixed_count": 2,
+            "regressed_count": 3,
+            "exact_labels_equal": false
+          },
+          "evidence_valid": {
+            "fixed": [],
+            "regressed": [],
+            "fixed_count": 0,
+            "regressed_count": 0,
+            "exact_labels_equal": true
+          }
+        },
+        "source": "runs/agentic-rl-learning-20261030-v2/eval_views/continued_sft_dev",
+        "seed": 43
+      }
+    }
+  },
+  "data_exposure": {
+    "train_panel_reports": 8,
+    "train_panel_questions_seen_in_original_teacher": [],
+    "train_panel_reports_seen_in_original_sft": [
+      "ECL/2017",
+      "IP/2012",
+      "MRO/2018",
+      "PPG/2010",
+      "ZBH/2008"
+    ],
+    "holdout_reports": 16,
+    "holdout_reports_seen_in_original_sft": [
+      "AAL/2014",
+      "AAL/2018",
+      "AWK/2017",
+      "ETR/2004",
+      "MKTX/2014",
+      "MRO/2014",
+      "MSI/2007",
+      "MSI/2012",
+      "PNC/2014",
+      "RL/2014",
+      "SNA/2012",
+      "UPS/2015"
+    ],
+    "interpretation": "report holdout excludes this cycle gradients, not initial SFT exposure"
+  },
+  "train_report_successes_out_of8": {
+    "MRO/2003": {
+      "sft": 1,
+      "rloo_lr2e6": 2,
+      "rloo_lr1e5": 7,
+      "continued_sft": 1
+    },
+    "MRO/2018": {
+      "sft": 8,
+      "rloo_lr2e6": 7,
+      "rloo_lr1e5": 8,
+      "continued_sft": 7
+    },
+    "PPG/2010": {
+      "sft": 7,
+      "rloo_lr2e6": 5,
+      "rloo_lr1e5": 8,
+      "continued_sft": 6
+    },
+    "ZBH/2008": {
+      "sft": 6,
+      "rloo_lr2e6": 7,
+      "rloo_lr1e5": 7,
+      "continued_sft": 0
+    },
+    "IP/2012": {
+      "sft": 7,
+      "rloo_lr2e6": 8,
+      "rloo_lr1e5": 8,
+      "continued_sft": 6
+    },
+    "PKG/2013": {
+      "sft": 7,
+      "rloo_lr2e6": 8,
+      "rloo_lr1e5": 8,
+      "continued_sft": 8
+    },
+    "AMT/2012": {
+      "sft": 1,
+      "rloo_lr2e6": 1,
+      "rloo_lr1e5": 8,
+      "continued_sft": 1
+    },
+    "ECL/2017": {
+      "sft": 4,
+      "rloo_lr2e6": 3,
+      "rloo_lr1e5": 5,
+      "continued_sft": 5
+    }
+  }
+}

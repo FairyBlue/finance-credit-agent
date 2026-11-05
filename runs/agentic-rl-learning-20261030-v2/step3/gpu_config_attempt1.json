@@ -1,0 +1,29 @@
+{
+  "active_arm_holder_policy": "paused_zero",
+  "cuda_device": 0,
+  "directory": "/home/tianming/projects/finance-credit-agent/runs/gpu-reservation-persistent-20261007",
+  "evidence_directory": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/step3/gpu_attempt1",
+  "gpu_uuid": "GPU-8e53f734-2624-5f26-16af-599cef58a038",
+  "holder_pid": 3533487,
+  "holder_start_time_ticks": 1834805381,
+  "lease_token": "mandate-composition-355ff04430574d05ae5cd4f29c8a2f14",
+  "minimum_free_bytes": 2147483648,
+  "owner_sha256": "fe989e7434dd4223408c2bb9fe19fa37c798fe2b97a579537ca401ea909cb2f3",
+  "phase_peak_bytes": {
+    "compute_log_prob": 81604378624,
+    "compute_ref_log_prob": 81604378624,
+    "compute_values": 81604378624,
+    "init_actor": 81604378624,
+    "init_critic": 81604378624,
+    "init_reference": 81604378624,
+    "rollout_mode": 81604378624,
+    "save_checkpoint": 81604378624,
+    "trainer_mode": 81604378624,
+    "update_actor": 81604378624,
+    "update_critic": 81604378624
+  },
+  "poll_seconds": 1,
+  "portfolio_target_bytes": 81604378624,
+  "profile": "persistent_gpu_memory_coordinator_v1",
+  "wait_timeout_seconds": 1800
+}

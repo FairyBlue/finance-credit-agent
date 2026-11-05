@@ -17,10 +17,12 @@ import json
 import os
 import re
 from dataclasses import dataclass
+from datetime import datetime
 from functools import wraps
 from pathlib import Path
 from typing import Any
 from uuid import uuid4
+from zoneinfo import ZoneInfo
 
 from .actor_export import (
     ACTOR_EXPORT_PROFILE,
@@ -38,6 +40,79 @@ RESEARCH_PROFILE = "research_model_extra_v1"
 RESEARCH_COMPLETION_MARKER = "research_artifact_complete.json"
 _CONTENTS = frozenset({"model", "optimizer", "extra"})
 _RESEARCH_CONTENTS = frozenset({"model", "extra"})
+
+
+def _label_evaluation_transport_metrics(metrics: Any, *, step: int) -> Any:
+    """Keep upstream tensor-score summaries visibly separate from financial results.
+
+    Failed validation prefixes use numeric zero only because the pinned validator
+    consumes reward tensors. These mixed-population summaries are never returned
+    under its usual val-core/val-aux financial-looking labels in the opt-in grid.
+    The raw ledger remains the source for complete-only financial comparisons.
+    """
+    profile = os.environ.get("FINANCE_GRID_EVALUATION_INCOMPLETE")
+    if profile is None:
+        return metrics
+    if profile != "retain_prefix_v1" or not isinstance(metrics, dict):
+        raise RuntimeError("invalid evaluation transport metric profile or result")
+    root = Path(os.environ.get("FINANCE_SCREENING_EVIDENCE_DIR", ""))
+    if not root.is_absolute():
+        raise RuntimeError("evaluation transport metrics require their absolute raw ledger")
+    counts = {"COMPLETE": 0, "INCOMPLETE": 0}
+    sources = {}
+    for path in sorted(root.glob("*.jsonl")):
+        payload = path.read_bytes()
+        sources[path.name] = hashlib.sha256(payload).hexdigest()
+        for line in payload.splitlines():
+            row = json.loads(line)
+            identity = row.get("identity", {})
+            if identity.get("validate") is not True or identity.get("step") != step:
+                continue
+            status = row.get("status")
+            if status not in counts:
+                raise RuntimeError("unexpected raw status after evaluation transport")
+            if status == "INCOMPLETE" and (
+                row.get("evaluation_failure_profile") != profile
+                or row.get("terminal_score") is not None
+                or row.get("metrics") is not None
+            ):
+                raise RuntimeError("retained evaluation failure claims a financial result")
+            counts[status] += 1
+    if not sum(counts.values()):
+        raise RuntimeError("evaluation transport returned without attempted raw slots")
+    names = {
+        name: "transport-only-" + name
+        for name in metrics
+        if name.startswith(("val-core/", "val-aux/"))
+    }
+    renamed = {names.get(name, name): value for name, value in metrics.items()}
+    renamed.update(
+        {
+            "finance-grid/evaluation_complete_trajectories": counts["COMPLETE"],
+            "finance-grid/evaluation_incomplete_trajectories": counts["INCOMPLETE"],
+            "finance-grid/transport_rewards_are_not_financial": 1,
+        }
+    )
+    target = root.parent / "evaluation_transport"
+    target.mkdir(parents=True, exist_ok=True)
+    receipt = {
+        "profile": profile,
+        "at_SGT": datetime.now(ZoneInfo("Asia/Singapore")).isoformat(),
+        "policy_step": step,
+        "execution_status": "COMPLETE",
+        "financial_status": "INCOMPLETE" if counts["INCOMPLETE"] else "COMPLETE",
+        "counts": counts,
+        "renamed_upstream_metrics": names,
+        "upstream_scores_are_transport_only": True,
+        "failed_financial_results": None,
+        "source_sha256": sources,
+    }
+    with (target / f"validation-step-{step}.json").open("x") as handle:
+        json.dump(receipt, handle, indent=2, sort_keys=True, allow_nan=False)
+        handle.write("\n")
+        handle.flush()
+        os.fsync(handle.fileno())
+    return renamed
 
 
 @dataclass(frozen=True, slots=True)
@@ -449,7 +524,8 @@ def install_checkpoint_hooks(trainer_class: type[Any]) -> bool:
                 document=document,
                 result=result,
             )
-        return original_validate(trainer, *args, **kwargs)
+        result = original_validate(trainer, *args, **kwargs)
+        return _label_evaluation_transport_metrics(result, step=step)
 
     trainer_class._save_checkpoint = save_checkpoint
     trainer_class._load_checkpoint = load_checkpoint

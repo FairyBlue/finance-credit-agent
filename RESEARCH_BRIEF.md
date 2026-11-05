@@ -1,298 +1,142 @@
-# Research Brief（v0.2，待两人签字冻结）
+# Research Brief：有限采样预算下的工具Agent强化学习
 
-> 状态：DRAFT。冻结前需要：潘昊 ✍️ ＋ PhD 合作者 ✍️。冻结后本文件只允许追加，不允许修改。
+版本：**v0.6，2026-11-05（UTC+8）**。定位：长期研究目标与证据边界。本文说明研究什么、可能贡献什么、已有证据支持到哪里；具体三步、样本数、预算和运行安排在`docs/`迭代，不放进Brief。
 
-## 研究问题（冻结后不再改）
+当前进度：[CURRENT_STATUS](docs/CURRENT_STATUS.md)；当前执行方案：[Agentic RL三步计划v3精简版](docs/2026-11-05_AGENTIC_RL_THREE_STEP_PLAN_V3.md)。最近完成方案：[v2](docs/2026-10-30_AGENTIC_RL_THREE_STEP_PLAN_V2.md)，补充行为检查见[留出题采样诊断](docs/2026-11-05_HELDOUT_SAMPLING_PROBE.md)。是否启动、完成及实际读数只在状态页与执行记录维护。本文为研究草案，不改写已结束实验或替代历史运行合同。
 
-**在工具调用型 trading agent 中，finance-native step-level credit assignment 能否相比 (a) outcome-only GRPO 和 (b) 使用相同 terminal net return 的 terminal-outcome StepPO control，提高训练稳定性、样本效率与样本外风险调整收益？**
+## 1. 长期研究问题
 
-## 核心假设
+**在训练交互与额外续写预算有限的条件下，如何为多步工具Agent构造更有用的step-level advantage，使其比普通终局奖励RL更有效地学习信息获取、计算、核验、恢复与提交决策？**
 
-金融任务的结果信号具有延迟、高噪声、非平稳和风险敏感等特点。通用 StepPO 可以通过 critic 与
-step-level GAE 学习 temporal credit，但其方法定义不包含 portfolio state、market regime 或反事实
-信息贡献等金融归纳偏置，因此不能先验地区分决策质量与市场噪声。本文关心一条轨迹中的五类步骤：
+以Agent-R1式的逐步工具交互为背景，研究重点是策略学习、优势估计和训练采样效率。金融条件委托是当前主要实验环境；核验与恢复是Agent需要学会的行为，以及分析动作后果的窗口。推理自检可作为强基线或诊断，不再要求它先取得独立方法收益，才允许开展RL。
 
-1. 获取了无效信息的步骤
-2. 产生了有效分析的步骤
-3. 形成了正确交易方向的步骤
-4. 控制了仓位与风险的步骤
-5. 因市场噪声而偶然盈亏的步骤
+希望形成的贡献是可分析、可验证的Agentic RL方法。允许改变具体估计器或任务设计，不预先要求旧M2、旧M3成立，也不把任何带公式的实现自动视为新算法。
 
-## 方法
+**近期优先级调整为：定位有效训练信号→验证关键决策能否被学到→再判断额外续写与分配是否值得扩大。** 普通RL能否学习是优先诊断，不是所有credit方法的准入条件；更好的credit也可能使普通终局RL难以学习的问题变得可学。先确认链路能响应有效信号，避免用没有改变关键行为的短训判定某类方法无效。V2已显示一档RLOO能改善窄训练正控，但尚无报告留出或旧Dev净收益；后续必须区分训练题适应与迁移，局部学习成功不自动支持泛化或credit主张。
 
-### 第一层：finance-native 终局信号（第一版实现）
+## 2. 三个长期问题及数学对象
 
-对一条完整 episode，令 $P_0$ 为初始组合价值，$P_T$ 为最终 session close 按共享账务引擎得到的
-组合价值，则
+| 研究问题 | 需要回答什么 |
+|---|---|
+| **RQ1：优势估计是否服务于实际策略？** | 实际可选动作及当前策略续写下的价值如何估计；如何区分动作效果、工具信息缺失和不同续写规则的效果 |
+| **RQ2：额外训练采样应该投入哪里？** | 状态很少重复、工具步骤长度和分支成本不同时，怎样分配额外续写，使策略更新更有效，而不只让局部分数更精确 |
+| **RQ3：是否带来独立学习收益？** | 在同一强SFT和共同训练预算下，能否提高完整任务成功率，或以更少训练资源达到相同质量；收益能否跨seed、预算和任务条件保持 |
 
-$$
-R_{net}=\frac{P_T}{P_0}-1.
-$$
-
-$R_{net}$ 已包含冻结的 next-open 成交、commission 和 slippage，但不包含 benchmark adjustment、
-volatility normalization 或显式风险罚项。finance-native 终局标量定义为：
+令$h_t$为Agent动作前可见的完整历史与剩余工具预算，$a_t$为一次实际模型响应/工具动作。先固定共同终局奖励$R$，研究
 
 $$
-A^{fin}
-=
-\frac{R_{net}-B}{\sigma+\epsilon}
--\lambda_{risk}\cdot\text{RiskPenalty},
+J(\theta)=\mathbb E_{\tau\sim\pi_\theta}[R(\tau)],\qquad
+Q^\pi(h,a)=\mathbb E[G_t\mid h_t=h,a_t=a,\text{之后使用}\pi],
 $$
 
-其中 $B$ 是同一 episode、同一成本/next-open 账务口径的冻结等权 buy-and-hold benchmark return，
-$\sigma$ 是 agent 组合净逐期收益的 population standard deviation（`ddof=0`）。第一版风险项为：
-
 $$
-\text{RiskPenalty}
-=
-\max\!\left(
-D_{max},
-\max(0,\tau_{max}-1.0),
-\max(0,w_{max}-0.30)
-\right),
+V^\pi(h)=\mathbb E_{a\sim\pi(\cdot\mid h)}Q^\pi(h,a),\qquad
+A^\pi(h,a)=Q^\pi(h,a)-V^\pi(h).
 $$
 
-其中 $D_{max}$、$\tau_{max}$、$w_{max}$ 分别是最大回撤、最大单日双边换手和最大单票 close weight；
-$\epsilon=0.0006887293802216064$，$\lambda_{risk}=0.9016432557217152$。尽管沿用符号 $A^{fin}$，
-它在本文中是完整轨迹结束后计算的 **terminal score/signal**，不是 critic value、return 或直接交给
-actor 的 optimizer advantage。
+$G_t$是相同终止规则下从该前缀起的剩余回报。模拟器可恢复真实环境、缓存与调用计数，辅助采样不能额外获得Actor看不到的答案。训练期额外续写成本$C_{train}$与部署时工具成本$C_{exec}$分开报告：更多训练分支不等于部署时更多查询；同工具调用上限也不等于同训练算力。
 
-### 第二层：步级训练信号与 advantage 机制 —— ⚠️ 这是本文的真正研究问题
+这些都是标准定义，**不是本项目的新颖性**。候选方法要说明估计对象、适用条件、偏差/方差与成本，并用实际训练结果证明价值。若使用搜索或修复策略$\mu$续写，应明确它得到的$Q^\mu$是否及如何服务于$\pi$的更新，不能直接改名为$Q^\pi$。
 
-把 $A^{fin}$ 转换为逐步训练信号的机制是开放问题。这里既包含 reward-timeline controls，也包含
-直接作用于 GAE 后、whitening 前 advantage 的结构化 residual；二者不得混称为 reward。**如果只做
-均匀回填，本工作仍只是 reward shaping，不构成新的 credit-assignment 贡献。**正式设计依次包含：
+## 3. 方法研究的候选切入点
 
-- **M0 finance-terminal signal control**：不做显式 reward redistribution。对含 $T$ 个实际
-  Agent-R1 interaction steps 的完整轨迹，使用
-
-  $$
-  r_t^{M0}=
-  \begin{cases}
-  0, & t<T,\\
-  A^{fin}, & t=T.
-  \end{cases}
-  $$
-
-  M0 与 A2 使用完全相同的 StepPO stack，仅把 terminal scalar 从 $R_{net}$ 换成 $A^{fin}$；它用于
-  诊断 finance-native terminal objective 的增量，不是 reward allocation 方法，也不能作为 A3 主方法。
-
-- **M1 uniform immediate-step reward v1**：M1 是 action-agnostic、轨迹总量守恒的 reward
-  redistribution 对照。除终局 $A^{fin}$ 和实际轨迹长度外，它不使用 action、portfolio state、
-  market regime、步骤质量或反事实证据，具体语义如下：
-  - **时序边界与步单位**：$A^{fin}$ 只在 `finance_trajectory` 完整终止后得到；M1 随后回溯式
-    重写这条已生成 rollout 的训练 reward timeline。`immediate_step_reward_v1` 中的
-    `immediate` 是指这些值作为 StepPO 的逐步 reward 输入，不表示 agent 执行动作时获得在线即时
-    反馈，也不会改变生成当前这条 rollout 的行为。$T$ 精确定义为实际保留的 Agent-R1
-    interaction/environment steps 数，包括已经实现的 retrieve、compute、buy、sell、hold、abstain 或
-    invalid step；它不是 market sessions、token 数、推理文本长度或配置中的最大步数。
-  - **分配与守恒**：先把终局信号转换为有限 Python float $v$，令 $q=v/T$；前 $T-1$ 步写入
-    $r_t^{M1}=q$，最后一步写入 $r_T^{M1}=v-\sum_{t=1}^{T-1}r_t^{M1}$。最后一步只吸收浮点
-    余差，因而不保证所有 step reward bitwise 完全相同，但保证证据层 Python step-credit 向量的
-    普通求和精确等于 $v$。正、负信号保持符号，零保持为零；M1 不做 clipping、重新标定或
-    action-specific weighting。轨迹越长，每步 reward 的绝对值通常越小，但分配总量不会随 $T$
-    膨胀。
-  - **输入域与 fail-closed 边界**：M1 核心允许任意有限的正、零、负信号，拒绝 NaN、$\pm\infty$
-    和空 steps；A3 flow 另外拒绝截断轨迹、错误终止位置、非 `finance_trajectory` 以及环境 trace 与
-    Agent-R1 reward 不一致。$A^{fin}=0$ 在方法定义上合法；wiring smoke 要求 Train/Valid 各出现
-    非零信号只是为了证明接线，不是 M1 的算法限制。
-  - **进入优化器后的语义**：上述向量只是 reward，不是 return 或直接写给 actor 的 advantage。
-    共享 StepPO 管线仍按 trajectory/step 顺序，由 critic value、trajectory-end bootstrap 边界、
-    $\gamma$ 和 $\lambda$
-    计算 step-level GAE，再进行 step-level whitening 并映射到 response mask 后执行 actor 更新。
-    因此实际 optimizer advantages 通常不均匀，也不要求其总和、discounted return 或 float32 trainer
-    metric 继续等于 $A^{fin}$；GAE 产生非均匀 advantage 也不会让 M1 获得 action-specific 或因果
-    step attribution。
-  - **具体例子**：若 $A^{fin}=0.9$、$T=3$，M1 的 immediate rewards 为
-    $[0.3,0.3,0.3]$。在仅用于验证语义的合成例子中，若 value 全为 0 且
-    $\gamma=\lambda=1$，GAE returns 为 $[0.9,0.6,0.3]$，标准化 advantages 为
-    $[1,0,-1]$。这只说明“即时奖励均匀”不等于“optimizer advantage 均匀”，不是正式实验
-    超参数或性能结果。
-  - **科学角色**：M1 只回答“把 finance-native 终局信号均分到实际 steps，再配合 StepPO 后能达到
-    什么表现”，本质上仍是 reward-timing/reward-shaping control。它与 M0 的差异仅为 terminal
-    signal 的时间分布；它与 A3-M2 的差异才是待冻结的结构化 residual。M1 本身不能作为 A3 主方法，
-    目前通过的也只是 wiring smoke，不是正式消融结果。
-- **M2 state-regime anchor residual（当前优先主方法）**：M2 保留 M1 的 $A^{fin}$、immediate
-  rewards、critic target、GAE 和 StepPO actor/optimizer，只在同一 policy snapshot、同一 episode/
-  session 的 sibling rollouts 中，按 action 前可见的 portfolio state 与 no-future-information market
-  regime features 构造粗化 anchor。满足待冻结 preregistration 的 group support 与 action-contrast
-  条件时，计算 mean-centered terminal-outcome residual $S_t$，并在唯一一次 step-level whitening
-  前组合：
-
-  $$
-  X_t=U_t+\eta S_t,\qquad A_t^{M2}=\operatorname{Whiten}(X_t),
-  $$
-
-  其中 $U_t$ 是 M1 reward 经 critic/GAE 得到的未白化 advantage；$S_t$ 不进入 critic target，且
-  stop-gradient。M2 估计的是 coarse-state conditional relative credit，不是已经识别的单步因果效应。
-  anchor、$\eta$、coverage gate、whitening scope 和统计规则必须以单独 preregistration 为准。
-- **M3 counterfactual information residual（候选，不自动启用）**：针对 retrieve/compute 等信息步骤，
-  在待冻结的 intervention 下遮蔽指定信息并重新生成后续决策，用 decision change 与 terminal outcome
-  构造 sampled counterfactual residual。正式采用前必须另行冻结 eligible steps、遮蔽边界、common-
-  random-number 规则、距离/质量函数、符号与尺度、多步骤重叠归因、coverage 和预算。由于 M3 会增加
-  辅助 rollout，必须另设同 auxiliary schedule、完整资源记账但不向优化器提供有效反事实信号的
-  sham control，并在共同 total-token horizon 下比较、另报 GPU-seconds sensitivity。该设计不假定
-  real/sham 的实际 token 或 FLOP 天然完全相同；没有这一 control 时，不得把 `M3 − M1` 解释为
-  单一机制效应。M3 路线必须同时通过 `M3 − sham` 的 mechanism-specific gate 和既有
-  `M3 − M1` superiority gate；前者不能替代后者。
-
-## 三类方法、五个核心正式配置
-
-### 共同记号、step 与完成边界
-
-对 episode $p$ 的第 $i$ 条 rollout，$T_{pi}$ 是实际保留的 Agent-R1 interaction/environment steps
-数；每次模型 response 与一次环境交互构成一个 step，包括 retrieve、compute、buy、sell、hold、
-abstain 和 invalid action。它不是 market sessions、token 数或 `max_agent_steps`。
-
-所有正式配置只接受到达同一 finance episode terminal 的完整轨迹。达到 step/context 上限仍未终止
-时统一 fail closed：不得在某个 arm 静默记为零、在另一个 arm 拒绝，也不得按性能选择是否 retry。
-
-### A1：Outcome-only GRPO
-
-A1 的环境 reward timeline 为：
-
-$$
-r_{pit}^{A1}=
-\begin{cases}
-0, & t<T_{pi},\\
-R_{net,pi}, & t=T_{pi}.
-\end{cases}
-$$
-
-对同一 sampled input-row/prompt occurrence（共享同一 `uid`/group index）和同一 policy snapshot 的
-$K=4$ 条 sibling rollouts，GRPO 先把每条完整轨迹的 step/token rewards 求和为 $R_{net,pi}$，再计算
-group-relative trajectory advantage：
-
-$$
-\widehat A_{pi}^{A1}
-=
-\frac{R_{net,pi}-\operatorname{mean}_{j\in G_p}R_{net,pj}}
-{\operatorname{std}_{j\in G_p}R_{net,pj}+\epsilon_{GRPO}}.
-$$
-
-正式 A1 固定 `norm_adv_by_std_in_grpo=true`、$\epsilon_{GRPO}=10^{-6}$，分母使用四条 trajectory
-scores 的 sample standard deviation（correction $=1$）。
-
-同一标量随后广播到该轨迹全部 steps 的有效 response tokens。因此 terminal-only 不表示只更新最后
-一步；A1 会更新整条轨迹，但没有 critic、没有 GAE，也没有轨迹内部的 time/action-specific credit。
-若 sibling rollouts 的 $R_{net}$ 相同，group-relative advantage 会归零。A1 不使用 $B$、$\sigma$、
-RiskPenalty 或 $A^{fin}$。
-
-### A2：Terminal-outcome StepPO control
-
-A2 与 A1 使用完全相同的外部 reward 和时间线：
-
-$$
-r_{pit}^{A2}=
-\begin{cases}
-0, & t<T_{pi},\\
-R_{net,pi}, & t=T_{pi},
-\end{cases}
-$$
-
-但把 GRPO stack 换成 learned pre-action critic、step-level GAE、一次 step-level whitening 和 GSPO
-actor loss。给定拟由两位合作者共同冻结的 $\gamma,\lambda$：
-
-$$
-\delta_{pit}=r_{pit}^{A2}+\gamma V_{pi,t+1}-V_{pit},\qquad
-U_{pit}=\delta_{pit}+\gamma\lambda U_{pi,t+1},
-$$
-
-终局边界为 $V_{pi,T_{pi}+1}=U_{pi,T_{pi}+1}=0$。未白化的 $U_{pit}$ 经共享 scope 的一次 whitening 后，
-每个 step 的 scalar advantage 广播到该 step 的有效 response tokens。
-
-A2 没有 reward model，也不使用 finance-specific intermediate shaping；“通用”只描述 critic/GAE 的
-temporal propagation。它可以产生 step-varying advantage，但不保证如此：例如 $V_t=0$ 且
-$\gamma=\lambda=1$ 时，terminal-only reward 的未白化 $U_t$ 对所有步骤都等于 $R_{net}$。因此 A2
-不能被表述为已经判断了每一步的因果贡献。
-
-### A3：Finance-native controls 与主方法
-
-| 配置 | External training reward | Post-GAE、pre-whitening 增量 | 优化与科学角色 |
-|---|---|---|---|
-| A1 Outcome-only GRPO | terminal-only $R_{net}$ | 无 | trajectory-relative GRPO + critic disabled + upstream vanilla token-level importance-ratio/clipped PPO actor loss；outcome-only reference |
-| A2 Terminal-outcome StepPO | 与 A1 相同的 terminal-only $R_{net}$ | 无 | critic + GAE + GSPO；通用 StepPO method-package control |
-| A3-M0 Finance-terminal control | terminal-only $A^{fin}$ | 无 | 与 A2 相同的 StepPO；隔离 terminal signal transformation |
-| A3-M1 Uniform redistribution control | 总量守恒的 $A^{fin}/T$ immediate rewards | 无 | 与 M0/M2 相同的 StepPO；reward-timing control 和 M2 matched null |
-| A3-M2 Main | 与 M1 相同的 base reward | 待冻结 M2 preregistration 定义的 $\eta S_t$ | finance-native main；唯一 primary 为 `M2 − M1` |
-
-M3 只有在独立 preregistration 与 schedule-matched、resource-accounted sham control 完成后，才能
-替代 M2 成为 A3-main；此时正式矩阵会增加 sham arm，不能仍声称是无条件的五配置设计。
-
-截至 2026-09-03，仓库现有 A2 仍实现 dense market-transition reward：净组合单期收益减 benchmark
-收益、回撤罚项和换手罚项，并把 `last_reward` 写入下一 observation。它应视为历史实现和可选的
-`A2-Dense` supplementary baseline，**不等于上述正式 A2**。此外，launcher 仍把 StepPO arms 的
-实际 `rollout.n` 强制为 1，$\gamma,\lambda$ 尚未由项目显式写入 formal config，A1 的未完成轨迹仍
-可能静默形成全零总分，A3-M0/M2 尚未实现，M2 preregistration 也未冻结；formal configs 还缺
-`training.episodes=441` 与 exact Qwen3-4B revision。正式运行前必须完成 A2 terminal-only 重接线、
-A3-M0/M2 实现、共同完成性与 reward-neutral contract、配置/schema/测试及各自 wiring smoke；不得
-只改标签后沿用旧行为。
-
-### 相邻对比、可识别内容与声明边界
-
-| 对比 | 可识别的 method-package change | 不能声称 |
+| 候选切入点 | 想解决的缺陷 | 成立需要的证据 |
 |---|---|---|
-| `A2 − A1` | 相同 terminal $R_{net}$ 下，完整 StepPO stack 相对 GRPO stack 的增量 | 单独归因于 critic、GAE 或 GSPO 任一组件 |
-| `A3-M0 − A2` | 相同 StepPO 与 terminal-only placement 下，$R_{net}\rightarrow A^{fin}$ 的 terminal-objective effect | reward redistribution 或 step attribution |
-| `A3-M1 − A3-M0` | 相同 $A^{fin}$/StepPO 下，uniform redistribution 的 reward-timing effect | action-specific 或因果 credit |
-| `A3-M2 − A3-M1` | 相同 M1 backbone 下，待冻结 M2 residual 的增量 | $A^{fin}$ 或一般 StepPO 的效果 |
-| `A3-main − A1/A2/A3-M0` | 完整系统的实用差异 | 任一设计层的单独因果贡献 |
+| **有效信号怎样进入关键决策的更新** | 总token、参数更新或非零局部分数，可能掩盖关键计算步骤没有获得可用训练信号 | 区分终局成功、工具成本与执行差异，检查真实优势、梯度及动作变化，再用小规模受控学习验证 |
+| **额外续写何时值得投入** | 辅助估值会挤占父轨迹预算，估计更准也可能不改善单位成本的学习 | 检查覆盖、每点样本量、真实成本与梯度行为，提出可验证的收益预测，并用训练后质量/成本曲线检验 |
+| 额外续写预算的有效分配 | 均匀采样可能把预算投入对策略更新帮助小、续写却昂贵的前缀 | 在同一估计方式与样本用途下比较分配，证明最终学习质量或学习成本改善 |
+| 估计目标与实际更新的一致性 | 工具返回干预、搜索评价、当前策略动作价值容易被混用；有差值不保证有正确更新方向 | 明确估计对象及条件，给出可检查的分析，并展示修正后的训练增量；标准的baseline或重要性加权本身不足以成为贡献 |
+| 面向工具交互的可复现学习诊断 | 状态不重复、替代证据、恢复路径与剩余预算会改变局部价值及估计开销 | 在真实交互中定位可重复的失败机制，并证明它如何影响学习；不能只停留于离线相关性 |
 
-这是相邻对照阶梯，不是完整 factorial design。RL 训练中的交互与路径依赖意味着上述 effect 不能机械
-相加为“总贡献”。除 `A3-M2 − A3-M1` 的待冻结 primary gate 外，其余相邻对比默认是 secondary
-descriptive contrasts；若要做正式 superiority claim，必须在查看 Valid 前冻结检验层级与 multiplicity。
+首次手工分配与V2固定目标阶段MC原型已收尾，均未建立独立学习增量；不直接扩训或扫阶段权重。近期用最小学习试验区分信号稀疏、关键动作未被有效更新、当前优势目标没有额外价值等解释，一次优先隔离一个因素。若以后研究显式动作$Q$比较，需要另行说明动作支持与策略加权规则。
 
-### 所有正式配置的共同比较契约
+理论分析以实际估计器和采样协议为对象。根据同批回报选择前缀、动作、停止次数，再直接使用均值，可能引入选择偏差；只更新被选步骤也会改变优化目标。动作无关baseline的条件性质不自动推广到PPO clipping、优势白化和长度处理后的整个更新。不能先宣称无偏或最优，再忽略实现条件。
 
-- 每个 episode/policy snapshot 统一生成 `rollout_n=4` 条 sibling trajectories；A1 用于 GRPO group，
-  M2 用于 anchor grouping，其余 arms 仍保持相同采样与资源口径。
-- A2、A3-M0、A3-M1、A3-M2 使用独立参数但相同 architecture/revision/initialization rule 的 critic，
-  并拟在共同审核后把 $\gamma=1,\lambda=1$ 显式写入配置，共享 trajectory-end bootstrap boundary、
-  GSPO actor loss、optimizer 和 update schedule。未白化 advantage/residual 必须在 PPO minibatch
-  切分前，对完整 logical on-policy rollout batch 中 `sample_mask=true` 的真实 step rows 做唯一一次
-  DP-global whitening，使用 sample standard deviation（correction $=1$）与 $10^{-8}$ epsilon。
-- Train、Valid 与 Final OOS 都采用 reward-neutral observation contract：训练 reward、arm identity 和
-  credit evidence 只进入 trainer/审计日志，不写入 main-rollout 的后续 observation 或 prompt。条件性
-  M3 auxiliary branches 只允许出现 preregistration 明定的 real-vs-sham intervention 差异；两侧的
-  pre-intervention base context 必须相同，auxiliary prompt/result/RNG 不得回流或推进 main rollout。
-- 五臂共享模型 revision、Train/Valid manifests、episode/update 顺序、sampling 参数、seed set、
-  checkpoint/evaluation grid 与 retry/completion 规则。所有 arms 的 Valid/Final checkpoint 都由同一个
-  frozen scorer 计算 $A^{fin}$，训练 reward 的差异不得改变评测输入或纵轴定义。
-- 相同 one-epoch trajectory schedule 不等于相同实际 compute。主资源横轴使用 Train generated response
-  tokens；environment transitions、prompt tokens、optimizer updates、GPU-seconds 和峰值显存必须同时
-  报告。新增 M0 不得削减 M2/M1 的 seed、trajectory 或统计预算。
+可将“额外续写能否回本”作为研究假设：在平均梯度相同、梯度样本独立且单样本成本稳定的理想模型中，若辅助成本与父采样成本之比为$c$，固定总预算要求$\sigma'^2/\sigma^2\leq1/(1+c)$才不增加平均梯度噪声。这是粗算，不是实际PPO学习收益的定理；baseline均方误差、二值成功率方差与实际梯度方差也不能混用。需要检验其能否预测不同任务和预算下的训练结果，公式本身不构成新贡献。
 
-模型：Qwen3-4B（调试用 Qwen3-1.7B）。框架：Agent-R1（verl 0.7.0）。Proposal seeds 至少 2 个；
-正式主张所需第三 seed 与统计规则必须在 formal rollout 前冻结。
+## 4. Agent-R1背景与最近邻边界
 
-StepPO 的论文/方法语义固定引用 [arXiv:2604.18401v4](https://arxiv.org/abs/2604.18401v4)（2026-06-21）；可执行实现仍独立固定为 Agent-R1 commit `b124aa46534cbf2fb8bc8af11405774984c42ac7`。paper pin 不替代 executable commit pin。
+Agent-R1提供逐步轨迹、工具环境和训练接口，是实现背景；使用这个框架本身不是方法贡献。复用现有4B、LoRA、采样与持久FP32/Adam链路，实际采用的源码、损失和控制条件由每轮计划记录。已跑通训练骨架不等于完整复现Agent-R1/StepPO的全部算法。
 
-## Go / No-Go（预注册，出结果前签字）
+| 工作 | 已覆盖什么 | 本项目必须说明什么 |
+|---|---|---|
+| [Agent-R1](https://arxiv.org/abs/2511.14460) | step-level轨迹与模块化Agentic RL框架 | 在框架之上新增了什么学习机制 |
+| [VinePPO](https://arxiv.org/abs/2410.01679) | 用Monte Carlo续写估计价值、改善credit assignment | MC续写和状态baseline已有；适配版与完整复现分开命名 |
+| [AdaStep](https://arxiv.org/abs/2610.03223) | 在条件采样假设下收缩局部advantage | 自适应收缩或信号/噪声比不作为独有卖点 |
+| [APPO](https://arxiv.org/abs/2606.12384) | 分支位置选择与分支后的credit分配 | 不能把选择分支位置笼统称为首次提出 |
+| [ASCT](https://arxiv.org/abs/2609.35215) | 可恢复前缀上的合法动作评价、辅助搜索和PPO信用分配 | 说明估计对象、动作空间、续写规则及预算分配的实际差异；它是直接最近邻 |
+| [TRACE](https://arxiv.org/html/2606.11119v2) | 按prompt与工具回合前缀的混合结果潜力分配预算，并用树轨迹服务策略更新 | 与仅用辅助续写估计baseline的方案区分；比较分配时固定估计器与训练样本用途 |
+| [BPO](https://arxiv.org/html/2607.14171) | 在高熵位置分支，以共享前缀的回报构造优势并训练树内样本 | 高熵选点与分支共享已有；其完整训练规模不能直接作为本任务必须达到的门槛 |
+| [CRITIC](https://arxiv.org/abs/2305.11738)、[SAG](https://arxiv.org/abs/2610.07335) | 工具纠错、选择性调用纠错及相应成本权衡 | 检查与恢复行为本身不自动构成RL方法新颖性 |
 
-**A3 方法贡献的必要门槛（非充分条件）**：当前优先的 A3-M2 必须在与 A3-M1 相同的模型、数据、
-StepPO stack、seed set、超参数选择规则和预注册等预算口径下，通过预注册的 `M2 − M1` superiority
-gate。该 gate 的主指标、聚合方式、方向、阈值/不确定性规则及预算单位必须在 formal rollout 前由
-两位合作者线下冻结。未通过时，即使优于 A1/A2/M0，也只能报告 $A^{fin}$ / reward-shaping 或完整
-系统差异，不得声称 M2 finance-native credit assignment 有增益。M3 若被选择，必须由其独立协议把
-schedule-matched、resource-accounted sham 定义为主机制对照，并重新冻结相应 gate；不能自动沿用
-M2 的五臂授权，也不能取消既有 `M3 − M1` superiority gate。
+上述为2026-10-30核对的相关工作入口，不是完整查新结论。只增加一套与任务绑定的手工阶段权重，尚不足以形成方法贡献；主题相近也不等于估计对象和训练机制完全相同。提出首创性或理论主张前，核对真正相关的估计器、假设和学习协议；只维护服务当前决策的简短差异表，不建设阻塞实验的长文献矩阵。
 
-**GO（走方法论文）**：A3-M2 必须通过待冻结的 `M2 − M1` fixed-design Valid primary gate，并通过
-完整性、coverage、资源和 raw-risk guardrails。A1/A2/M0 的 secondary effect sizes、跨 seed 稳定性及
-获准后的单次 Final OOS 方向只作为支持或外部确认，不能替代 primary gate，也不能在 primary 失败后
-把 M2 改判为方法贡献。M3 使用其独立 preregistration 中的 `M3 − sham` mechanism gate，并且仍须
-通过 `M3 − M1` superiority gate。
+历史StepPO引用与源码pin按原合同保留；同一论文编号后续版本已使用[CAPO名称](https://arxiv.org/abs/2604.18401v5)，不把新版本描述追溯到旧run，也不为查新自行升级GPU栈。
 
-**PIVOT（转诊断论文，接 The Losing Winner）**：matched-control primary gate 未通过，或关键完整性/
-风险 guardrail 失败。此时论文改为“细粒度 credit 为什么救不了 trading RLVR”——量化预测能力与
-盈利能力的断裂点归因。**“能解释断裂”不是 GO 条件，而是 PIVOT 的入口**，防止赛后改标准。
+## 5. 当前实验载体与保留资产
 
-## 与最近邻的差异（一句话版）
+当前任务链为：**财报检索/阅读→指标计算→条件委托判断→约束求解与执行**。完整成功同时要求指标/期间/单位正确、条件正确、执行合法和证据有效。金融数值错误但阈值碰巧未变仍算失败，现有reward与验证器不因方法效果而放宽。
 
-> AlphaQuanter learns tool orchestration with trajectory-level optimization; we study finance-specific **step-level** credit assignment under delayed, noisy, risk-sensitive rewards, with a contamination-controlled evaluation protocol.
+保留现有Qwen3-4B完整教师SFT、工具环境、真实前缀恢复、原始失败、求解器及账本。相同任务与强SFT是不同RL臂的共同基础；不再让监督量不同的SFT与弱初始化RL替代机制对照。
 
-完整对比见 [PAPER_MATRIX.md](PAPER_MATRIX.md)。
+公开FinQA财报文本和表格、报价快照是真实资料；条件委托、账户、发行人到资产的映射及资料库时间为模拟。当前任务不要求预测市场涨跌，也不构成真实PIT交易、生产部署或市场alpha证据。若执行始终只是数值问答的确定性后处理，必须承认其任务贡献有限；方法正向后再验证更有意义的多决策工具任务，不能靠金融包装泛化结论。
 
-## Phase 2（写给博后看的 roadmap，本阶段不实现）
+任务是否适合credit研究，应检查同一真实前缀下不同可行动作是否改变成功机会、后续决策、恢复路径或成本。沿轨迹的$V^\pi(h)$出现多次变化不是充分条件，未观察到明显变化也不证明只有一个决策。若需改任务，优先引入有意义的多证据选择、真实返回差异和可恢复错误，保留自然恢复；不靠禁用恢复、任意收紧调用数或放宽验证器制造方法优势。
 
-> After validating finance-native credit assignment in historical replay, we extend the method to hierarchical planning and microstructure execution, building on the TradeMaster / FinWorld ecosystem (EarnHFT / MacroHFT line).
+## 6. 已有证据与长期目标之间的距离
+
+截至2026-11-05，保留以下研究证据；日常运行数字、资源状态与后续更新只写[CURRENT_STATUS](docs/CURRENT_STATUS.md)。
+
+| 已有结果 | 支持什么 | 不支持什么 |
+|---|---|---|
+| 财报任务完整SFT Dev82%、旧保留测试72%；共同64题适配起点41%/31% | 当前任务可学习，已有可用demo | SFT与旧RL监督量/起点不同，不能声称等预算SFT胜过RL；不能归因为credit |
+| 旧普通RLOO Dev44%、旧测试34%；sham41%/31%、M3 41%/32% | 当前有限配置未建立稳定credit增量 | 旧M3的13条局部支持全零，不能称非零credit训练后失败或RL上限 |
+| 强SFT新Train32题×4父轨迹90/128成功，8组混合成败、9组终局reward不同 | 强SFT仍有未解决任务及采样差异 | 成败混合不等于reward混合；不能仅凭成功率反推零优势比例或可学习性 |
+| 12个基础问题各条件2次续写，原返回/遮蔽/格式对照业务正确18/24、12/24、18/24 | 部分信息返回影响业务与恢复成本 | 不是动作advantage、总体因果结论或credit学习增益 |
+| 遮蔽后15条取得同源副本，其中11条业务恢复；四臂训练跳过 | 恢复行为值得作为工具决策研究；旧探测有明确出口 | 两题稳定阳性未过事前3题工程门槛，不是统计否定；本轮actor更新0 |
+| 首轮完整强SFT出发，RLOO/均匀MC/候选MC Dev80/82/81，共同SFT82；有效更新20/13/13 | 该轮RL确有训练，但未修好原SFT失败题；四组指标正确标签逐题一致 | 不支持“尚无强SFT后RL”，也不支持已定位根因或RL/credit总体无效 |
+| 首轮均匀/候选MC仅替换12/445、13/444个父请求，约2.7%/2.9% | 这是一轮支持稀疏的baseline替换试验 | 没有隔离覆盖率、有效学习量及估计目标，不能把稀疏认定为失败根因 |
+| V2两档RLOO各24次更新：低/高LR Train正控41/64、59/64，强SFT41/64；报告留出均22/32，Dev81/100、80/100，强SFT82/100 | 高LR能改变计算行为并改善所选训练题，所选题上有明确学习响应；两RL臂留出标签与SFT逐题相同 | 正控仅8份报告；起点/终点采样seed不同，不能把同轨迹编号当因果修复，尚无迁移净收益或稳定学习效率结论 |
+| V2限时继续SFT Train34/64、报告留出23/32、完整Dev81/100 | 现有教师池下继续SFT未建立稳定净收益；补齐原95题后的5题得到完整终点 | 旧教师池未包含本轮8个目标问题，训练样本暴露不同；不能据此声称RL普遍优于SFT |
+| V2条件性对照：普通RLOO42/64、目标阶段MC40/64；各96父轨迹与12次更新，MC另用492,404生成token | 14个MC baseline确实进入计算步骤，10处原始优势改变；这一档配置未获得训练正控增量 | 仅8报告的单seed正控，描述性报告区间包含零；不否定其他样本数、学习率或完整VinePPO，也不证明泛化效果 |
+| 补充原留出题native采样：原SFT43/64、高LR RLOO42/64；两者旧贪心均22/32 | 在本批固定seed与每题两次采样下，也未观察到隐藏的采样成功频率改善 | 16报告为已使用的开发证据；有限重复与报告bootstrap不能证明真实成功概率相等或总体效应为零 |
+| 旧M2池化、同前缀估计与交易RL多轮已结束 | 有可复用工程、局部估计与失败经验 | 尚无稳定的交易收益或新日期优势 |
+
+原始证据：[财报任务学习结论](runs/m3-financial-evidence-20261030-v2/CONCLUSION.md)、[强SFT信息探测结论](runs/m3-financial-credit-20261030-v1/CONCLUSION.md)、[首次MC学习回顾](runs/agentic-rl-mc-20261030-v1/RESEARCH_REVIEW.md)、[V2学习回顾](runs/agentic-rl-learning-20261030-v2/RESEARCH_REVIEW.md)、[V2逐题核对](runs/agentic-rl-learning-20261030-v2/summary/step2_paired_review.json)、[留出采样诊断](runs/agentic-rl-transfer-probe-20261105-v1/REPORT.md)、[历史机制总结](docs/history/CREDIT_ORACLE_DIAGNOSTICS.md)。这些是不同实验，不混成一次非零credit成功或失败的验证。新100题Test仍未评估，旧市场Final OOS本轮不重开。
+
+## 7. 什么结果足以支撑论文主张
+
+**核心证据必须来自训练后的策略。** 在共同强SFT、任务、奖励与资源口径下，候选方法相对普通终局RL及合适的MC/分支学习对照，改善完整成功率或达到同等质量的训练成本。局部估计误差下降、干预有效、公式成立或多做SFT都不能替代这一证据。
+
+早期demo可先做小规模单seed方向判断；方法主张还需要适当的独立重复、机制对照、未用于开发的评估，以及与最近邻的差异。比较相同训练预算上限时仍报告实际父轨迹、辅助采样、更新次数和GPU阶段时间，不将等token称为等FLOPs。推理成本与训练成本分别解释。
+
+V2说明训练覆盖与迁移需要单独检验：重复少量有信号的问题能改变已见题表现，但未说明对其他报告的决策有帮助。后续优先隔离训练覆盖、有效奖励对比及更新行为，按报告分组核对修好与改错；若扩训练分布，估计器、初始化与预算口径应固定，不同时重做奖励、任务和分配规则。这是待检验的方向，不是已经识别的失败根因。
+
+当前已有现成教师，继续SFT应作为实用对照，回答该教师条件下哪种训练更划算；候选相对普通RL是否有增量是另一个主张。两者分别报告，不以“必须先胜过继续SFT”作为所有RL方法的准入条件；教师特权信息、轨迹生成成本、监督量与实际训练成本需要说明。
+
+现有Dev适合方向筛查与同题行为定位，不能据此声称稳定的微小增益。评估规模按实际配对分歧率、报告/基础问题聚类、seed波动和目标效应决定；不能把某个假设下的功效估算变成固定最低题数。已用于筛选的题不再作为独立确认，新Test在方案与终点冻结后按当轮计划使用。
+
+若方法有效，SFT作为共同底座，论文把新增收益归给新增学习机制；若只有工程能力或局部诊断，就收窄成果定位。有限负结果不自动构成诊断论文，不再预设“细粒度credit救不了trading RLVR”作为退路。AI顶会是目标，不是已有结论；需要有区别于最近邻的具体问题与解决证据。
+
+## 8. 长期目标与执行计划怎样维护
+
+- **Brief负责长期方向。** 研究问题、假设、候选贡献、证据边界与重要方向调整写在这里；不写每轮三步、日常日志、具体GPU预算和窗口清单。
+- **`docs/`负责滚动执行。** 每轮新建带日期的三步计划，写清目标、单一候选、对照、资源上限与出口；旧计划保留并标明完成、停止或被替代，不能改写成执行过的新方案。
+- **CURRENT_STATUS负责进展。** 链接当前Brief与当前三步，压缩记录已完成什么、还缺什么以及下一项；运行明细留在各自`runs/`。
+- **每轮三步结束时回顾Brief。** 对照RQ1—RQ3，简短记录新增支持、仍缺证据、是否调整方向；持续探索一段时间仍无推进或遇到关键反证时提前回顾。没有方向变化时只在状态页写回顾结论，不为每轮执行重写Brief，也不设新的审批流程或定时任务。
+
+工作方式继续遵循用户要求：demo优先、大步试错、尽快真实GPU采样/训练，CPU准备与统计并行；保留真实输入对应、基本预算及必要接线检查，重复审计和精细整理后补。方向筛查优先复用已有对照、单臂短训与少量固定评估，证据足以影响下一步就推进；接受并写清剩余疑点，不把显著性、多seed或完整归因作为每次小试验的前置。严格确认集中在有希望的方法上。旧[EVAL_PROTOCOL](EVAL_PROTOCOL.md)与[M2规格](M2_V1_PREREGISTRATION.md)继续约束各自历史实验，不自动套为新demo的全部流程。
+
+## 9. 重要方向调整记录
+
+| 版本与日期 | 长期定位 | 调整依据 |
+|---|---|---|
+| v0.2及更早 | 金融终局信号与交易step-credit | 原始研究提案；完整历史定义见[合并前原文](docs/archive/pre_2026-10-30_research_plan_merge.zip) |
+| v0.3，2026-10-30 | 金融证据可靠性、推理核验与恢复 | 主要能力来自SFT、credit学习增量未建立；当时三步为尚未执行的推理方案，见[v0.3原文](docs/archive/pre_2026-10-30_agentic_rl_brief_v04.zip) |
+| **v0.4，2026-10-30** | **有限训练采样预算下的Agentic RL、优势估计与学习效率** | 用户明确希望以Agent-R1/RL为研究背景；金融核验与恢复作为载体，RL回到主问题；长期Brief与滚动三步分开维护 |
+| v0.5，2026-10-30 | **保留Agentic RL主线，先定位有效信号与关键行为的可学习性，再扩大MC/分配** | 最新强SFT三臂未改变关键指标正确性且MC支持稀疏；结合[外部方向评审](<docs/claude/Finance Agent 方向评审与实验方案.pdf>)，采纳风险排序与学习诊断优先级，修正绝对学习门槛、方差回本与任务判定的过强推断 |
+| **v0.6，2026-11-05** | **区分训练题适应与报告迁移；保留Agentic RL主线，结束当前固定MC原型** | V2高学习率改善训练正控、留出未变；目标阶段MC确有非零接入但40/64未超过普通RL42/64。留出补充采样43/64对42/64也无正向差异；优先检验迁移缺口，有限负结果不扩展为RL或credit普遍结论 |
+
+v0.5的方向调整未采纳整套八天排期或全步骤大规模续写。具体预算按有限阶段与质量/成本曲线设置，不因外部建议取消资源边界，也不把新计划写成已执行结果；已结束的[V1三步合同](docs/2026-10-30_AGENTIC_RL_THREE_STEP_PLAN.md)与[V2三步合同](docs/2026-10-30_AGENTIC_RL_THREE_STEP_PLAN_V2.md)继续保留，结果按各自冻结原稿与收据解释。
+
+原v0.5与V2状态更新前的原稿按字节保存在[回顾前快照](docs/archive/pre_2026-11-05_v2_research_review.zip)；已结束run按各自冻结合同与实际收据解释。

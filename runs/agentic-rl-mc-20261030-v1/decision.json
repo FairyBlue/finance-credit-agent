@@ -1,0 +1,19 @@
+{
+  "status": "COMPLETE",
+  "decision": "NO_CLEAR_SEED42_LEARNING_GAIN",
+  "finished_at": "2026-10-30T18:03:08.767137+08:00",
+  "fresh_test_opened": false,
+  "costs": {
+    "wiring_generation_tokens": 282676,
+    "training_generation_tokens": 7218406,
+    "evaluation_generation_tokens": 7677857,
+    "total_new_generation_tokens": 15178939,
+    "cost_includes_failed_request_logs": true,
+    "reused_parent_exposure_tokens": 3308883,
+    "reused_parent_new_generation_tokens": 0
+  },
+  "credit_method_claim_supported": false,
+  "full_vineppo_reproduction": false,
+  "strict_equal_actual_compute_claim": false,
+  "research_brief_review_required": true
+}

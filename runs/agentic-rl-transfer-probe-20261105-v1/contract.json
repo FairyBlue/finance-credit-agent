@@ -1,0 +1,40 @@
+{
+  "frozen_at": "2026-11-05T18:09:42.154957+08:00",
+  "rules": {
+    "profile": "financial_heldout_native_probability_probe_v1",
+    "data": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/data/holdout.jsonl",
+    "data_sha256": "d14c142cc64b59dc3e071f355094ac4911ae86ba97599e160bb2f162d80bdc5f",
+    "tasks": 32,
+    "report_clusters": 16,
+    "repetitions": 2,
+    "seed": 145,
+    "temperature": 1,
+    "max_context_tokens": 16384,
+    "max_response_tokens": 512,
+    "environment": "financial_evidence",
+    "decode_mode": "native",
+    "maximum_calls": 10,
+    "models": {
+      "sft": {
+        "path": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-evidence-20261030-v2/teacher_sft/adapter",
+        "adapter_sha256": "8c49dd2442077eeef62d903945c7f820f920f3d01231e2f0a923c9040fa8f796"
+      },
+      "rloo_high": {
+        "path": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2/training/rloo_lr1e5/round_005/train/adapter",
+        "adapter_sha256": "3c0d9893975d657e1ad079517856d55f11444637cac66f5697b112956505eab5"
+      }
+    },
+    "parent_run": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-learning-20261030-v2",
+    "parent_must_complete_before_gpu": true,
+    "generation_cap_per_model": 2200000,
+    "diagnostic_generation_cap": 4400000,
+    "combined_generation_cap": 44000000,
+    "combined_gpu_stage_seconds_cap": 43200,
+    "no_actor_training": true,
+    "reserved_test_read": false,
+    "historical_market_oos_read": false,
+    "already_used_development_holdout": true,
+    "initial_sft_report_exposure_not_excluded": true,
+    "protocol": "docs/2026-11-05_HELDOUT_SAMPLING_PROBE.md"
+  }
+}

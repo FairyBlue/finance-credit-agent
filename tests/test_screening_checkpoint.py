@@ -12,9 +12,59 @@ from omegaconf import OmegaConf
 from src.agents.screening_checkpoint import (
     COMPLETION_MARKER,
     SCREENING_IDENTITY_ENV,
+    _label_evaluation_transport_metrics,
     install_checkpoint_hooks,
     validate_checkpoint,
 )
+
+
+def _evaluation_ledger(tmp_path, monkeypatch, *, financial_result=None):
+    root = tmp_path / "artifacts/screening_evidence"
+    root.mkdir(parents=True)
+    monkeypatch.setenv("FINANCE_SCREENING_EVIDENCE_DIR", str(root))
+    monkeypatch.setenv("FINANCE_GRID_EVALUATION_INCOMPLETE", "retain_prefix_v1")
+    rows = [
+        {"identity": {"step": 2, "validate": True}, "status": "COMPLETE"},
+        {"identity": {"step": 2, "validate": True}, "status": "INCOMPLETE",
+         "evaluation_failure_profile": "retain_prefix_v1",
+         "terminal_score": financial_result, "metrics": None},
+    ]
+    (root / "screening.jsonl").write_text("".join(json.dumps(row) + "\n" for row in rows))
+    return root
+
+
+def test_opt_in_renames_upstream_zero_transport_scores_and_discloses_incomplete_count(
+    tmp_path, monkeypatch,
+):
+    root = _evaluation_ledger(tmp_path, monkeypatch)
+    original = {"val-core/train/reward/mean@5": 0.4, "val-aux/train/reward/std@5": 0.1}
+    result = _label_evaluation_transport_metrics(original, step=2)
+    assert original == {"val-core/train/reward/mean@5": 0.4,
+                        "val-aux/train/reward/std@5": 0.1}
+    assert not any(key.startswith(("val-core/", "val-aux/")) for key in result)
+    assert result["transport-only-val-core/train/reward/mean@5"] == 0.4
+    assert result["finance-grid/evaluation_incomplete_trajectories"] == 1
+    receipt = json.loads((root.parent / "evaluation_transport/validation-step-2.json").read_text())
+    assert receipt["financial_status"] == "INCOMPLETE"
+    assert receipt["failed_financial_results"] is None
+    assert receipt["counts"] == {"COMPLETE": 1, "INCOMPLETE": 1}
+    assert receipt["upstream_scores_are_transport_only"] is True
+    with pytest.raises(FileExistsError):
+        _label_evaluation_transport_metrics(original, step=2)
+
+
+def test_opt_in_metric_hook_rejects_zero_presented_as_failed_financial_result(
+    tmp_path, monkeypatch,
+):
+    _evaluation_ledger(tmp_path, monkeypatch, financial_result=0.0)
+    with pytest.raises(RuntimeError, match="claims a financial result"):
+        _label_evaluation_transport_metrics({"val-core/reward": 0.0}, step=2)
+
+
+def test_metric_hook_preserves_exact_old_behavior_without_opt_in(monkeypatch):
+    monkeypatch.delenv("FINANCE_GRID_EVALUATION_INCOMPLETE", raising=False)
+    metrics = {"val-core/reward": 0.5}
+    assert _label_evaluation_transport_metrics(metrics, step=2) is metrics
 
 
 @pytest.fixture

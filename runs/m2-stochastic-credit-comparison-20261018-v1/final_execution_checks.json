@@ -1,0 +1,48 @@
+{
+  "status": "PASS",
+  "at_UTC": "2026-10-18T14:20:19.033733+00:00",
+  "lightweight_checks": true,
+  "full_model_or_data_rehash_repeated": false,
+  "actual_service_and_CPU_GPU_readout_exit0": true,
+  "startup_driver_reader_sources_unchanged": true,
+  "model_stats_unchanged": true,
+  "all_864_paths_complete": true,
+  "model_requests": 10788,
+  "maximum_model_requests": 39024,
+  "request_environment_statuses": {
+    "ADVANCING": 9756,
+    "INVALID": 1032
+  },
+  "max_requests_per_advancing_session": 3,
+  "invalid_reasons": {
+    "buy target_weight must be above the current weight": 778,
+    "sell target_weight must be below the current weight": 243,
+    "symbol 'GBR' is outside the frozen episode universe": 1,
+    "unknown tool 'Buy'; available tools: retrieve, compute, buy, sell, hold, abstain": 1,
+    "symbol 'HSBC' is outside the frozen episode universe": 1,
+    "unknown tool '\\u4e70'; available tools: retrieve, compute, buy, sell, hold, abstain": 1,
+    "symbol 'GE' is outside the frozen episode universe": 1,
+    "symbol 'HSI' is outside the frozen episode universe": 1,
+    "symbol 'GD' is outside the frozen episode universe": 1,
+    "exactly one tool call is required per environment step": 2,
+    "symbol 'GPI' is outside the frozen episode universe": 1,
+    "unknown tool 'bet'; available tools: retrieve, compute, buy, sell, hold, abstain": 1
+  },
+  "all_generations_complete_natural_EOS_verified_in_driver": true,
+  "fresh_fixed_seeds": 39024,
+  "pilot_seed_overlap": 0,
+  "GPU_sampled_peak_GiB": 34.8837890625,
+  "holder_return_verified": true,
+  "evidence_sha256": {
+    "contract.json": "93b779c3f3c3e77832ccde84ca058bc8d2d2596c366c9496161b9010174afa67",
+    "driver_start_seal.json": "47b511cc47c66d3c69af5e2ad912f3967e70424a2ab93980c0148cb31cfa7079",
+    "readout_start_seal.json": "38d4348859ee66409ea29641bc7b311d99ef8426317111dbe05ec203e39a8e08",
+    "driver_completion.json": "3d3ab0fb6b57feaea2eadcb3673fcc783642de8408b0ac6b72fcb46bbc72079f",
+    "worker_completion.json": "e79d88357f1dd75d9bf326915362413335e1ca0409f68ad884cd9c36c2085f77",
+    "process_exit_receipt.json": "66bb64f3f1d9327da95c02cde257d7ae1d0dd5c7d9d71114364e79cfc366e974",
+    "service_exit_receipt.json": "129f240471adc3760e0032fd015c940e2d0d6934e0a4fe90fb05597f7f43baa3",
+    "credit_readout.json": "3247f16861f5a4baa6a44e45468c1b3afa26dc925506a6f76d4094be89c2d03f",
+    "readout_exit_receipt.json": "173889728f3e6c4a121fdc6e034438ec7f04b8e73843a77d08653bee81774b73",
+    "holder_return_verified.json": "a687515f4105585ea4eccb34fa02aa08a62427e405b71a492e8985a07b1c33d8"
+  }
+}

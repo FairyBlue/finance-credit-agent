@@ -1,0 +1,15 @@
+{
+  "status": "COMPLETE",
+  "seeds": [
+    42,
+    43
+  ],
+  "completed_seeds": [
+    42,
+    43
+  ],
+  "completed_updates": 32,
+  "planned_updates": 32,
+  "training_state_is_host_reboot_volatile": false,
+  "costs_scope": "each seed baseline once plus post-update collections; collect-only baseline reused, never counted as a second generation"
+}

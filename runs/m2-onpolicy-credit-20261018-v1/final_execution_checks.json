@@ -1,0 +1,57 @@
+{
+  "status": "PASS",
+  "at_UTC": "2026-10-18T14:54:07.375320+00:00",
+  "lightweight_checks": true,
+  "full_model_or_data_rehash_repeated": false,
+  "actual_service_and_CPU_GPU_readout_exit0": true,
+  "startup_driver_reader_sources_unchanged": true,
+  "model_stats_unchanged": true,
+  "all_8_parents_complete": true,
+  "all_16_anchors_captured": true,
+  "all_300_branches_complete": true,
+  "head_requests": 64,
+  "legal_heads": 54,
+  "invalid_heads_preserved": 10,
+  "model_requests": 3403,
+  "maximum_model_requests": 23744,
+  "request_environment_statuses": {
+    "ADVANCING": 3054,
+    "INVALID": 349
+  },
+  "request_statuses_by_role": {
+    "parent": {
+      "ADVANCING": 160,
+      "INVALID": 12
+    },
+    "head": {
+      "INVALID": 10,
+      "ADVANCING": 54
+    },
+    "estimate": {
+      "ADVANCING": 952,
+      "INVALID": 107
+    },
+    "reference": {
+      "ADVANCING": 1888,
+      "INVALID": 220
+    }
+  },
+  "max_requests_per_session": 3,
+  "all_native_generations_complete_EOS_verified_in_driver": true,
+  "fresh_fixed_seeds": 23744,
+  "prior_seed_overlap": 0,
+  "GPU_sampled_peak_GiB": 35.0087890625,
+  "holder_return_verified": true,
+  "evidence_sha256": {
+    "contract.json": "03cf7beb62541f0c4411b022cb59514ae145f25bac90386fa1ef8f9854f6f3fe",
+    "driver_start_seal.json": "a862c295dcb762446e2a736bb4a9247783504b6969b71fe235d0efdb8a98f166",
+    "readout_start_seal.json": "49242b53e8e6c753c63021c46ed3e919b44ff9feda7c53324abdb118c48fb594",
+    "driver_completion.json": "8be52b1b61e39410db627c40bd0083fc5c840e17b22746e6fc117884f7ea6e39",
+    "worker_completion.json": "67a171ef123b97336c234837e1ab10398dff4a692e1a85f7ec4bb43122aa1b49",
+    "process_exit_receipt.json": "6f1f41cd7b974f920638c60f3b7b8360d2eb0e755d70d68c41c3b75ffa282170",
+    "service_exit_receipt.json": "a46c535f3e735e029973b6fc81a9a078fb2b351fe417c43ff62393d78c740b81",
+    "onpolicy_readout.json": "e5cba40eeeaa31cdc1c2490eebb3fee411741ff179d8986778c43f2f4ff3703f",
+    "readout_exit_receipt.json": "adcdeb9ee01ac3e3c8b8bbb69ce0257884cc85f9c8decc3aeabc026b94179bf3",
+    "holder_return_verified.json": "602ae3f93e1317295f1ed62236a3ca79733e86d1e8caa28cbc2411b6703144db"
+  }
+}

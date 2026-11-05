@@ -1,0 +1,20 @@
+{
+  "status": "COMPLETE",
+  "completed_updates": 16,
+  "completed_rounds": 4,
+  "stage_wall_seconds": 3742.720423027873,
+  "training_state": "/home/tianming/projects/finance-credit-agent/runs/m2-rloo-terminal-demo-20261025-v3/training_state",
+  "training_state_is_host_reboot_volatile": false,
+  "actor_checkpoint": "/home/tianming/projects/finance-credit-agent/runs/m2-rloo-terminal-demo-20261025-v3/current_actor",
+  "baseline_reused_path": "/home/tianming/projects/finance-credit-agent/runs/m2-rloo-terminal-demo-20261025-v1/common_initial",
+  "baseline_new_generation_requests": 0,
+  "new_post_update_collections": true,
+  "final_evaluation_shares_initial_sampling_seed_namespace": true,
+  "intermediate_evaluations_use_fresh_training_seed_namespaces": [
+    1,
+    2,
+    3
+  ],
+  "planned_updates": 16,
+  "critic_updates": 0
+}

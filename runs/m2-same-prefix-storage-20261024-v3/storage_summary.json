@@ -1,0 +1,20 @@
+{
+  "models": [
+    {
+      "status": "PACK_VERIFIED_RAW_RETIRED",
+      "profile": "lossless_tensor_xor_v1",
+      "archive": "/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-storage-20261024-v3/seed42-plain-round2",
+      "original_bytes": 8044982000,
+      "packed_bytes": 329868679,
+      "source": "/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-online-demo-20261024-v2/plain/round2/train/actor",
+      "baseline_must_be_kept": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model",
+      "restore_api": "src.agents.parameter_grid_archive.restore_model",
+      "restore_to_new_directory": "/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-online-demo-20261024-v2/plain/round2/train/actor_restored",
+      "raw_shards": [
+        "/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-online-demo-20261024-v2/plain/round2/train/actor/model-00001-of-00003.safetensors",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-online-demo-20261024-v2/plain/round2/train/actor/model-00002-of-00003.safetensors",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-online-demo-20261024-v2/plain/round2/train/actor/model-00003-of-00003.safetensors"
+      ]
+    }
+  ]
+}

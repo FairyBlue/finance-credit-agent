@@ -1,0 +1,21 @@
+{
+  "status": "READY",
+  "selection_policy": "priority",
+  "selection_profile": "financial_mc_prefix_selection_v1",
+  "selection_seed": 42,
+  "source_parents": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-credit-20261030-v1/probe/parents",
+  "source_policy": "same_current_strong_sft",
+  "source_parent_generation_reused": true,
+  "new_parent_generation_tokens": 0,
+  "request_order_preserved": true,
+  "only_request_key_trajectory_key_messages_calls_used_read": true,
+  "parent_action_and_terminal_not_inputs": true,
+  "first_step_cap": 2000000,
+  "selected_anchors": 8,
+  "reserved_auxiliary_tokens": 1933312,
+  "selected_stages": {
+    "information_acquisition": 1,
+    "evidence_to_calculation": 7
+  },
+  "actual_new_generation_tokens": 0
+}

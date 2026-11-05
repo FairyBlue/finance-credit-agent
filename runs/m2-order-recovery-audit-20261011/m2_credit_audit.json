@@ -1,0 +1,843 @@
+{
+  "schema_version": 1,
+  "scope": "CPU-only audit of eight existing M2 LR=1e-7 eta=0.25 pre-update logical batches; no new rollouts or model updates",
+  "sources": [
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/training_diagnostics.csv",
+      "bytes": 33144,
+      "sha256": "b9c62ddc8610f14818d04c0f2b74e313ddfcc690ef4ac6acdd76fe44e8514776"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/seed42/m2_lr1e7_eta025/artifacts/sibling_diagnostics/advantage-3581667.jsonl",
+      "bytes": 365755,
+      "sha256": "3f1c4cd9ddf1b285e21e3b3ea872b2790b327401db2f73db44dafcebf61089a7"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/seed43/m2_lr1e7_eta025/artifacts/sibling_diagnostics/advantage-3631119.jsonl",
+      "bytes": 371331,
+      "sha256": "786bcc544d48058b4db231c710ec0f7cea63df393f058d46c8995946dae58391"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/sources/src/agents/screening_runtime.py",
+      "bytes": 25858,
+      "sha256": "42cbddf4e657fc7968f494f2b44d61d12dd47b9d46be6872b2b42f3599195254"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/sources/src/agents/parameter_grid_readout.py",
+      "bytes": 37685,
+      "sha256": "a6cf3cf005a33c1af9a6181bbf85fe6d73f089b6a7c4dade3864f8843e9bffe9"
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/sources/src/rewards/sibling_credit.py",
+      "bytes": 8996,
+      "sha256": "ab66757237c434d62441887ad5b4b6b9d0d82aa320f4ffaa3f4f9bd151e464d3"
+    }
+  ],
+  "source_code_evidence": [
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/sources/src/agents/screening_runtime.py",
+      "excerpts": [
+        {
+          "first_line": 201,
+          "last_line": 222,
+          "text": "def _scope_diagnostics(unwhitened: Any, residual: Any) -> dict[str, object]:\n    import torch\n\n    # Diagnostic arithmetic uses float64 but does not enter optimizer tensors.\n    u = unwhitened.detach().double()\n    s = residual.detach().double()\n    u_std = u.std(correction=1)\n    s_std = s.std(correction=1)\n    correlation = None\n    if u_std > 0 and s_std > 0:\n        correlation = float(\n            (((u - u.mean()) * (s - s.mean())).sum() / ((u.numel() - 1) * u_std * s_std)).item()\n        )\n    return {\n        \"row_count\": u.numel(),\n        \"std_U\": float(u_std.item()),\n        \"std_S\": float(s_std.item()),\n        \"corr_U_S\": correlation,\n        \"mean_abs_S\": float(s.abs().mean().item()),\n        \"nonzero_S_count\": int(torch.count_nonzero(s.abs() > DIAGNOSTIC_ATOL).item()),\n        \"nonzero_S_rate\": float((s.abs() > DIAGNOSTIC_ATOL).double().mean().item()),\n        \"exact_nonzero_S_count\": int(torch.count_nonzero(s).item()),"
+        },
+        {
+          "first_line": 317,
+          "last_line": 324,
+          "text": "        raw_residual = credits.pooled if arm == \"M2\" else credits.plain\n        residual = torch.tensor(raw_residual, dtype=u.dtype, device=u.device)\n        if arm in {\"A2\", \"M1\"}:\n            residual.zero_()\n        residual = residual * eta\n        combined = u + residual\n        std = combined.std(correction=1)\n        scalar_advantages = (combined - combined.mean()) / (std + 1e-8)"
+        },
+        {
+          "first_line": 342,
+          "last_line": 344,
+          "text": "            \"all_real_steps\": _scope_diagnostics(u, residual),\n            \"advancing_steps\": _scope_diagnostics(u[advancing_mask], residual[advancing_mask]),\n            \"whitening_std\": float(std.item()),"
+        },
+        {
+          "first_line": 368,
+          "last_line": 374,
+          "text": "                    \"financial_step_reward\": float(financial_step_rewards[position].item()),\n                    \"invalid_penalty\": invalid_action_penalty * row.invalid_action,\n                    \"training_step_reward\": float(training_step_rewards[position].item()),\n                    \"unwhitened_U\": float(u[position].item()),\n                    \"sibling_residual\": float(residual[position].item()),\n                    \"final_actor_advantage\": float(scalar_advantages[position].item()),\n                    \"critic_return\": float(step_returns[position].item()),"
+        }
+      ]
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/sources/src/agents/parameter_grid_readout.py",
+      "excerpts": [
+        {
+          "first_line": 535,
+          "last_line": 541,
+          "text": "                for name in (\"mean_abs_S\", \"std_S\", \"std_U\", \"corr_U_S\", \"nonzero_S_rate\"):\n                    item[\"residual_\" + name] = row[\"all_real_steps\"].get(name)\n                std_u = row[\"all_real_steps\"].get(\"std_U\")\n                std_s = row[\"all_real_steps\"].get(\"std_S\")\n                item[\"residual_scaled_std_ratio\"] = (\n                    eta * std_s / std_u if std_u and std_s is not None else None\n                )"
+        }
+      ]
+    },
+    {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/sources/src/rewards/sibling_credit.py",
+      "excerpts": [
+        {
+          "first_line": 169,
+          "last_line": 179,
+          "text": "            histogram[rows[index].action] += 1\n        if len(cells) == 1:\n            continue\n        diverse_count += 1\n        pooling_opportunities += int(max(map(len, cells.values())) >= 2)\n        group_mean = math.fsum(rows[i].terminal_score for i in indices) / ROLLOUT_N\n        for cell in cells.values():\n            cell_mean = math.fsum(rows[i].terminal_score for i in cell) / len(cell)\n            for index in cell:\n                plain[index] = rows[index].terminal_score - group_mean\n                pooled[index] = cell_mean - group_mean"
+        },
+        {
+          "first_line": 183,
+          "last_line": 209,
+          "text": "    session_count = len(session_groups)\n    advancing_count = sum(advancing)\n    changed_count = sum(\n        abs(pooled[i] - plain[i]) > DIAGNOSTIC_ATOL + DIAGNOSTIC_RTOL * abs(plain[i])\n        for i in range(len(rows))\n        if advancing[i]\n    )\n    return SiblingCredit(\n        plain=tuple(plain),\n        pooled=tuple(pooled),\n        advancing=tuple(advancing),\n        diagnostics={\n            \"policy_step\": next(iter(policy_steps)),\n            \"episode_group_count\": len(groups),\n            \"trajectory_count\": len(trajectories),\n            \"real_step_count\": len(rows),\n            \"advancing_row_count\": advancing_count,\n            \"session_group_count\": session_count,\n            \"action_diversity_rate\": diverse_count / session_count,\n            \"pooling_opportunity_rate\": pooling_opportunities / session_count,\n            \"pooling_changed_row_count\": changed_count,\n            \"pooling_changed_row_rate\": changed_count / advancing_count,\n            \"action_family_histogram\": {\n                action: histogram[action] for action in sorted(ACTION_FAMILIES)\n            },\n            \"invalid_step_count\": sum(row.invalid_action for row in rows),\n            \"diagnostic_atol\": DIAGNOSTIC_ATOL,"
+        }
+      ]
+    }
+  ],
+  "field_semantics": {
+    "U": "Recorded unwhitened StepPO-GAE scalar, including the common invalid-action penalty.",
+    "R": "reward_evidence.sibling_residual is the already scaled actor residual eta*S; eta=0.25.",
+    "std_S": "Existing all_real_steps.std_S is the sample std (correction=1) of R, despite its name S. std_U uses the same rows and correction.",
+    "corrected_ratio": "std(R)/std(U), taken directly from existing std_S/std_U. Existing CSV multiplies eta a second time and reports eta*std(R)/std(U).",
+    "nonzero": "Existing absolute tolerance diagnostic_atol (recorded in each source) applied to already scaled R; exact and tolerance-based counts agree in all eight batches.",
+    "gate": "action_diversity_rate: fraction of 40 four-sibling decision-session groups per update containing more than one action family.",
+    "pooling_change": "Fraction of advancing rows whose pooled raw credit differs from same-gate plain raw credit by atol+rtol*abs(plain), from recorded diagnostics.",
+    "actor_contribution": "Centered R divided by the recorded std(U+R)+epsilon, measured before the actor update.",
+    "arithmetic_actor_delta": "Saved final actor advantage minus Whiten(U) in the same recorded batch. This is a numerical removal of the residual holding U and sampled rows fixed, not a trained M1 counterfactual or a causal performance effect.",
+    "aggregation": "Coverage counts pooled across recorded rows/session groups. Scale ratios are separately summarized across updates; not stds of pooled seed/episode mixtures."
+  },
+  "updates": [
+    {
+      "seed": 42,
+      "policy_step": 1,
+      "eta": 0.25,
+      "source_path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/seed42/m2_lr1e7_eta025/artifacts/sibling_diagnostics/advantage-3581667.jsonl",
+      "source_jsonl_line": 1,
+      "existing_csv_path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/training_diagnostics.csv",
+      "existing_csv_line": 10,
+      "real_steps": 173,
+      "advancing_steps": 160,
+      "invalid_steps": 13,
+      "session_groups": 40,
+      "diverse_session_groups": 25,
+      "action_diversity_rate": 0.625,
+      "pooling_opportunity_rate": 0.625,
+      "pooling_changed_row_count": 81,
+      "pooling_changed_row_rate": 0.50625,
+      "action_family_histogram": {
+        "abstain": 0,
+        "buy": 89,
+        "hold": 11,
+        "sell": 60
+      },
+      "nonzero_residual_steps": 100,
+      "zero_residual_steps": 73,
+      "nonzero_residual_rate": 0.5780346820809249,
+      "zero_residual_rate": 0.4219653179190751,
+      "existing_all_real_steps_diagnostics": {
+        "corr_U_S": 0.25148792814940624,
+        "exact_nonzero_S_count": 100,
+        "mean_abs_S": 0.07719173717899303,
+        "nonzero_S_count": 100,
+        "nonzero_S_rate": 0.5780346820809249,
+        "row_count": 173,
+        "std_S": 0.12652786357396892,
+        "std_U": 1.1202308416178426
+      },
+      "existing_advancing_steps_diagnostics": {
+        "corr_U_S": 0.26034118749488216,
+        "exact_nonzero_S_count": 100,
+        "mean_abs_S": 0.0834635658247862,
+        "nonzero_S_count": 100,
+        "nonzero_S_rate": 0.625,
+        "row_count": 160,
+        "std_S": 0.1315987718783372,
+        "std_U": 1.125505050705565
+      },
+      "corrected_scaled_residual_to_U_std_ratio": 0.11294802720414017,
+      "existing_csv_residual_scaled_std_ratio": 0.028237006801035042,
+      "corrected_divided_by_existing_csv": 4.0,
+      "mean_scaled_residual": -1.6688439198312042e-10,
+      "recorded_combined_whitening_std": 1.1585415601730347,
+      "centered_scaled_residual_std_over_combined_std": 0.10921305443970498,
+      "actual_actor_advantage_std": 0.9999999491411199,
+      "actual_actor_advantage_reconstruction_max_abs_error": 2.624452610788808e-07,
+      "arithmetic_actor_delta_std": 0.10585136436680338,
+      "arithmetic_actor_delta_mean_abs": 0.07320770351056939,
+      "arithmetic_actor_delta_max_abs": 0.407211166093314,
+      "arithmetic_actor_sign_flip_count": 9,
+      "arithmetic_actor_sign_flip_rate": 0.05202312138728324,
+      "residual_magnitude_exceeds_U_count": 9,
+      "absolute_scaled_residual_quantiles": {
+        "0": 0.0,
+        "0.5": 0.03786711394786835,
+        "0.9": 0.19705618917942047,
+        "0.99": 0.3840108811855316,
+        "1": 0.5662031173706055
+      },
+      "absolute_U_quantiles": {
+        "0": 0.02443571388721466,
+        "0.5": 0.7106950283050537,
+        "0.9": 1.9484484195709235,
+        "0.99": 4.597635860443115,
+        "1": 4.786402225494385
+      }
+    },
+    {
+      "seed": 42,
+      "policy_step": 2,
+      "eta": 0.25,
+      "source_path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/seed42/m2_lr1e7_eta025/artifacts/sibling_diagnostics/advantage-3581667.jsonl",
+      "source_jsonl_line": 2,
+      "existing_csv_path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/training_diagnostics.csv",
+      "existing_csv_line": 11,
+      "real_steps": 167,
+      "advancing_steps": 160,
+      "invalid_steps": 7,
+      "session_groups": 40,
+      "diverse_session_groups": 21,
+      "action_diversity_rate": 0.525,
+      "pooling_opportunity_rate": 0.525,
+      "pooling_changed_row_count": 65,
+      "pooling_changed_row_rate": 0.40625,
+      "action_family_histogram": {
+        "abstain": 0,
+        "buy": 90,
+        "hold": 10,
+        "sell": 60
+      },
+      "nonzero_residual_steps": 84,
+      "zero_residual_steps": 83,
+      "nonzero_residual_rate": 0.5029940119760479,
+      "zero_residual_rate": 0.4970059880239521,
+      "existing_all_real_steps_diagnostics": {
+        "corr_U_S": 0.2822801906521244,
+        "exact_nonzero_S_count": 84,
+        "mean_abs_S": 0.09719793941312564,
+        "nonzero_S_count": 84,
+        "nonzero_S_rate": 0.5029940119760479,
+        "row_count": 167,
+        "std_S": 0.1625827643883828,
+        "std_U": 1.327146089645596
+      },
+      "existing_advancing_steps_diagnostics": {
+        "corr_U_S": 0.284680474249596,
+        "exact_nonzero_S_count": 84,
+        "mean_abs_S": 0.10145034926244989,
+        "nonzero_S_count": 84,
+        "nonzero_S_rate": 0.525,
+        "row_count": 160,
+        "std_S": 0.16612308416760807,
+        "std_U": 1.3446118522470594
+      },
+      "corrected_scaled_residual_to_U_std_ratio": 0.12250555206910134,
+      "existing_csv_residual_scaled_std_ratio": 0.030626388017275335,
+      "corrected_divided_by_existing_csv": 4.0,
+      "mean_scaled_residual": 3.3460691303550125e-11,
+      "recorded_combined_whitening_std": 1.3818703889846802,
+      "centered_scaled_residual_std_over_combined_std": 0.11765413349026028,
+      "actual_actor_advantage_std": 0.9999999668798721,
+      "actual_actor_advantage_reconstruction_max_abs_error": 2.5674787940133115e-07,
+      "arithmetic_actor_delta_std": 0.11305013401390532,
+      "arithmetic_actor_delta_mean_abs": 0.08067434161040739,
+      "arithmetic_actor_delta_max_abs": 0.41609907732914364,
+      "arithmetic_actor_sign_flip_count": 4,
+      "arithmetic_actor_sign_flip_rate": 0.023952095808383235,
+      "residual_magnitude_exceeds_U_count": 3,
+      "absolute_scaled_residual_quantiles": {
+        "0": 0.0,
+        "0.5": 0.023805955424904823,
+        "0.9": 0.30801716446876526,
+        "0.99": 0.4664142578840259,
+        "1": 0.5306239724159241
+      },
+      "absolute_U_quantiles": {
+        "0": 0.03645339608192444,
+        "0.5": 1.659909963607788,
+        "0.9": 3.8416813850402836,
+        "0.99": 5.280625715255738,
+        "1": 5.407469749450684
+      }
+    },
+    {
+      "seed": 42,
+      "policy_step": 3,
+      "eta": 0.25,
+      "source_path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/seed42/m2_lr1e7_eta025/artifacts/sibling_diagnostics/advantage-3581667.jsonl",
+      "source_jsonl_line": 3,
+      "existing_csv_path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/training_diagnostics.csv",
+      "existing_csv_line": 12,
+      "real_steps": 174,
+      "advancing_steps": 160,
+      "invalid_steps": 14,
+      "session_groups": 40,
+      "diverse_session_groups": 27,
+      "action_diversity_rate": 0.675,
+      "pooling_opportunity_rate": 0.675,
+      "pooling_changed_row_count": 89,
+      "pooling_changed_row_rate": 0.55625,
+      "action_family_histogram": {
+        "abstain": 0,
+        "buy": 82,
+        "hold": 13,
+        "sell": 65
+      },
+      "nonzero_residual_steps": 108,
+      "zero_residual_steps": 66,
+      "nonzero_residual_rate": 0.6206896551724138,
+      "zero_residual_rate": 0.3793103448275862,
+      "existing_all_real_steps_diagnostics": {
+        "corr_U_S": 0.13436949373121496,
+        "exact_nonzero_S_count": 108,
+        "mean_abs_S": 0.10815019632593312,
+        "nonzero_S_count": 108,
+        "nonzero_S_rate": 0.6206896551724138,
+        "row_count": 174,
+        "std_S": 0.1760407501865587,
+        "std_U": 2.507516305765549
+      },
+      "existing_advancing_steps_diagnostics": {
+        "corr_U_S": 0.1424222599419193,
+        "exact_nonzero_S_count": 108,
+        "mean_abs_S": 0.11761333850445226,
+        "nonzero_S_count": 108,
+        "nonzero_S_rate": 0.675,
+        "row_count": 160,
+        "std_S": 0.1836274908962003,
+        "std_U": 2.4676926226023905
+      },
+      "corrected_scaled_residual_to_U_std_ratio": 0.07020522649515261,
+      "existing_csv_residual_scaled_std_ratio": 0.017551306623788152,
+      "corrected_divided_by_existing_csv": 4.0,
+      "mean_scaled_residual": -5.887671448718542e-10,
+      "recorded_combined_whitening_std": 2.537174940109253,
+      "centered_scaled_residual_std_over_combined_std": 0.0693845531538841,
+      "actual_actor_advantage_std": 1.0000000064922394,
+      "actual_actor_advantage_reconstruction_max_abs_error": 1.7037002075781515e-07,
+      "arithmetic_actor_delta_std": 0.0687960374488725,
+      "arithmetic_actor_delta_mean_abs": 0.046279174056647415,
+      "arithmetic_actor_delta_max_abs": 0.24149948957458156,
+      "arithmetic_actor_sign_flip_count": 1,
+      "arithmetic_actor_sign_flip_rate": 0.005747126436781609,
+      "residual_magnitude_exceeds_U_count": 11,
+      "absolute_scaled_residual_quantiles": {
+        "0": 0.0,
+        "0.5": 0.055155277252197266,
+        "0.9": 0.3082035779953003,
+        "0.99": 0.5959908962249756,
+        "1": 0.5959908962249756
+      },
+      "absolute_U_quantiles": {
+        "0": 0.013955891132354736,
+        "0.5": 1.0142488479614258,
+        "0.9": 5.855265426635743,
+        "0.99": 7.719534225463868,
+        "1": 7.935725212097168
+      }
+    },
+    {
+      "seed": 42,
+      "policy_step": 4,
+      "eta": 0.25,
+      "source_path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/seed42/m2_lr1e7_eta025/artifacts/sibling_diagnostics/advantage-3581667.jsonl",
+      "source_jsonl_line": 4,
+      "existing_csv_path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/training_diagnostics.csv",
+      "existing_csv_line": 13,
+      "real_steps": 168,
+      "advancing_steps": 160,
+      "invalid_steps": 8,
+      "session_groups": 40,
+      "diverse_session_groups": 28,
+      "action_diversity_rate": 0.7,
+      "pooling_opportunity_rate": 0.7,
+      "pooling_changed_row_count": 93,
+      "pooling_changed_row_rate": 0.58125,
+      "action_family_histogram": {
+        "abstain": 0,
+        "buy": 77,
+        "hold": 19,
+        "sell": 64
+      },
+      "nonzero_residual_steps": 112,
+      "zero_residual_steps": 56,
+      "nonzero_residual_rate": 0.6666666666666666,
+      "zero_residual_rate": 0.33333333333333337,
+      "existing_all_real_steps_diagnostics": {
+        "corr_U_S": 0.12093597697021757,
+        "exact_nonzero_S_count": 112,
+        "mean_abs_S": 0.04914943801815666,
+        "nonzero_S_count": 112,
+        "nonzero_S_rate": 0.6666666666666666,
+        "row_count": 168,
+        "std_S": 0.07985836259964318,
+        "std_U": 1.3372362423144584
+      },
+      "existing_advancing_steps_diagnostics": {
+        "corr_U_S": 0.12482736718364032,
+        "exact_nonzero_S_count": 112,
+        "mean_abs_S": 0.05160690991906449,
+        "nonzero_S_count": 112,
+        "nonzero_S_rate": 0.7,
+        "row_count": 160,
+        "std_S": 0.08184272380282624,
+        "std_U": 1.327741466065632
+      },
+      "corrected_scaled_residual_to_U_std_ratio": 0.05971896368993569,
+      "existing_csv_residual_scaled_std_ratio": 0.014929740922483923,
+      "corrected_divided_by_existing_csv": 4.0,
+      "mean_scaled_residual": 3.3261520521981374e-11,
+      "recorded_combined_whitening_std": 1.3492248058319092,
+      "centered_scaled_residual_std_over_combined_std": 0.05918832922621859,
+      "actual_actor_advantage_std": 0.9999999881379434,
+      "actual_actor_advantage_reconstruction_max_abs_error": 1.939931006944562e-07,
+      "arithmetic_actor_delta_std": 0.058779300437826254,
+      "arithmetic_actor_delta_mean_abs": 0.038618737345575006,
+      "arithmetic_actor_delta_max_abs": 0.2140207982785004,
+      "arithmetic_actor_sign_flip_count": 2,
+      "arithmetic_actor_sign_flip_rate": 0.011904761904761904,
+      "residual_magnitude_exceeds_U_count": 3,
+      "absolute_scaled_residual_quantiles": {
+        "0": 0.0,
+        "0.5": 0.034389678388834,
+        "0.9": 0.14426126629114158,
+        "0.99": 0.2975381314754486,
+        "1": 0.2975381314754486
+      },
+      "absolute_U_quantiles": {
+        "0": 0.04040402173995972,
+        "0.5": 0.9483506381511688,
+        "0.9": 2.159058737754822,
+        "0.99": 2.9349163532257085,
+        "1": 3.0355987548828125
+      }
+    },
+    {
+      "seed": 43,
+      "policy_step": 1,
+      "eta": 0.25,
+      "source_path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/seed43/m2_lr1e7_eta025/artifacts/sibling_diagnostics/advantage-3631119.jsonl",
+      "source_jsonl_line": 1,
+      "existing_csv_path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/training_diagnostics.csv",
+      "existing_csv_line": 34,
+      "real_steps": 173,
+      "advancing_steps": 160,
+      "invalid_steps": 13,
+      "session_groups": 40,
+      "diverse_session_groups": 19,
+      "action_diversity_rate": 0.475,
+      "pooling_opportunity_rate": 0.475,
+      "pooling_changed_row_count": 56,
+      "pooling_changed_row_rate": 0.35,
+      "action_family_histogram": {
+        "abstain": 0,
+        "buy": 86,
+        "hold": 13,
+        "sell": 61
+      },
+      "nonzero_residual_steps": 76,
+      "zero_residual_steps": 97,
+      "nonzero_residual_rate": 0.4393063583815029,
+      "zero_residual_rate": 0.5606936416184971,
+      "existing_all_real_steps_diagnostics": {
+        "corr_U_S": 0.06987850467760073,
+        "exact_nonzero_S_count": 76,
+        "mean_abs_S": 0.04992515796181784,
+        "nonzero_S_count": 76,
+        "nonzero_S_rate": 0.4393063583815029,
+        "row_count": 173,
+        "std_S": 0.10095950594338357,
+        "std_U": 1.7194156089665702
+      },
+      "existing_advancing_steps_diagnostics": {
+        "corr_U_S": 0.0725730307026787,
+        "exact_nonzero_S_count": 76,
+        "mean_abs_S": 0.053981577046215534,
+        "nonzero_S_count": 76,
+        "nonzero_S_rate": 0.475,
+        "row_count": 160,
+        "std_S": 0.10500570084964574,
+        "std_U": 1.721927531503725
+      },
+      "corrected_scaled_residual_to_U_std_ratio": 0.058717337109707765,
+      "existing_csv_residual_scaled_std_ratio": 0.014679334277426941,
+      "corrected_divided_by_existing_csv": 4.0,
+      "mean_scaled_residual": -1.9380122939975276e-10,
+      "recorded_combined_whitening_std": 1.7294055223464966,
+      "centered_scaled_residual_std_over_combined_std": 0.058378155993521905,
+      "actual_actor_advantage_std": 0.9999999993269616,
+      "actual_actor_advantage_reconstruction_max_abs_error": 1.1742405847670057e-07,
+      "arithmetic_actor_delta_std": 0.058260171452247475,
+      "arithmetic_actor_delta_mean_abs": 0.031902754042116385,
+      "arithmetic_actor_delta_max_abs": 0.29432788235400503,
+      "arithmetic_actor_sign_flip_count": 2,
+      "arithmetic_actor_sign_flip_rate": 0.011560693641618497,
+      "residual_magnitude_exceeds_U_count": 2,
+      "absolute_scaled_residual_quantiles": {
+        "0": 0.0,
+        "0.5": 0.0,
+        "0.9": 0.16805025935173035,
+        "0.99": 0.5041507482528687,
+        "1": 0.5041507482528687
+      },
+      "absolute_U_quantiles": {
+        "0": 0.004639625549316406,
+        "0.5": 1.575678825378418,
+        "0.9": 2.6628798007965093,
+        "0.99": 3.5083971023559575,
+        "1": 3.8812665939331055
+      }
+    },
+    {
+      "seed": 43,
+      "policy_step": 2,
+      "eta": 0.25,
+      "source_path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/seed43/m2_lr1e7_eta025/artifacts/sibling_diagnostics/advantage-3631119.jsonl",
+      "source_jsonl_line": 2,
+      "existing_csv_path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/training_diagnostics.csv",
+      "existing_csv_line": 35,
+      "real_steps": 172,
+      "advancing_steps": 160,
+      "invalid_steps": 12,
+      "session_groups": 40,
+      "diverse_session_groups": 25,
+      "action_diversity_rate": 0.625,
+      "pooling_opportunity_rate": 0.625,
+      "pooling_changed_row_count": 79,
+      "pooling_changed_row_rate": 0.49375,
+      "action_family_histogram": {
+        "abstain": 0,
+        "buy": 88,
+        "hold": 10,
+        "sell": 62
+      },
+      "nonzero_residual_steps": 100,
+      "zero_residual_steps": 72,
+      "nonzero_residual_rate": 0.5813953488372093,
+      "zero_residual_rate": 0.41860465116279066,
+      "existing_all_real_steps_diagnostics": {
+        "corr_U_S": 0.09732554602741135,
+        "exact_nonzero_S_count": 100,
+        "mean_abs_S": 0.032137435898834533,
+        "nonzero_S_count": 100,
+        "nonzero_S_rate": 0.5813953488372093,
+        "row_count": 172,
+        "std_S": 0.05633033085510016,
+        "std_U": 1.3017493893888097
+      },
+      "existing_advancing_steps_diagnostics": {
+        "corr_U_S": 0.09795033425771675,
+        "exact_nonzero_S_count": 100,
+        "mean_abs_S": 0.034547743591247126,
+        "nonzero_S_count": 100,
+        "nonzero_S_rate": 0.625,
+        "row_count": 160,
+        "std_S": 0.05841734233520751,
+        "std_U": 1.3413675700999526
+      },
+      "corrected_scaled_residual_to_U_std_ratio": 0.04327279222427604,
+      "existing_csv_residual_scaled_std_ratio": 0.01081819805606901,
+      "corrected_divided_by_existing_csv": 4.0,
+      "mean_scaled_residual": -8.12199919722801e-11,
+      "recorded_combined_whitening_std": 1.3084334135055542,
+      "centered_scaled_residual_std_over_combined_std": 0.043051736407176126,
+      "actual_actor_advantage_std": 0.9999999841602978,
+      "actual_actor_advantage_reconstruction_max_abs_error": 1.337585806560071e-07,
+      "arithmetic_actor_delta_std": 0.04285719466605762,
+      "arithmetic_actor_delta_mean_abs": 0.0266107480438585,
+      "arithmetic_actor_delta_max_abs": 0.16469396735079278,
+      "arithmetic_actor_sign_flip_count": 1,
+      "arithmetic_actor_sign_flip_rate": 0.005813953488372093,
+      "residual_magnitude_exceeds_U_count": 1,
+      "absolute_scaled_residual_quantiles": {
+        "0": 0.0,
+        "0.5": 0.010075296275317669,
+        "0.9": 0.07966485619544983,
+        "0.99": 0.21185047924518585,
+        "1": 0.21185047924518585
+      },
+      "absolute_U_quantiles": {
+        "0": 0.0060253143310546875,
+        "0.5": 0.992363691329956,
+        "0.9": 2.568418002128601,
+        "0.99": 4.086158518791196,
+        "1": 4.856776237487793
+      }
+    },
+    {
+      "seed": 43,
+      "policy_step": 3,
+      "eta": 0.25,
+      "source_path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/seed43/m2_lr1e7_eta025/artifacts/sibling_diagnostics/advantage-3631119.jsonl",
+      "source_jsonl_line": 3,
+      "existing_csv_path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/training_diagnostics.csv",
+      "existing_csv_line": 36,
+      "real_steps": 174,
+      "advancing_steps": 160,
+      "invalid_steps": 14,
+      "session_groups": 40,
+      "diverse_session_groups": 22,
+      "action_diversity_rate": 0.55,
+      "pooling_opportunity_rate": 0.55,
+      "pooling_changed_row_count": 69,
+      "pooling_changed_row_rate": 0.43125,
+      "action_family_histogram": {
+        "abstain": 0,
+        "buy": 86,
+        "hold": 11,
+        "sell": 63
+      },
+      "nonzero_residual_steps": 88,
+      "zero_residual_steps": 86,
+      "nonzero_residual_rate": 0.5057471264367817,
+      "zero_residual_rate": 0.49425287356321834,
+      "existing_all_real_steps_diagnostics": {
+        "corr_U_S": 0.05692824491364184,
+        "exact_nonzero_S_count": 88,
+        "mean_abs_S": 0.035811713821757796,
+        "nonzero_S_count": 88,
+        "nonzero_S_rate": 0.5057471264367817,
+        "row_count": 174,
+        "std_S": 0.06545181046653561,
+        "std_U": 2.3040666919800823
+      },
+      "existing_advancing_steps_diagnostics": {
+        "corr_U_S": 0.06033066464566255,
+        "exact_nonzero_S_count": 88,
+        "mean_abs_S": 0.03894523878116161,
+        "nonzero_S_count": 88,
+        "nonzero_S_rate": 0.55,
+        "row_count": 160,
+        "std_S": 0.06827255460935466,
+        "std_U": 2.267823336698654
+      },
+      "corrected_scaled_residual_to_U_std_ratio": 0.028407081572056084,
+      "existing_csv_residual_scaled_std_ratio": 0.007101770393014021,
+      "corrected_divided_by_existing_csv": 4.0,
+      "mean_scaled_residual": -2.1409714358976517e-11,
+      "recorded_combined_whitening_std": 2.308717727661133,
+      "centered_scaled_residual_std_over_combined_std": 0.02834985385993619,
+      "actual_actor_advantage_std": 1.0000000041781678,
+      "actual_actor_advantage_reconstruction_max_abs_error": 1.4528279024261792e-07,
+      "arithmetic_actor_delta_std": 0.02830671311231554,
+      "arithmetic_actor_delta_mean_abs": 0.016072098297069754,
+      "arithmetic_actor_delta_max_abs": 0.13073361824587004,
+      "arithmetic_actor_sign_flip_count": 0,
+      "arithmetic_actor_sign_flip_rate": 0.0,
+      "residual_magnitude_exceeds_U_count": 0,
+      "absolute_scaled_residual_quantiles": {
+        "0": 0.0,
+        "0.5": 0.020686352625489235,
+        "0.9": 0.09616481661796582,
+        "0.99": 0.2791949287056925,
+        "1": 0.2949824929237366
+      },
+      "absolute_U_quantiles": {
+        "0": 0.006107807159423828,
+        "0.5": 0.9614928662776947,
+        "0.9": 4.9972470283508335,
+        "0.99": 6.815609927177429,
+        "1": 7.357601165771484
+      }
+    },
+    {
+      "seed": 43,
+      "policy_step": 4,
+      "eta": 0.25,
+      "source_path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/seed43/m2_lr1e7_eta025/artifacts/sibling_diagnostics/advantage-3631119.jsonl",
+      "source_jsonl_line": 4,
+      "existing_csv_path": "/home/tianming/projects/finance-credit-agent/runs/m2-parameter-grid-20261008-r5/training_diagnostics.csv",
+      "existing_csv_line": 37,
+      "real_steps": 175,
+      "advancing_steps": 160,
+      "invalid_steps": 15,
+      "session_groups": 40,
+      "diverse_session_groups": 29,
+      "action_diversity_rate": 0.725,
+      "pooling_opportunity_rate": 0.725,
+      "pooling_changed_row_count": 90,
+      "pooling_changed_row_rate": 0.5625,
+      "action_family_histogram": {
+        "abstain": 0,
+        "buy": 79,
+        "hold": 14,
+        "sell": 67
+      },
+      "nonzero_residual_steps": 116,
+      "zero_residual_steps": 59,
+      "nonzero_residual_rate": 0.6628571428571428,
+      "zero_residual_rate": 0.3371428571428572,
+      "existing_all_real_steps_diagnostics": {
+        "corr_U_S": 0.15682740203364398,
+        "exact_nonzero_S_count": 116,
+        "mean_abs_S": 0.05690096333090748,
+        "nonzero_S_count": 116,
+        "nonzero_S_rate": 0.6628571428571428,
+        "row_count": 175,
+        "std_S": 0.09426090007452072,
+        "std_U": 1.3625213799669456
+      },
+      "existing_advancing_steps_diagnostics": {
+        "corr_U_S": 0.1693687963238227,
+        "exact_nonzero_S_count": 116,
+        "mean_abs_S": 0.06223542864318006,
+        "nonzero_S_count": 116,
+        "nonzero_S_rate": 0.725,
+        "row_count": 160,
+        "std_S": 0.09860697690553763,
+        "std_U": 1.3197994247632079
+      },
+      "corrected_scaled_residual_to_U_std_ratio": 0.06918122640894447,
+      "existing_csv_residual_scaled_std_ratio": 0.01729530660223612,
+      "corrected_divided_by_existing_csv": 4.0,
+      "mean_scaled_residual": 7.98276492527553e-11,
+      "recorded_combined_whitening_std": 1.3804466724395752,
+      "centered_scaled_residual_std_over_combined_std": 0.06828289804568145,
+      "actual_actor_advantage_std": 1.0000000392165305,
+      "actual_actor_advantage_reconstruction_max_abs_error": 1.8105779653332377e-07,
+      "arithmetic_actor_delta_std": 0.06747639088868697,
+      "arithmetic_actor_delta_mean_abs": 0.04429507965640289,
+      "arithmetic_actor_delta_max_abs": 0.23495366413061824,
+      "arithmetic_actor_sign_flip_count": 3,
+      "arithmetic_actor_sign_flip_rate": 0.017142857142857144,
+      "residual_magnitude_exceeds_U_count": 2,
+      "absolute_scaled_residual_quantiles": {
+        "0": 0.0,
+        "0.5": 0.03629983216524124,
+        "0.9": 0.1625131636857984,
+        "0.99": 0.2980675607919686,
+        "1": 0.35574784874916077
+      },
+      "absolute_U_quantiles": {
+        "0": 0.004193782806396484,
+        "0.5": 1.0624897480010986,
+        "0.9": 1.9754209995269771,
+        "0.99": 3.8578341150283775,
+        "1": 4.655167579650879
+      }
+    }
+  ],
+  "by_seed": [
+    {
+      "seed": 42,
+      "updates": 4,
+      "real_steps": 682,
+      "advancing_steps": 640,
+      "invalid_steps": 42,
+      "nonzero_residual_steps": 404,
+      "zero_residual_steps": 278,
+      "nonzero_residual_rate": 0.592375366568915,
+      "zero_residual_rate": 0.40762463343108507,
+      "advancing_nonzero_residual_rate": 0.63125,
+      "session_groups": 160,
+      "diverse_session_groups": 101,
+      "action_diversity_rate": 0.63125,
+      "pooling_changed_advancing_rows": 328,
+      "pooling_changed_advancing_row_rate": 0.5125,
+      "scaled_residual_to_U_std_ratio_across_updates": {
+        "min": 0.05971896368993569,
+        "max": 0.12250555206910134,
+        "mean": 0.09134444236458245
+      },
+      "centered_scaled_residual_std_over_combined_std_across_updates": {
+        "min": 0.05918832922621859,
+        "max": 0.11765413349026028,
+        "mean": 0.08886001757751699
+      },
+      "arithmetic_whitened_actor_delta_std_across_updates": {
+        "min": 0.058779300437826254,
+        "max": 0.11305013401390532,
+        "mean": 0.08661920906685186
+      },
+      "arithmetic_actor_sign_flips": 16,
+      "arithmetic_actor_sign_flip_rate": 0.02346041055718475,
+      "residual_magnitude_exceeds_U_count": 26,
+      "action_family_histogram": {
+        "buy": 338,
+        "hold": 53,
+        "sell": 249
+      }
+    },
+    {
+      "seed": 43,
+      "updates": 4,
+      "real_steps": 694,
+      "advancing_steps": 640,
+      "invalid_steps": 54,
+      "nonzero_residual_steps": 380,
+      "zero_residual_steps": 314,
+      "nonzero_residual_rate": 0.547550432276657,
+      "zero_residual_rate": 0.45244956772334294,
+      "advancing_nonzero_residual_rate": 0.59375,
+      "session_groups": 160,
+      "diverse_session_groups": 95,
+      "action_diversity_rate": 0.59375,
+      "pooling_changed_advancing_rows": 294,
+      "pooling_changed_advancing_row_rate": 0.459375,
+      "scaled_residual_to_U_std_ratio_across_updates": {
+        "min": 0.028407081572056084,
+        "max": 0.06918122640894447,
+        "mean": 0.04989460932874609
+      },
+      "centered_scaled_residual_std_over_combined_std_across_updates": {
+        "min": 0.02834985385993619,
+        "max": 0.06828289804568145,
+        "mean": 0.04951566107657892
+      },
+      "arithmetic_whitened_actor_delta_std_across_updates": {
+        "min": 0.02830671311231554,
+        "max": 0.06747639088868697,
+        "mean": 0.0492251175298269
+      },
+      "arithmetic_actor_sign_flips": 6,
+      "arithmetic_actor_sign_flip_rate": 0.008645533141210375,
+      "residual_magnitude_exceeds_U_count": 5,
+      "action_family_histogram": {
+        "buy": 339,
+        "hold": 48,
+        "sell": 253
+      }
+    }
+  ],
+  "overall": {
+    "updates": 8,
+    "real_steps": 1376,
+    "advancing_steps": 1280,
+    "invalid_steps": 96,
+    "nonzero_residual_steps": 784,
+    "zero_residual_steps": 592,
+    "nonzero_residual_rate": 0.5697674418604651,
+    "zero_residual_rate": 0.43023255813953487,
+    "advancing_nonzero_residual_rate": 0.6125,
+    "session_groups": 320,
+    "diverse_session_groups": 196,
+    "action_diversity_rate": 0.6125,
+    "pooling_changed_advancing_rows": 622,
+    "pooling_changed_advancing_row_rate": 0.4859375,
+    "scaled_residual_to_U_std_ratio_across_updates": {
+      "min": 0.028407081572056084,
+      "max": 0.12250555206910134,
+      "mean": 0.07061952584666427
+    },
+    "centered_scaled_residual_std_over_combined_std_across_updates": {
+      "min": 0.02834985385993619,
+      "max": 0.11765413349026028,
+      "mean": 0.06918783932704796
+    },
+    "arithmetic_whitened_actor_delta_std_across_updates": {
+      "min": 0.02830671311231554,
+      "max": 0.11305013401390532,
+      "mean": 0.06792216329833939
+    },
+    "arithmetic_actor_sign_flips": 22,
+    "arithmetic_actor_sign_flip_rate": 0.015988372093023256,
+    "residual_magnitude_exceeds_U_count": 31,
+    "action_family_histogram": {
+      "buy": 677,
+      "hold": 101,
+      "sell": 502
+    }
+  },
+  "impact": {
+    "training": "No training bug established. The residual was scaled once before combining with U; this finding affects a downstream diagnostic ratio.",
+    "reporting": "residual_scaled_std_ratio in training_diagnostics.csv and the corresponding grid_readout training_diagnostics field is too small by factor 4 for eta=0.25. The same code path under-reports by factor 8 for eta=0.125; raw std_S fields remain already scaled values.",
+    "financial_results": "Net returns, terminal financial scores, completion statuses and paired M2-minus-M1 financial comparisons are not computed from this ratio and are unaffected by this diagnostic correction.",
+    "existing_artifacts": "No frozen source, existing CSV, existing JSON or model file was modified."
+  },
+  "limitations": [
+    "Only two seeds and four updates per seed in selected low-LR M2 conditions.",
+    "Nonzero residual, relative scale, sign changes and gate coverage do not establish useful credit assignment, causal attribution, learning improvement or financial performance.",
+    "Moderate batch-level residual dispersion can coexist with locally dominant residual on steps where U is near zero.",
+    "Sampled training action diversity does not imply greedy rejection recovery."
+  ]
+}

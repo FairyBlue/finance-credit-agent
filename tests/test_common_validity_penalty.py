@@ -22,7 +22,7 @@ from src.agents.screening_runtime import (
 from src.rewards.sibling_credit import compute_sibling_credit
 
 
-@pytest.mark.parametrize("arm", ["M1", "M2"])
+@pytest.mark.parametrize("arm", ["M1", "M2-plain", "M2"])
 @pytest.mark.parametrize("value_dtype", [torch.float32, torch.bfloat16])
 def test_actual_gae_critic_and_actor_share_penalty_but_residual_keeps_financial_y(
     arm, value_dtype, tmp_path
@@ -47,7 +47,8 @@ def test_actual_gae_critic_and_actor_share_penalty_but_residual_keeps_financial_
         lam=1,
     )
     # These are the original financial scores (not Y minus invalid penalties).
-    s = torch.tensor(compute_sibling_credit(_rows(groups=2)).pooled, dtype=u.dtype) * 0.25
+    credit = compute_sibling_credit(_rows(groups=2))
+    s = torch.tensor(credit.plain if arm == "M2-plain" else credit.pooled, dtype=u.dtype) * 0.25
     if arm == "M1":
         s.zero_()
     combined = u + s
@@ -104,8 +105,9 @@ def test_default_and_explicit_off_preserve_historical_tensors_and_metadata(arm):
     assert "common_validity_penalty" not in default.meta_info["finance_screening_diagnostics"]
 
 
-def test_penalty_ignores_padding_and_survives_trainer_reordering():
-    clean = _batch("M2")
+@pytest.mark.parametrize("arm", ["M2-plain", "M2"])
+def test_penalty_ignores_padding_and_survives_trainer_reordering(arm):
+    clean = _batch(arm)
     data = copy.deepcopy(clean)
     padding = data.select_idxs([0, 4])
     padding.batch["sample_mask"][:] = False
@@ -117,8 +119,8 @@ def test_penalty_ignores_padding_and_survives_trainer_reordering():
     data = DataProto.concat([data, padding])
     order = np.random.default_rng(13).permutation(len(data))
     data = data.select_idxs(order)
-    compute_screening_advantage(clean, arm="M2", invalid_action_penalty=0.05)
-    compute_screening_advantage(data, arm="M2", invalid_action_penalty=0.05)
+    compute_screening_advantage(clean, arm=arm, invalid_action_penalty=0.05)
+    compute_screening_advantage(data, arm=arm, invalid_action_penalty=0.05)
     restored = data.select_idxs(np.argsort(order))
     for field in ("advantages", "returns", "token_level_rewards"):
         torch.testing.assert_close(restored.batch[field][: len(clean)], clean.batch[field])
@@ -130,9 +132,9 @@ def test_penalty_ignores_padding_and_survives_trainer_reordering():
     )
 
 
-@pytest.mark.parametrize("arm", ["A2", "M2-plain"])
+@pytest.mark.parametrize("arm", ["A2"])
 def test_unregistered_arm_cannot_silently_gain_common_penalty(arm):
-    with pytest.raises(ValueError, match="only for M1 and M2"):
+    with pytest.raises(ValueError, match="only for M1, M2-plain, and M2"):
         compute_screening_advantage(_batch(arm), arm=arm, invalid_action_penalty=0.05)
 
 
@@ -142,8 +144,9 @@ def test_unregistered_coefficient_rejected(coefficient):
         validate_invalid_action_penalty(coefficient, "M1")
 
 
-def test_environment_installs_explicit_coefficient_and_default_off(tmp_path, monkeypatch):
-    monkeypatch.setenv("FINANCE_SCREENING_ARM", "M2")
+@pytest.mark.parametrize("arm", ["M2-plain", "M2"])
+def test_environment_installs_explicit_coefficient_and_default_off(tmp_path, monkeypatch, arm):
+    monkeypatch.setenv("FINANCE_SCREENING_ARM", arm)
     monkeypatch.setenv("FINANCE_SCREENING_DIAGNOSTICS_DIR", str(tmp_path))
     monkeypatch.setenv("FINANCE_SCREENING_RUN_SEED", "42")
     monkeypatch.setenv("FINANCE_SCREENING_RESIDUAL_ETA", "0.25")

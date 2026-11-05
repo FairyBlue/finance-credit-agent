@@ -1,0 +1,61 @@
+{
+  "status": "PASS",
+  "at_UTC": "2026-10-19T07:01:17.469130+00:00",
+  "lightweight_checks": true,
+  "full_model_or_data_rehash_repeated": false,
+  "actual_service_and_CPU_GPU_readout_exit0": true,
+  "startup_driver_reader_sources_unchanged": true,
+  "model_stats_unchanged": true,
+  "all_8_parents_complete": true,
+  "all_16_anchors_captured": true,
+  "all_314_branches_complete": true,
+  "head_requests": 64,
+  "legal_heads": 57,
+  "invalid_heads_preserved": 7,
+  "model_requests": 3335,
+  "maximum_model_requests": 23744,
+  "request_environment_statuses": {
+    "ADVANCING": 2993,
+    "INVALID": 342
+  },
+  "request_statuses_by_role": {
+    "parent": {
+      "ADVANCING": 160,
+      "INVALID": 14
+    },
+    "head": {
+      "INVALID": 7,
+      "ADVANCING": 57
+    },
+    "estimate": {
+      "ADVANCING": 1016,
+      "INVALID": 115
+    },
+    "reference": {
+      "ADVANCING": 1760,
+      "INVALID": 206
+    }
+  },
+  "max_requests_per_session": 3,
+  "all_native_generations_complete_EOS_verified_in_driver": true,
+  "fresh_fixed_seeds": 23744,
+  "prior_potential_seed_slots": 69672,
+  "prior_seed_overlap": 0,
+  "directional_replication": "PASS_DESCRIPTIVE_DIRECTION_ONLY",
+  "date_generalization": false,
+  "GPU_sampled_peak_GiB": 35.1142578125,
+  "holder_return_verified": true,
+  "evidence_sha256": {
+    "contract.json": "00360547d777ad1ffe1ef62ac18b949e56dd257bfc32b45a1678eaa4ff193d54",
+    "driver_start_seal.json": "d0e68409a5ee5d1bfe8230ab5636469f03200f3d47ffd4739ef61ce9f6467a94",
+    "readout_start_seal_v2.json": "330b0d8af6c9f856d2c1250e4eb7bf7dc006cdbdd9310d6e3cd7e2f521a47c66",
+    "driver_completion.json": "aab6280ea0d0fdae70c5c7b7ba2416ce95fce5380f5beac59015433c92c0967e",
+    "worker_completion.json": "221aaac7de6c5ed39eb61477562feac1698ecc338735f329b939406f532ae5ac",
+    "process_exit_receipt.json": "f3ad5f5cf621ce05d6b2d43fea7da02285b25757394488d01c2f97ddc2966ce1",
+    "service_exit_receipt.json": "8b0f7975a1fd0064e6a824afdf96a3ae943c80fbd711baa820c378e8ddce5ff0",
+    "onpolicy_readout.json": "6fbf055f030388a9e02f57cf818bc07626a2dcc62af5cd37ad6fba5080abc7ef",
+    "replication_readout.json": "3c319aa14936e78434dd2f040cd178ea687beadf5c1d644d2661795d1b6462c6",
+    "readout_exit_receipt.json": "09f5aa72e340268e49a503f22e3291751dca87febb01843649d4cc726b0ad506",
+    "holder_return_verified.json": "1315c840b02185dcdaa7ba1b5daea789ea021a8c7eda0c0ef508647ba22338e5"
+  }
+}

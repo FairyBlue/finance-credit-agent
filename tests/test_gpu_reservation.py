@@ -173,6 +173,31 @@ def test_expired_lease_cannot_resume_without_tick():
     assert not backend.live and reservation.closed
 
 
+def test_explicit_persistent_profile_does_not_expire_and_has_larger_bound():
+    backend, clock = Backend(external=0), Clock()
+    reservation = Reservation(backend, target_bytes=76 * GIB, maximum_bytes=80 * GIB,
+                              persistent=True, clock=clock, ttl_seconds=1)
+    clock.now = 10**10
+    for _ in range(76):
+        reservation.tick()
+    state = reservation.status()
+    assert state["payload_bytes"] == 76 * GIB and state["status"] == "HOLDING"
+    assert state["persistent"] and state["remaining_seconds"] is None
+    assert state["ttl_seconds"] is None and not state["closed"]
+    reservation.release(76 * GIB)
+    assert not backend.live
+
+
+@pytest.mark.parametrize("kwargs", [
+    {"persistent": True, "maximum_bytes": 81 * GIB},
+    {"persistent": True, "reserve_bytes": GIB},
+    {"persistent": "yes"}, {"persistent": 1},
+])
+def test_persistent_occupancy_is_explicit_and_preserves_free_headroom(kwargs):
+    with pytest.raises(ValueError):
+        Reservation(Backend(), target_bytes=GIB, **kwargs)
+
+
 def test_slow_lazy_initialization_cannot_allocate_after_lease_expiry():
     reservation, backend, clock = make(ttl_seconds=10)
     snapshot = backend.snapshot

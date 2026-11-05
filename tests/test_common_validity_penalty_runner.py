@@ -9,6 +9,7 @@ from hydra import compose, initialize_config_dir
 from src.agents import common_validity_penalty as entry
 from src.agents.actor_update_probe import policy_loss_contract
 from src.agents.metadata import RunHashes
+from src.agents.rollout_seed import derive_request_seed
 from src.agents.screening_launcher import validate_cell_evidence
 
 
@@ -286,6 +287,28 @@ def test_new_reward_tensor_receipts_conserve_original_y_and_feed_critic(tmp_path
     assert summary["penalty_sum"] == pytest.approx(spec.rounds * 0.4)
 
 
+@pytest.mark.parametrize("seed", [42, 43])
+def test_reward_validator_uses_expected_seed_and_still_rejects_other_seed(tmp_path, seed):
+    spec = entry.cells()[1]
+    records = penalty_records(spec)
+    for row in records:
+        row["run_seed"] = seed
+    path = tmp_path / "artifacts/sibling_diagnostics/advantage-test.jsonl"
+    path.parent.mkdir(parents=True)
+    path.write_text("".join(json.dumps(row) + "\n" for row in records))
+    assert entry.validate_common_penalty_evidence(
+        tmp_path, spec, expected_seed=seed,
+    )["status"] == "PASSED"
+    with pytest.raises(RuntimeError, match="common penalty"):
+        entry.validate_common_penalty_evidence(tmp_path, spec, expected_seed=85 - seed)
+
+
+@pytest.mark.parametrize("seed", [True, -1, 1.5, 2**32])
+def test_reward_validator_rejects_invalid_expected_seed(tmp_path, seed):
+    with pytest.raises(ValueError, match="expected penalty-evidence seed"):
+        entry.validate_common_penalty_evidence(tmp_path, entry.cells()[1], expected_seed=seed)
+
+
 @pytest.mark.parametrize("mutation", ["coefficient", "penalty", "return", "row", "update", "y"])
 def test_reward_validator_detects_wrong_sign_critic_target_alignment_and_missing_data(
     tmp_path, mutation
@@ -340,3 +363,89 @@ def test_critic_suffix_accepts_near_zero_float32_cancellation(tmp_path):
     path.write_text("".join(json.dumps(row) + "\n" for row in records))
     with pytest.raises(RuntimeError, match="critic returns"):
         entry.validate_common_penalty_evidence(tmp_path, spec)
+
+
+def _penalty_prefix(*, validate=True):
+    identity = dict(step=0 if validate else 1, sample_index=0, rollout_n=0, validate=validate)
+    row = dict(
+        schema_version=1, identity=identity, episode_id=entry.EVAL_IDS[0], arm="M1",
+        base_seed=42, complete=False, status="INCOMPLETE", metrics=None, terminal_score=None,
+        credits=None, error_type="ScreeningIncompleteError",
+        error="screening rollout stopped before its exact terminal",
+        evaluation_failure_profile="retain_prefix_v1", failure_kind="trajectory_max_steps",
+        max_steps_limit=256, transport_output_returned=True, transport_step_count=256,
+        transport_rewards_are_not_financial=True, generated_response_tokens=256 * 22,
+        prompt_tokens=256 * 100, steps=[], requests=[],
+    )
+    for index in range(256):
+        row["steps"].append(dict(
+            step_index=index, decision_session_index=0, result_session_index=0,
+            done=False, reward=0.0, invalid_action=True, action="invalid",
+        ))
+        seed = derive_request_seed(42, identity, index)
+        row["requests"].append(dict(
+            request_index=index, request_seed=seed, status="COMPLETE", stop_reason="completed",
+            finish_reason=None, response_token_count=22, prompt_token_count=100,
+            response_cap=4096, forwarded_sampling_params={"seed": seed, "max_tokens": 4096},
+        ))
+    return row
+
+
+def _write_penalty_raw(tmp_path, rows):
+    path = tmp_path / "artifacts/screening_evidence/evaluation.jsonl"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("".join(json.dumps(row) + "\n" for row in rows))
+
+
+def test_penalty_accepts_explicit_failed_eval_without_inventing_rewards(tmp_path):
+    spec = entry.cells()[0]
+    rows = validation_rows()
+    rows[0] = _penalty_prefix()
+    _write_penalty_raw(tmp_path, rows)
+    with pytest.raises(RuntimeError, match="INCOMPLETE training/evaluation"):
+        entry.validate_common_penalty_evidence(tmp_path, spec)
+    result = entry.validate_common_penalty_evidence(
+        tmp_path, spec, allow_incomplete_evaluation=True,
+    )
+    assert result["evaluation_completion"] == {"attempted": 20, "complete": 19, "incomplete": 1}
+    assert result["financial_status"] == "INCOMPLETE"
+    assert result["trajectories"] == result["updates"] == result["invalid_count"] == 0
+    assert result["penalty_sum"] == 0.0
+
+
+@pytest.mark.parametrize(
+    "damage", ["training", "seed", "arm", "marker", "score", "duplicate", "fake_complete"],
+)
+def test_penalty_prefix_opt_in_cannot_bypass_training_identity_or_financial_checks(
+    tmp_path, damage,
+):
+    spec = entry.cells()[0]
+    row = _penalty_prefix(validate=damage != "training")
+    rows = [row]
+    if damage == "seed":
+        row["base_seed"] = 43
+    elif damage == "arm":
+        row["arm"] = "M2"
+    elif damage == "marker":
+        row.pop("evaluation_failure_profile")
+    elif damage == "score":
+        row["terminal_score"] = 0.0
+    elif damage == "duplicate":
+        rows.append(copy.deepcopy(row))
+    elif damage == "fake_complete":
+        row.update(complete=True, terminal_score=0.0, metrics={"terminal_score": 0.0})
+    _write_penalty_raw(tmp_path, rows)
+    with pytest.raises(RuntimeError):
+        entry.validate_common_penalty_evidence(tmp_path, spec, allow_incomplete_evaluation=True)
+
+
+def test_penalty_training_contract_still_required_with_failed_evaluation(tmp_path):
+    spec = entry.cells()[1]
+    rows = penalty_records(spec)
+    rows[0]["reward_evidence"][0]["critic_return"] = 1.0
+    path = tmp_path / "artifacts/sibling_diagnostics/advantage-test.jsonl"
+    path.parent.mkdir(parents=True)
+    path.write_text("".join(json.dumps(row) + "\n" for row in rows))
+    _write_penalty_raw(tmp_path, [_penalty_prefix()])
+    with pytest.raises(RuntimeError, match="critic returns"):
+        entry.validate_common_penalty_evidence(tmp_path, spec, allow_incomplete_evaluation=True)

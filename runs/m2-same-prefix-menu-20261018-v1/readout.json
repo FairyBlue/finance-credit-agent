@@ -1,0 +1,74 @@
+{
+  "profile": "m2_same_prefix_menu_engineering_readout_v1",
+  "status": "PASS",
+  "claim": "CPU engineering support only",
+  "counts": {
+    "source_anchor_instances": 256,
+    "source_groups": 64,
+    "source_trajectories": 64,
+    "finite_menu_candidates": 10892,
+    "finite_menu_actual_executions": 10892,
+    "fresh_repeat_buy_executions": 256,
+    "fresh_original_control_executions": 256,
+    "total_actual_branch_executions": 11404,
+    "scripted_probe_logical_slots": 1024,
+    "selected_unique_menu_hold_continuations": 768,
+    "total_actual_complete_hold_branches": 1280,
+    "menu_invalid": 0,
+    "menu_zero_fill": 330,
+    "menu_with_skip": 74,
+    "original_orders_off_menu": 1,
+    "model_requests": 0,
+    "optimizer_updates": 0
+  },
+  "rules": {
+    "target_grid": [
+      0.0,
+      0.1,
+      0.2
+    ],
+    "visible_weight_margin": 1e-06,
+    "market_symbols": 20,
+    "scripted_probe": "hold,first buy,first buy,last sell if present else last buy",
+    "continuation": "explicit hold to original window endpoint; no future-based selection",
+    "fixed_hold_Y_usage": "identity/reproduction only; no credit MSE or ordering score"
+  },
+  "limits": [
+    "A scripted legal menu is not a policy sample or evidence of model action support.",
+    "Repeated deterministic branches are identity checks, not independent observations.",
+    "This does not demonstrate pooling denoising, critic improvement or financial gains.",
+    "Legal direction at decision does not guarantee a next-open fill; skips and zero-fill remain.",
+    "Fee totals across mutually exclusive counterfactual branches are engineering counts only.",
+    "Only original Train windows are used; no formal Valid/Final OOS access."
+  ],
+  "inputs": {
+    "contract.json": "557a8ddb796a19aac7bc790a830d0f872c4479b371f1718f6495cc08d4f07035",
+    "collection_completion.json": "2a6a0a4b10fd27f45a984ef373aa17087d5f36910f6dd5d5c6d937c7e6e587bb",
+    "snapshot_completion.json": "3a9025826e2195b0ee739c43506ece949e462959890455b49b1b952c2364e273",
+    "anchors.jsonl": "26e0770b6c0aaa4d2d4e6233bf5b457c56ae29e0ed5d9e17e68d62d46e19154f",
+    "prompt_packets.jsonl": "e4bd37c396a874f98ee5cf145f2b3c05b9a81e463db545da1f4ba33fda5d63e0",
+    "branches.jsonl": "bc1d38be7bee68563be3b79bca3e9e149e3359cdda0267281fe9064e2a9f3903"
+  },
+  "readout_source_sha256": "91ff2230974285bbc91c0f81d4282d00b1e5e497e6818895e5d09ca7753e49b1",
+  "checks": {
+    "status": "PASS",
+    "anchors": 256,
+    "prompt_packets": 256,
+    "exact_visible_only_menu_anchors": 256,
+    "historical_prompt_token_identity_anchors": 256,
+    "financial_and_observation_prefix_identity_executions": 11404,
+    "fresh_buy_repeat_identity_checks": 256,
+    "old_hold_reference_checks": 256,
+    "old_diagonal_and_original_first_info_checks": 256,
+    "branch_check_counts": {
+      "before_identity": 11404,
+      "cash_position_fees": 11404,
+      "history_append": 11404
+    }
+  },
+  "output_sha256": {
+    "menu_coverage.csv": "cbb0b5ad4cb2e506101699e2f3b5b78d980c6f529af45a829c0382e72216eb94",
+    "branch_summary.csv": "b64eee5874c76a30a79de4ee8db093e96c624c71dc78c0ef1a1f4ca1e16c97b8",
+    "checks.json": "188d60bee976043fc3eb4c2c46186a5d0841502b7c816873edf72719ebc7d9fa"
+  }
+}

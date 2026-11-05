@@ -1,0 +1,586 @@
+{
+  "status": "COMPLETE",
+  "scope": "authorized_step1_only",
+  "source_split": "train",
+  "episode_ids": [
+    "formal-train-0001",
+    "formal-train-0015",
+    "formal-train-0029",
+    "formal-train-0044",
+    "formal-train-0058",
+    "formal-train-0072",
+    "formal-train-0086",
+    "formal-train-0100",
+    "formal-train-0115",
+    "formal-train-0129",
+    "formal-train-0143",
+    "formal-train-0157",
+    "formal-train-0171",
+    "formal-train-0186",
+    "formal-train-0200",
+    "formal-train-0214",
+    "formal-train-0228",
+    "formal-train-0242",
+    "formal-train-0256",
+    "formal-train-0271",
+    "formal-train-0285",
+    "formal-train-0299",
+    "formal-train-0313",
+    "formal-train-0327",
+    "formal-train-0342",
+    "formal-train-0356",
+    "formal-train-0370",
+    "formal-train-0384",
+    "formal-train-0398",
+    "formal-train-0413",
+    "formal-train-0427",
+    "formal-train-0441"
+  ],
+  "strategies": {
+    "cash": {
+      "planned_episodes": 32,
+      "observed_episodes": 32,
+      "complete_episodes": 32,
+      "raw_net_return": 0.0,
+      "benchmark_excess": -0.014470719156602023,
+      "terminal_financial_Y": -2.553046512608892,
+      "transaction_cost": 0.0,
+      "max_drawdown": 0.0,
+      "turnover": 0.0
+    },
+    "hold": {
+      "planned_episodes": 32,
+      "observed_episodes": 32,
+      "complete_episodes": 32,
+      "raw_net_return": 0.014470719156602023,
+      "benchmark_excess": 0.0,
+      "terminal_financial_Y": -0.04606579719730679,
+      "transaction_cost": 1498.251873064412,
+      "max_drawdown": 0.027237708995289107,
+      "turnover": 0.9990009990009989
+    },
+    "momentum": {
+      "planned_episodes": 32,
+      "observed_episodes": 32,
+      "complete_episodes": 32,
+      "raw_net_return": 0.013496659012799585,
+      "benchmark_excess": -0.0009740601438024375,
+      "terminal_financial_Y": -0.23350857105102,
+      "transaction_cost": 2442.741222325257,
+      "max_drawdown": 0.027788885528802862,
+      "turnover": 1.6256310039452968
+    },
+    "reversal": {
+      "planned_episodes": 32,
+      "observed_episodes": 32,
+      "complete_episodes": 32,
+      "raw_net_return": 0.013634470710130724,
+      "benchmark_excess": -0.0008362484464712987,
+      "terminal_financial_Y": -0.13776901148159354,
+      "transaction_cost": 2490.873889647941,
+      "max_drawdown": 0.027650894235966544,
+      "turnover": 1.657087251309978
+    },
+    "defensive": {
+      "planned_episodes": 32,
+      "observed_episodes": 32,
+      "complete_episodes": 32,
+      "raw_net_return": 0.007236238740855223,
+      "benchmark_excess": -0.0072344804157467996,
+      "terminal_financial_Y": -1.2417493763245266,
+      "transaction_cost": 2703.9345112453975,
+      "max_drawdown": 0.015265558470598777,
+      "turnover": 1.7992772146593694
+    },
+    "llm_zero_shot": {
+      "planned_episodes": 32,
+      "observed_episodes": 32,
+      "complete_episodes": 32,
+      "raw_net_return": 0.012810893794565494,
+      "benchmark_excess": -0.0016598253620365294,
+      "terminal_financial_Y": -0.2965397557529006,
+      "transaction_cost": 1980.9449484274858,
+      "max_drawdown": 0.026584636385737125,
+      "turnover": 1.3183747776683625
+    }
+  },
+  "reference_checks": {
+    "status": "PASS",
+    "shared_ledger_reference_checks": [
+      {
+        "episode_id": "formal-train-0001",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0001",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0015",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0015",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0029",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0029",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0044",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0044",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0058",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0058",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0072",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0072",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0086",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0086",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0100",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0100",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0115",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0115",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0129",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0129",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0143",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0143",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0157",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0157",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0171",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0171",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0186",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0186",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0200",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0200",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0214",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0214",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0228",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0228",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0242",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0242",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0256",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0256",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0271",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0271",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0285",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0285",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0299",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0299",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0313",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0313",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0327",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0327",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0342",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0342",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0356",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0356",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0370",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0370",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0384",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0384",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0398",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0398",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0413",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0413",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0427",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0427",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0441",
+        "strategy": "hold",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      },
+      {
+        "episode_id": "formal-train-0441",
+        "strategy": "cash",
+        "status": "PASS",
+        "maximum_daily_equity_error": 0.0,
+        "transaction_cost_error": 0.0
+      }
+    ],
+    "complete_trajectories": 160,
+    "expected_trajectories": 160,
+    "decisions_per_episode": 4,
+    "daily_curve_points": 21
+  },
+  "example_episode_id": "formal-train-0001",
+  "llm_action_counts": {
+    "hold": 75,
+    "defensive": 22,
+    "momentum": 31
+  },
+  "model_requests": 128,
+  "prompt_tokens": 722735,
+  "response_tokens": 309,
+  "optimizer_updates": 0,
+  "zero_shot": true,
+  "constrained_decoding": true,
+  "new_policy_learning_claim": false,
+  "formal_valid_access": false,
+  "formal_final_oos_access": false,
+  "subsequent_steps_started": false,
+  "preserved_pre_generation_failure": {
+    "reason": "Actual project vLLM has different constrained-output API from base micromamba environment; import failed before inference",
+    "generated_requests": 0,
+    "rules_reused": true,
+    "new_training_updates": 0
+  }
+}

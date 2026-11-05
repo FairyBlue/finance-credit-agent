@@ -101,6 +101,32 @@ def test_real_hydra_preserves_training_and_selects_chunked_execution(prepared, c
     assert not any(name.startswith("FINANCE_LEARNING_") for name in env)
 
 
+@pytest.mark.parametrize("cell_id", ["m1", "m2_eta025"])
+def test_coordinated_workers_enable_vllm_profile_logs_without_changing_learning(
+    prepared, monkeypatch, cell_id,
+):
+    from omegaconf import OmegaConf
+
+    base, _, _ = prepared
+    _, original_command = command_for(prepared, cell_id)
+    entry.atomic_json(base / "gpu_coordinator_config.json", {"fixture": "coordinator"})
+    monkeypatch.setattr(entry, "memory_coordinator_config", lambda path: {"fixture": True})
+    _, command = command_for(prepared, cell_id)
+    with hydra.initialize_config_dir(
+        config_dir=str(entry.REPO_ROOT / "third_party/agent-r1/agent_r1/config"),
+        version_base=None,
+    ):
+        original = hydra.compose(config_name="agent_ppo_trainer", overrides=original_command[3:])
+        actual = hydra.compose(config_name="agent_ppo_trainer", overrides=command[3:])
+    for group in ("data", "actor_rollout_ref", "critic", "algorithm", "trainer"):
+        assert OmegaConf.to_container(actual[group], resolve=True) == OmegaConf.to_container(
+            original[group], resolve=True,
+        )
+    assert actual.ray_kwargs.ray_init.runtime_env.env_vars.VLLM_LOGGING_LEVEL == "INFO"
+    key = "+ray_kwargs.ray_init.runtime_env.env_vars.VLLM_LOGGING_LEVEL="
+    assert [arg for arg in command if arg.startswith(key)] == [key + "INFO"]
+
+
 def test_fixed_windows_two_arms_and_seventy_two_trajectories(prepared):
     _, settings, _ = prepared
     assert entry.coverage.TRAIN_IDS[:4] == entry.TRAIN_IDS

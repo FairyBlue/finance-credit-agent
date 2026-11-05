@@ -30,6 +30,7 @@ from src.agents.launcher import (
     _training_environment,
 )
 from src.agents.metadata import collect_run_hashes
+from src.agents.rollout_seed import normalize_rollout_identity
 from src.agents.screening_launcher import (
     REPO_ROOT,
     atomic_json,
@@ -39,6 +40,7 @@ from src.agents.screening_launcher import (
     read_jsonl,
     set_overrides,
     validate_cell_evidence,
+    validate_incomplete_evaluation_evidence,
     verify_gpu_runtime_and_model,
 )
 
@@ -518,8 +520,51 @@ def validate_extra_evidence(cell, spec, identity):
     return dict(actor_update=actor, paired_validation=paired, common_penalty_evidence=penalty)
 
 
-def validate_common_penalty_evidence(cell, spec):
+def validate_common_penalty_evidence(
+    cell, spec, *, expected_seed=42, allow_incomplete_evaluation=False,
+):
     """Confirm the saved training tensors implement the new shared target."""
+    if type(expected_seed) is not int or not 0 <= expected_seed < 2**32:
+        raise ValueError("expected penalty-evidence seed must be an integer in [0, 2**32)")
+    if type(allow_incomplete_evaluation) is not bool:
+        raise ValueError("allow_incomplete_evaluation must be boolean")
+    evaluation_complete = evaluation_incomplete = 0
+    identities = set()
+    for trajectory in read_jsonl(cell / "artifacts/screening_evidence"):
+        identity = normalize_rollout_identity(
+            trajectory.get("rollout_identity", trajectory.get("identity"))
+        )
+        identity_key = (identity.step, identity.sample_index, identity.rollout_n, identity.validate)
+        if (
+            trajectory.get("schema_version") != 1
+            or trajectory.get("arm") != spec.arm
+            or trajectory.get("base_seed") != expected_seed
+            or identity_key in identities
+        ):
+            raise RuntimeError("common penalty trajectory identity differs or is duplicated")
+        identities.add(identity_key)
+        if trajectory.get("complete", trajectory.get("episode_complete")) is not True:
+            if not allow_incomplete_evaluation or not identity.validate:
+                raise RuntimeError("common penalty cannot accept INCOMPLETE training/evaluation")
+            validate_incomplete_evaluation_evidence(trajectory)
+            evaluation_incomplete += 1
+        else:
+            if any(name in trajectory for name in (
+                "evaluation_failure_profile", "failure_kind", "transport_output_returned",
+            )):
+                raise RuntimeError(
+                    "common penalty INCOMPLETE marker conflicts with complete financial outcome"
+                )
+            score = trajectory.get("terminal_score")
+            metrics = trajectory.get("metrics")
+            if (
+                type(score) not in (int, float)
+                or not math.isfinite(score)
+                or not isinstance(metrics, dict)
+                or metrics.get("terminal_score") != score
+            ):
+                raise RuntimeError("common penalty complete financial target differs")
+            evaluation_complete += int(identity.validate)
     records = read_jsonl(cell / "artifacts/sibling_diagnostics")
     if sorted(row.get("policy_step", -1) for row in records) != list(range(1, spec.rounds + 1)):
         raise RuntimeError("common penalty evidence has missing or duplicate training updates")
@@ -539,7 +584,7 @@ def validate_common_penalty_evidence(cell, spec):
         rows = record.get("reward_evidence", [])
         if (
             record.get("arm") != spec.arm
-            or record.get("run_seed") != 42
+            or record.get("run_seed") != expected_seed
             or record.get("eta") != spec.eta
             or penalty.get("coefficient") != PENALTY
             or penalty.get("profile") != "environment_rejection_v1"
@@ -635,7 +680,7 @@ def validate_common_penalty_evidence(cell, spec):
                 raise RuntimeError("common penalty aggregate reward conservation differs")
         invalid_total += invalid
         penalty_total += penalty["penalty_sum"]
-    return dict(
+    result = dict(
         status="PASSED",
         coefficient=PENALTY,
         updates=len(records),
@@ -644,6 +689,16 @@ def validate_common_penalty_evidence(cell, spec):
         penalty_sum=penalty_total,
         evaluation_financial_target_unchanged=True,
     )
+    if allow_incomplete_evaluation:
+        result.update(
+            evaluation_completion={
+                "attempted": evaluation_complete + evaluation_incomplete,
+                "complete": evaluation_complete,
+                "incomplete": evaluation_incomplete,
+            },
+            financial_status="INCOMPLETE" if evaluation_incomplete else "COMPLETE",
+        )
+    return result
 
 
 def run_cell(base, cell_id):

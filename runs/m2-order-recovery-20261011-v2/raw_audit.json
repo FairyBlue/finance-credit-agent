@@ -1,0 +1,1188 @@
+{
+  "audited_at_UTC": "2026-10-11T09:42:53.029789+00:00",
+  "directory": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2",
+  "limitations": [
+    "Local four-request recovery only; no full-episode financial claim.",
+    "Fixed error-selected states and SFT seed identities are not independent trained policies."
+  ],
+  "mode": "all_workers",
+  "profile": "r5_order_recovery_independent_raw_audit_v2",
+  "requests": 701,
+  "source_sha256": {
+    "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/analysis_scripts/audit_m2_order_recovery_endpoint_v2.py": "6a45defbe3293d14dac86e14a0ff12d09f9258267e7403c38c93c7e03c396f1e",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/manifest.json": "d5231cb583239d04ee3582aa59e1b7a3aa349d448ea55ebfe76b1589245619ef"
+  },
+  "status": "PASS",
+  "trajectories": 480,
+  "worker_count": 5,
+  "workers": [
+    {
+      "applied_responses": 238,
+      "batches": 50,
+      "failure_reasons": {
+        "REQUEST_CAP": 9
+      },
+      "failures": [
+        {
+          "case_id": "formal-train-0210",
+          "errors": {
+            "buy target_weight must be above the current weight": 4
+          },
+          "failure": "REQUEST_CAP",
+          "id": "seed42_sft:formal-train-0210:history_features_recovery_v1:0",
+          "model_identity": "seed42_sft",
+          "profile": "history_features_recovery_v1",
+          "requests": 4,
+          "responses": [
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>"
+          ],
+          "sampling": "greedy"
+        },
+        {
+          "case_id": "formal-train-0210",
+          "errors": {
+            "buy target_weight must be above the current weight": 4
+          },
+          "failure": "REQUEST_CAP",
+          "id": "seed42_sft:formal-train-0210:history_features_recovery_v1:2",
+          "model_identity": "seed42_sft",
+          "profile": "history_features_recovery_v1",
+          "requests": 4,
+          "responses": [
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>"
+          ],
+          "sampling": "sampled"
+        },
+        {
+          "case_id": "formal-train-0210",
+          "errors": {
+            "buy target_weight must be above the current weight": 4
+          },
+          "failure": "REQUEST_CAP",
+          "id": "seed42_sft:formal-train-0210:history_features_recovery_v2:0",
+          "model_identity": "seed42_sft",
+          "profile": "history_features_recovery_v2",
+          "requests": 4,
+          "responses": [
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>"
+          ],
+          "sampling": "greedy"
+        },
+        {
+          "case_id": "formal-train-0420",
+          "errors": {
+            "buy target_weight must be above the current weight": 4
+          },
+          "failure": "REQUEST_CAP",
+          "id": "seed42_sft:formal-train-0420:history_features_recovery_v2:0",
+          "model_identity": "seed42_sft",
+          "profile": "history_features_recovery_v2",
+          "requests": 4,
+          "responses": [
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>"
+          ],
+          "sampling": "greedy"
+        },
+        {
+          "case_id": "formal-train-0210",
+          "errors": {
+            "buy target_weight must be above the current weight": 4
+          },
+          "failure": "REQUEST_CAP",
+          "id": "seed43_sft:formal-train-0210:history_features_recovery_v1:0",
+          "model_identity": "seed43_sft",
+          "profile": "history_features_recovery_v1",
+          "requests": 4,
+          "responses": [
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>"
+          ],
+          "sampling": "greedy"
+        },
+        {
+          "case_id": "formal-train-0210",
+          "errors": {
+            "buy target_weight must be above the current weight": 4
+          },
+          "failure": "REQUEST_CAP",
+          "id": "seed43_sft:formal-train-0210:history_features_recovery_v2:0",
+          "model_identity": "seed43_sft",
+          "profile": "history_features_recovery_v2",
+          "requests": 4,
+          "responses": [
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>"
+          ],
+          "sampling": "greedy"
+        },
+        {
+          "case_id": "formal-train-0210",
+          "errors": {
+            "buy target_weight must be above the current weight": 4
+          },
+          "failure": "REQUEST_CAP",
+          "id": "seed43_sft:formal-train-0210:history_features_recovery_v2:1",
+          "model_identity": "seed43_sft",
+          "profile": "history_features_recovery_v2",
+          "requests": 4,
+          "responses": [
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>"
+          ],
+          "sampling": "sampled"
+        },
+        {
+          "case_id": "formal-train-0210",
+          "errors": {
+            "buy target_weight must be above the current weight": 4
+          },
+          "failure": "REQUEST_CAP",
+          "id": "seed43_sft:formal-train-0210:history_features_recovery_v2:4",
+          "model_identity": "seed43_sft",
+          "profile": "history_features_recovery_v2",
+          "requests": 4,
+          "responses": [
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>"
+          ],
+          "sampling": "sampled"
+        },
+        {
+          "case_id": "formal-train-0420",
+          "errors": {
+            "buy target_weight must be above the current weight": 4
+          },
+          "failure": "REQUEST_CAP",
+          "id": "seed43_sft:formal-train-0420:history_features_recovery_v2:0",
+          "model_identity": "seed43_sft",
+          "profile": "history_features_recovery_v2",
+          "requests": 4,
+          "responses": [
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>"
+          ],
+          "sampling": "greedy"
+        }
+      ],
+      "groups": [
+        {
+          "advance_actions": {
+            "buy": 2
+          },
+          "case_kind": "normal",
+          "model_identity": "seed42_sft",
+          "planned": 2,
+          "profile": "history_features_recovery_v1",
+          "sampling": "greedy",
+          "statuses": {
+            "ADVANCED": 2
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 8
+          },
+          "case_kind": "normal",
+          "model_identity": "seed42_sft",
+          "planned": 8,
+          "profile": "history_features_recovery_v1",
+          "sampling": "sampled",
+          "statuses": {
+            "ADVANCED": 8
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 4,
+            "sell": 1
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed42_sft",
+          "planned": 6,
+          "profile": "history_features_recovery_v1",
+          "sampling": "greedy",
+          "statuses": {
+            "INCOMPLETE": 1,
+            "RECOVERED": 5
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 6,
+            "hold": 2,
+            "sell": 15
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed42_sft",
+          "planned": 24,
+          "profile": "history_features_recovery_v1",
+          "sampling": "sampled",
+          "statuses": {
+            "INCOMPLETE": 1,
+            "RECOVERED": 23
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 2
+          },
+          "case_kind": "normal",
+          "model_identity": "seed42_sft",
+          "planned": 2,
+          "profile": "history_features_recovery_v2",
+          "sampling": "greedy",
+          "statuses": {
+            "ADVANCED": 2
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 8
+          },
+          "case_kind": "normal",
+          "model_identity": "seed42_sft",
+          "planned": 8,
+          "profile": "history_features_recovery_v2",
+          "sampling": "sampled",
+          "statuses": {
+            "ADVANCED": 8
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 1,
+            "sell": 3
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed42_sft",
+          "planned": 6,
+          "profile": "history_features_recovery_v2",
+          "sampling": "greedy",
+          "statuses": {
+            "INCOMPLETE": 2,
+            "RECOVERED": 4
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 5,
+            "hold": 1,
+            "sell": 18
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed42_sft",
+          "planned": 24,
+          "profile": "history_features_recovery_v2",
+          "sampling": "sampled",
+          "statuses": {
+            "RECOVERED": 24
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 2
+          },
+          "case_kind": "normal",
+          "model_identity": "seed43_sft",
+          "planned": 2,
+          "profile": "history_features_recovery_v1",
+          "sampling": "greedy",
+          "statuses": {
+            "ADVANCED": 2
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 8
+          },
+          "case_kind": "normal",
+          "model_identity": "seed43_sft",
+          "planned": 8,
+          "profile": "history_features_recovery_v1",
+          "sampling": "sampled",
+          "statuses": {
+            "ADVANCED": 8
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 4,
+            "sell": 1
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed43_sft",
+          "planned": 6,
+          "profile": "history_features_recovery_v1",
+          "sampling": "greedy",
+          "statuses": {
+            "INCOMPLETE": 1,
+            "RECOVERED": 5
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 9,
+            "hold": 4,
+            "sell": 11
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed43_sft",
+          "planned": 24,
+          "profile": "history_features_recovery_v1",
+          "sampling": "sampled",
+          "statuses": {
+            "RECOVERED": 24
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 2
+          },
+          "case_kind": "normal",
+          "model_identity": "seed43_sft",
+          "planned": 2,
+          "profile": "history_features_recovery_v2",
+          "sampling": "greedy",
+          "statuses": {
+            "ADVANCED": 2
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 8
+          },
+          "case_kind": "normal",
+          "model_identity": "seed43_sft",
+          "planned": 8,
+          "profile": "history_features_recovery_v2",
+          "sampling": "sampled",
+          "statuses": {
+            "ADVANCED": 8
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 1,
+            "sell": 3
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed43_sft",
+          "planned": 6,
+          "profile": "history_features_recovery_v2",
+          "sampling": "greedy",
+          "statuses": {
+            "INCOMPLETE": 2,
+            "RECOVERED": 4
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 5,
+            "hold": 5,
+            "sell": 12
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed43_sft",
+          "planned": 24,
+          "profile": "history_features_recovery_v2",
+          "sampling": "sampled",
+          "statuses": {
+            "INCOMPLETE": 2,
+            "RECOVERED": 22
+          }
+        }
+      ],
+      "model_key": "sft",
+      "raw_output_count": 238,
+      "rejections_with_unchanged_ledger": 87,
+      "request_count": 238,
+      "source_sha256": {
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/sft/config.json": "05482618a37c8b90b3818f8d26182ffb6894b38cfd7739d6414deb5c6cede51d",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/sft/raw.jsonl": "24ccf0863c6e00e14434a8b28cc5426f1d162ca49f02f3b696a70083c781f4fc",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/sft/requests.jsonl": "c1064f1c3d1d8dd67b8a0e361da8ab2c2599c980a0ec03b19a0bceec6a72530d",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/sft/result.json": "5a30d3194f4c5d39483f89be9c134d0989dcae0bd78dd6a3d1244403415f628e",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/sft/state.json": "5a30d3194f4c5d39483f89be9c134d0989dcae0bd78dd6a3d1244403415f628e",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/sft/submissions.jsonl": "02780563c404f424e5c21f4ee17fd258cdd22c1b4ef49c697acb2c3a078fa09a"
+      },
+      "status": "PASS",
+      "statuses": {
+        "ADVANCED": 40,
+        "INCOMPLETE": 9,
+        "RECOVERED": 111
+      },
+      "submitted_count": 238,
+      "trajectories": 160,
+      "unapplied_incomplete_responses": 0
+    },
+    {
+      "applied_responses": 114,
+      "batches": 22,
+      "failure_reasons": {
+        "REQUEST_CAP": 2
+      },
+      "failures": [
+        {
+          "case_id": "formal-train-0210",
+          "errors": {
+            "buy target_weight must be above the current weight": 4
+          },
+          "failure": "REQUEST_CAP",
+          "id": "seed42_m1:formal-train-0210:history_features_recovery_v1:2",
+          "model_identity": "seed42_m1",
+          "profile": "history_features_recovery_v1",
+          "requests": 4,
+          "responses": [
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>"
+          ],
+          "sampling": "sampled"
+        },
+        {
+          "case_id": "formal-train-0210",
+          "errors": {
+            "buy target_weight must be above the current weight": 4
+          },
+          "failure": "REQUEST_CAP",
+          "id": "seed42_m1:formal-train-0210:history_features_recovery_v2:0",
+          "model_identity": "seed42_m1",
+          "profile": "history_features_recovery_v2",
+          "requests": 4,
+          "responses": [
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>"
+          ],
+          "sampling": "greedy"
+        }
+      ],
+      "groups": [
+        {
+          "advance_actions": {
+            "buy": 2
+          },
+          "case_kind": "normal",
+          "model_identity": "seed42_m1",
+          "planned": 2,
+          "profile": "history_features_recovery_v1",
+          "sampling": "greedy",
+          "statuses": {
+            "ADVANCED": 2
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 8
+          },
+          "case_kind": "normal",
+          "model_identity": "seed42_m1",
+          "planned": 8,
+          "profile": "history_features_recovery_v1",
+          "sampling": "sampled",
+          "statuses": {
+            "ADVANCED": 8
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 4,
+            "sell": 2
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed42_m1",
+          "planned": 6,
+          "profile": "history_features_recovery_v1",
+          "sampling": "greedy",
+          "statuses": {
+            "RECOVERED": 6
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 6,
+            "hold": 5,
+            "sell": 12
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed42_m1",
+          "planned": 24,
+          "profile": "history_features_recovery_v1",
+          "sampling": "sampled",
+          "statuses": {
+            "INCOMPLETE": 1,
+            "RECOVERED": 23
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 2
+          },
+          "case_kind": "normal",
+          "model_identity": "seed42_m1",
+          "planned": 2,
+          "profile": "history_features_recovery_v2",
+          "sampling": "greedy",
+          "statuses": {
+            "ADVANCED": 2
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 8
+          },
+          "case_kind": "normal",
+          "model_identity": "seed42_m1",
+          "planned": 8,
+          "profile": "history_features_recovery_v2",
+          "sampling": "sampled",
+          "statuses": {
+            "ADVANCED": 8
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 2,
+            "sell": 3
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed42_m1",
+          "planned": 6,
+          "profile": "history_features_recovery_v2",
+          "sampling": "greedy",
+          "statuses": {
+            "INCOMPLETE": 1,
+            "RECOVERED": 5
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 3,
+            "hold": 3,
+            "sell": 18
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed42_m1",
+          "planned": 24,
+          "profile": "history_features_recovery_v2",
+          "sampling": "sampled",
+          "statuses": {
+            "RECOVERED": 24
+          }
+        }
+      ],
+      "model_key": "seed42_m1",
+      "raw_output_count": 114,
+      "rejections_with_unchanged_ledger": 36,
+      "request_count": 114,
+      "source_sha256": {
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed42_m1/config.json": "d908a0bb6c6f51e42c17d4315034803f5d738f5c8df00c4f436e0a477c3d66c5",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed42_m1/raw.jsonl": "653474de0f0957b1972a915ec7b2d4276b0351f89cde5da7f26c6545ff24f52e",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed42_m1/requests.jsonl": "6f07f9a8d1ab3d5baf232d3f83d95d6047b0e4d2441014ee60c9ea0e28da6ce9",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed42_m1/result.json": "5d9fca226c830d3ecfb32ef171a87a7b5fc5c4142e27e8733508f6e1109e311e",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed42_m1/state.json": "5d9fca226c830d3ecfb32ef171a87a7b5fc5c4142e27e8733508f6e1109e311e",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed42_m1/submissions.jsonl": "05c9b71a167726996e37b57b5eaa1780e5f555bd33610abde1884d8087812b95"
+      },
+      "status": "PASS",
+      "statuses": {
+        "ADVANCED": 20,
+        "INCOMPLETE": 2,
+        "RECOVERED": 58
+      },
+      "submitted_count": 114,
+      "trajectories": 80,
+      "unapplied_incomplete_responses": 0
+    },
+    {
+      "applied_responses": 113,
+      "batches": 22,
+      "failure_reasons": {
+        "REQUEST_CAP": 3
+      },
+      "failures": [
+        {
+          "case_id": "formal-train-0210",
+          "errors": {
+            "buy target_weight must be above the current weight": 4
+          },
+          "failure": "REQUEST_CAP",
+          "id": "seed42_m2:formal-train-0210:history_features_recovery_v1:0",
+          "model_identity": "seed42_m2",
+          "profile": "history_features_recovery_v1",
+          "requests": 4,
+          "responses": [
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>"
+          ],
+          "sampling": "greedy"
+        },
+        {
+          "case_id": "formal-train-0210",
+          "errors": {
+            "buy target_weight must be above the current weight": 4
+          },
+          "failure": "REQUEST_CAP",
+          "id": "seed42_m2:formal-train-0210:history_features_recovery_v1:2",
+          "model_identity": "seed42_m2",
+          "profile": "history_features_recovery_v1",
+          "requests": 4,
+          "responses": [
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>"
+          ],
+          "sampling": "sampled"
+        },
+        {
+          "case_id": "formal-train-0210",
+          "errors": {
+            "buy target_weight must be above the current weight": 4
+          },
+          "failure": "REQUEST_CAP",
+          "id": "seed42_m2:formal-train-0210:history_features_recovery_v2:0",
+          "model_identity": "seed42_m2",
+          "profile": "history_features_recovery_v2",
+          "requests": 4,
+          "responses": [
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>"
+          ],
+          "sampling": "greedy"
+        }
+      ],
+      "groups": [
+        {
+          "advance_actions": {
+            "buy": 2
+          },
+          "case_kind": "normal",
+          "model_identity": "seed42_m2",
+          "planned": 2,
+          "profile": "history_features_recovery_v1",
+          "sampling": "greedy",
+          "statuses": {
+            "ADVANCED": 2
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 8
+          },
+          "case_kind": "normal",
+          "model_identity": "seed42_m2",
+          "planned": 8,
+          "profile": "history_features_recovery_v1",
+          "sampling": "sampled",
+          "statuses": {
+            "ADVANCED": 8
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 4,
+            "sell": 1
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed42_m2",
+          "planned": 6,
+          "profile": "history_features_recovery_v1",
+          "sampling": "greedy",
+          "statuses": {
+            "INCOMPLETE": 1,
+            "RECOVERED": 5
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 6,
+            "hold": 4,
+            "sell": 13
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed42_m2",
+          "planned": 24,
+          "profile": "history_features_recovery_v1",
+          "sampling": "sampled",
+          "statuses": {
+            "INCOMPLETE": 1,
+            "RECOVERED": 23
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 2
+          },
+          "case_kind": "normal",
+          "model_identity": "seed42_m2",
+          "planned": 2,
+          "profile": "history_features_recovery_v2",
+          "sampling": "greedy",
+          "statuses": {
+            "ADVANCED": 2
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 8
+          },
+          "case_kind": "normal",
+          "model_identity": "seed42_m2",
+          "planned": 8,
+          "profile": "history_features_recovery_v2",
+          "sampling": "sampled",
+          "statuses": {
+            "ADVANCED": 8
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 2,
+            "sell": 3
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed42_m2",
+          "planned": 6,
+          "profile": "history_features_recovery_v2",
+          "sampling": "greedy",
+          "statuses": {
+            "INCOMPLETE": 1,
+            "RECOVERED": 5
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 3,
+            "hold": 3,
+            "sell": 18
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed42_m2",
+          "planned": 24,
+          "profile": "history_features_recovery_v2",
+          "sampling": "sampled",
+          "statuses": {
+            "RECOVERED": 24
+          }
+        }
+      ],
+      "model_key": "seed42_m2",
+      "raw_output_count": 113,
+      "rejections_with_unchanged_ledger": 36,
+      "request_count": 113,
+      "source_sha256": {
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed42_m2/config.json": "c0d7c4906f4ca269f84659d6cc2e570af123e484796d0f65e34efab0ff82b3b8",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed42_m2/raw.jsonl": "2f3fa59f219834dbc91471373a6a7863efc508563b0704c9f58abd4f12372f28",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed42_m2/requests.jsonl": "ba020a13e78ebcdf6c5bcadcf24e9c01fe9c2447304140286756fcf6cacd6e78",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed42_m2/result.json": "fe62c1f30f9b2aa8ec3796ed19267d8b554e6bbee064114b73e47cec6e8009c6",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed42_m2/state.json": "fe62c1f30f9b2aa8ec3796ed19267d8b554e6bbee064114b73e47cec6e8009c6",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed42_m2/submissions.jsonl": "42e7e00ae7593155c59ba74af75fb1b2829105b9b089dcb2a33c3a8e4dbdb5aa"
+      },
+      "status": "PASS",
+      "statuses": {
+        "ADVANCED": 20,
+        "INCOMPLETE": 3,
+        "RECOVERED": 57
+      },
+      "submitted_count": 113,
+      "trajectories": 80,
+      "unapplied_incomplete_responses": 0
+    },
+    {
+      "applied_responses": 118,
+      "batches": 24,
+      "failure_reasons": {
+        "REQUEST_CAP": 3
+      },
+      "failures": [
+        {
+          "case_id": "formal-train-0210",
+          "errors": {
+            "buy target_weight must be above the current weight": 4
+          },
+          "failure": "REQUEST_CAP",
+          "id": "seed43_m1:formal-train-0210:history_features_recovery_v2:0",
+          "model_identity": "seed43_m1",
+          "profile": "history_features_recovery_v2",
+          "requests": 4,
+          "responses": [
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>"
+          ],
+          "sampling": "greedy"
+        },
+        {
+          "case_id": "formal-train-0210",
+          "errors": {
+            "buy target_weight must be above the current weight": 4
+          },
+          "failure": "REQUEST_CAP",
+          "id": "seed43_m1:formal-train-0210:history_features_recovery_v2:1",
+          "model_identity": "seed43_m1",
+          "profile": "history_features_recovery_v2",
+          "requests": 4,
+          "responses": [
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>"
+          ],
+          "sampling": "sampled"
+        },
+        {
+          "case_id": "formal-train-0420",
+          "errors": {
+            "buy target_weight must be above the current weight": 4
+          },
+          "failure": "REQUEST_CAP",
+          "id": "seed43_m1:formal-train-0420:history_features_recovery_v2:0",
+          "model_identity": "seed43_m1",
+          "profile": "history_features_recovery_v2",
+          "requests": 4,
+          "responses": [
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>"
+          ],
+          "sampling": "greedy"
+        }
+      ],
+      "groups": [
+        {
+          "advance_actions": {
+            "buy": 2
+          },
+          "case_kind": "normal",
+          "model_identity": "seed43_m1",
+          "planned": 2,
+          "profile": "history_features_recovery_v1",
+          "sampling": "greedy",
+          "statuses": {
+            "ADVANCED": 2
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 8
+          },
+          "case_kind": "normal",
+          "model_identity": "seed43_m1",
+          "planned": 8,
+          "profile": "history_features_recovery_v1",
+          "sampling": "sampled",
+          "statuses": {
+            "ADVANCED": 8
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 4,
+            "sell": 2
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed43_m1",
+          "planned": 6,
+          "profile": "history_features_recovery_v1",
+          "sampling": "greedy",
+          "statuses": {
+            "RECOVERED": 6
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 10,
+            "hold": 5,
+            "sell": 9
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed43_m1",
+          "planned": 24,
+          "profile": "history_features_recovery_v1",
+          "sampling": "sampled",
+          "statuses": {
+            "RECOVERED": 24
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 2
+          },
+          "case_kind": "normal",
+          "model_identity": "seed43_m1",
+          "planned": 2,
+          "profile": "history_features_recovery_v2",
+          "sampling": "greedy",
+          "statuses": {
+            "ADVANCED": 2
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 8
+          },
+          "case_kind": "normal",
+          "model_identity": "seed43_m1",
+          "planned": 8,
+          "profile": "history_features_recovery_v2",
+          "sampling": "sampled",
+          "statuses": {
+            "ADVANCED": 8
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 1,
+            "sell": 3
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed43_m1",
+          "planned": 6,
+          "profile": "history_features_recovery_v2",
+          "sampling": "greedy",
+          "statuses": {
+            "INCOMPLETE": 2,
+            "RECOVERED": 4
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 6,
+            "hold": 5,
+            "sell": 12
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed43_m1",
+          "planned": 24,
+          "profile": "history_features_recovery_v2",
+          "sampling": "sampled",
+          "statuses": {
+            "INCOMPLETE": 1,
+            "RECOVERED": 23
+          }
+        }
+      ],
+      "model_key": "seed43_m1",
+      "raw_output_count": 118,
+      "rejections_with_unchanged_ledger": 41,
+      "request_count": 118,
+      "source_sha256": {
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed43_m1/config.json": "f22b778e543c70cd6d60fff3142b9851618cd9e8a1d98f6b432decfaf822f6ed",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed43_m1/raw.jsonl": "6874ea8e5c2bc79422fa2fa81d5fcf4f6c8c13bcd4af108b0c25e9f894102f59",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed43_m1/requests.jsonl": "8bf61c56180b9414d1c645a2f62fd2066d60a763d3e7227dae5bf0733c300c26",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed43_m1/result.json": "37fcd415227025c1f7b876ab143fb5ccf608ef216c0ef060f03164b853c12c0b",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed43_m1/state.json": "37fcd415227025c1f7b876ab143fb5ccf608ef216c0ef060f03164b853c12c0b",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed43_m1/submissions.jsonl": "60b132aaf23b0b72c145e145d6bc1b165315638bc06a578ccd66fb394cc255cd"
+      },
+      "status": "PASS",
+      "statuses": {
+        "ADVANCED": 20,
+        "INCOMPLETE": 3,
+        "RECOVERED": 57
+      },
+      "submitted_count": 118,
+      "trajectories": 80,
+      "unapplied_incomplete_responses": 0
+    },
+    {
+      "applied_responses": 118,
+      "batches": 25,
+      "failure_reasons": {
+        "REQUEST_CAP": 4
+      },
+      "failures": [
+        {
+          "case_id": "formal-train-0210",
+          "errors": {
+            "buy target_weight must be above the current weight": 4
+          },
+          "failure": "REQUEST_CAP",
+          "id": "seed43_m2:formal-train-0210:history_features_recovery_v1:0",
+          "model_identity": "seed43_m2",
+          "profile": "history_features_recovery_v1",
+          "requests": 4,
+          "responses": [
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>"
+          ],
+          "sampling": "greedy"
+        },
+        {
+          "case_id": "formal-train-0210",
+          "errors": {
+            "buy target_weight must be above the current weight": 4
+          },
+          "failure": "REQUEST_CAP",
+          "id": "seed43_m2:formal-train-0210:history_features_recovery_v2:0",
+          "model_identity": "seed43_m2",
+          "profile": "history_features_recovery_v2",
+          "requests": 4,
+          "responses": [
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>"
+          ],
+          "sampling": "greedy"
+        },
+        {
+          "case_id": "formal-train-0210",
+          "errors": {
+            "buy target_weight must be above the current weight": 4
+          },
+          "failure": "REQUEST_CAP",
+          "id": "seed43_m2:formal-train-0210:history_features_recovery_v2:1",
+          "model_identity": "seed43_m2",
+          "profile": "history_features_recovery_v2",
+          "requests": 4,
+          "responses": [
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"MSFT\",\"target_weight\":0.2}}</tool_call>",
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>"
+          ],
+          "sampling": "sampled"
+        },
+        {
+          "case_id": "formal-train-0420",
+          "errors": {
+            "buy target_weight must be above the current weight": 4
+          },
+          "failure": "REQUEST_CAP",
+          "id": "seed43_m2:formal-train-0420:history_features_recovery_v2:0",
+          "model_identity": "seed43_m2",
+          "profile": "history_features_recovery_v2",
+          "requests": 4,
+          "responses": [
+            "<tool_call>{\"name\":\"buy\",\"arguments\":{\"symbol\":\"HD\",\"target_weight\":0.2}}</tool_call>"
+          ],
+          "sampling": "greedy"
+        }
+      ],
+      "groups": [
+        {
+          "advance_actions": {
+            "buy": 2
+          },
+          "case_kind": "normal",
+          "model_identity": "seed43_m2",
+          "planned": 2,
+          "profile": "history_features_recovery_v1",
+          "sampling": "greedy",
+          "statuses": {
+            "ADVANCED": 2
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 8
+          },
+          "case_kind": "normal",
+          "model_identity": "seed43_m2",
+          "planned": 8,
+          "profile": "history_features_recovery_v1",
+          "sampling": "sampled",
+          "statuses": {
+            "ADVANCED": 8
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 4,
+            "sell": 1
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed43_m2",
+          "planned": 6,
+          "profile": "history_features_recovery_v1",
+          "sampling": "greedy",
+          "statuses": {
+            "INCOMPLETE": 1,
+            "RECOVERED": 5
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 9,
+            "hold": 4,
+            "sell": 11
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed43_m2",
+          "planned": 24,
+          "profile": "history_features_recovery_v1",
+          "sampling": "sampled",
+          "statuses": {
+            "RECOVERED": 24
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 2
+          },
+          "case_kind": "normal",
+          "model_identity": "seed43_m2",
+          "planned": 2,
+          "profile": "history_features_recovery_v2",
+          "sampling": "greedy",
+          "statuses": {
+            "ADVANCED": 2
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 8
+          },
+          "case_kind": "normal",
+          "model_identity": "seed43_m2",
+          "planned": 8,
+          "profile": "history_features_recovery_v2",
+          "sampling": "sampled",
+          "statuses": {
+            "ADVANCED": 8
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 1,
+            "sell": 3
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed43_m2",
+          "planned": 6,
+          "profile": "history_features_recovery_v2",
+          "sampling": "greedy",
+          "statuses": {
+            "INCOMPLETE": 2,
+            "RECOVERED": 4
+          }
+        },
+        {
+          "advance_actions": {
+            "buy": 4,
+            "hold": 6,
+            "sell": 13
+          },
+          "case_kind": "rejection",
+          "model_identity": "seed43_m2",
+          "planned": 24,
+          "profile": "history_features_recovery_v2",
+          "sampling": "sampled",
+          "statuses": {
+            "INCOMPLETE": 1,
+            "RECOVERED": 23
+          }
+        }
+      ],
+      "model_key": "seed43_m2",
+      "raw_output_count": 118,
+      "rejections_with_unchanged_ledger": 42,
+      "request_count": 118,
+      "source_sha256": {
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed43_m2/config.json": "7cf1ce0e1fcb0d33ad85df9122b8dfdbd22df6e997bf338ac0b1974571709e39",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed43_m2/raw.jsonl": "627e83c5181d41d2ae55e60ab4265ea9a3f8a6764908ce7d2ab16ee8c770a530",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed43_m2/requests.jsonl": "fe89618d24d779f63c7c884e17dd4c659ba1804efe7e17dd4b6a9c43410ae6ff",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed43_m2/result.json": "bcc9c703c738b6f7c0755658d9e8ffd5c5fdbd77d7a4d48c133414345019851c",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed43_m2/state.json": "bcc9c703c738b6f7c0755658d9e8ffd5c5fdbd77d7a4d48c133414345019851c",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed43_m2/submissions.jsonl": "b8d74239a992358561452a9ee86c47545663014eef58b97a2d50af03dc173499"
+      },
+      "status": "PASS",
+      "statuses": {
+        "ADVANCED": 20,
+        "INCOMPLETE": 4,
+        "RECOVERED": 56
+      },
+      "submitted_count": 118,
+      "trajectories": 80,
+      "unapplied_incomplete_responses": 0
+    }
+  ]
+}

@@ -1,0 +1,754 @@
+{
+  "audited_at_UTC": "2026-10-11T09:44:38.811612+00:00",
+  "directory": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2",
+  "limitations": [
+    "Eight fixed error-selected Train windows do not estimate failure prevalence.",
+    "SFT seed identities share weights; model identity counts are not independent trained seeds.",
+    "Audit validates recorded token mappings and finance, without tokenizer re-decoding or market replay.",
+    "PASS means evidence is internally valid; INCOMPLETE outcomes remain failures, without financial means."
+  ],
+  "mode": "all_workers",
+  "planned_trajectories": 240,
+  "profile": "r5_order_recovery_episode_independent_raw_audit_v2",
+  "requests": 5084,
+  "source_sha256": {
+    "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/analysis_scripts/audit_m2_order_recovery_episode_v2.py": "1b2ce58b5add3bfc12ed4ef8c889934ab519744db01fa8e9f60547117a9800c1",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/manifest.json": "40ece95cfafcbdb180ef9860bdffcabbe44b3737e0c9ab8bc62c5ed168a9a2ac",
+    "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/readout.json": "e7f8ee15a60b13390f62be8b9cca395a0bf2ceff769221cd5c70763c94d2ba01"
+  },
+  "status": "PASS",
+  "trajectories": 240,
+  "worker_count": 5,
+  "workers": [
+    {
+      "batches": 230,
+      "failure_reasons": {},
+      "failures": [],
+      "legal_session_advances": 1600,
+      "model_key": "sft",
+      "prompt_cap_markers": 0,
+      "raw_output_count": 1692,
+      "recovered_events": 76,
+      "recovery_events": 76,
+      "rejections_with_unchanged_ledger": 92,
+      "request_count": 1692,
+      "response_tokens": 35277,
+      "source_sha256": {
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/manifest.json": "d5231cb583239d04ee3582aa59e1b7a3aa349d448ea55ebfe76b1589245619ef",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/sft/config.json": "05482618a37c8b90b3818f8d26182ffb6894b38cfd7739d6414deb5c6cede51d",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/sft/config.json": "bb8ecabd0b5f04ffd0d9c7c3f4481a21ff8777576f5154e9b9dcafb9c87ec624",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/sft/raw.jsonl": "5a0b41b55cd17792d331ffa9c634903924841228dfdc7ffbb99f0aded952081f",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/sft/requests.jsonl": "f2c4d409f9d834d63864870746e7af914ded5d920dc7f4c6492cb9eeaa6cc898",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/sft/result.json": "9f1ab40e18512add6d5754f4af0cadcca245f6ccbf3f356ac5a67261f89386e8",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/sft/state.json": "9f1ab40e18512add6d5754f4af0cadcca245f6ccbf3f356ac5a67261f89386e8",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/sft/submissions.jsonl": "685532d79df9278d03d5ede6a2066d0da5fac3d257ff1ff2c2c0f8133394d805"
+      },
+      "status": "PASS",
+      "statuses": {
+        "COMPLETE": 80
+      },
+      "submitted_count": 1692,
+      "summary": {
+        "complete": 80,
+        "full_episode_evaluation": true,
+        "groups": [
+          {
+            "case_kind": "normal",
+            "complete": 2,
+            "invalid_requests": 0,
+            "mean_full_window_net_return": 0.0187113256616237,
+            "mean_terminal_score": -2.657724315086662,
+            "model_identity": "seed42_sft",
+            "performance_status": "COMPLETE",
+            "planned": 2,
+            "recovered_events": 0,
+            "recovery_events": 0,
+            "requests": 40,
+            "sampling": "greedy",
+            "statuses": {
+              "COMPLETE": 2
+            },
+            "trajectories_with_later_recovery_events": 0,
+            "transaction_cost": 11572.399215268766
+          },
+          {
+            "case_kind": "normal",
+            "complete": 8,
+            "invalid_requests": 11,
+            "mean_full_window_net_return": 0.013827906877480034,
+            "mean_terminal_score": -3.6546179935644028,
+            "model_identity": "seed42_sft",
+            "performance_status": "COMPLETE",
+            "planned": 8,
+            "recovered_events": 8,
+            "recovery_events": 8,
+            "requests": 171,
+            "sampling": "sampled",
+            "statuses": {
+              "COMPLETE": 8
+            },
+            "trajectories_with_later_recovery_events": 4,
+            "transaction_cost": 41868.05792083752
+          },
+          {
+            "case_kind": "rejection",
+            "complete": 6,
+            "invalid_requests": 7,
+            "mean_full_window_net_return": 0.01061532054693918,
+            "mean_terminal_score": -3.487496539210115,
+            "model_identity": "seed42_sft",
+            "performance_status": "COMPLETE",
+            "planned": 6,
+            "recovered_events": 6,
+            "recovery_events": 6,
+            "requests": 127,
+            "sampling": "greedy",
+            "statuses": {
+              "COMPLETE": 6
+            },
+            "trajectories_with_later_recovery_events": 1,
+            "transaction_cost": 34147.80530257939
+          },
+          {
+            "case_kind": "rejection",
+            "complete": 24,
+            "invalid_requests": 28,
+            "mean_full_window_net_return": 0.009705490739236785,
+            "mean_terminal_score": -3.6814862316960597,
+            "model_identity": "seed42_sft",
+            "performance_status": "COMPLETE",
+            "planned": 24,
+            "recovered_events": 23,
+            "recovery_events": 23,
+            "requests": 508,
+            "sampling": "sampled",
+            "statuses": {
+              "COMPLETE": 24
+            },
+            "trajectories_with_later_recovery_events": 5,
+            "transaction_cost": 127104.46374535542
+          },
+          {
+            "case_kind": "normal",
+            "complete": 2,
+            "invalid_requests": 0,
+            "mean_full_window_net_return": 0.009162888097672517,
+            "mean_terminal_score": -4.5333018417614985,
+            "model_identity": "seed43_sft",
+            "performance_status": "COMPLETE",
+            "planned": 2,
+            "recovered_events": 0,
+            "recovery_events": 0,
+            "requests": 40,
+            "sampling": "greedy",
+            "statuses": {
+              "COMPLETE": 2
+            },
+            "trajectories_with_later_recovery_events": 0,
+            "transaction_cost": 11473.33395451655
+          },
+          {
+            "case_kind": "normal",
+            "complete": 8,
+            "invalid_requests": 9,
+            "mean_full_window_net_return": 0.011566007749576723,
+            "mean_terminal_score": -4.046353023852604,
+            "model_identity": "seed43_sft",
+            "performance_status": "COMPLETE",
+            "planned": 8,
+            "recovered_events": 7,
+            "recovery_events": 7,
+            "requests": 169,
+            "sampling": "sampled",
+            "statuses": {
+              "COMPLETE": 8
+            },
+            "trajectories_with_later_recovery_events": 1,
+            "transaction_cost": 42715.06435738136
+          },
+          {
+            "case_kind": "rejection",
+            "complete": 6,
+            "invalid_requests": 4,
+            "mean_full_window_net_return": 0.006186573358730259,
+            "mean_terminal_score": -4.202542688084059,
+            "model_identity": "seed43_sft",
+            "performance_status": "COMPLETE",
+            "planned": 6,
+            "recovered_events": 4,
+            "recovery_events": 4,
+            "requests": 124,
+            "sampling": "greedy",
+            "statuses": {
+              "COMPLETE": 6
+            },
+            "trajectories_with_later_recovery_events": 1,
+            "transaction_cost": 34343.1470928174
+          },
+          {
+            "case_kind": "rejection",
+            "complete": 24,
+            "invalid_requests": 33,
+            "mean_full_window_net_return": 0.010652241067946266,
+            "mean_terminal_score": -3.5320010291289208,
+            "model_identity": "seed43_sft",
+            "performance_status": "COMPLETE",
+            "planned": 24,
+            "recovered_events": 28,
+            "recovery_events": 28,
+            "requests": 513,
+            "sampling": "sampled",
+            "statuses": {
+              "COMPLETE": 24
+            },
+            "trajectories_with_later_recovery_events": 7,
+            "transaction_cost": 130815.43131588935
+          }
+        ],
+        "performance_status": "COMPLETE",
+        "planned": 80,
+        "requests": 1692,
+        "start_mode": "fullreset",
+        "statuses": {
+          "COMPLETE": 80
+        }
+      },
+      "trajectories": 80,
+      "unapplied_incomplete_responses": 0
+    },
+    {
+      "batches": 112,
+      "failure_reasons": {
+        "RECOVERY_CAP": 1
+      },
+      "failures": [
+        {
+          "case_id": "formal-train-0441",
+          "failure": "RECOVERY_CAP",
+          "final_session": 17,
+          "id": "seed42_m1:formal-train-0441:history_features_recovery_v2:2",
+          "recovery_events": [
+            {
+              "direction_rejection": true,
+              "event_index": 0,
+              "failure": "RECOVERY_CAP",
+              "followup_requests": 4,
+              "invalid_requests": 5,
+              "session_index": 17,
+              "status": "INCOMPLETE",
+              "trigger_error": "buy target_weight must be above the current weight",
+              "trigger_request_index": 17
+            }
+          ],
+          "requests": 22,
+          "sampling": "sampled"
+        }
+      ],
+      "legal_session_advances": 797,
+      "model_key": "seed42_m1",
+      "prompt_cap_markers": 0,
+      "raw_output_count": 837,
+      "recovered_events": 31,
+      "recovery_events": 32,
+      "rejections_with_unchanged_ledger": 40,
+      "request_count": 837,
+      "response_tokens": 17395,
+      "source_sha256": {
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/manifest.json": "d5231cb583239d04ee3582aa59e1b7a3aa349d448ea55ebfe76b1589245619ef",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed42_m1/config.json": "d908a0bb6c6f51e42c17d4315034803f5d738f5c8df00c4f436e0a477c3d66c5",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed42_m1/config.json": "15d1e89a2f583c55fab12836f7546aba1c5b62ffbee33d8d9c657aab89826bfd",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed42_m1/raw.jsonl": "983b0a3498c246f06f446ea2fbb32420c7606934e5d836a5b85a7e6054340a73",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed42_m1/requests.jsonl": "4784b11dc86fbd6836bc6582e2797f0a1132987ce3f783df359d5eb5fda68c5b",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed42_m1/result.json": "b84d6e9167788090f2d3f665fc949565b75c258de1d37583e9e9af222b30dc9e",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed42_m1/state.json": "b84d6e9167788090f2d3f665fc949565b75c258de1d37583e9e9af222b30dc9e",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed42_m1/submissions.jsonl": "91cb1a7604c52fba7766d1566d7fa06f7252fab91fcbfdf69b4c31f8995a1336"
+      },
+      "status": "PASS",
+      "statuses": {
+        "COMPLETE": 39,
+        "INCOMPLETE": 1
+      },
+      "submitted_count": 837,
+      "summary": {
+        "complete": 39,
+        "full_episode_evaluation": true,
+        "groups": [
+          {
+            "case_kind": "normal",
+            "complete": 2,
+            "invalid_requests": 0,
+            "mean_full_window_net_return": 0.01863748584124525,
+            "mean_terminal_score": -2.683017035332659,
+            "model_identity": "seed42_m1",
+            "performance_status": "COMPLETE",
+            "planned": 2,
+            "recovered_events": 0,
+            "recovery_events": 0,
+            "requests": 40,
+            "sampling": "greedy",
+            "statuses": {
+              "COMPLETE": 2
+            },
+            "trajectories_with_later_recovery_events": 0,
+            "transaction_cost": 11569.365699113529
+          },
+          {
+            "case_kind": "normal",
+            "complete": 8,
+            "invalid_requests": 6,
+            "mean_full_window_net_return": 0.01360392951292641,
+            "mean_terminal_score": -3.6907246962908893,
+            "model_identity": "seed42_m1",
+            "performance_status": "COMPLETE",
+            "planned": 8,
+            "recovered_events": 5,
+            "recovery_events": 5,
+            "requests": 166,
+            "sampling": "sampled",
+            "statuses": {
+              "COMPLETE": 8
+            },
+            "trajectories_with_later_recovery_events": 2,
+            "transaction_cost": 41866.1473573526
+          },
+          {
+            "case_kind": "rejection",
+            "complete": 6,
+            "invalid_requests": 7,
+            "mean_full_window_net_return": 0.002059078632329181,
+            "mean_terminal_score": -4.861962873000576,
+            "model_identity": "seed42_m1",
+            "performance_status": "COMPLETE",
+            "planned": 6,
+            "recovered_events": 5,
+            "recovery_events": 5,
+            "requests": 127,
+            "sampling": "greedy",
+            "statuses": {
+              "COMPLETE": 6
+            },
+            "trajectories_with_later_recovery_events": 0,
+            "transaction_cost": 35164.79716814149
+          },
+          {
+            "case_kind": "rejection",
+            "complete": 23,
+            "invalid_requests": 27,
+            "mean_full_window_net_return": null,
+            "mean_terminal_score": null,
+            "model_identity": "seed42_m1",
+            "performance_status": "INCOMPLETE",
+            "planned": 24,
+            "recovered_events": 21,
+            "recovery_events": 22,
+            "requests": 504,
+            "sampling": "sampled",
+            "statuses": {
+              "COMPLETE": 23,
+              "INCOMPLETE": 1
+            },
+            "trajectories_with_later_recovery_events": 4,
+            "transaction_cost": null
+          }
+        ],
+        "performance_status": "INCOMPLETE",
+        "planned": 40,
+        "requests": 837,
+        "start_mode": "fullreset",
+        "statuses": {
+          "COMPLETE": 39,
+          "INCOMPLETE": 1
+        }
+      },
+      "trajectories": 40,
+      "unapplied_incomplete_responses": 0
+    },
+    {
+      "batches": 116,
+      "failure_reasons": {
+        "RECOVERY_CAP": 1
+      },
+      "failures": [
+        {
+          "case_id": "formal-train-0420",
+          "failure": "RECOVERY_CAP",
+          "final_session": 10,
+          "id": "seed42_m2:formal-train-0420:history_features_recovery_v2:0",
+          "recovery_events": [
+            {
+              "direction_rejection": true,
+              "event_index": 0,
+              "failure": "RECOVERY_CAP",
+              "followup_requests": 4,
+              "invalid_requests": 5,
+              "session_index": 10,
+              "status": "INCOMPLETE",
+              "trigger_error": "buy target_weight must be above the current weight",
+              "trigger_request_index": 10
+            }
+          ],
+          "requests": 15,
+          "sampling": "greedy"
+        }
+      ],
+      "legal_session_advances": 790,
+      "model_key": "seed42_m2",
+      "prompt_cap_markers": 0,
+      "raw_output_count": 843,
+      "recovered_events": 40,
+      "recovery_events": 41,
+      "rejections_with_unchanged_ledger": 53,
+      "request_count": 843,
+      "response_tokens": 17457,
+      "source_sha256": {
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/manifest.json": "d5231cb583239d04ee3582aa59e1b7a3aa349d448ea55ebfe76b1589245619ef",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed42_m2/config.json": "c0d7c4906f4ca269f84659d6cc2e570af123e484796d0f65e34efab0ff82b3b8",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed42_m2/config.json": "cc15735fcafeca5921ab68da95526bbe38692b871a39ea5fcb5d3009c8ff0ed2",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed42_m2/raw.jsonl": "bb08f92bb2fab1e4637063f58f5de627d3f8af0a17e70ac712d7bbc23b3f3abf",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed42_m2/requests.jsonl": "482295bded7b3d2f41867d9157062c325451fd89ce81217af3f85379b9b3106b",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed42_m2/result.json": "8063facda433c07730cdc6bd19d6c2aff50fd2ff43009673cf8b8d7f5f9d15e6",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed42_m2/state.json": "8063facda433c07730cdc6bd19d6c2aff50fd2ff43009673cf8b8d7f5f9d15e6",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed42_m2/submissions.jsonl": "cd35584efbed71fb3db17f7898fc39778bff0fc7ed92e95408354884e4c3391b"
+      },
+      "status": "PASS",
+      "statuses": {
+        "COMPLETE": 39,
+        "INCOMPLETE": 1
+      },
+      "submitted_count": 843,
+      "summary": {
+        "complete": 39,
+        "full_episode_evaluation": true,
+        "groups": [
+          {
+            "case_kind": "normal",
+            "complete": 2,
+            "invalid_requests": 1,
+            "mean_full_window_net_return": 0.008114324924914373,
+            "mean_terminal_score": -4.731388230475211,
+            "model_identity": "seed42_m2",
+            "performance_status": "COMPLETE",
+            "planned": 2,
+            "recovered_events": 1,
+            "recovery_events": 1,
+            "requests": 41,
+            "sampling": "greedy",
+            "statuses": {
+              "COMPLETE": 2
+            },
+            "trajectories_with_later_recovery_events": 0,
+            "transaction_cost": 11488.258467478707
+          },
+          {
+            "case_kind": "normal",
+            "complete": 8,
+            "invalid_requests": 7,
+            "mean_full_window_net_return": 0.013928450486483557,
+            "mean_terminal_score": -3.6348460884175973,
+            "model_identity": "seed42_m2",
+            "performance_status": "COMPLETE",
+            "planned": 8,
+            "recovered_events": 7,
+            "recovery_events": 7,
+            "requests": 167,
+            "sampling": "sampled",
+            "statuses": {
+              "COMPLETE": 8
+            },
+            "trajectories_with_later_recovery_events": 3,
+            "transaction_cost": 41857.87593766397
+          },
+          {
+            "case_kind": "rejection",
+            "complete": 5,
+            "invalid_requests": 13,
+            "mean_full_window_net_return": null,
+            "mean_terminal_score": null,
+            "model_identity": "seed42_m2",
+            "performance_status": "INCOMPLETE",
+            "planned": 6,
+            "recovered_events": 5,
+            "recovery_events": 6,
+            "requests": 123,
+            "sampling": "greedy",
+            "statuses": {
+              "COMPLETE": 5,
+              "INCOMPLETE": 1
+            },
+            "trajectories_with_later_recovery_events": 1,
+            "transaction_cost": null
+          },
+          {
+            "case_kind": "rejection",
+            "complete": 24,
+            "invalid_requests": 32,
+            "mean_full_window_net_return": 0.01005454700863001,
+            "mean_terminal_score": -3.6054434503874515,
+            "model_identity": "seed42_m2",
+            "performance_status": "COMPLETE",
+            "planned": 24,
+            "recovered_events": 27,
+            "recovery_events": 27,
+            "requests": 512,
+            "sampling": "sampled",
+            "statuses": {
+              "COMPLETE": 24
+            },
+            "trajectories_with_later_recovery_events": 8,
+            "transaction_cost": 125733.38481033685
+          }
+        ],
+        "performance_status": "INCOMPLETE",
+        "planned": 40,
+        "requests": 843,
+        "start_mode": "fullreset",
+        "statuses": {
+          "COMPLETE": 39,
+          "INCOMPLETE": 1
+        }
+      },
+      "trajectories": 40,
+      "unapplied_incomplete_responses": 0
+    },
+    {
+      "batches": 117,
+      "failure_reasons": {},
+      "failures": [],
+      "legal_session_advances": 800,
+      "model_key": "seed43_m1",
+      "prompt_cap_markers": 0,
+      "raw_output_count": 854,
+      "recovered_events": 41,
+      "recovery_events": 41,
+      "rejections_with_unchanged_ledger": 54,
+      "request_count": 854,
+      "response_tokens": 17869,
+      "source_sha256": {
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/manifest.json": "d5231cb583239d04ee3582aa59e1b7a3aa349d448ea55ebfe76b1589245619ef",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed43_m1/config.json": "f22b778e543c70cd6d60fff3142b9851618cd9e8a1d98f6b432decfaf822f6ed",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed43_m1/config.json": "a3d6eab0cf08a9b3181f51060cc34061287fed43e06cb48dd9cb617a3b9d8c77",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed43_m1/raw.jsonl": "681e53836522d2e94f037f40ffcd0ea7717381aa18131449083059bb5d3a3db4",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed43_m1/requests.jsonl": "ebd3777a5c4c52190b9eb0452b432e11633d549f5570334acb2dcc4a8df65596",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed43_m1/result.json": "d1f2e6406f2c6b70cb11dc334bf1f3dce3ec217d9419d7bd6d79df176aca00d8",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed43_m1/state.json": "d1f2e6406f2c6b70cb11dc334bf1f3dce3ec217d9419d7bd6d79df176aca00d8",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed43_m1/submissions.jsonl": "dfd09b09a67375746c915c96c625b19a59c532ad18aea142dcd7cdc6b5b7faf0"
+      },
+      "status": "PASS",
+      "statuses": {
+        "COMPLETE": 40
+      },
+      "submitted_count": 854,
+      "summary": {
+        "complete": 40,
+        "full_episode_evaluation": true,
+        "groups": [
+          {
+            "case_kind": "normal",
+            "complete": 2,
+            "invalid_requests": 1,
+            "mean_full_window_net_return": 0.018946156136886327,
+            "mean_terminal_score": -2.612573664495516,
+            "model_identity": "seed43_m1",
+            "performance_status": "COMPLETE",
+            "planned": 2,
+            "recovered_events": 1,
+            "recovery_events": 1,
+            "requests": 41,
+            "sampling": "greedy",
+            "statuses": {
+              "COMPLETE": 2
+            },
+            "trajectories_with_later_recovery_events": 0,
+            "transaction_cost": 11564.067348577479
+          },
+          {
+            "case_kind": "normal",
+            "complete": 8,
+            "invalid_requests": 12,
+            "mean_full_window_net_return": 0.012456523275198014,
+            "mean_terminal_score": -3.864957557226786,
+            "model_identity": "seed43_m1",
+            "performance_status": "COMPLETE",
+            "planned": 8,
+            "recovered_events": 9,
+            "recovery_events": 9,
+            "requests": 172,
+            "sampling": "sampled",
+            "statuses": {
+              "COMPLETE": 8
+            },
+            "trajectories_with_later_recovery_events": 2,
+            "transaction_cost": 43013.17901772996
+          },
+          {
+            "case_kind": "rejection",
+            "complete": 6,
+            "invalid_requests": 7,
+            "mean_full_window_net_return": 0.003884867165856676,
+            "mean_terminal_score": -4.573719164093315,
+            "model_identity": "seed43_m1",
+            "performance_status": "COMPLETE",
+            "planned": 6,
+            "recovered_events": 4,
+            "recovery_events": 4,
+            "requests": 127,
+            "sampling": "greedy",
+            "statuses": {
+              "COMPLETE": 6
+            },
+            "trajectories_with_later_recovery_events": 0,
+            "transaction_cost": 35179.43476104687
+          },
+          {
+            "case_kind": "rejection",
+            "complete": 24,
+            "invalid_requests": 34,
+            "mean_full_window_net_return": 0.009674442757328252,
+            "mean_terminal_score": -3.676973108582072,
+            "model_identity": "seed43_m1",
+            "performance_status": "COMPLETE",
+            "planned": 24,
+            "recovered_events": 27,
+            "recovery_events": 27,
+            "requests": 514,
+            "sampling": "sampled",
+            "statuses": {
+              "COMPLETE": 24
+            },
+            "trajectories_with_later_recovery_events": 8,
+            "transaction_cost": 130885.38830552011
+          }
+        ],
+        "performance_status": "COMPLETE",
+        "planned": 40,
+        "requests": 854,
+        "start_mode": "fullreset",
+        "statuses": {
+          "COMPLETE": 40
+        }
+      },
+      "trajectories": 40,
+      "unapplied_incomplete_responses": 0
+    },
+    {
+      "batches": 117,
+      "failure_reasons": {},
+      "failures": [],
+      "legal_session_advances": 800,
+      "model_key": "seed43_m2",
+      "prompt_cap_markers": 0,
+      "raw_output_count": 858,
+      "recovered_events": 46,
+      "recovery_events": 46,
+      "rejections_with_unchanged_ledger": 58,
+      "request_count": 858,
+      "response_tokens": 17955,
+      "source_sha256": {
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/manifest.json": "d5231cb583239d04ee3582aa59e1b7a3aa349d448ea55ebfe76b1589245619ef",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-20261011-v2/workers/seed43_m2/config.json": "7cf1ce0e1fcb0d33ad85df9122b8dfdbd22df6e997bf338ac0b1974571709e39",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed43_m2/config.json": "4a48ea9bbb2411404240631c33b6bf76232afa910893ae3a78b09d5586cb66e4",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed43_m2/raw.jsonl": "56935950cb05e16237eba3514827545a661055981ea744691ca290af776e6a42",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed43_m2/requests.jsonl": "51d0dbd8a28688026fa8dd1b846f356fead604324c942118daab97a9a2394007",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed43_m2/result.json": "804602a18086fba921452d9a4988e42cea9bd3a8aa204630456e72bff3356ec2",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed43_m2/state.json": "804602a18086fba921452d9a4988e42cea9bd3a8aa204630456e72bff3356ec2",
+        "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-episodes-20261011-v2/workers/seed43_m2/submissions.jsonl": "6f747ae91a4bd7b24dcd789b8f818018b14fc0e7e98392bb64060a2c64fe7872"
+      },
+      "status": "PASS",
+      "statuses": {
+        "COMPLETE": 40
+      },
+      "submitted_count": 858,
+      "summary": {
+        "complete": 40,
+        "full_episode_evaluation": true,
+        "groups": [
+          {
+            "case_kind": "normal",
+            "complete": 2,
+            "invalid_requests": 1,
+            "mean_full_window_net_return": 0.006443384229254501,
+            "mean_terminal_score": -5.064033812053058,
+            "model_identity": "seed43_m2",
+            "performance_status": "COMPLETE",
+            "planned": 2,
+            "recovered_events": 1,
+            "recovery_events": 1,
+            "requests": 41,
+            "sampling": "greedy",
+            "statuses": {
+              "COMPLETE": 2
+            },
+            "trajectories_with_later_recovery_events": 0,
+            "transaction_cost": 10882.707196583164
+          },
+          {
+            "case_kind": "normal",
+            "complete": 8,
+            "invalid_requests": 10,
+            "mean_full_window_net_return": 0.01308958385913267,
+            "mean_terminal_score": -3.742702545094191,
+            "model_identity": "seed43_m2",
+            "performance_status": "COMPLETE",
+            "planned": 8,
+            "recovered_events": 8,
+            "recovery_events": 8,
+            "requests": 170,
+            "sampling": "sampled",
+            "statuses": {
+              "COMPLETE": 8
+            },
+            "trajectories_with_later_recovery_events": 1,
+            "transaction_cost": 43928.971708860176
+          },
+          {
+            "case_kind": "rejection",
+            "complete": 6,
+            "invalid_requests": 7,
+            "mean_full_window_net_return": 0.006078054409253926,
+            "mean_terminal_score": -4.2128618385786405,
+            "model_identity": "seed43_m2",
+            "performance_status": "COMPLETE",
+            "planned": 6,
+            "recovered_events": 5,
+            "recovery_events": 5,
+            "requests": 127,
+            "sampling": "greedy",
+            "statuses": {
+              "COMPLETE": 6
+            },
+            "trajectories_with_later_recovery_events": 1,
+            "transaction_cost": 33785.25765294011
+          },
+          {
+            "case_kind": "rejection",
+            "complete": 24,
+            "invalid_requests": 40,
+            "mean_full_window_net_return": 0.009166566484981218,
+            "mean_terminal_score": -3.751011561684352,
+            "model_identity": "seed43_m2",
+            "performance_status": "COMPLETE",
+            "planned": 24,
+            "recovered_events": 32,
+            "recovery_events": 32,
+            "requests": 520,
+            "sampling": "sampled",
+            "statuses": {
+              "COMPLETE": 24
+            },
+            "trajectories_with_later_recovery_events": 10,
+            "transaction_cost": 129701.27185964536
+          }
+        ],
+        "performance_status": "COMPLETE",
+        "planned": 40,
+        "requests": 858,
+        "start_mode": "fullreset",
+        "statuses": {
+          "COMPLETE": 40
+        }
+      },
+      "trajectories": 40,
+      "unapplied_incomplete_responses": 0
+    }
+  ]
+}

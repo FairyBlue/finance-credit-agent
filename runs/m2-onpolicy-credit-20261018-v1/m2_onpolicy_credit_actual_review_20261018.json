@@ -1,0 +1,359 @@
+{
+  "NA_groups": 10,
+  "NA_slots": 40,
+  "actual_model_requests": 3403,
+  "alpha050_minus_alpha025": {
+    "candidate": "exact_pool_shrink050",
+    "candidate_minus_comparator_delta_full8": -0.0033243066842771705,
+    "candidate_minus_comparator_delta_ref0_3": -0.013334320861287512,
+    "candidate_minus_comparator_delta_ref4_7": 0.0066857074927331875,
+    "comparator": "exact_pool_shrink025",
+    "direction_full8": "negative",
+    "direction_ref0_3": "negative",
+    "direction_ref4_7": "positive",
+    "interpretation": "UNRESOLVED_REFERENCE_SENSITIVITY_OR_SUPPORT",
+    "reference_half_direction_stable": false,
+    "structural_projection_identity": false,
+    "supported_slot_replicates": 88
+  },
+  "branches_complete": 300,
+  "fixed_alpha025_vs_zero": {
+    "full8": -0.029160438857874692,
+    "ref0_3": -0.03917045303488504,
+    "ref4_7": -0.019150424680864347
+  },
+  "fixed_alpha050_vs_zero": {
+    "full8": -0.03248474554215186,
+    "ref0_3": -0.052504773896172544,
+    "ref4_7": -0.012464717188131162
+  },
+  "group_strata_counts": {
+    "ALL_SAME_ORDER": 14,
+    "FAMILY_DIVERSE": 2,
+    "ORDER_DIVERSE_SAME_FAMILY": 6,
+    "PARTIAL_HEAD_GROUP": 10
+  },
+  "independent_fixture_sha256": "c2defe55aedb9362d411f14f25f8418e677729837f4179b937960534eec2d0a9",
+  "input_small_table_sha256": {
+    "onpolicy_readout.json": "e5cba40eeeaa31cdc1c2490eebb3fee411741ff179d8986778c43f2f4ff3703f",
+    "onpolicy_references.csv": "c388fb2557f45babaa75b7ad5583a85dd7a67901719c03b98b0ff95e58e85b3f",
+    "onpolicy_slots.csv": "6f6eb461eba3cfed6caae0b7b920fb0e4a201e90d980fe8f888ba85b7be88500",
+    "onpolicy_strata_comparisons.csv": "35fa33230c51381b756fff3f638ec58a2d6b029644df989b59445c4944584b48",
+    "onpolicy_strata_methods.csv": "83782f545142a924249b068af01e0d965da52cddf2599a3ec16d78b672db071f"
+  },
+  "parents_complete": 8,
+  "planned_groups": 32,
+  "planned_slots": 128,
+  "recomputed_full8_stratum_MSE": {
+    "ALL_SAME_ORDER": {
+      "exact_pool_order_gate": 0.0,
+      "exact_pool_shrink025": 0.0,
+      "exact_pool_shrink050": 0.0,
+      "exact_pool_shrink075": 0.0,
+      "family_gate_plain": 0.0,
+      "family_pool_order_gate": 0.0,
+      "order_gate_plain": 0.0,
+      "ungated_plain": 0.3181462016895929,
+      "zero": 0.0
+    },
+    "FAMILY_DIVERSE": {
+      "exact_pool_order_gate": 0.8788262138962631,
+      "exact_pool_shrink025": 0.35212774696678717,
+      "exact_pool_shrink050": 0.4946161346619388,
+      "exact_pool_shrink075": 0.6701822903050974,
+      "family_gate_plain": 1.1755261633000909,
+      "family_pool_order_gate": 0.5207698301539662,
+      "order_gate_plain": 1.1755261633000909,
+      "ungated_plain": 1.1755261633000909,
+      "zero": 0.24271712721964256
+    },
+    "ORDER_DIVERSE_SAME_FAMILY": {
+      "exact_pool_order_gate": 0.28121739525493067,
+      "exact_pool_shrink025": 0.20915347051556546,
+      "exact_pool_shrink050": 0.14946821677483196,
+      "exact_pool_shrink075": 0.17348952502128703,
+      "family_gate_plain": 0.3525452862434875,
+      "family_pool_order_gate": 0.3525452862434875,
+      "order_gate_plain": 0.42709510155254726,
+      "ungated_plain": 0.42709510155254726,
+      "zero": 0.3525452862434875
+    }
+  },
+  "recomputed_raw_Y_squared_MSE": {
+    "exact_pool_order_gate": {
+      "full8": 0.15658894542373228,
+      "ref0_3": 0.15775191604874514,
+      "ref4_7": 0.25753203179669854
+    },
+    "exact_pool_shrink025": {
+      "full8": 0.08905346895577124,
+      "ref0_3": 0.12024648211181513,
+      "ref4_7": 0.1599665127977064
+    },
+    "exact_pool_shrink050": {
+      "full8": 0.08572916227149406,
+      "ref0_3": 0.10691216125052762,
+      "ref4_7": 0.1666522202904396
+    },
+    "exact_pool_shrink075": {
+      "full8": 0.10824098776081441,
+      "ref0_3": 0.11941397256283763,
+      "ref4_7": 0.19917405995677032
+    },
+    "family_gate_plain": {
+      "full8": 0.20301472927550487,
+      "ref0_3": 0.2278733455942671,
+      "ref4_7": 0.2802621699547217
+    },
+    "family_pool_order_gate": {
+      "full8": 0.1434914262622208,
+      "ref0_3": 0.19340547359259766,
+      "ref4_7": 0.195683435929823
+    },
+    "order_gate_plain": {
+      "full8": 0.2233464970870666,
+      "ref0_3": 0.22450946771207947,
+      "ref4_7": 0.32428958346003284
+    },
+    "ungated_plain": {
+      "full8": 0.42580317088953484,
+      "ref0_3": 0.42696614151454765,
+      "ref4_7": 0.526746257262501
+    },
+    "zero": {
+      "full8": 0.11821390781364592,
+      "ref0_3": 0.15941693514670016,
+      "ref4_7": 0.17911693747857077
+    }
+  },
+  "review_source_sha256": "c1879700f6a368aa84e16caa3a3d774c27e8408ec3dda20d17d379594c9e8415",
+  "run": "/home/tianming/projects/finance-credit-agent/runs/m2-onpolicy-credit-20261018-v1",
+  "secondary_leave_one_summary": {
+    "exact_pool_shrink025": {
+      "both_halves_negative_deletions": 10,
+      "full8_delta_range": [
+        -0.04301754471837662,
+        -0.01321402882864266
+      ],
+      "full8_positive_deletions": [],
+      "total_supported_anchor_deletions": 11
+    },
+    "exact_pool_shrink050": {
+      "both_halves_negative_deletions": 10,
+      "full8_delta_range": [
+        -0.060923120840596666,
+        -0.003988067020055273
+      ],
+      "full8_positive_deletions": [],
+      "total_supported_anchor_deletions": 11
+    }
+  },
+  "secondary_leave_one_supported_anchor": {
+    "exact_pool_shrink025": [
+      {
+        "delta_vs_zero": {
+          "full8": -0.03207648274366216,
+          "ref0_3": -0.043087498338373546,
+          "ref4_7": -0.02106546714895078
+        },
+        "removed_anchor": "p000/j15",
+        "retained_supported_slots": 80
+      },
+      {
+        "delta_vs_zero": {
+          "full8": -0.03207648274366216,
+          "ref0_3": -0.043087498338373546,
+          "ref4_7": -0.02106546714895078
+        },
+        "removed_anchor": "p001/j15",
+        "retained_supported_slots": 80
+      },
+      {
+        "delta_vs_zero": {
+          "full8": -0.03207648274366216,
+          "ref0_3": -0.043087498338373546,
+          "ref4_7": -0.02106546714895078
+        },
+        "removed_anchor": "p003/j15",
+        "retained_supported_slots": 80
+      },
+      {
+        "delta_vs_zero": {
+          "full8": -0.03207648274366216,
+          "ref0_3": -0.043087498338373546,
+          "ref4_7": -0.02106546714895078
+        },
+        "removed_anchor": "p003/j5",
+        "retained_supported_slots": 80
+      },
+      {
+        "delta_vs_zero": {
+          "full8": -0.020215232579771543,
+          "ref0_3": -0.02325291262807147,
+          "ref4_7": -0.017177552531471626
+        },
+        "removed_anchor": "p004/j15",
+        "retained_supported_slots": 80
+      },
+      {
+        "delta_vs_zero": {
+          "full8": -0.03207648274366216,
+          "ref0_3": -0.043087498338373546,
+          "ref4_7": -0.02106546714895078
+        },
+        "removed_anchor": "p004/j5",
+        "retained_supported_slots": 80
+      },
+      {
+        "delta_vs_zero": {
+          "full8": -0.03207648274366216,
+          "ref0_3": -0.043087498338373546,
+          "ref4_7": -0.02106546714895078
+        },
+        "removed_anchor": "p005/j15",
+        "retained_supported_slots": 80
+      },
+      {
+        "delta_vs_zero": {
+          "full8": -0.01978264210419565,
+          "ref0_3": -0.024531476813930503,
+          "ref4_7": -0.015033807394460804
+        },
+        "removed_anchor": "p005/j5",
+        "retained_supported_slots": 80
+      },
+      {
+        "delta_vs_zero": {
+          "full8": -0.03207648274366216,
+          "ref0_3": -0.043087498338373546,
+          "ref4_7": -0.02106546714895078
+        },
+        "removed_anchor": "p006/j5",
+        "retained_supported_slots": 80
+      },
+      {
+        "delta_vs_zero": {
+          "full8": -0.01321402882864266,
+          "ref0_3": -0.031944258288960956,
+          "ref4_7": 0.005516200631675624
+        },
+        "removed_anchor": "p007/j15",
+        "retained_supported_slots": 80
+      },
+      {
+        "delta_vs_zero": {
+          "full8": -0.04301754471837662,
+          "ref0_3": -0.04953384728415772,
+          "ref4_7": -0.03650124215259554
+        },
+        "removed_anchor": "p007/j5",
+        "retained_supported_slots": 80
+      }
+    ],
+    "exact_pool_shrink050": [
+      {
+        "delta_vs_zero": {
+          "full8": -0.03573322009636705,
+          "ref0_3": -0.0577552512857898,
+          "ref4_7": -0.013711188906944278
+        },
+        "removed_anchor": "p000/j15",
+        "retained_supported_slots": 80
+      },
+      {
+        "delta_vs_zero": {
+          "full8": -0.03573322009636705,
+          "ref0_3": -0.0577552512857898,
+          "ref4_7": -0.013711188906944278
+        },
+        "removed_anchor": "p001/j15",
+        "retained_supported_slots": 80
+      },
+      {
+        "delta_vs_zero": {
+          "full8": -0.03573322009636705,
+          "ref0_3": -0.0577552512857898,
+          "ref4_7": -0.013711188906944278
+        },
+        "removed_anchor": "p003/j15",
+        "retained_supported_slots": 80
+      },
+      {
+        "delta_vs_zero": {
+          "full8": -0.03573322009636705,
+          "ref0_3": -0.0577552512857898,
+          "ref4_7": -0.013711188906944278
+        },
+        "removed_anchor": "p003/j5",
+        "retained_supported_slots": 80
+      },
+      {
+        "delta_vs_zero": {
+          "full8": -0.018072802935272178,
+          "ref0_3": -0.024148163031872016,
+          "ref4_7": -0.011997442838672333
+        },
+        "removed_anchor": "p004/j15",
+        "retained_supported_slots": 80
+      },
+      {
+        "delta_vs_zero": {
+          "full8": -0.03573322009636705,
+          "ref0_3": -0.0577552512857898,
+          "ref4_7": -0.013711188906944278
+        },
+        "removed_anchor": "p004/j5",
+        "retained_supported_slots": 80
+      },
+      {
+        "delta_vs_zero": {
+          "full8": -0.03573322009636705,
+          "ref0_3": -0.0577552512857898,
+          "ref4_7": -0.013711188906944278
+        },
+        "removed_anchor": "p005/j15",
+        "retained_supported_slots": 80
+      },
+      {
+        "delta_vs_zero": {
+          "full8": -0.024215669493177015,
+          "ref0_3": -0.03371333891264672,
+          "ref4_7": -0.014718000073707308
+        },
+        "removed_anchor": "p005/j5",
+        "retained_supported_slots": 80
+      },
+      {
+        "delta_vs_zero": {
+          "full8": -0.03573322009636705,
+          "ref0_3": -0.0577552512857898,
+          "ref4_7": -0.013711188906944278
+        },
+        "removed_anchor": "p006/j5",
+        "retained_supported_slots": 80
+      },
+      {
+        "delta_vs_zero": {
+          "full8": -0.003988067020055273,
+          "ref0_3": -0.04144852594069184,
+          "ref4_7": 0.033472391900581294
+        },
+        "removed_anchor": "p007/j15",
+        "retained_supported_slots": 80
+      },
+      {
+        "delta_vs_zero": {
+          "full8": -0.060923120840596666,
+          "ref0_3": -0.07395572597215884,
+          "ref4_7": -0.04789051570903448
+        },
+        "removed_anchor": "p007/j5",
+        "retained_supported_slots": 80
+      }
+    ]
+  },
+  "secondary_scope": "Post hoc sensitivity only, not a new gate, CI, p-value or alpha selection. Delete an entire supported anchor including both EST replicas; five unsupported anchors are excluded from these eleven deletions.",
+  "status": "PASS",
+  "supported_groups": 22,
+  "supported_slots": 88
+}

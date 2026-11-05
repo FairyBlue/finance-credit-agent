@@ -1,0 +1,82 @@
+{
+  "status": "COMPLETE",
+  "decision": "KEEP_TEACHER_SFT_DEMO_STOP_CURRENT_CREDIT_EXPANSION",
+  "step3_mode": "THREE_ARM_COMPARISON",
+  "seed43_decision": {
+    "status": "SKIPPED",
+    "trigger": "NO_THRESHOLD_GAIN",
+    "comparisons": {
+      "rloo_seed42": {
+        "success_gain": -0.030000000000000027,
+        "common_success_call_reduction": 0.0
+      },
+      "sham_seed42": {
+        "success_gain": 0.0,
+        "common_success_call_reduction": 0.0
+      }
+    },
+    "common_success_tasks": 39,
+    "success_rates": {
+      "rloo_seed42": 0.44,
+      "sham_seed42": 0.41,
+      "m3_seed42": 0.41
+    },
+    "common_success_mean_calls": {
+      "rloo_seed42": 6.0,
+      "sham_seed42": 6.0,
+      "m3_seed42": 6.0
+    },
+    "uses_reserved_test": false,
+    "statistical_significance_claim": false
+  },
+  "actual_rl_generation_tokens": 5705045,
+  "endpoints": [
+    "original",
+    "common",
+    "rloo_seed42",
+    "sft",
+    "sham_seed42",
+    "m3_seed42"
+  ],
+  "prior_rl_generation_tokens": 2415704,
+  "absolute_rl_generation_tokens": 8120749,
+  "arm_token_budget": 2500000,
+  "full_teacher_sft_is_rl_initialization": false,
+  "strict_equal_actual_compute_claim": false,
+  "training_stopped": true,
+  "finished_at": "2026-10-30T05:03:32.924164+08:00",
+  "preferred_endpoint": "sft",
+  "preferred_adapter": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-evidence-20261030-v2/teacher_sft/adapter",
+  "route_choice_basis": "DEV_RESULTS_STATED_BEFORE_MODEL_TEST_RESULTS",
+  "reserved_test_role": "FROZEN_ENDPOINT_ACCEPTANCE_ONLY_NO_RETRAINING",
+  "dev_successes": {
+    "original": 0,
+    "oracle_facts": 44,
+    "fixed_retrieval": 55,
+    "common": 41,
+    "sft": 82,
+    "rloo_seed42": 44,
+    "sham_seed42": 41,
+    "m3_seed42": 41,
+    "privileged_full_information_oracle": 100
+  },
+  "test_successes": {
+    "original": 0,
+    "oracle_facts": 56,
+    "fixed_retrieval": 42,
+    "common": 31,
+    "sft": 72,
+    "rloo_seed42": 34,
+    "sham_seed42": 31,
+    "m3_seed42": 32,
+    "privileged_full_information_oracle": 100
+  },
+  "m3_complete_local_supports": 13,
+  "m3_nonzero_local_training_signals": 0,
+  "m3_optimizer_steps_are_parent_reward_updates": true,
+  "nonzero_credit_training_failure_claim": false,
+  "stable_multi_seed_rl_gain_claim": false,
+  "no_automatic_further_training": true,
+  "reviewed_at": "2026-10-30T05:05:02.250507+08:00",
+  "rationale_zh": "完整教师SFT开发82/100、保留测试72/100最强；M3局部业务项全零，未形成有效的非零局部奖励对照，且Dev未达到第二seed门槛。保留SFT demo，不扩大当前credit配置。"
+}

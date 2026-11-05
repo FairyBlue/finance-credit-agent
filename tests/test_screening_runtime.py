@@ -192,7 +192,7 @@ def test_malformed_siblings_fail_closed(mutation, match):
 
 @pytest.mark.parametrize("arm", ["A2", "M1", "M2-plain", "M2"])
 @pytest.mark.parametrize("value_dtype", [torch.float32, torch.bfloat16])
-@pytest.mark.parametrize("eta", [1.0, 0.25])
+@pytest.mark.parametrize("eta", [1.0, 0.25, 0.125])
 def test_real_postprocess_driver_keeps_upstream_critic_returns(
     arm, value_dtype, eta, tmp_path, monkeypatch
 ):
@@ -278,9 +278,10 @@ def test_padding_reordering_and_token_lengths_do_not_change_whitening():
     assert scalars.std(correction=1).item() == pytest.approx(1, abs=1e-6)
 
 
-@pytest.mark.parametrize("eta", [1.0, 0.25])
-def test_actor_residual_added_after_gae_with_one_global_whitening(eta):
-    batch = _batch("M2")
+@pytest.mark.parametrize("arm", ["M2-plain", "M2"])
+@pytest.mark.parametrize("eta", [1.0, 0.25, 0.125])
+def test_actor_residual_added_after_gae_with_one_global_whitening(arm, eta):
+    batch = _batch(arm)
     raw_u, returns = unwhitened_step_gae(
         token_level_rewards=batch.batch["token_level_rewards"],
         values=batch.batch["values"],
@@ -290,11 +291,12 @@ def test_actor_residual_added_after_gae_with_one_global_whitening(eta):
         gamma=1,
         lam=1,
     )
-    raw_s = torch.tensor(compute_sibling_credit(_rows(groups=2)).pooled, dtype=raw_u.dtype)
+    credit = compute_sibling_credit(_rows(groups=2))
+    raw_s = torch.tensor(credit.pooled if arm == "M2" else credit.plain, dtype=raw_u.dtype)
     combined = raw_u + eta * raw_s
     expected = (combined - combined.mean()) / (combined.std(correction=1) + 1e-8)
     rewards_before = batch.batch["token_level_rewards"].clone()
-    compute_screening_advantage(batch, arm="M2", eta=eta)
+    compute_screening_advantage(batch, arm=arm, eta=eta)
     assert torch.equal(batch.batch["advantages"][:, 0], expected)
     assert torch.equal(batch.batch["returns"][:, 0], returns)
     assert torch.equal(batch.batch["token_level_rewards"], rewards_before)

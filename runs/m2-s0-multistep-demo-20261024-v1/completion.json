@@ -1,0 +1,22 @@
+{
+  "status": "COMPLETE",
+  "planned_rounds": 2,
+  "completed_rounds": 2,
+  "baseline_reused_source_model_requests": 461,
+  "baseline_reused_parent_requests": 169,
+  "baseline_new_model_requests": 0,
+  "known_completed_new_collection_totals": {
+    "model_requests": 343,
+    "prompt_tokens": 1586036,
+    "response_tokens": 7187
+  },
+  "all_planned_new_collections_complete": true,
+  "stage_wall_seconds": 1466.5483440458775,
+  "final_actor": "/home/tianming/projects/finance-credit-agent/runs/m2-s0-multistep-demo-20261024-v1/zero/round2/train/actor",
+  "limits": [
+    "S0 only; two fixed rounds, eight Train windows and seed42; no best-round selection.",
+    "All actual parent requests, including invalid requests, are trained; no heads/EST/REF.",
+    "Actor and critic continue from round1 to round2; Adam resets each round.",
+    "Initial parent requests are reused; no new initial sampling cost or Valid/OOS."
+  ]
+}

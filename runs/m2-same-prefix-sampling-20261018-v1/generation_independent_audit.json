@@ -1,0 +1,3453 @@
+{
+  "status": "PASS",
+  "at_UTC": "2026-10-18T03:26:58.506098+00:00",
+  "run": "/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-sampling-20261018-v1",
+  "contract_sha256": "fcf69363ec0f60bf55f0f486990fcbc901ad2fcca3ef8d9b698dc24ada66843c",
+  "script_path": "/tmp/audit_m2_same_prefix_sampling_actual_20261018.py",
+  "script_sha256": "550946ff031e495c5cdd6b5eabfa8eda95039ff1a649a9b07392d51f96373547",
+  "checks_passed": 838,
+  "checks": [
+    {
+      "name": "sealed_execution_contract",
+      "status": "PASS"
+    },
+    {
+      "name": "completed_execution",
+      "status": "PASS"
+    },
+    {
+      "name": "completion_output_hashes",
+      "status": "PASS"
+    },
+    {
+      "name": "original_proposal_and_input_hashes",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/.venv/lib/python3.10/site-packages/vllm/entrypoints/llm.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/.venv/lib/python3.10/site-packages/vllm/outputs.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/.venv/lib/python3.10/site-packages/vllm/sampling_params.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/.venv/lib/python3.10/site-packages/vllm/v1/engine/detokenizer.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/.venv/lib/python3.10/site-packages/vllm/v1/engine/output_processor.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/docs/2026-10-17_M2_STATE_ORDER_ORACLE_PLAN.md",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/docs/2026-10-18_M2_SAME_PREFIX_MENU_PLAN.md",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/docs/2026-10-18_M2_SAME_PREFIX_SAMPLING_PLAN.md",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_lr1e7_eta025/artifacts/actor_update/actor-update-3794626.jsonl",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/prepared/train.parquet",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_lr1e7_eta025/artifacts/actor_update/actor-update-3815648.jsonl",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/prepared/train.parquet",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/added_tokens.json",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/chat_template.jinja",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/config.json",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/generation_config.json",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/merge_receipt.json",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/merges.txt",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/model.safetensors.index.json",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/special_tokens_map.json",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/tokenizer.json",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/tokenizer_config.json",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/vocab.json",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-menu-20261018-v1/anchors.jsonl",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-menu-20261018-v1/contract.json",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-menu-20261018-v1/final_verification.json",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-menu-20261018-v1/prompt_packets.jsonl",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-menu-20261018-v1/readout.json",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-menu-20261018-v1/sampling_proposal.json",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-menu-20261018-v1/snapshot_completion.json",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-sampling-20261018-v1/model_preflight_receipt.json",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-state-order-oracle-20261017-v1/collection_completion.json",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-state-order-oracle-20261017-v1/contract.json",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-state-order-oracle-20261017-v1/source_manifest.json",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/runs/m2-state-order-oracle-20261017-v1/state_results.jsonl",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/scripts/diagnostics/m2_same_prefix_menu.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/scripts/diagnostics/m2_same_prefix_menu_readout.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/scripts/diagnostics/m2_same_prefix_sampling.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/scripts/diagnostics/m2_same_prefix_sampling_readout.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/scripts/diagnostics/m2_state_order_oracle.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/scripts/diagnostics/m2_state_order_readout.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/__init__.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/__init__.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/action_pooling_comparison.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/action_pooling_gpu_monitor.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/action_pooling_readout.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/action_pooling_recovery.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/action_pooling_service.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/actor_export.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/actor_update_probe.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/agent_flow.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/arm_a1.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/arm_a2.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/arm_a3.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/chunked_adam.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/chunked_placement.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/coldstart_data.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/coldstart_eval.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/coldstart_learning.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/coldstart_onpolicy_collect.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/coldstart_onpolicy_data.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/coldstart_sft.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/coldstart_v2_data.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/common_validity_penalty.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/config.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/context_budget.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/credit_evidence.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/critic_fit_probe.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/critic_initialization.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/gpu_handoff.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/gpu_memory_coordinator.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/gpu_reservation.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/gpu_reservation_probe.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/gpu_reservation_service.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/launcher.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/learning_restart.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/learning_restart_gate.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/local_export.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/local_runs.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/low_memory_comparison.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/low_memory_comparison_seed43.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/low_memory_pilot.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/metadata.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/optimizer_state_store.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_acceptance.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_acceptance_controller.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_controller.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_episode.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_gpu_monitor.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_learning.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_probe.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_sft_controller.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_sft_data.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_sft_validation.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/order_recovery_sft_worker.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/paired_validation.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/parameter_grid.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/parameter_grid_archive.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/parameter_grid_readout.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/rollout_seed.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/run.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/screening_archive.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/screening_checkpoint.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/screening_exchange.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/screening_launcher.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/screening_placement.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/screening_prompt.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/screening_reference.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/screening_resources.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/screening_runtime.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/train_coverage.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/training_tuning.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/update_probe.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/agents/vllm_compat.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/data/__init__.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/data/calendar.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/data/episodes.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/data/history.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/data/integrity.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/data/screening.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/data/stockbench.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/data/transforms.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/env/__init__.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/env/accounting.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/env/observation_features.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/env/observation_memory.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/env/order_feedback.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/env/tools.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/env/trading.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/evaluation/__init__.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/evaluation/baselines.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/evaluation/leakage_probe.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/evaluation/leakage_probe_v2.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/evaluation/metrics.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/evaluation/plots.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/evaluation/screening.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/evaluation/t2_v2.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/rewards/__init__.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/rewards/calibration.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/rewards/finance.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/rewards/screening.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/rewards/sibling_credit.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/src/rewards/step_credit.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/third_party/agent-r1/agent_r1/env/__init__.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/third_party/agent-r1/agent_r1/env/base.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/third_party/agent-r1/agent_r1/env/envs/__init__.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/third_party/agent-r1/agent_r1/env/envs/tool.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/third_party/agent-r1/agent_r1/env/tool_format.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/third_party/agent-r1/agent_r1/tool/__init__.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/third_party/agent-r1/agent_r1/tool/base.py",
+      "status": "PASS"
+    },
+    {
+      "name": "sealed_file_/home/tianming/projects/finance-credit-agent/third_party/agent-r1/agent_r1/tool/schema.py",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a000",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a004",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a008",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a012",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a016",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a020",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a024",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a028",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a032",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a036",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a040",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a044",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a048",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a052",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a056",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a060",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a064",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a068",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a072",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a076",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a080",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a084",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a088",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a092",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a096",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a100",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a104",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a108",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a112",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a116",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a120",
+      "status": "PASS"
+    },
+    {
+      "name": "source_packet_a124",
+      "status": "PASS"
+    },
+    {
+      "name": "all_128_inputs_exact_original_proposal",
+      "status": "PASS"
+    },
+    {
+      "name": "all_128_seeds_unique",
+      "status": "PASS"
+    },
+    {
+      "name": "all_32_prompts_repeated_exactly_four_times",
+      "status": "PASS"
+    },
+    {
+      "name": "fixed_16_batches_of_8",
+      "status": "PASS"
+    },
+    {
+      "name": "exactly_128_native_records_no_followup_evidence",
+      "status": "PASS"
+    },
+    {
+      "name": "native_request_ids_contiguous_0_to_127",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_0",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_0",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_0",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_0",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_1",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_1",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_1",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_1",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_2",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_2",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_2",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_2",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_3",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_3",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_3",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_3",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_4",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_4",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_4",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_4",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_5",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_5",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_5",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_5",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_6",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_6",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_6",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_6",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_7",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_7",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_7",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_7",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_8",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_8",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_8",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_8",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_9",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_9",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_9",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_9",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_10",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_10",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_10",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_10",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_11",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_11",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_11",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_11",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_12",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_12",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_12",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_12",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_13",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_13",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_13",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_13",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_14",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_14",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_14",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_14",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_15",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_15",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_15",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_15",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_16",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_16",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_16",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_16",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_17",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_17",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_17",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_17",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_18",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_18",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_18",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_18",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_19",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_19",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_19",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_19",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_20",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_20",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_20",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_20",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_21",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_21",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_21",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_21",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_22",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_22",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_22",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_22",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_23",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_23",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_23",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_23",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_24",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_24",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_24",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_24",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_25",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_25",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_25",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_25",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_26",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_26",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_26",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_26",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_27",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_27",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_27",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_27",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_28",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_28",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_28",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_28",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_29",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_29",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_29",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_29",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_30",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_30",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_30",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_30",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_31",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_31",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_31",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_31",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_32",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_32",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_32",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_32",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_33",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_33",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_33",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_33",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_34",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_34",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_34",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_34",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_35",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_35",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_35",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_35",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_36",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_36",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_36",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_36",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_37",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_37",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_37",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_37",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_38",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_38",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_38",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_38",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_39",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_39",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_39",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_39",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_40",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_40",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_40",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_40",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_41",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_41",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_41",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_41",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_42",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_42",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_42",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_42",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_43",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_43",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_43",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_43",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_44",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_44",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_44",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_44",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_45",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_45",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_45",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_45",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_46",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_46",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_46",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_46",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_47",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_47",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_47",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_47",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_48",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_48",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_48",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_48",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_49",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_49",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_49",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_49",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_50",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_50",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_50",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_50",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_51",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_51",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_51",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_51",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_52",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_52",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_52",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_52",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_53",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_53",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_53",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_53",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_54",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_54",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_54",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_54",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_55",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_55",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_55",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_55",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_56",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_56",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_56",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_56",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_57",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_57",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_57",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_57",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_58",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_58",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_58",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_58",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_59",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_59",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_59",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_59",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_60",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_60",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_60",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_60",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_61",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_61",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_61",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_61",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_62",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_62",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_62",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_62",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_63",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_63",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_63",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_63",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_64",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_64",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_64",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_64",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_65",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_65",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_65",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_65",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_66",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_66",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_66",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_66",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_67",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_67",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_67",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_67",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_68",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_68",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_68",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_68",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_69",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_69",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_69",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_69",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_70",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_70",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_70",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_70",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_71",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_71",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_71",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_71",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_72",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_72",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_72",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_72",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_73",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_73",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_73",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_73",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_74",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_74",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_74",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_74",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_75",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_75",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_75",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_75",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_76",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_76",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_76",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_76",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_77",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_77",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_77",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_77",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_78",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_78",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_78",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_78",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_79",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_79",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_79",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_79",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_80",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_80",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_80",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_80",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_81",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_81",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_81",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_81",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_82",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_82",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_82",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_82",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_83",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_83",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_83",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_83",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_84",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_84",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_84",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_84",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_85",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_85",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_85",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_85",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_86",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_86",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_86",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_86",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_87",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_87",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_87",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_87",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_88",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_88",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_88",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_88",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_89",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_89",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_89",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_89",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_90",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_90",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_90",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_90",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_91",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_91",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_91",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_91",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_92",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_92",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_92",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_92",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_93",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_93",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_93",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_93",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_94",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_94",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_94",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_94",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_95",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_95",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_95",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_95",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_96",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_96",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_96",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_96",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_97",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_97",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_97",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_97",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_98",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_98",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_98",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_98",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_99",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_99",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_99",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_99",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_100",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_100",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_100",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_100",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_101",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_101",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_101",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_101",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_102",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_102",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_102",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_102",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_103",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_103",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_103",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_103",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_104",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_104",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_104",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_104",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_105",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_105",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_105",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_105",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_106",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_106",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_106",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_106",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_107",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_107",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_107",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_107",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_108",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_108",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_108",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_108",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_109",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_109",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_109",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_109",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_110",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_110",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_110",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_110",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_111",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_111",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_111",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_111",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_112",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_112",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_112",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_112",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_113",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_113",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_113",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_113",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_114",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_114",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_114",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_114",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_115",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_115",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_115",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_115",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_116",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_116",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_116",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_116",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_117",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_117",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_117",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_117",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_118",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_118",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_118",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_118",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_119",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_119",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_119",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_119",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_120",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_120",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_120",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_120",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_121",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_121",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_121",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_121",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_122",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_122",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_122",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_122",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_123",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_123",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_123",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_123",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_124",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_124",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_124",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_124",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_125",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_125",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_125",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_125",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_126",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_126",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_126",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_126",
+      "status": "PASS"
+    },
+    {
+      "name": "submission_mapping_127",
+      "status": "PASS"
+    },
+    {
+      "name": "raw_to_record_mapping_127",
+      "status": "PASS"
+    },
+    {
+      "name": "response_provenance_127",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_integrity_127",
+      "status": "PASS"
+    },
+    {
+      "name": "worker_model_engine_contract_identity",
+      "status": "PASS"
+    },
+    {
+      "name": "worker_versions_match_contract_and_current_packages",
+      "status": "PASS"
+    },
+    {
+      "name": "pinned_sft_merge_identity",
+      "status": "PASS"
+    },
+    {
+      "name": "actual_tokenizer_primary_eos",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_0",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_1",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_2",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_3",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_4",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_5",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_6",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_7",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_8",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_9",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_10",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_11",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_12",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_13",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_14",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_15",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_16",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_17",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_18",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_19",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_20",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_21",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_22",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_23",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_24",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_25",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_26",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_27",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_28",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_29",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_30",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_31",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_32",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_33",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_34",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_35",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_36",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_37",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_38",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_39",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_40",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_41",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_42",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_43",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_44",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_45",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_46",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_47",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_48",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_49",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_50",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_51",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_52",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_53",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_54",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_55",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_56",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_57",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_58",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_59",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_60",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_61",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_62",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_63",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_64",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_65",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_66",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_67",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_68",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_69",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_70",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_71",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_72",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_73",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_74",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_75",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_76",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_77",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_78",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_79",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_80",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_81",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_82",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_83",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_84",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_85",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_86",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_87",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_88",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_89",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_90",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_91",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_92",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_93",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_94",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_95",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_96",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_97",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_98",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_99",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_100",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_101",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_102",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_103",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_104",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_105",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_106",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_107",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_108",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_109",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_110",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_111",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_112",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_113",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_114",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_115",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_116",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_117",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_118",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_119",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_120",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_121",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_122",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_123",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_124",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_125",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_126",
+      "status": "PASS"
+    },
+    {
+      "name": "independent_local_tokenizer_decode_127",
+      "status": "PASS"
+    },
+    {
+      "name": "no_torch_vllm_env_import",
+      "status": "PASS"
+    }
+  ],
+  "summary": {
+    "requests": 128,
+    "anchors": 32,
+    "batches": 16,
+    "per_anchor_requests": 4,
+    "unique_request_seeds": 128,
+    "generation_statuses": {
+      "\"COMPLETE\"": 128
+    },
+    "failure_reasons": {
+      "null": 128
+    },
+    "native_finish_reasons": {
+      "\"stop\"": 128
+    },
+    "native_stop_reasons": {
+      "null": 128
+    },
+    "returned_finished": {
+      "true": 128
+    },
+    "last_token_ids": {
+      "151645": 128
+    },
+    "response_tokens": {
+      "min": 12,
+      "median": 21.0,
+      "max": 22,
+      "sum": 2667
+    },
+    "independent_decode_matches": 128,
+    "engine_vs_decoded_text_differences": [],
+    "all_raw_native_ids_contiguous": true
+  },
+  "model_identity": {
+    "path": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model",
+    "fingerprint": "083ad9e7f56d02a3e7dd376571656d1e3af05c1ec62ba7b2467a59c36d637fa5",
+    "merge_receipt_sha256": "faa98d2cd6d871d937505a9d52573658c25d68b328796df0fb5126760b8f9574",
+    "large_model_files_previously_hashed_by_pinned_preflight_not_rehashed_here": [
+      {
+        "path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed42/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3795287.jsonl",
+        "bytes": 114879784,
+        "sealed_sha256": "463c58dd5391722797217319160d547b6ce10d14c27c16256a478fec79080a4d",
+        "audit_rehashed": false
+      },
+      {
+        "path": "/home/tianming/projects/finance-credit-agent/runs/m2-action-pooling-comparison-20261013-v6/seed43/m2_lr1e7_eta025/artifacts/screening_evidence/screening-3816286.jsonl",
+        "bytes": 112984339,
+        "sealed_sha256": "850cdec0f86740e0e6f7f405dec370eb96ae5e22a68e7329bf63077d3f96d87b",
+        "audit_rehashed": false
+      },
+      {
+        "path": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/model-00001-of-00003.safetensors",
+        "bytes": 3957900840,
+        "sealed_sha256": "5052c5ec6400282a49aa843b5dfc1a20234255f4a03486c5d92f7b340fc6def6",
+        "audit_rehashed": false
+      },
+      {
+        "path": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/model-00002-of-00003.safetensors",
+        "bytes": 3987450520,
+        "sealed_sha256": "b470afad4c9bc80a42c30b3e489bf26bd7f0494cfe1d664e782a526075730be7",
+        "audit_rehashed": false
+      },
+      {
+        "path": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model/model-00003-of-00003.safetensors",
+        "bytes": 99630640,
+        "sealed_sha256": "fd825e0878e5c696dee16d1121883e6c17c5a7365a72ba7ea435f8565030c9ec",
+        "audit_rehashed": false
+      }
+    ]
+  },
+  "audited_file_sha256": {
+    "contract.json": "fcf69363ec0f60bf55f0f486990fcbc901ad2fcca3ef8d9b698dc24ada66843c",
+    "proposal.json": "17a7c26c8b01bf19d9a6be5cc307cf51c56e363c13e79b831f078f24129c8df4",
+    "inputs.jsonl": "446982b469612271b754ee7c2e7e3eb3cc0f184f5cdacc56f52af5d4e6daa833",
+    "submissions.jsonl": "83dc0f713246d16d1a28612cb094b8b91b89ec5a22d93a984115f0243a382d69",
+    "raw_generations.jsonl": "2b6196894ec9e92a7518128aa518df76e924cd4f2a3adaaadce13c408668f17c",
+    "generations.jsonl": "3515e7e5998e1a20b9639c4a81eb839b3ca25bbac6b9a011751493caa2ede24f",
+    "worker_config.json": "feebd51590ac67aa85d19ad00fab6be36f4be821c3c4aad489282766bf9dca76",
+    "generation_completion.json": "5328b9ed748c9467184687429ab5af2c91c3199598a57f418ade5fe29e2b9c38",
+    "model_preflight_receipt.json": "a332c7098f73cdc111a8fd08e6170c45b44774e9db6861993fccc53a424a2e95"
+  },
+  "real_model_calls_by_auditor": 0,
+  "real_gpu_calls_by_auditor": 0,
+  "real_environment_calls_by_auditor": 0,
+  "limits": [
+    "Audits recorded submissions and native contiguous request IDs from one sealed worker; cannot establish absence of unrelated unrecorded GPU activity.",
+    "Model weights were byte-hashed by pinned preflight; this audit rechecks its identity and merge receipt but does not rehash multi-GB shards.",
+    "Generation execution integrity is distinct from CPU semantic legality and financial evaluation; those are separate outputs."
+  ]
+}

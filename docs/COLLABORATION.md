@@ -1,99 +1,61 @@
-# 两人协作与自动变更播报
+# 维护与变更记录
 
-## 1. 目的
+## 1. 仓库与提交身份
 
-这套机制只解决一件事：无论哪位合作者修改仓库，GitHub 都自动发布一份可读的变更说明，
-让另一位合作者知道谁改了什么、为什么改、可能影响什么，以及下一步是什么。
+2026-11-05起，项目由FairyBlue独立维护，GitHub同步目标为私有仓库
+[`FairyBlue/finance-credit-agent`](https://github.com/FairyBlue/finance-credit-agent)。
+不再向原合作者的仓库同步；原有提交历史及作者记录保留，后续提交使用FairyBlue身份。
+本地`origin`应指向`git@github.com:FairyBlue/finance-credit-agent.git`。
 
-双方使用完全相同的规则。这里不增加数字签名、W&B、额外审批平台或复杂安全流程。
+## 2. 日常保存与变更报告
 
-## 2. 日常使用
-
-推荐每项工作使用一个仓库内分支，并尽早打开 Draft Pull Request。PR 只需填写模板中的三项：
-
-```text
-目的：为什么修改
-影响：会影响什么
-下一步：合并后由谁继续做什么
-```
-
-打开 PR 后，每次继续 push，GitHub 都会更新 PR 中同一条“自动变更播报”，不会为每个小提交
-重复刷屏。报告自动包含：
-
-- GitHub 修改人、时间、分支和 commit 范围；
-- 文件列表和改动规模；
-- 代码、配置、数据规则、reward、依赖、测试、文档或协作自动化分类；
-- 对实验边界的路径级提示；
-- commit 记录、完整 diff 链接和 GitHub Checks 链接；
-- `git diff --check` 和报告生成结果。
-
-报告由 `scripts/generate_change_report.py` 根据 Git 差异生成。它不会用 AI 猜测研究动机；
-“目的、影响、下一步”来自 PR 模板，缺失时会尝试读取最新 commit 中同名字段。
-
-## 3. 合并后的正式播报
-
-每次 `main` 更新，`.github/workflows/change-broadcast.yml` 会：
-
-1. 自动创建或复用标签为 `change-broadcast`、标题为“自动变更播报”的固定 Issue；
-2. 在该 Issue 中追加本次正式变更报告；
-3. 保存一份 14 天可下载的 workflow artifact；
-4. 如果固定 Issue 曾被关闭，自动重新打开。
-
-第一次创建后，两位合作者都应在该 Issue 点击 **Subscribe**。此后无需人工转发。直接 push
-到 `main` 也会播报，但日常改动仍推荐先走 PR，以便另一人看到合并前报告。
-
-如果希望每次正式播报都明确 @ 两个人，可以在仓库中设置一个普通 Actions variable：
+日常改动可以直接提交到`main`；需要隔离工作时使用分支与可选的Draft Pull Request。
+提交或PR说明简要记录目的、影响和下一步，例如：
 
 ```text
-Name: CHANGE_BROADCAST_MENTIONS
-Value: @github-user-a @github-user-b
+docs: summarize credit mechanism results
+
+目的：保存已完成的功劳分配机制验证
+影响：更新文档中的当前状态和证据链接
+下一步：按当前滚动计划继续研究
 ```
 
-位置是 GitHub 仓库的 **Settings → Secrets and variables → Actions → Variables**。它不是密码，
-不需要放进 Secrets；不设置也不影响播报，双方订阅固定 Issue 即可。
+`.github/workflows/change-broadcast.yml`在`main`更新和PR变化时生成变更报告，
+检查`git diff --check`并保存14天可下载的Actions artifact。
+它不再发布Issue或PR评论，也不读取`CHANGE_BROADCAST_MENTIONS`。
+变更报告不增加审批要求；测试、实验冻结合同与实际运行收据仍按原协议执行。
 
-## 4. 提交说明
+## 3. 同步范围
 
-为了让直接推送或合并后的报告仍然可读，commit 可以沿用下面的简短格式：
+Git保存代码、配置、文档、文档历史归档和选定的关键实验报告、汇总及身份收据。
+`runs/`默认忽略，已明确纳入版本控制的小型结果文件会继续跟踪；迁移时的文件清单和哈希见
+[关键结果快照](results/2026-11-05-backup/README.md)。
+模型权重、optimizer、原始行情/财报数据、缓存、完整请求/响应与训练轨迹保留在本地。
+本仓库的关键结果不能单独恢复模型或完整训练现场。
 
-```text
-docs: add H100 validation notes
+## 4. 与实验版本的关系
 
-目的：同步本次 H100 验证结果
-影响：只更新文档，不改变实验配置
-下一步：合作者复核结果并决定是否进入 G1
-```
+变更播报记录“仓库发生了什么”，不改变实验身份。G1 与 M1 接线均已完成，见
+[历史总结](history/FOUNDATIONS_AND_DIAGNOSTICS.md)；后续实验使用各自合同封存的 exact commit、源码/配置
+SHA 和运行收据。文档或自动化更新后的 `main` HEAD 不能冒充已经验证的 frozen code。
 
-不要求每个临时 commit 都写成长报告；PR 中填写三项即可。最终合并 commit 应保留准确标题。
+当前入口是[实验接手指南](README.md)和[文档导航](README.md)。旧结论从阶段总结查阅；
+历史执行合同与 dated backup 继续保留，原始哈希核验使用
+[原文 ZIP](archive/pre_2026-10-10_documents.zip)和 [manifest](archive/pre_2026-10-10_manifest.json)；
+最新进度读导航，不从旧计划推定仍有待执行任务。
 
-## 5. 自动提示不等于实验批准
+## 5. GPU与CPU工作顺序
 
-自动报告只陈述 Git 中可以验证的事实。它不能替代以下判断：
+2026-10-18用户明确要求优先有效使用稀缺GPU资源。已验收的同一模型和数据可复用身份收据，
+重复全量哈希、详尽CPU预处理、账务重算和大规模夹具尽量后补，或与GPU采样并行；GPU被其他任务
+占用时再集中完成这些CPU工作。启动前保留真实模型/输入对应、预算、显存租约与必要的实际接线检查。
+日志区分GPU加载/warmup、实际模型请求与占位，按实际有效采样进度报告。
 
-- 测试是否足以保护实验结论；
-- 数据是否真的没有泄漏；
-- reward 或交易环境是否科学正确；
-- H100 smoke 或正式实验是否通过；
-- 是否可以开放 Final OOS。
+## 6. 长期Brief、滚动三步与研究回顾
 
-报告中的“未检测到实验风险路径”只表示文件路径没有命中已知规则，不表示实验已经安全。
-完整 pytest、GPU 检查和实验门禁仍以各自的 GitHub Checks、运行产物和实验文档为准。
+2026-10-30用户明确：`RESEARCH_BRIEF.md`作为长期研究目标，具体三步在`docs/`迭代维护。
+Brief只更新研究问题、核心假设、候选贡献、证据边界和重要方向变化；不堆近期任务、预算和运行日志。
+每轮新三步使用带日期的独立文档，`CURRENT_STATUS.md`与文档导航指向当前计划，旧计划保留实际结果或被替代状态。
 
-## 6. 失败处理
-
-如果自动播报 workflow 失败：
-
-1. PR 中查看失败的 `Change broadcast` Check；
-2. 下载已生成的 artifact（如果生成阶段已完成）；
-3. 修复 workflow 或报告脚本后重新运行；
-4. 不要手工伪造机器人报告。
-
-播报失败不会删除代码或运行产物，但表示另一位合作者可能没有收到完整变更说明，因此应在
-合并下一项实验改动前恢复它。
-
-## 7. 与实验版本的关系
-
-变更播报记录“仓库发生了什么”，不改变实验的 commit 归属。旧提交
-`8a090b86f667216a28a3846520b717348b4a6764` 只保留为历史 preflight 证据，不再是当前 G1 身份。
-每次 G1 验证必须使用当前 validation runbook 在线下给出的 40 位 exact commit；之后新增文档或
-协作自动化产生的新 `main` HEAD，不能被写成该 frozen commit 已经验证。
+每轮三步结束，对照Brief的研究问题简短回顾“新增支持、仍缺什么、是否调整”；出现关键反证或持续一段时间没有推进时提前回顾。
+没有长期方向变化时，只在状态页记录回顾结论。此约定不新增审批、定时任务或阻塞GPU试验的审计流程。

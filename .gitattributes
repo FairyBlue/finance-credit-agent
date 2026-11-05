@@ -6,3 +6,5 @@ docs/results/2026-09-17-backup/runs/**/*.svg -whitespace
 # Preserve the latest completed pilot receipts and CSV bytes.
 docs/results/2026-10-04-backup/** -text
 docs/results/2026-10-04-backup/runs/**/*.csv whitespace=cr-at-eol
+# Curated run evidence retains its original bytes and generated whitespace.
+runs/** -text -whitespace

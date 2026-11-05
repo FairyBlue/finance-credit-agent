@@ -1,0 +1,58 @@
+{
+  "frozen_at": "2026-10-30T23:38:12.296880+08:00",
+  "rules": {
+    "version": "financial_learning_v2_step3_gate_20261030_v1",
+    "branches": [
+      "A_FIXED_TARGET_MC",
+      "C_UNRESOLVED_SIGNAL"
+    ],
+    "automatic_task_rewrite": false,
+    "gate": {
+      "independent_panel_mixed_business_task_required": true,
+      "genuine_calculation_request_required": true,
+      "nonzero_actor_advantage_required": true,
+      "same_round_changed_trainable_weights_required": true,
+      "same_round_actual_finite_positive_gradient_required": true,
+      "same_recorded_response_old_new_finite_required": true,
+      "minimum_absolute_mean_logprob_delta_exclusive": 1e-12,
+      "advantage_alignment_required": false,
+      "dev_or_holdout_improvement_required": false
+    },
+    "learning_rate_selection": "Stage2 fixed report-holdout metric; ties use2e-6",
+    "arms": [
+      "rloo",
+      "mc_target"
+    ],
+    "initial_adapter": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-evidence-20261030-v2/teacher_sft/adapter",
+    "optimizer_seed": 43,
+    "parent_batch_size": 32,
+    "task_groups_per_batch": 8,
+    "parent_repetitions": 4,
+    "optimizer_minibatch_size": 8,
+    "maximum_batches_per_arm": 4,
+    "maximum_generation_tokens_per_arm": 4000000,
+    "parent_quota": 8,
+    "auxiliary_repetitions": 2,
+    "auxiliary_enters_actor": false,
+    "selection": "pre-rollout parent quota; first public target report before calculation return",
+    "evaluation": {
+      "cap": 5000000,
+      "primary": "full task success",
+      "mandatory_panel": "all16fixedTrainpaneltasks x4native trajectories perarm",
+      "optional_report_holdout": "all32fixedreport-holdouttasks x1greedy perarm",
+      "selection_before_stage3_sampling": true,
+      "mean_cost_source": "Stage2 independent SFT native panel total / complete trajectories",
+      "forecast": "ceil(1.15 * trajectory_count * measured_mean) + last_group_reservation",
+      "last_group_reservation": 655360,
+      "choose_holdout_if_full192_trajectory_forecast_fits": true,
+      "otherwise_full128_panel_only": true,
+      "dev_evaluation": false,
+      "reserved_test_evaluation": false
+    },
+    "global_generation_cap": 44000000,
+    "global_gpu_stage_seconds_cap": 43200,
+    "method_claim": false,
+    "independent_replication_claim": false
+  },
+  "outcome_used_for_rule_selection": false
+}

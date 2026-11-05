@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "anchors": 256,
+  "prompt_packets": 256,
+  "exact_visible_only_menu_anchors": 256,
+  "historical_prompt_token_identity_anchors": 256,
+  "financial_and_observation_prefix_identity_executions": 11404,
+  "fresh_buy_repeat_identity_checks": 256,
+  "old_hold_reference_checks": 256,
+  "old_diagonal_and_original_first_info_checks": 256,
+  "branch_check_counts": {
+    "before_identity": 11404,
+    "cash_position_fees": 11404,
+    "history_append": 11404
+  }
+}

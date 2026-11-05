@@ -1,0 +1,122 @@
+{
+  "authorized_steps": [
+    1,
+    2,
+    3
+  ],
+  "stages": [
+    {
+      "name": "strong_sft_parent_probe",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-credit-20261030-v1/logs/strong_sft_parent_probe_attempt2.log",
+      "started_at": "2026-10-30T11:13:06.638759+08:00",
+      "gpu_worker": true,
+      "seconds": 241.9203644618392,
+      "finished_at": "2026-10-30T11:17:08.560935+08:00"
+    },
+    {
+      "name": "paired_information_signal_probe",
+      "status": "FAILED",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-credit-20261030-v1/logs/paired_information_signal_probe_attempt2.log",
+      "started_at": "2026-10-30T11:17:09.013407+08:00",
+      "gpu_worker": true,
+      "seconds": 172.90447172150016,
+      "finished_at": "2026-10-30T11:20:01.918918+08:00"
+    },
+    {
+      "name": "paired_information_signal_probe",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-credit-20261030-v1/logs/paired_information_signal_probe_attempt3.log",
+      "started_at": "2026-10-30T11:22:59.193620+08:00",
+      "gpu_worker": true,
+      "seconds": 256.37399472668767,
+      "finished_at": "2026-10-30T11:27:15.569198+08:00"
+    }
+  ],
+  "arms": {
+    "rloo_seed42": {
+      "status": "SKIPPED",
+      "reason": "NO_REPRODUCIBLE_LOCAL_SIGNAL"
+    },
+    "sham_seed42": {
+      "status": "SKIPPED",
+      "reason": "NO_REPRODUCIBLE_LOCAL_SIGNAL"
+    },
+    "m3_seed42": {
+      "status": "SKIPPED",
+      "reason": "NO_REPRODUCIBLE_LOCAL_SIGNAL"
+    },
+    "shuffled_seed42": {
+      "status": "SKIPPED",
+      "reason": "NO_REPRODUCIBLE_LOCAL_SIGNAL"
+    }
+  },
+  "started_at": "2026-10-30T11:09:57.118548+08:00",
+  "formal_valid_access": false,
+  "formal_final_oos_access": false,
+  "synthetic_mandates": true,
+  "known_quote_primary": true,
+  "status": "COMPLETE",
+  "attempt": 3,
+  "updated_at": "2026-10-30T11:27:15.888274+08:00",
+  "arm_token_budget": 2750000,
+  "prior_rl_generation_tokens": 0,
+  "inherited_common_adapter": null,
+  "experiment": "strong_sft_credit_mechanism_v1",
+  "initial_adapter": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-evidence-20261030-v2/teacher_sft/adapter",
+  "parent_probe_token_cap": 5000000,
+  "paired_probe_token_cap": 2000000,
+  "arm_token_cap": 2750000,
+  "total_training_and_probe_token_cap": 18000000,
+  "second_seed_automatically_authorized": false,
+  "current_step": 1,
+  "maximum_tool_calls": 10,
+  "full_teacher_sft_is_rl_initialization": true,
+  "current_stage": null,
+  "parent_probe_tokens": 3308883,
+  "parent_probe_admitted_groups": 32,
+  "parent_probe_planned_groups": 32,
+  "holder_restore": "REFILLING_76_GIB",
+  "retired_paired_attempts": [
+    {
+      "directory": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-credit-20261030-v1/failed_attempts/paired_attempt2_3f560c68",
+      "known_generation_tokens": 57188,
+      "raw_logged_requests": 12,
+      "token_source": "max(raw_request_prompt_plus_response, recorded_progress)",
+      "actor_training_data": false
+    }
+  ],
+  "retired_paired_generation_tokens": 57188,
+  "paired_probe_tokens": 1371369,
+  "completed_paired_probe_tokens": 1314181,
+  "signal_gate": {
+    "complete_anchors": 12,
+    "complete_gate_base_questions": 12,
+    "estimand": "paired_factual_mask_mean_v1",
+    "later_rereading_and_equivalent_sources_unchanged": true,
+    "mean_factual_minus_masked_business": 0.25,
+    "mean_factual_minus_placebo_business": 0.0,
+    "minimum_complete_gate_base_questions": 8,
+    "no_true_action_advantage_claim": true,
+    "placebo_is_metadata_format_control_not_unrelated_tool_step": true,
+    "reason": "INSUFFICIENT_REPRODUCIBILITY_OR_PLACEBO_SEPARATION",
+    "repeated_reverse_effect_base_questions": [],
+    "reproducible_key_loss_base_questions": [
+      "financial-credit-base-10013",
+      "financial-credit-base-10049"
+    ],
+    "required_reproducible_base_questions": 3,
+    "statistical_significance_claim": false,
+    "status": "FAIL",
+    "varying_paired_key_loss_base_questions": [
+      "financial-credit-base-10086",
+      "financial-credit-base-10060",
+      "financial-credit-base-10110",
+      "financial-credit-base-10046"
+    ]
+  },
+  "step1_status": "COMPLETE",
+  "step2_status": "SKIPPED",
+  "step3_status": "COMPLETE",
+  "finished_at": "2026-10-30T11:27:15.676852+08:00"
+}

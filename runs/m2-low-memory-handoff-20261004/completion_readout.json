@@ -1,0 +1,59 @@
+{
+  "status": "PASS",
+  "checked_at_SGT": "2026-10-04 21:37 SGT\uff08UTC+8\uff09",
+  "finished_at_SGT": "2026-10-04T17:13:53.189768+08:00",
+  "complete_trajectories": 72,
+  "actual_updates_by_arm": {
+    "M1": {
+      "actor": 2,
+      "critic": 2
+    },
+    "M2": {
+      "actor": 2,
+      "critic": 2
+    }
+  },
+  "comparison": [
+    {
+      "lane": "greedy",
+      "trajectories_per_arm": 4,
+      "m1_net_return_percent": 1.6873817000017055,
+      "m2_net_return_percent": 1.7703945289710505,
+      "m2_minus_m1_percentage_points": 0.08301282896934492,
+      "m1_invalid": 0,
+      "m1_decisions": 80,
+      "m2_invalid": 0,
+      "m2_decisions": 80,
+      "m1_cost": 5972.176835998058,
+      "m2_cost": 6032.203585232792
+    },
+    {
+      "lane": "sampled",
+      "trajectories_per_arm": 16,
+      "m1_net_return_percent": 1.5062569622674284,
+      "m2_net_return_percent": 1.6010298845326933,
+      "m2_minus_m1_percentage_points": 0.09477292226526476,
+      "m1_invalid": 21,
+      "m1_decisions": 341,
+      "m2_invalid": 18,
+      "m2_decisions": 338,
+      "m1_cost": 5513.489878421788,
+      "m2_cost": 5649.330373177151
+    }
+  ],
+  "common_critic_head_sha256": "34cca63a36551fbff58a919b66550d05119c0d7979feb4707dd91254d9ef3b20",
+  "export_full_hash_validation": {
+    "M1": "PASS",
+    "M2": "PASS"
+  },
+  "new_host_oom_events": {
+    "M1": 0,
+    "M2": 0
+  },
+  "memory_high_event_delta": {
+    "M1": 49,
+    "M2": 68
+  },
+  "holder_cleanup": "CLOSED, zero payload/reserved, process exited",
+  "formal_performance_claim": false
+}

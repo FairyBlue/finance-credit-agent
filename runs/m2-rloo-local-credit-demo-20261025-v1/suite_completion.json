@@ -1,0 +1,20 @@
+{
+  "status": "COMPLETE",
+  "planned_new_updates": 32,
+  "completed_new_updates": 32,
+  "completed_arms": [
+    "plain",
+    "exact"
+  ],
+  "rloo_reference_reused": true,
+  "rloo_reference": "/home/tianming/projects/finance-credit-agent/runs/m2-rloo-terminal-demo-20261025-v3",
+  "shared_initial_generation_cost": {
+    "model_requests": 568,
+    "prompt_tokens": 2645609,
+    "response_tokens": 11997
+  },
+  "shared_initial_parent_trajectories_reused": true,
+  "training_state_is_host_reboot_volatile": false,
+  "plain_optimizer_moments_retire_only_after_successful_terminal_evaluation": true,
+  "costs_scope": "reused RLOO parents/reference excluded from new GPU generation; shared initial branches counted once"
+}

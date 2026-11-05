@@ -1,0 +1,3195 @@
+{
+  "status": "COMPLETE",
+  "reason": "negative fixed16 pilot and both final evaluations complete; no more continuation of this arm",
+  "files": [
+    {
+      "filename": "exp_avg-0000.pt",
+      "bytes": 1555826408
+    },
+    {
+      "filename": "exp_avg_sq-0000.pt",
+      "bytes": 1555826429
+    },
+    {
+      "filename": "exp_avg-0001.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0001.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0002.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0002.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0003.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0003.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0004.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0004.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0005.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0005.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0006.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0006.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0007.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0007.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0008.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0008.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0009.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0009.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0010.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0010.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0011.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0011.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0012.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0012.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0013.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0013.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0014.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0014.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0015.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0015.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0016.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0016.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0017.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0017.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0018.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0018.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0019.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0019.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0020.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0020.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0021.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0021.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0022.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0022.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0023.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0023.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0024.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0024.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0025.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0025.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0026.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0026.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0027.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0027.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0028.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0028.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0029.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0029.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0030.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0030.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0031.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0031.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0032.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0032.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0033.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0033.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0034.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0034.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0035.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0035.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0036.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0036.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0037.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0037.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0038.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0038.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0039.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0039.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0040.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0040.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0041.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0041.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0042.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0042.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0043.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0043.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0044.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0044.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0045.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0045.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0046.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0046.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0047.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0047.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0048.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0048.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0049.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0049.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0050.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0050.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0051.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0051.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0052.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0052.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0053.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0053.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0054.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0054.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0055.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0055.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0056.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0056.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0057.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0057.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0058.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0058.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0059.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0059.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0060.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0060.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0061.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0061.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0062.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0062.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0063.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0063.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0064.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0064.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0065.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0065.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0066.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0066.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0067.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0067.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0068.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0068.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0069.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0069.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0070.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0070.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0071.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0071.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0072.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0072.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0073.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0073.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0074.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0074.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0075.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0075.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0076.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0076.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0077.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0077.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0078.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0078.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0079.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0079.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0080.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0080.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0081.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0081.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0082.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0082.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0083.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0083.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0084.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0084.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0085.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0085.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0086.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0086.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0087.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0087.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0088.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0088.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0089.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0089.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0090.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0090.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0091.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0091.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0092.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0092.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0093.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0093.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0094.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0094.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0095.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0095.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0096.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0096.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0097.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0097.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0098.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0098.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0099.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0099.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0100.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0100.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0101.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0101.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0102.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0102.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0103.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0103.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0104.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0104.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0105.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0105.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0106.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0106.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0107.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0107.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0108.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0108.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0109.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0109.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0110.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0110.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0111.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0111.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0112.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0112.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0113.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0113.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0114.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0114.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0115.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0115.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0116.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0116.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0117.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0117.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0118.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0118.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0119.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0119.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0120.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0120.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0121.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0121.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0122.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0122.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0123.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0123.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0124.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0124.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0125.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0125.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0126.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0126.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0127.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0127.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0128.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0128.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0129.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0129.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0130.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0130.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0131.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0131.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0132.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0132.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0133.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0133.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0134.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0134.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0135.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0135.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0136.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0136.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0137.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0137.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0138.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0138.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0139.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0139.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0140.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0140.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0141.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0141.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0142.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0142.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0143.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0143.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0144.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0144.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0145.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0145.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0146.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0146.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0147.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0147.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0148.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0148.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0149.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0149.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0150.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0150.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0151.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0151.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0152.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0152.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0153.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0153.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0154.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0154.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0155.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0155.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0156.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0156.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0157.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0157.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0158.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0158.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0159.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0159.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0160.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0160.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0161.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0161.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0162.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0162.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0163.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0163.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0164.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0164.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0165.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0165.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0166.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0166.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0167.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0167.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0168.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0168.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0169.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0169.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0170.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0170.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0171.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0171.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0172.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0172.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0173.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0173.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0174.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0174.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0175.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0175.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0176.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0176.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0177.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0177.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0178.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0178.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0179.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0179.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0180.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0180.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0181.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0181.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0182.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0182.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0183.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0183.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0184.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0184.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0185.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0185.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0186.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0186.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0187.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0187.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0188.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0188.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0189.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0189.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0190.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0190.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0191.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0191.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0192.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0192.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0193.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0193.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0194.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0194.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0195.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0195.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0196.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0196.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0197.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0197.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0198.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0198.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0199.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0199.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0200.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0200.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0201.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0201.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0202.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0202.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0203.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0203.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0204.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0204.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0205.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0205.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0206.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0206.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0207.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0207.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0208.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0208.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0209.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0209.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0210.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0210.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0211.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0211.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0212.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0212.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0213.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0213.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0214.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0214.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0215.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0215.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0216.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0216.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0217.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0217.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0218.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0218.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0219.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0219.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0220.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0220.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0221.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0221.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0222.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0222.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0223.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0223.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0224.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0224.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0225.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0225.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0226.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0226.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0227.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0227.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0228.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0228.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0229.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0229.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0230.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0230.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0231.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0231.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0232.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0232.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0233.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0233.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0234.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0234.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0235.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0235.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0236.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0236.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0237.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0237.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0238.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0238.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0239.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0239.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0240.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0240.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0241.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0241.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0242.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0242.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0243.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0243.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0244.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0244.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0245.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0245.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0246.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0246.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0247.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0247.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0248.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0248.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0249.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0249.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0250.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0250.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0251.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0251.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0252.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0252.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0253.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0253.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0254.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0254.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0255.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0255.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0256.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0256.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0257.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0257.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0258.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0258.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0259.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0259.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0260.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0260.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0261.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0261.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0262.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0262.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0263.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0263.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0264.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0264.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0265.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0265.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0266.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0266.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0267.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0267.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0268.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0268.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0269.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0269.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0270.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0270.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0271.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0271.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0272.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0272.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0273.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0273.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0274.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0274.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0275.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0275.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0276.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0276.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0277.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0277.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0278.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0278.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0279.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0279.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0280.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0280.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0281.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0281.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0282.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0282.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0283.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0283.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0284.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0284.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0285.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0285.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0286.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0286.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0287.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0287.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0288.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0288.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0289.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0289.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0290.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0290.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0291.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0291.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0292.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0292.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0293.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0293.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0294.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0294.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0295.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0295.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0296.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0296.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0297.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0297.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0298.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0298.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0299.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0299.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0300.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0300.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0301.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0301.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0302.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0302.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0303.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0303.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0304.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0304.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0305.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0305.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0306.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0306.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0307.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0307.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0308.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0308.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0309.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0309.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0310.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0310.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0311.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0311.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0312.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0312.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0313.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0313.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0314.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0314.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0315.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0315.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0316.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0316.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0317.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0317.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0318.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0318.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0319.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0319.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0320.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0320.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0321.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0321.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0322.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0322.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0323.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0323.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0324.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0324.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0325.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0325.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0326.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0326.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0327.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0327.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0328.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0328.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0329.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0329.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0330.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0330.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0331.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0331.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0332.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0332.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0333.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0333.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0334.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0334.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0335.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0335.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0336.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0336.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0337.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0337.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0338.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0338.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0339.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0339.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0340.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0340.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0341.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0341.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0342.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0342.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0343.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0343.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0344.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0344.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0345.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0345.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0346.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0346.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0347.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0347.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0348.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0348.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0349.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0349.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0350.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0350.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0351.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0351.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0352.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0352.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0353.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0353.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0354.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0354.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0355.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0355.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0356.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0356.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0357.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0357.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0358.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0358.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0359.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0359.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0360.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0360.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0361.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0361.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0362.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0362.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0363.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0363.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0364.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0364.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0365.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0365.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0366.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0366.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0367.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0367.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0368.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0368.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0369.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0369.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0370.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0370.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0371.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0371.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0372.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0372.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0373.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0373.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0374.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0374.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0375.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0375.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0376.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0376.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0377.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0377.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0378.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0378.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0379.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0379.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0380.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0380.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0381.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0381.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0382.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0382.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0383.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0383.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0384.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0384.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0385.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0385.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0386.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0386.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0387.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0387.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0388.pt",
+      "bytes": 10487528
+    },
+    {
+      "filename": "exp_avg_sq-0388.pt",
+      "bytes": 10487549
+    },
+    {
+      "filename": "exp_avg-0389.pt",
+      "bytes": 41944808
+    },
+    {
+      "filename": "exp_avg_sq-0389.pt",
+      "bytes": 41944829
+    },
+    {
+      "filename": "exp_avg-0390.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0390.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0391.pt",
+      "bytes": 2280
+    },
+    {
+      "filename": "exp_avg_sq-0391.pt",
+      "bytes": 2301
+    },
+    {
+      "filename": "exp_avg-0392.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0392.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0393.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0393.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0394.pt",
+      "bytes": 99616488
+    },
+    {
+      "filename": "exp_avg_sq-0394.pt",
+      "bytes": 99616509
+    },
+    {
+      "filename": "exp_avg-0395.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0395.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0396.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0396.pt",
+      "bytes": 12029
+    },
+    {
+      "filename": "exp_avg-0397.pt",
+      "bytes": 12008
+    },
+    {
+      "filename": "exp_avg_sq-0397.pt",
+      "bytes": 12029
+    }
+  ],
+  "planned_bytes": 32181160454,
+  "FP32_master_and_BF16_actor_preserved": true,
+  "lossless_training_resume_available": false,
+  "original_manifest": "/home/tianming/projects/finance-credit-agent/runs/m2-rloo-local-aux-demo-20261026-v1/exact_aux/training_state/manifest.before_terminal_optimizer_retirement.json",
+  "released_bytes": 32181160454
+}

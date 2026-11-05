@@ -1,0 +1,1162 @@
+{
+  "profile": "multistep_parent_request_s0_train_demo_description_v1",
+  "status": "DESCRIBED",
+  "execution_status": "COMPLETE",
+  "generated_at_UTC": "2026-10-24T11:03:50.650426+00:00",
+  "source_results": "/home/tianming/projects/finance-credit-agent/runs/m2-s0-multistep-demo-20261024-v1/demo_results.json",
+  "source_results_sha256": "92a500863271f0da561a3a9a9e4b32f5c75bf6013dea267d7057860747d10c6c",
+  "episode_ids": [
+    "formal-train-0001",
+    "formal-train-0009",
+    "formal-train-0017",
+    "formal-train-0025",
+    "formal-train-0065",
+    "formal-train-0073",
+    "formal-train-0149",
+    "formal-train-0157"
+  ],
+  "strata": {
+    "all8": [
+      "formal-train-0001",
+      "formal-train-0009",
+      "formal-train-0017",
+      "formal-train-0025",
+      "formal-train-0065",
+      "formal-train-0073",
+      "formal-train-0149",
+      "formal-train-0157"
+    ],
+    "common4": [
+      "formal-train-0001",
+      "formal-train-0009",
+      "formal-train-0065",
+      "formal-train-0073"
+    ],
+    "added4": [
+      "formal-train-0017",
+      "formal-train-0025",
+      "formal-train-0149",
+      "formal-train-0157"
+    ]
+  },
+  "curve": [
+    {
+      "round": 0,
+      "execution_status": "REUSED_BASELINE",
+      "evaluation": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "observed_windows": 8,
+            "planned_windows": 8,
+            "mean_net_return": 0.025690659638686122,
+            "mean_net_return_pct": 2.569065963868612,
+            "mean_Y": 3.725996753574258
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.042690759889983054,
+            "mean_net_return_pct": 4.269075988998305,
+            "mean_Y": 4.1906033215407215
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.00869055938738919,
+            "mean_net_return_pct": 0.8690559387389191,
+            "mean_Y": 3.2613901856077945
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return": 0.07631448946437813,
+            "net_return_pct": 7.631448946437813,
+            "Y": 3.3836512620744714,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return": 0.05211236465002922,
+            "net_return_pct": 5.211236465002922,
+            "Y": 5.306190432125484,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return": 0.0429766285380222,
+            "net_return_pct": 4.29766285380222,
+            "Y": 9.107645732308802,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return": 0.0031345289332724846,
+            "net_return_pct": 0.31345289332724846,
+            "Y": 4.373031680997741,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return": 0.025948459888670117,
+            "net_return_pct": 2.5948459888670117,
+            "Y": 4.100370340663127,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return": 0.01638772555685475,
+            "net_return_pct": 1.6387725556854749,
+            "Y": 3.9722012512998033,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return": -0.018497089785387888,
+            "net_return_pct": -1.8497089785387888,
+            "Y": 0.23686403001568723,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return": 0.007148169863649967,
+            "net_return_pct": 0.7148169863649967,
+            "Y": -0.6719807008910522,
+            "status": "OBSERVED"
+          }
+        ],
+        "collection_invalid_requests": 40,
+        "parent_failures": 0
+      },
+      "versus_common_SFT": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "planned_windows": 8,
+            "paired_windows": 8,
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "positive_windows": 0,
+            "negative_windows": 0,
+            "tied_windows": 8
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "positive_windows": 0,
+            "negative_windows": 0,
+            "tied_windows": 4
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "positive_windows": 0,
+            "negative_windows": 0,
+            "tied_windows": 4
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          }
+        ]
+      },
+      "parent_activity": {
+        "source_directory": "/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-online-8window-demo-20261024-v1/common_initial",
+        "windows": {
+          "formal-train-0001": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 24,
+            "invalid_parent_requests": 4,
+            "parent_rejection_rate": 0.16666666666666666,
+            "advancing_parent_requests": 20,
+            "fill_count": 17,
+            "transaction_cost": 4067.3684748650367,
+            "action_family_counts": {
+              "hold": 2,
+              "buy": 10,
+              "invalid": 4,
+              "sell": 8
+            }
+          },
+          "formal-train-0009": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 20,
+            "invalid_parent_requests": 0,
+            "parent_rejection_rate": 0.0,
+            "advancing_parent_requests": 20,
+            "fill_count": 19,
+            "transaction_cost": 4914.09229355726,
+            "action_family_counts": {
+              "buy": 13,
+              "sell": 7
+            }
+          },
+          "formal-train-0017": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 22,
+            "invalid_parent_requests": 2,
+            "parent_rejection_rate": 0.09090909090909091,
+            "advancing_parent_requests": 20,
+            "fill_count": 18,
+            "transaction_cost": 5279.180079315694,
+            "action_family_counts": {
+              "buy": 9,
+              "invalid": 2,
+              "sell": 9,
+              "hold": 2
+            }
+          },
+          "formal-train-0025": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 20,
+            "invalid_parent_requests": 0,
+            "parent_rejection_rate": 0.0,
+            "advancing_parent_requests": 20,
+            "fill_count": 19,
+            "transaction_cost": 5432.846809360301,
+            "action_family_counts": {
+              "buy": 10,
+              "sell": 9,
+              "hold": 1
+            }
+          },
+          "formal-train-0065": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 21,
+            "invalid_parent_requests": 1,
+            "parent_rejection_rate": 0.047619047619047616,
+            "advancing_parent_requests": 20,
+            "fill_count": 18,
+            "transaction_cost": 5232.876383582681,
+            "action_family_counts": {
+              "buy": 9,
+              "sell": 9,
+              "invalid": 1,
+              "hold": 2
+            }
+          },
+          "formal-train-0073": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 20,
+            "invalid_parent_requests": 0,
+            "parent_rejection_rate": 0.0,
+            "advancing_parent_requests": 20,
+            "fill_count": 20,
+            "transaction_cost": 6131.4938122211215,
+            "action_family_counts": {
+              "buy": 12,
+              "sell": 8
+            }
+          },
+          "formal-train-0149": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 20,
+            "invalid_parent_requests": 0,
+            "parent_rejection_rate": 0.0,
+            "advancing_parent_requests": 20,
+            "fill_count": 20,
+            "transaction_cost": 5470.962446467131,
+            "action_family_counts": {
+              "buy": 13,
+              "sell": 7
+            }
+          },
+          "formal-train-0157": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 22,
+            "invalid_parent_requests": 2,
+            "parent_rejection_rate": 0.09090909090909091,
+            "advancing_parent_requests": 20,
+            "fill_count": 19,
+            "transaction_cost": 4231.658779993102,
+            "action_family_counts": {
+              "buy": 12,
+              "sell": 8,
+              "invalid": 2
+            }
+          }
+        },
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "observed_parent_trajectories": 8,
+            "planned_parent_trajectories": 8,
+            "applied_parent_requests": 169,
+            "invalid_parent_requests": 9,
+            "parent_rejection_rate": 0.05325443786982249,
+            "transaction_cost_sum": 40760.479079362325,
+            "transaction_cost_mean": 5095.059884920291
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "observed_parent_trajectories": 4,
+            "planned_parent_trajectories": 4,
+            "applied_parent_requests": 85,
+            "invalid_parent_requests": 5,
+            "parent_rejection_rate": 0.058823529411764705,
+            "transaction_cost_sum": 20345.8309642261,
+            "transaction_cost_mean": 5086.457741056525
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "observed_parent_trajectories": 4,
+            "planned_parent_trajectories": 4,
+            "applied_parent_requests": 84,
+            "invalid_parent_requests": 4,
+            "parent_rejection_rate": 0.047619047619047616,
+            "transaction_cost_sum": 20414.648115136228,
+            "transaction_cost_mean": 5103.662028784057
+          }
+        }
+      },
+      "training": null,
+      "error": null
+    },
+    {
+      "round": 1,
+      "execution_status": "COMPLETE",
+      "evaluation": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "observed_windows": 8,
+            "planned_windows": 8,
+            "mean_net_return": 0.025051978940223985,
+            "mean_net_return_pct": 2.5051978940223982,
+            "mean_Y": 3.624789112259116
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.04290533306749961,
+            "mean_net_return_pct": 4.2905333067499605,
+            "mean_Y": 4.241255806196577
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.007198624812948362,
+            "mean_net_return_pct": 0.7198624812948362,
+            "mean_Y": 3.0083224183216553
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return": 0.07631448946437813,
+            "net_return_pct": 7.631448946437813,
+            "Y": 3.3836512620744714,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return": 0.04995895699542885,
+            "net_return_pct": 4.995895699542885,
+            "Y": 5.053604400642695,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return": 0.04267605997196755,
+            "net_return_pct": 4.267605997196755,
+            "Y": 9.072335093518822,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return": 0.0031345289332724846,
+            "net_return_pct": 0.31345289332724846,
+            "Y": 4.373031680997741,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return": 0.03087482038405387,
+            "net_return_pct": 3.087482038405387,
+            "Y": 4.816366469720821,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return": 0.014473065426137577,
+            "net_return_pct": 1.4473065426137577,
+            "Y": 3.7114010923483196,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return": -0.020651485592405816,
+            "net_return_pct": -2.0651485592405816,
+            "Y": -0.1471973022650164,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return": 0.0036353959389592294,
+            "net_return_pct": 0.36353959389592294,
+            "Y": -1.264879798964925,
+            "status": "OBSERVED"
+          }
+        ],
+        "collection_invalid_requests": 11,
+        "parent_failures": 0
+      },
+      "versus_common_SFT": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "planned_windows": 8,
+            "paired_windows": 8,
+            "net_return_delta_pp": -0.06386806984621379,
+            "Y_delta": -0.10120764131514186,
+            "positive_windows": 1,
+            "negative_windows": 5,
+            "tied_windows": 2
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": 0.02145731775165527,
+            "Y_delta": 0.05065248465585537,
+            "positive_windows": 1,
+            "negative_windows": 2,
+            "tied_windows": 1
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": -0.14919345744408286,
+            "Y_delta": -0.2530677672861391,
+            "positive_windows": 0,
+            "negative_windows": 3,
+            "tied_windows": 1
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return_delta_pp": -0.215340765460037,
+            "Y_delta": -0.2525860314827888,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return_delta_pp": -0.030056856605464866,
+            "Y_delta": -0.035310638789979976,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return_delta_pp": 0.49263604953837525,
+            "Y_delta": 0.7159961290576939,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return_delta_pp": -0.19146601307171718,
+            "Y_delta": -0.2608001589514837,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return_delta_pp": -0.2154395807017928,
+            "Y_delta": -0.3840613322807036,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return_delta_pp": -0.35127739246907375,
+            "Y_delta": -0.5928990980738728,
+            "status": "OBSERVED"
+          }
+        ]
+      },
+      "parent_activity": {
+        "source_directory": "/home/tianming/projects/finance-credit-agent/runs/m2-s0-multistep-demo-20261024-v1/zero/round1/eval",
+        "windows": {
+          "formal-train-0001": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 24,
+            "invalid_parent_requests": 4,
+            "parent_rejection_rate": 0.16666666666666666,
+            "advancing_parent_requests": 20,
+            "fill_count": 17,
+            "transaction_cost": 4067.3684748650367,
+            "action_family_counts": {
+              "hold": 2,
+              "buy": 10,
+              "invalid": 4,
+              "sell": 8
+            }
+          },
+          "formal-train-0009": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 21,
+            "invalid_parent_requests": 1,
+            "parent_rejection_rate": 0.047619047619047616,
+            "advancing_parent_requests": 20,
+            "fill_count": 19,
+            "transaction_cost": 4912.918647015265,
+            "action_family_counts": {
+              "buy": 12,
+              "sell": 8,
+              "invalid": 1
+            }
+          },
+          "formal-train-0017": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 22,
+            "invalid_parent_requests": 2,
+            "parent_rejection_rate": 0.09090909090909091,
+            "advancing_parent_requests": 20,
+            "fill_count": 18,
+            "transaction_cost": 5278.63991113102,
+            "action_family_counts": {
+              "buy": 9,
+              "invalid": 2,
+              "sell": 9,
+              "hold": 2
+            }
+          },
+          "formal-train-0025": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 20,
+            "invalid_parent_requests": 0,
+            "parent_rejection_rate": 0.0,
+            "advancing_parent_requests": 20,
+            "fill_count": 19,
+            "transaction_cost": 5432.846809360301,
+            "action_family_counts": {
+              "buy": 10,
+              "sell": 9,
+              "hold": 1
+            }
+          },
+          "formal-train-0065": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 21,
+            "invalid_parent_requests": 1,
+            "parent_rejection_rate": 0.047619047619047616,
+            "advancing_parent_requests": 20,
+            "fill_count": 18,
+            "transaction_cost": 5251.220482833819,
+            "action_family_counts": {
+              "buy": 9,
+              "sell": 9,
+              "invalid": 1,
+              "hold": 2
+            }
+          },
+          "formal-train-0073": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 20,
+            "invalid_parent_requests": 0,
+            "parent_rejection_rate": 0.0,
+            "advancing_parent_requests": 20,
+            "fill_count": 20,
+            "transaction_cost": 6126.841260740251,
+            "action_family_counts": {
+              "buy": 12,
+              "sell": 8
+            }
+          },
+          "formal-train-0149": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 21,
+            "invalid_parent_requests": 1,
+            "parent_rejection_rate": 0.047619047619047616,
+            "advancing_parent_requests": 20,
+            "fill_count": 20,
+            "transaction_cost": 5178.66651387215,
+            "action_family_counts": {
+              "buy": 12,
+              "sell": 8,
+              "invalid": 1
+            }
+          },
+          "formal-train-0157": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 22,
+            "invalid_parent_requests": 2,
+            "parent_rejection_rate": 0.09090909090909091,
+            "advancing_parent_requests": 20,
+            "fill_count": 19,
+            "transaction_cost": 5116.912400643446,
+            "action_family_counts": {
+              "buy": 11,
+              "sell": 9,
+              "invalid": 2
+            }
+          }
+        },
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "observed_parent_trajectories": 8,
+            "planned_parent_trajectories": 8,
+            "applied_parent_requests": 171,
+            "invalid_parent_requests": 11,
+            "parent_rejection_rate": 0.06432748538011696,
+            "transaction_cost_sum": 41365.41450046129,
+            "transaction_cost_mean": 5170.676812557661
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "observed_parent_trajectories": 4,
+            "planned_parent_trajectories": 4,
+            "applied_parent_requests": 86,
+            "invalid_parent_requests": 6,
+            "parent_rejection_rate": 0.06976744186046512,
+            "transaction_cost_sum": 20358.348865454373,
+            "transaction_cost_mean": 5089.587216363593
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "observed_parent_trajectories": 4,
+            "planned_parent_trajectories": 4,
+            "applied_parent_requests": 85,
+            "invalid_parent_requests": 5,
+            "parent_rejection_rate": 0.058823529411764705,
+            "transaction_cost_sum": 21007.06563500692,
+            "transaction_cost_mean": 5251.76640875173
+          }
+        }
+      },
+      "training": {
+        "status": "COMPLETE",
+        "training_rows": 169,
+        "invalid_rows": 9,
+        "invalid_row_fraction": 0.05325443786982249,
+        "actor_updates": 1,
+        "critic_updates": 1,
+        "planned_trajectories": 8,
+        "complete_trajectories": 8,
+        "missing_or_incomplete_trajectories": 0,
+        "critic_mse_before": 7.6026143227775735,
+        "critic_mse_after": 6.856497732719805,
+        "critic_fit": {
+          "after_request_MSE": 6.856497732719805,
+          "before_request_MSE": 7.6026143227775735,
+          "loss": 3.7793232167302904
+        }
+      },
+      "error": null
+    },
+    {
+      "round": 2,
+      "execution_status": "COMPLETE",
+      "evaluation": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "observed_windows": 8,
+            "planned_windows": 8,
+            "mean_net_return": 0.025252836667156664,
+            "mean_net_return_pct": 2.5252836667156666,
+            "mean_Y": 3.6857438360349772
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.04340502503320848,
+            "mean_net_return_pct": 4.340502503320848,
+            "mean_Y": 4.386497647792077
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "observed_windows": 4,
+            "planned_windows": 4,
+            "mean_net_return": 0.0071006483011048505,
+            "mean_net_return_pct": 0.710064830110485,
+            "mean_Y": 2.984990024277877
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return": 0.06161576540012592,
+            "net_return_pct": 6.161576540012592,
+            "Y": 1.9365661201078106,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return": 0.059180747229407915,
+            "net_return_pct": 5.9180747229407915,
+            "Y": 6.135283196290788,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return": 0.04267605997196755,
+            "net_return_pct": 4.267605997196755,
+            "Y": 9.072335093518822,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return": 0.0031345289332724846,
+            "net_return_pct": 0.31345289332724846,
+            "Y": 4.373031680997741,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return": 0.02299278165486074,
+            "net_return_pct": 2.299278165486074,
+            "Y": 3.670827848209018,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return": 0.029830805848439335,
+            "net_return_pct": 2.9830805848439335,
+            "Y": 5.803313426560692,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return": -0.024512643404331014,
+            "net_return_pct": -2.4512643404331014,
+            "Y": -0.8291877740120502,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return": 0.0071046477035103806,
+            "net_return_pct": 0.710464770351038,
+            "Y": -0.6762189033930052,
+            "status": "OBSERVED"
+          }
+        ],
+        "collection_invalid_requests": 12,
+        "parent_failures": 0
+      },
+      "versus_common_SFT": {
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "planned_windows": 8,
+            "paired_windows": 8,
+            "net_return_delta_pp": -0.04378229715294585,
+            "Y_delta": -0.04025291753928087,
+            "positive_windows": 2,
+            "negative_windows": 5,
+            "tied_windows": 1
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": 0.07142651432254232,
+            "Y_delta": 0.1958943262513559,
+            "positive_windows": 2,
+            "negative_windows": 2,
+            "tied_windows": 0
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "planned_windows": 4,
+            "paired_windows": 4,
+            "net_return_delta_pp": -0.15899110862843402,
+            "Y_delta": -0.2764001613299176,
+            "positive_windows": 0,
+            "negative_windows": 3,
+            "tied_windows": 1
+          }
+        },
+        "windows": [
+          {
+            "episode_id": "formal-train-0001",
+            "net_return_delta_pp": -1.469872406425221,
+            "Y_delta": -1.4470851419666608,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0009",
+            "net_return_delta_pp": 0.7068382579378696,
+            "Y_delta": 0.8290927641653045,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0017",
+            "net_return_delta_pp": -0.030056856605464866,
+            "Y_delta": -0.035310638789979976,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0025",
+            "net_return_delta_pp": 0.0,
+            "Y_delta": 0.0,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0065",
+            "net_return_delta_pp": -0.2955678233809378,
+            "Y_delta": -0.4295424924541087,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0073",
+            "net_return_delta_pp": 1.3443080291584586,
+            "Y_delta": 1.8311121752608885,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0149",
+            "net_return_delta_pp": -0.6015553618943126,
+            "Y_delta": -1.0660518040277376,
+            "status": "OBSERVED"
+          },
+          {
+            "episode_id": "formal-train-0157",
+            "net_return_delta_pp": -0.004352216013958632,
+            "Y_delta": -0.004238202501952948,
+            "status": "OBSERVED"
+          }
+        ]
+      },
+      "parent_activity": {
+        "source_directory": "/home/tianming/projects/finance-credit-agent/runs/m2-s0-multistep-demo-20261024-v1/zero/round2/eval",
+        "windows": {
+          "formal-train-0001": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 23,
+            "invalid_parent_requests": 3,
+            "parent_rejection_rate": 0.13043478260869565,
+            "advancing_parent_requests": 20,
+            "fill_count": 18,
+            "transaction_cost": 4662.759276412777,
+            "action_family_counts": {
+              "hold": 2,
+              "buy": 10,
+              "invalid": 3,
+              "sell": 8
+            }
+          },
+          "formal-train-0009": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 21,
+            "invalid_parent_requests": 1,
+            "parent_rejection_rate": 0.047619047619047616,
+            "advancing_parent_requests": 20,
+            "fill_count": 19,
+            "transaction_cost": 5517.949644687233,
+            "action_family_counts": {
+              "buy": 11,
+              "sell": 9,
+              "invalid": 1
+            }
+          },
+          "formal-train-0017": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 22,
+            "invalid_parent_requests": 2,
+            "parent_rejection_rate": 0.09090909090909091,
+            "advancing_parent_requests": 20,
+            "fill_count": 18,
+            "transaction_cost": 5278.63991113102,
+            "action_family_counts": {
+              "buy": 9,
+              "invalid": 2,
+              "sell": 9,
+              "hold": 2
+            }
+          },
+          "formal-train-0025": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 20,
+            "invalid_parent_requests": 0,
+            "parent_rejection_rate": 0.0,
+            "advancing_parent_requests": 20,
+            "fill_count": 19,
+            "transaction_cost": 5432.846809360301,
+            "action_family_counts": {
+              "buy": 10,
+              "sell": 9,
+              "hold": 1
+            }
+          },
+          "formal-train-0065": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 20,
+            "invalid_parent_requests": 0,
+            "parent_rejection_rate": 0.0,
+            "advancing_parent_requests": 20,
+            "fill_count": 18,
+            "transaction_cost": 5210.930805349836,
+            "action_family_counts": {
+              "buy": 10,
+              "sell": 8,
+              "hold": 2
+            }
+          },
+          "formal-train-0073": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 21,
+            "invalid_parent_requests": 1,
+            "parent_rejection_rate": 0.047619047619047616,
+            "advancing_parent_requests": 20,
+            "fill_count": 19,
+            "transaction_cost": 5868.129720911846,
+            "action_family_counts": {
+              "buy": 12,
+              "sell": 7,
+              "invalid": 1,
+              "hold": 1
+            }
+          },
+          "formal-train-0149": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 22,
+            "invalid_parent_requests": 2,
+            "parent_rejection_rate": 0.09090909090909091,
+            "advancing_parent_requests": 20,
+            "fill_count": 19,
+            "transaction_cost": 5019.82198534198,
+            "action_family_counts": {
+              "buy": 11,
+              "sell": 9,
+              "invalid": 2
+            }
+          },
+          "formal-train-0157": {
+            "status": "COMPLETE",
+            "applied_parent_requests": 23,
+            "invalid_parent_requests": 3,
+            "parent_rejection_rate": 0.13043478260869565,
+            "advancing_parent_requests": 20,
+            "fill_count": 20,
+            "transaction_cost": 4828.216461104861,
+            "action_family_counts": {
+              "buy": 10,
+              "sell": 10,
+              "invalid": 3
+            }
+          }
+        },
+        "strata": {
+          "all8": {
+            "status": "OBSERVED",
+            "observed_parent_trajectories": 8,
+            "planned_parent_trajectories": 8,
+            "applied_parent_requests": 172,
+            "invalid_parent_requests": 12,
+            "parent_rejection_rate": 0.06976744186046512,
+            "transaction_cost_sum": 41819.294614299855,
+            "transaction_cost_mean": 5227.411826787482
+          },
+          "common4": {
+            "status": "OBSERVED",
+            "observed_parent_trajectories": 4,
+            "planned_parent_trajectories": 4,
+            "applied_parent_requests": 85,
+            "invalid_parent_requests": 5,
+            "parent_rejection_rate": 0.058823529411764705,
+            "transaction_cost_sum": 21259.76944736169,
+            "transaction_cost_mean": 5314.942361840423
+          },
+          "added4": {
+            "status": "OBSERVED",
+            "observed_parent_trajectories": 4,
+            "planned_parent_trajectories": 4,
+            "applied_parent_requests": 87,
+            "invalid_parent_requests": 7,
+            "parent_rejection_rate": 0.08045977011494253,
+            "transaction_cost_sum": 20559.52516693816,
+            "transaction_cost_mean": 5139.88129173454
+          }
+        }
+      },
+      "training": {
+        "status": "COMPLETE",
+        "training_rows": 171,
+        "invalid_rows": 11,
+        "invalid_row_fraction": 0.06432748538011696,
+        "actor_updates": 1,
+        "critic_updates": 1,
+        "planned_trajectories": 8,
+        "complete_trajectories": 8,
+        "missing_or_incomplete_trajectories": 0,
+        "critic_mse_before": 7.019913266171403,
+        "critic_mse_after": 6.334445280846645,
+        "critic_fit": {
+          "after_request_MSE": 6.334445280846645,
+          "before_request_MSE": 7.019913266171403,
+          "loss": 3.4592413524973864
+        }
+      },
+      "error": null
+    }
+  ],
+  "round2_versus_common_SFT": {
+    "strata": {
+      "all8": {
+        "status": "OBSERVED",
+        "planned_windows": 8,
+        "paired_windows": 8,
+        "net_return_delta_pp": -0.04378229715294585,
+        "Y_delta": -0.04025291753928087,
+        "positive_windows": 2,
+        "negative_windows": 5,
+        "tied_windows": 1
+      },
+      "common4": {
+        "status": "OBSERVED",
+        "planned_windows": 4,
+        "paired_windows": 4,
+        "net_return_delta_pp": 0.07142651432254232,
+        "Y_delta": 0.1958943262513559,
+        "positive_windows": 2,
+        "negative_windows": 2,
+        "tied_windows": 0
+      },
+      "added4": {
+        "status": "OBSERVED",
+        "planned_windows": 4,
+        "paired_windows": 4,
+        "net_return_delta_pp": -0.15899110862843402,
+        "Y_delta": -0.2764001613299176,
+        "positive_windows": 0,
+        "negative_windows": 3,
+        "tied_windows": 1
+      }
+    },
+    "windows": [
+      {
+        "episode_id": "formal-train-0001",
+        "net_return_delta_pp": -1.469872406425221,
+        "Y_delta": -1.4470851419666608,
+        "status": "OBSERVED"
+      },
+      {
+        "episode_id": "formal-train-0009",
+        "net_return_delta_pp": 0.7068382579378696,
+        "Y_delta": 0.8290927641653045,
+        "status": "OBSERVED"
+      },
+      {
+        "episode_id": "formal-train-0017",
+        "net_return_delta_pp": -0.030056856605464866,
+        "Y_delta": -0.035310638789979976,
+        "status": "OBSERVED"
+      },
+      {
+        "episode_id": "formal-train-0025",
+        "net_return_delta_pp": 0.0,
+        "Y_delta": 0.0,
+        "status": "OBSERVED"
+      },
+      {
+        "episode_id": "formal-train-0065",
+        "net_return_delta_pp": -0.2955678233809378,
+        "Y_delta": -0.4295424924541087,
+        "status": "OBSERVED"
+      },
+      {
+        "episode_id": "formal-train-0073",
+        "net_return_delta_pp": 1.3443080291584586,
+        "Y_delta": 1.8311121752608885,
+        "status": "OBSERVED"
+      },
+      {
+        "episode_id": "formal-train-0149",
+        "net_return_delta_pp": -0.6015553618943126,
+        "Y_delta": -1.0660518040277376,
+        "status": "OBSERVED"
+      },
+      {
+        "episode_id": "formal-train-0157",
+        "net_return_delta_pp": -0.004352216013958632,
+        "Y_delta": -0.004238202501952948,
+        "status": "OBSERVED"
+      }
+    ]
+  },
+  "baseline_reused_source_model_requests": 461,
+  "baseline_reused_parent_requests": 169,
+  "baseline_reused_parent_invalid_requests": 9,
+  "baseline_new_model_requests": 0,
+  "limits": [
+    "Eight reused Train windows, seed42, two full-parent-request updates; no Valid/OOS.",
+    "Only role=parent rows train; the source's head/EST requests do not train.",
+    "All eight-window means retain their planned denominator; missing values remain NA.",
+    "The fixed second round and full curve are reported, without best selection.",
+    "Rejection rates use applied parent requests; fees sum actual parent fill costs.",
+    "common4/added4 are reused ID strata, not independent new-date evidence.",
+    "Training mode changes; old head-only means are not a strict single-factor control."
+  ],
+  "csv_sha256": "18b7b9786719fa999ed3fe8998e1555f6fbf0a7665adad39e2af5c723f3dccaa"
+}

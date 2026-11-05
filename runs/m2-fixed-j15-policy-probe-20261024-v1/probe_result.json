@@ -1,0 +1,116 @@
+{
+  "profile": "fixed_j15_two_policy_probe_v1",
+  "status": "COMPLETE",
+  "source": "/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-online-8window-demo-20261024-v1/common_initial",
+  "seed": 42,
+  "episode_ids": [
+    "formal-train-0001",
+    "formal-train-0009",
+    "formal-train-0017",
+    "formal-train-0025",
+    "formal-train-0065",
+    "formal-train-0073",
+    "formal-train-0149",
+    "formal-train-0157"
+  ],
+  "continuations_per_anchor": 4,
+  "planned_per_model": 32,
+  "models": [
+    {
+      "name": "sft",
+      "model_path": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model",
+      "status": "COMPLETE",
+      "summary": {
+        "REF_used": false,
+        "anchor_equity_basis": "last booked equity at original SFT j15 prefix",
+        "complete_trajectories": 32,
+        "continuations_per_anchor": 4,
+        "episode_ids": [
+          "formal-train-0001",
+          "formal-train-0009",
+          "formal-train-0017",
+          "formal-train-0025",
+          "formal-train-0065",
+          "formal-train-0073",
+          "formal-train-0149",
+          "formal-train-0157"
+        ],
+        "failed_trajectories": 0,
+        "fixed_continuation_requests": 177,
+        "fixed_prefix_source": "/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-online-8window-demo-20261024-v1/common_initial/anchor_snapshots.jsonl",
+        "formal_valid_oos_access": false,
+        "invalid_requests": 17,
+        "model_path": "/home/tianming/projects/finance-credit-agent/runs/m2-order-recovery-sft-20261011-v1/merged_model",
+        "model_requests": 177,
+        "optimizer_updates": 0,
+        "planned_trajectories": 32,
+        "prompt_tokens": 824745,
+        "request_cap_per_session": 4,
+        "response_tokens": 3660,
+        "round_index": 0,
+        "seed": 42,
+        "source_sha256": "acdfe64cc230d477a28e5f828ce2f6af1f1a6621eb6e12b80136a2eea75ca068",
+        "status": "COMPLETE",
+        "terminal_session_index": 20,
+        "trajectory_file": "trajectory_results.jsonl"
+      },
+      "wall_seconds": 194.98749174922705,
+      "error": null,
+      "collection_path": "/home/tianming/projects/finance-credit-agent/runs/m2-fixed-j15-policy-probe-20261024-v1/sft"
+    },
+    {
+      "name": "trained",
+      "model_path": "/home/tianming/projects/finance-credit-agent/runs/m2-s0-learning-curve-20261024-v1/zero/round8/train/actor",
+      "status": "COMPLETE",
+      "summary": {
+        "REF_used": false,
+        "anchor_equity_basis": "last booked equity at original SFT j15 prefix",
+        "complete_trajectories": 32,
+        "continuations_per_anchor": 4,
+        "episode_ids": [
+          "formal-train-0001",
+          "formal-train-0009",
+          "formal-train-0017",
+          "formal-train-0025",
+          "formal-train-0065",
+          "formal-train-0073",
+          "formal-train-0149",
+          "formal-train-0157"
+        ],
+        "failed_trajectories": 0,
+        "fixed_continuation_requests": 192,
+        "fixed_prefix_source": "/home/tianming/projects/finance-credit-agent/runs/m2-same-prefix-online-8window-demo-20261024-v1/common_initial/anchor_snapshots.jsonl",
+        "formal_valid_oos_access": false,
+        "invalid_requests": 32,
+        "model_path": "/home/tianming/projects/finance-credit-agent/runs/m2-s0-learning-curve-20261024-v1/zero/round8/train/actor",
+        "model_requests": 192,
+        "optimizer_updates": 0,
+        "planned_trajectories": 32,
+        "prompt_tokens": 901906,
+        "request_cap_per_session": 4,
+        "response_tokens": 3963,
+        "round_index": 0,
+        "seed": 42,
+        "source_sha256": "acdfe64cc230d477a28e5f828ce2f6af1f1a6621eb6e12b80136a2eea75ca068",
+        "status": "COMPLETE",
+        "terminal_session_index": 20,
+        "trajectory_file": "trajectory_results.jsonl"
+      },
+      "wall_seconds": 63.83204070851207,
+      "error": null,
+      "collection_path": "/home/tianming/projects/finance-credit-agent/runs/m2-fixed-j15-policy-probe-20261024-v1/trained"
+    }
+  ],
+  "limits": [
+    "Fixed original eight Train j15 prefixes; four continuations per policy and state.",
+    "Common random seed namespace across policies; no new parents, heads, EST or training.",
+    "Failed continuations retain their original status and missing outcomes; no retries."
+  ],
+  "known_reported_costs": {
+    "model_requests": 369,
+    "prompt_tokens": 1726651,
+    "response_tokens": 7623,
+    "invalid_requests": 49
+  },
+  "all_stage_summaries_present": true
+}
