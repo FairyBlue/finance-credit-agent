@@ -1,0 +1,795 @@
+{
+  "authorized_steps": [
+    1,
+    2,
+    3
+  ],
+  "stages": [
+    {
+      "name": "action_q_round000_aux",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/logs/action_q_round000_aux_attempt1.log",
+      "started_at": "2026-11-11T00:23:01.466552+08:00",
+      "gpu_worker": true,
+      "seconds": 101.38304180651903,
+      "finished_at": "2026-11-11T00:24:42.850285+08:00"
+    },
+    {
+      "name": "action_q_round000_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/logs/action_q_round000_train_attempt1.log",
+      "started_at": "2026-11-11T00:24:42.930422+08:00",
+      "gpu_worker": true,
+      "seconds": 50.98922361433506,
+      "finished_at": "2026-11-11T00:25:33.920303+08:00"
+    },
+    {
+      "name": "action_q_round001_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/logs/action_q_round001_collect_attempt1.log",
+      "started_at": "2026-11-11T00:25:34.106471+08:00",
+      "gpu_worker": true,
+      "seconds": 59.99738481640816,
+      "finished_at": "2026-11-11T00:26:34.104542+08:00"
+    },
+    {
+      "name": "action_q_round001_aux",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/logs/action_q_round001_aux_attempt1.log",
+      "started_at": "2026-11-11T00:26:34.419414+08:00",
+      "gpu_worker": true,
+      "seconds": 120.67227552458644,
+      "finished_at": "2026-11-11T00:28:35.092516+08:00"
+    },
+    {
+      "name": "action_q_round001_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/logs/action_q_round001_train_attempt1.log",
+      "started_at": "2026-11-11T00:28:35.372409+08:00",
+      "gpu_worker": true,
+      "seconds": 58.38086851686239,
+      "finished_at": "2026-11-11T00:29:33.754041+08:00"
+    },
+    {
+      "name": "action_q_round002_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/logs/action_q_round002_collect_attempt1.log",
+      "started_at": "2026-11-11T00:29:34.425102+08:00",
+      "gpu_worker": true,
+      "seconds": 46.43174245208502,
+      "finished_at": "2026-11-11T00:30:20.857576+08:00"
+    },
+    {
+      "name": "action_q_round002_aux",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/logs/action_q_round002_aux_attempt1.log",
+      "started_at": "2026-11-11T00:30:21.462746+08:00",
+      "gpu_worker": true,
+      "seconds": 104.67163698002696,
+      "finished_at": "2026-11-11T00:32:06.135147+08:00"
+    },
+    {
+      "name": "action_q_round002_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/logs/action_q_round002_train_attempt1.log",
+      "started_at": "2026-11-11T00:32:06.567995+08:00",
+      "gpu_worker": true,
+      "seconds": 50.164895072579384,
+      "finished_at": "2026-11-11T00:32:56.733591+08:00"
+    },
+    {
+      "name": "action_q_round003_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/logs/action_q_round003_collect_attempt1.log",
+      "started_at": "2026-11-11T00:32:57.866609+08:00",
+      "gpu_worker": true,
+      "seconds": 45.73217323422432,
+      "finished_at": "2026-11-11T00:33:43.599547+08:00"
+    },
+    {
+      "name": "action_q_round003_aux",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/logs/action_q_round003_aux_attempt1.log",
+      "started_at": "2026-11-11T00:33:44.461842+08:00",
+      "gpu_worker": true,
+      "seconds": 102.61458527296782,
+      "finished_at": "2026-11-11T00:35:27.077133+08:00"
+    },
+    {
+      "name": "action_q_round003_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/logs/action_q_round003_train_attempt1.log",
+      "started_at": "2026-11-11T00:35:27.695393+08:00",
+      "gpu_worker": true,
+      "seconds": 50.498336646705866,
+      "finished_at": "2026-11-11T00:36:18.194522+08:00"
+    },
+    {
+      "name": "action_q_round004_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/logs/action_q_round004_collect_attempt1.log",
+      "started_at": "2026-11-11T00:36:19.799394+08:00",
+      "gpu_worker": true,
+      "seconds": 61.06158910319209,
+      "finished_at": "2026-11-11T00:37:20.861757+08:00"
+    },
+    {
+      "name": "action_q_round004_aux",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/logs/action_q_round004_aux_attempt1.log",
+      "started_at": "2026-11-11T00:37:22.024971+08:00",
+      "gpu_worker": true,
+      "seconds": 127.67319317162037,
+      "finished_at": "2026-11-11T00:39:29.698920+08:00"
+    },
+    {
+      "name": "action_q_round004_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/logs/action_q_round004_train_attempt1.log",
+      "started_at": "2026-11-11T00:39:30.542785+08:00",
+      "gpu_worker": true,
+      "seconds": 47.50313659757376,
+      "finished_at": "2026-11-11T00:40:18.046781+08:00"
+    },
+    {
+      "name": "action_q_round005_collect",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/logs/action_q_round005_collect_attempt1.log",
+      "started_at": "2026-11-11T00:40:20.105252+08:00",
+      "gpu_worker": true,
+      "seconds": 62.237640991806984,
+      "finished_at": "2026-11-11T00:41:22.343731+08:00"
+    },
+    {
+      "name": "action_q_round005_aux",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/logs/action_q_round005_aux_attempt1.log",
+      "started_at": "2026-11-11T00:41:23.793549+08:00",
+      "gpu_worker": true,
+      "seconds": 104.80627182498574,
+      "finished_at": "2026-11-11T00:43:08.600619+08:00"
+    },
+    {
+      "name": "action_q_round005_train",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/logs/action_q_round005_train_attempt1.log",
+      "started_at": "2026-11-11T00:43:09.626436+08:00",
+      "gpu_worker": true,
+      "seconds": 50.891518615186214,
+      "finished_at": "2026-11-11T00:44:00.518771+08:00"
+    },
+    {
+      "name": "eval_wide_holdout",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/logs/eval_wide_holdout_attempt1.log",
+      "started_at": "2026-11-11T00:44:02.580821+08:00",
+      "gpu_worker": true,
+      "seconds": 203.43154944851995,
+      "finished_at": "2026-11-11T00:47:26.013192+08:00"
+    }
+  ],
+  "arms": {
+    "wide": {
+      "rounds": [
+        {
+          "round": 0,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-coverage-20261105-v3/training/wide/round_000/collect",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/training/action_q/round_000/train",
+          "action_q": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/training/action_q/round_000/action_q",
+          "sampling_seed": 162044110,
+          "parent_trajectories": 32,
+          "reused_collection": true,
+          "successes": 29,
+          "tokens": 839867,
+          "new_parent_tokens": 0,
+          "auxiliary_tokens": 371323,
+          "optimizer_updates": 4,
+          "effective_advantage_requests": 32,
+          "replaced_target_requests": 32,
+          "complete_q_task_groups": 8,
+          "unsupported_q_task_ids": [],
+          "completed_optimizer_steps": 4
+        },
+        {
+          "round": 1,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/training/action_q/round_001/collect",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/training/action_q/round_001/train",
+          "action_q": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/training/action_q/round_001/action_q",
+          "sampling_seed": 105743704,
+          "parent_trajectories": 32,
+          "reused_collection": false,
+          "successes": 23,
+          "tokens": 836979,
+          "new_parent_tokens": 836979,
+          "auxiliary_tokens": 389640,
+          "optimizer_updates": 4,
+          "effective_advantage_requests": 40,
+          "replaced_target_requests": 32,
+          "complete_q_task_groups": 8,
+          "unsupported_q_task_ids": [],
+          "completed_optimizer_steps": 8
+        },
+        {
+          "round": 2,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/training/action_q/round_002/collect",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/training/action_q/round_002/train",
+          "action_q": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/training/action_q/round_002/action_q",
+          "sampling_seed": 895545674,
+          "parent_trajectories": 32,
+          "reused_collection": false,
+          "successes": 19,
+          "tokens": 829539,
+          "new_parent_tokens": 829539,
+          "auxiliary_tokens": 365139,
+          "optimizer_updates": 4,
+          "effective_advantage_requests": 32,
+          "replaced_target_requests": 32,
+          "complete_q_task_groups": 8,
+          "unsupported_q_task_ids": [],
+          "completed_optimizer_steps": 12
+        },
+        {
+          "round": 3,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/training/action_q/round_003/collect",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/training/action_q/round_003/train",
+          "action_q": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/training/action_q/round_003/action_q",
+          "sampling_seed": 1509508032,
+          "parent_trajectories": 32,
+          "reused_collection": false,
+          "successes": 21,
+          "tokens": 827457,
+          "new_parent_tokens": 827457,
+          "auxiliary_tokens": 364363,
+          "optimizer_updates": 4,
+          "effective_advantage_requests": 32,
+          "replaced_target_requests": 32,
+          "complete_q_task_groups": 8,
+          "unsupported_q_task_ids": [],
+          "completed_optimizer_steps": 16
+        },
+        {
+          "round": 4,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/training/action_q/round_004/collect",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/training/action_q/round_004/train",
+          "action_q": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/training/action_q/round_004/action_q",
+          "sampling_seed": 1297759550,
+          "parent_trajectories": 32,
+          "reused_collection": false,
+          "successes": 29,
+          "tokens": 801160,
+          "new_parent_tokens": 801160,
+          "auxiliary_tokens": 368679,
+          "optimizer_updates": 4,
+          "effective_advantage_requests": 32,
+          "replaced_target_requests": 32,
+          "complete_q_task_groups": 8,
+          "unsupported_q_task_ids": [],
+          "completed_optimizer_steps": 20
+        },
+        {
+          "round": 5,
+          "collect": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/training/action_q/round_005/collect",
+          "train": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/training/action_q/round_005/train",
+          "action_q": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/training/action_q/round_005/action_q",
+          "sampling_seed": 1495393053,
+          "parent_trajectories": 32,
+          "reused_collection": false,
+          "successes": 15,
+          "tokens": 841105,
+          "new_parent_tokens": 841105,
+          "auxiliary_tokens": 371179,
+          "optimizer_updates": 4,
+          "effective_advantage_requests": 32,
+          "replaced_target_requests": 32,
+          "complete_q_task_groups": 8,
+          "unsupported_q_task_ids": [],
+          "completed_optimizer_steps": 24
+        }
+      ],
+      "final_adapter": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/training/action_q/round_005/train/adapter",
+      "completed_optimizer_steps": 24,
+      "actor_update_scope": "calculate_and_parse_failures",
+      "action_advantage_estimator": "parent_plus_independent_post_action_return_mean_v1"
+    }
+  },
+  "started_at": "2026-11-11T00:23:00.762578+08:00",
+  "formal_valid_access": false,
+  "formal_final_oos_access": false,
+  "synthetic_mandates": true,
+  "known_quote_primary": true,
+  "status": "COMPLETE",
+  "attempt": 1,
+  "updated_at": "2026-11-11T00:47:28.197480+08:00",
+  "experiment": "financial_action_q_training_v6",
+  "reserved_test_access": false,
+  "contract_sha256": "fbb22ac7c2ae47e4e4dc2ae42242829b5759b70a9a88c8ac73c2080530e4cb5b",
+  "recovery_allocation": {},
+  "source_receipts": {
+    "src/agents/mandate_repair_train.py": {
+      "sha256": "8b47ed22403b8abeed38fafb7062d23e9f58b94efb8de0654220d9d8c66fc12d",
+      "frozen_at": "2026-11-11T00:23:00.765080+08:00"
+    },
+    "src/agents/financial_action_q_train.py": {
+      "sha256": "d1d1a397de675cca11bff355fcaa82643bb421a413979baabf8495bed3922c6e",
+      "frozen_at": "2026-11-11T00:23:00.766324+08:00"
+    },
+    "src/agents/financial_action_q_collect.py": {
+      "sha256": "0016f86025ada11e4ee8e2f2617fc83ba0398b8868cfa8cd13ca16c90021065a",
+      "frozen_at": "2026-11-11T00:23:00.767497+08:00"
+    },
+    "src/agents/financial_mc_probe.py": {
+      "sha256": "c36bd47b84faad47ab80195ecdd2a92b00497ae56ff677f6ebb527cdf8f30a97",
+      "frozen_at": "2026-11-11T00:23:00.768693+08:00"
+    },
+    "src/agents/financial_credit_probe.py": {
+      "sha256": "9929bde922f724f41ed586e28abd3eb928de70da53011c32683725419302eecf",
+      "frozen_at": "2026-11-11T00:23:00.769876+08:00"
+    },
+    "src/agents/financial_evidence_env.py": {
+      "sha256": "a9c17b524d072e84a3039437c7a2a4a20bb9513afa8432599bc91b5de5eba17c",
+      "frozen_at": "2026-11-11T00:23:00.770969+08:00"
+    },
+    "src/agents/same_prefix_online_collect.py": {
+      "sha256": "038a071cdf921ae7c1fb3feaa6696338cb69cc884acde729698ad3505b2c2af9",
+      "frozen_at": "2026-11-11T00:23:00.772189+08:00"
+    },
+    "src/agents/mandate_repair_collect.py": {
+      "sha256": "cf88a2df68844bdb7d0c999be49fefc91364de39b3ba6f5aebb7479af0f36e2e",
+      "frozen_at": "2026-11-11T00:25:34.103486+08:00"
+    },
+    "src/agents/mandate_repair_env.py": {
+      "sha256": "9fdc61814436909284388c95a2c55efa1127f55e1a81ffbcb817a4ddfddf8817",
+      "frozen_at": "2026-11-11T00:25:34.104508+08:00"
+    },
+    "src/agents/mandate_repair_metrics.py": {
+      "sha256": "18ed947291e1f436e3423764ae6bc372c43be274270584969808f4870ef0302d",
+      "frozen_at": "2026-11-11T00:25:34.105040+08:00"
+    },
+    "src/agents/mandate_repair_verifier.py": {
+      "sha256": "b20c79771f758ecce9bebc8bce8aa505794446e7d302b996c6fba7fa6c2d5a52",
+      "frozen_at": "2026-11-11T00:25:34.105658+08:00"
+    }
+  },
+  "controller_source": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-action-q-20261111-v6/frozen_sources/action_q_controller_attempt1.py",
+  "controller_source_sha256": "0e9e772451bbe2955b56c046307a6d5498763729eb8e49e649b256b735674c0e",
+  "current_stage": null,
+  "costs": {
+    "training_generation_tokens": 6366563,
+    "evaluation_generation_tokens": 1703189,
+    "total_new_generation_tokens": 8069752,
+    "gpu_stage_seconds": 1449.1410636901855,
+    "reused_reference_new_tokens": 0,
+    "failed_requests_included": true
+  },
+  "finished_at": "2026-11-11T00:47:26.743435+08:00",
+  "comparison": {
+    "planned_trajectories": 64,
+    "report_clusters": 16,
+    "comparisons": {
+      "sft": {
+        "wide_minus_reference_successes": -1,
+        "wide_minus_reference_success_rate": -0.015625,
+        "reports": {
+          "MKTX/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "UPS/2015": {
+            "wide_successes": 3,
+            "reference_successes": 3,
+            "samples": 4
+          },
+          "MSI/2012": {
+            "wide_successes": 1,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "AAL/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "ETR/2004": {
+            "wide_successes": 0,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "AAL/2018": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "AWK/2017": {
+            "wide_successes": 2,
+            "reference_successes": 2,
+            "samples": 4
+          },
+          "AMT/2007": {
+            "wide_successes": 0,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "RL/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "UAA/2016": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "MSI/2007": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "PNC/2014": {
+            "wide_successes": 0,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "GPN/2010": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "PNC/2008": {
+            "wide_successes": 1,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "SNA/2012": {
+            "wide_successes": 3,
+            "reference_successes": 2,
+            "samples": 4
+          },
+          "MRO/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          }
+        },
+        "matched_sample_label_changes": [
+          {
+            "task_id": "financial-credit-10038-v0",
+            "replicate_index": 1,
+            "wide_success": true,
+            "reference_success": false
+          },
+          {
+            "task_id": "financial-credit-10114-v0",
+            "replicate_index": 1,
+            "wide_success": false,
+            "reference_success": true
+          },
+          {
+            "task_id": "financial-credit-10114-v1",
+            "replicate_index": 0,
+            "wide_success": false,
+            "reference_success": true
+          },
+          {
+            "task_id": "financial-credit-10114-v1",
+            "replicate_index": 1,
+            "wide_success": false,
+            "reference_success": true
+          },
+          {
+            "task_id": "financial-credit-10118-v1",
+            "replicate_index": 1,
+            "wide_success": true,
+            "reference_success": false
+          }
+        ],
+        "sample_label_changes_are_not_causal_fixes": true
+      },
+      "narrow_rloo": {
+        "wide_minus_reference_successes": 0,
+        "wide_minus_reference_success_rate": 0.0,
+        "reports": {
+          "MKTX/2014": {
+            "wide_successes": 4,
+            "reference_successes": 3,
+            "samples": 4
+          },
+          "UPS/2015": {
+            "wide_successes": 3,
+            "reference_successes": 3,
+            "samples": 4
+          },
+          "MSI/2012": {
+            "wide_successes": 1,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "AAL/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "ETR/2004": {
+            "wide_successes": 0,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "AAL/2018": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "AWK/2017": {
+            "wide_successes": 2,
+            "reference_successes": 2,
+            "samples": 4
+          },
+          "AMT/2007": {
+            "wide_successes": 0,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "RL/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "UAA/2016": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "MSI/2007": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "PNC/2014": {
+            "wide_successes": 0,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "GPN/2010": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "PNC/2008": {
+            "wide_successes": 1,
+            "reference_successes": 3,
+            "samples": 4
+          },
+          "SNA/2012": {
+            "wide_successes": 3,
+            "reference_successes": 3,
+            "samples": 4
+          },
+          "MRO/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          }
+        },
+        "matched_sample_label_changes": [
+          {
+            "task_id": "financial-credit-10027-v1",
+            "replicate_index": 1,
+            "wide_success": true,
+            "reference_success": false
+          },
+          {
+            "task_id": "financial-credit-10038-v0",
+            "replicate_index": 1,
+            "wide_success": true,
+            "reference_success": false
+          },
+          {
+            "task_id": "financial-credit-10114-v1",
+            "replicate_index": 0,
+            "wide_success": false,
+            "reference_success": true
+          },
+          {
+            "task_id": "financial-credit-10114-v1",
+            "replicate_index": 1,
+            "wide_success": false,
+            "reference_success": true
+          }
+        ],
+        "sample_label_changes_are_not_causal_fixes": true
+      },
+      "all_steps_wide": {
+        "wide_minus_reference_successes": 0,
+        "wide_minus_reference_success_rate": 0.0,
+        "reports": {
+          "MKTX/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "UPS/2015": {
+            "wide_successes": 3,
+            "reference_successes": 3,
+            "samples": 4
+          },
+          "MSI/2012": {
+            "wide_successes": 1,
+            "reference_successes": 1,
+            "samples": 4
+          },
+          "AAL/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "ETR/2004": {
+            "wide_successes": 0,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "AAL/2018": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "AWK/2017": {
+            "wide_successes": 2,
+            "reference_successes": 2,
+            "samples": 4
+          },
+          "AMT/2007": {
+            "wide_successes": 0,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "RL/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "UAA/2016": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "MSI/2007": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "PNC/2014": {
+            "wide_successes": 0,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "GPN/2010": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "PNC/2008": {
+            "wide_successes": 1,
+            "reference_successes": 1,
+            "samples": 4
+          },
+          "SNA/2012": {
+            "wide_successes": 3,
+            "reference_successes": 3,
+            "samples": 4
+          },
+          "MRO/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          }
+        },
+        "matched_sample_label_changes": [],
+        "sample_label_changes_are_not_causal_fixes": true
+      },
+      "v5_feedback": {
+        "wide_minus_reference_successes": -2,
+        "wide_minus_reference_success_rate": -0.03125,
+        "reports": {
+          "MKTX/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "UPS/2015": {
+            "wide_successes": 3,
+            "reference_successes": 3,
+            "samples": 4
+          },
+          "MSI/2012": {
+            "wide_successes": 1,
+            "reference_successes": 1,
+            "samples": 4
+          },
+          "AAL/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "ETR/2004": {
+            "wide_successes": 0,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "AAL/2018": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "AWK/2017": {
+            "wide_successes": 2,
+            "reference_successes": 2,
+            "samples": 4
+          },
+          "AMT/2007": {
+            "wide_successes": 0,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "RL/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "UAA/2016": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "MSI/2007": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "PNC/2014": {
+            "wide_successes": 0,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "GPN/2010": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "PNC/2008": {
+            "wide_successes": 1,
+            "reference_successes": 3,
+            "samples": 4
+          },
+          "SNA/2012": {
+            "wide_successes": 3,
+            "reference_successes": 3,
+            "samples": 4
+          },
+          "MRO/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          }
+        },
+        "matched_sample_label_changes": [
+          {
+            "task_id": "financial-credit-10114-v0",
+            "replicate_index": 1,
+            "wide_success": false,
+            "reference_success": true
+          },
+          {
+            "task_id": "financial-credit-10114-v1",
+            "replicate_index": 1,
+            "wide_success": false,
+            "reference_success": true
+          }
+        ],
+        "sample_label_changes_are_not_causal_fixes": true
+      }
+    },
+    "direction_screen_only": true,
+    "coverage_is_not_the_only_difference": true
+  },
+  "holder_restore": "REFILLING_76_GIB"
+}

@@ -1,0 +1,74 @@
+{
+  "authorized_steps": [
+    1,
+    2,
+    3
+  ],
+  "stages": [
+    {
+      "name": "v5_dev100",
+      "status": "COMPLETE",
+      "log": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-v5-dev-check-20261110/logs/v5_dev100_attempt1.log",
+      "started_at": "2026-11-10T23:42:44.909689+08:00",
+      "gpu_worker": true,
+      "seconds": 197.47878769785166,
+      "finished_at": "2026-11-10T23:46:02.389770+08:00"
+    }
+  ],
+  "arms": {},
+  "started_at": "2026-11-10T23:42:44.194194+08:00",
+  "formal_valid_access": false,
+  "formal_final_oos_access": false,
+  "synthetic_mandates": true,
+  "known_quote_primary": true,
+  "status": "COMPLETE",
+  "attempt": 1,
+  "updated_at": "2026-11-10T23:46:03.309243+08:00",
+  "experiment": "v5_fixed_dev100_readout",
+  "actor_training": false,
+  "reserved_test_access": false,
+  "contract_sha256": "aa88b8c229dea7251267ef71553b3d9a11090330dfc18997438f48fa5c59afe2",
+  "source_receipts": {
+    "src/agents/mandate_repair_collect.py": {
+      "sha256": "cf88a2df68844bdb7d0c999be49fefc91364de39b3ba6f5aebb7479af0f36e2e",
+      "frozen_at": "2026-11-10T23:42:44.902577+08:00"
+    },
+    "src/agents/financial_evidence_env.py": {
+      "sha256": "a9c17b524d072e84a3039437c7a2a4a20bb9513afa8432599bc91b5de5eba17c",
+      "frozen_at": "2026-11-10T23:42:44.903909+08:00"
+    },
+    "src/agents/mandate_repair_env.py": {
+      "sha256": "9fdc61814436909284388c95a2c55efa1127f55e1a81ffbcb817a4ddfddf8817",
+      "frozen_at": "2026-11-10T23:42:44.905344+08:00"
+    },
+    "src/agents/mandate_repair_metrics.py": {
+      "sha256": "18ed947291e1f436e3423764ae6bc372c43be274270584969808f4870ef0302d",
+      "frozen_at": "2026-11-10T23:42:44.906800+08:00"
+    },
+    "src/agents/mandate_repair_verifier.py": {
+      "sha256": "b20c79771f758ecce9bebc8bce8aa505794446e7d302b996c6fba7fa6c2d5a52",
+      "frozen_at": "2026-11-10T23:42:44.908127+08:00"
+    }
+  },
+  "current_stage": null,
+  "comparison": {
+    "success_difference": -2,
+    "success_increased_tasks": [
+      "financial-0400-v0"
+    ],
+    "success_decreased_tasks": [
+      "financial-0411-v0",
+      "financial-0414-v1",
+      "financial-0438-v1"
+    ],
+    "development_readout_only": true
+  },
+  "finished_at": "2026-11-10T23:46:02.703698+08:00",
+  "costs": {
+    "total_new_generation_tokens": 2559474,
+    "gpu_stage_seconds": 197.47878769785166,
+    "combined_v5_and_check_generation_tokens": 8332602,
+    "failed_requests_included": true,
+    "training_generation_tokens": 0
+  }
+}

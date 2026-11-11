@@ -2,8 +2,9 @@
 
 ## 1. 仓库与提交身份
 
-2026-11-05起，项目由FairyBlue独立维护，GitHub同步目标为私有仓库
+2026-11-05起，项目由FairyBlue独立维护，GitHub同步目标为
 [`FairyBlue/finance-credit-agent`](https://github.com/FairyBlue/finance-credit-agent)。
+2026-11-11按用户要求改为公开仓库，公开实现、研究过程与实际结果。
 不再向原合作者的仓库同步；原有提交历史及作者记录保留，后续提交使用FairyBlue身份。
 本地`origin`应指向`git@github.com:FairyBlue/finance-credit-agent.git`。
 
@@ -29,7 +30,8 @@ docs: summarize credit mechanism results
 
 Git保存代码、配置、文档、文档历史归档和选定的关键实验报告、汇总及身份收据。
 `runs/`默认忽略，已明确纳入版本控制的小型结果文件会继续跟踪；迁移时的文件清单和哈希见
-[关键结果快照](results/2026-11-05-backup/README.md)。
+[迁移快照](results/2026-11-05-backup/README.md)；最新补充见
+[11月11日结果快照](results/2026-11-11-public-update/README.md)。
 模型权重、optimizer、原始行情/财报数据、缓存、完整请求/响应与训练轨迹保留在本地。
 本仓库的关键结果不能单独恢复模型或完整训练现场。
 

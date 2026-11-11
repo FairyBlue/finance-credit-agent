@@ -1,0 +1,266 @@
+{
+  "captured_at": "2026-11-11T13:55:24+08:00",
+  "repository": "FairyBlue/finance-credit-agent",
+  "publication": "public",
+  "previous_commit": "8a841257927677c54b3ee4a29d3dce46f126dd70",
+  "file_count": 48,
+  "total_bytes": 578609,
+  "files": [
+    {
+      "path": "runs/agentic-rl-action-q-20261111-v6/CONCLUSION.md",
+      "bytes": 3612,
+      "sha256": "9bfc8a9ab188525dc44d447dd0bb7527c90c1fcdfea55f890f5bdf33bac2a93d"
+    },
+    {
+      "path": "runs/agentic-rl-action-q-20261111-v6/REPORT.md",
+      "bytes": 1972,
+      "sha256": "b0ea177f4a60d4ee305efcefeabf112e2762ccc29880ae638bb479b17c773cb4"
+    },
+    {
+      "path": "runs/agentic-rl-action-q-20261111-v6/completion.json",
+      "bytes": 28359,
+      "sha256": "c2a57205217b051607856bdfd735aa1fda2529389a73c92dc289bb368b5b8188"
+    },
+    {
+      "path": "runs/agentic-rl-action-q-20261111-v6/contract.json",
+      "bytes": 3263,
+      "sha256": "fbb22ac7c2ae47e4e4dc2ae42242829b5759b70a9a88c8ac73c2080530e4cb5b"
+    },
+    {
+      "path": "runs/agentic-rl-action-q-20261111-v6/data/manifest.json",
+      "bytes": 1771,
+      "sha256": "dae9035ee01d4df4f5d22b45f638bfa93635d88ff4f044139aabb393b76b85e3"
+    },
+    {
+      "path": "runs/agentic-rl-action-q-20261111-v6/decision.json",
+      "bytes": 12196,
+      "sha256": "8283e6a4143aec994aceb0609395df3191aded6d04154d7918888586e859d2ca"
+    },
+    {
+      "path": "runs/agentic-rl-action-q-20261111-v6/format_readout.json",
+      "bytes": 405,
+      "sha256": "1080e5638a76109356e85c2f570d28683b9c19f25024d4cc56f61d67f6db7899"
+    },
+    {
+      "path": "runs/agentic-rl-action-q-20261111-v6/frozen_sources/plan.md",
+      "bytes": 3768,
+      "sha256": "9e80685b2c440d5bc864d651ea9c6214af428a73fdbec495ca04857dd21eb5ff"
+    },
+    {
+      "path": "runs/agentic-rl-action-q-20261111-v6/readout.json",
+      "bytes": 19652,
+      "sha256": "5bb1f22fc2de0b9181c525a5c9063e0be7b05b9102607607b24dc59bc50353d1"
+    },
+    {
+      "path": "runs/agentic-rl-action-q-20261111-v6/state.json",
+      "bytes": 28359,
+      "sha256": "c2a57205217b051607856bdfd735aa1fda2529389a73c92dc289bb368b5b8188"
+    },
+    {
+      "path": "runs/agentic-rl-action-q-20261111-v6/summary/v6_signal_review.json",
+      "bytes": 8891,
+      "sha256": "37d7ebafb53ea4b49634da62ba95e5c2b4821102ffcba09e9d2d711152f10453"
+    },
+    {
+      "path": "runs/agentic-rl-coverage-20261105-v3/CONCLUSION.md",
+      "bytes": 2608,
+      "sha256": "11f14348f951dccee3c493754835b89e9588c3704563a3f26f22324f0bc861aa"
+    },
+    {
+      "path": "runs/agentic-rl-coverage-20261105-v3/REPORT.md",
+      "bytes": 995,
+      "sha256": "91f071d0c48b693e3ba49b3a109108c08beb340f90b98e762b0e82d2feac4970"
+    },
+    {
+      "path": "runs/agentic-rl-coverage-20261105-v3/completion.json",
+      "bytes": 17715,
+      "sha256": "278ef7329507bb4a330791efb43b5910a45afd7248a4d6b445bc0c6ce3c1bc73"
+    },
+    {
+      "path": "runs/agentic-rl-coverage-20261105-v3/contract.json",
+      "bytes": 1848,
+      "sha256": "f4abff85c91ab45f5e8b58b5c039e108bd3e5d6de686c27977f75d5bc6ac5183"
+    },
+    {
+      "path": "runs/agentic-rl-coverage-20261105-v3/data/manifest.json",
+      "bytes": 24437,
+      "sha256": "27ebfc7a0ec5cace4282db5fa3a9a62f19ab9b0c87e2dc1f59ff78e134516aba"
+    },
+    {
+      "path": "runs/agentic-rl-coverage-20261105-v3/decision.json",
+      "bytes": 7033,
+      "sha256": "d67844619d8d1d69d48e460da2295bff0e55a0abda429c9ded678cb05286225f"
+    },
+    {
+      "path": "runs/agentic-rl-coverage-20261105-v3/frozen_sources/plan.md",
+      "bytes": 5438,
+      "sha256": "6d2da2e9c00428e114d035ef09e1fa558b9b7c9530bbd768a8b0ac41a1be4672"
+    },
+    {
+      "path": "runs/agentic-rl-coverage-20261105-v3/readout.json",
+      "bytes": 11275,
+      "sha256": "515bbb73075808f79a4a8250f0de0c06e5e70542b665a037cf4fe95dd9aa9a45"
+    },
+    {
+      "path": "runs/agentic-rl-coverage-20261105-v3/state.json",
+      "bytes": 17715,
+      "sha256": "278ef7329507bb4a330791efb43b5910a45afd7248a4d6b445bc0c6ce3c1bc73"
+    },
+    {
+      "path": "runs/agentic-rl-coverage-20261105-v3/summary/v4_signal_diagnosis.json",
+      "bytes": 30905,
+      "sha256": "82eb6acfbb4a7b051463ad9d5aee11c91743498d9d7857c8629f22325709dc7d"
+    },
+    {
+      "path": "runs/agentic-rl-invalid-feedback-20261110-v5/CONCLUSION.md",
+      "bytes": 3577,
+      "sha256": "0691227e524eca122e4be6ccbfd530075d1cc36b241a6e3ad9ad8f0bd91d8ad6"
+    },
+    {
+      "path": "runs/agentic-rl-invalid-feedback-20261110-v5/REPORT.md",
+      "bytes": 1497,
+      "sha256": "b32e3fe8f2540dc9a1ba563a42cdb7681d56096dcb58479a6092765a8fd32e7f"
+    },
+    {
+      "path": "runs/agentic-rl-invalid-feedback-20261110-v5/completion.json",
+      "bytes": 24313,
+      "sha256": "009294c714711f082902e524937629fe2265bb1ef21f628cf5ec461c895ee54f"
+    },
+    {
+      "path": "runs/agentic-rl-invalid-feedback-20261110-v5/contract.json",
+      "bytes": 2965,
+      "sha256": "a0d9d22fe563560e1fde6e1cff829a6501b58606ea2ea84a56e3819ab03fca5b"
+    },
+    {
+      "path": "runs/agentic-rl-invalid-feedback-20261110-v5/data/manifest.json",
+      "bytes": 1786,
+      "sha256": "d93119950552b0a406b1291df212ef355ebedbe248c41023c624cf65f0bbf8b8"
+    },
+    {
+      "path": "runs/agentic-rl-invalid-feedback-20261110-v5/decision.json",
+      "bytes": 12766,
+      "sha256": "57e9298022bdceb68faaab58b0ffee221be5702fdffa8e24da179d3c2640abba"
+    },
+    {
+      "path": "runs/agentic-rl-invalid-feedback-20261110-v5/format_readout.json",
+      "bytes": 431,
+      "sha256": "405c280f863750ced44efce7fb34085a9ab6d7ba3b511dd9bcd44eac10ea48c7"
+    },
+    {
+      "path": "runs/agentic-rl-invalid-feedback-20261110-v5/frozen_sources/plan.md",
+      "bytes": 2525,
+      "sha256": "1ac80fdf397cb4a3dd2c8c69130ec192d9cd0bd1a548c3362c13b3539f205f5e"
+    },
+    {
+      "path": "runs/agentic-rl-invalid-feedback-20261110-v5/readout.json",
+      "bytes": 18671,
+      "sha256": "399ec4665774c127efae9e9db2cee87cea6e40fe3bdad4ab1c083c76068b351e"
+    },
+    {
+      "path": "runs/agentic-rl-invalid-feedback-20261110-v5/state.json",
+      "bytes": 24313,
+      "sha256": "009294c714711f082902e524937629fe2265bb1ef21f628cf5ec461c895ee54f"
+    },
+    {
+      "path": "runs/agentic-rl-invalid-feedback-20261110-v5/summary/shared_prefix_inventory.json",
+      "bytes": 158930,
+      "sha256": "71e4e63d907a40a3ed0579fbc6a33f670334d249de809d8593817952c3f6057d"
+    },
+    {
+      "path": "runs/agentic-rl-step-focus-20261110-v4/CONCLUSION.md",
+      "bytes": 3585,
+      "sha256": "bce41595cba268acfd9c9a08923ec3625e0d54f86e896715e7d32105cee0ab37"
+    },
+    {
+      "path": "runs/agentic-rl-step-focus-20261110-v4/REPORT.md",
+      "bytes": 1251,
+      "sha256": "b095ac312e27a5b2288d549957d724960d6f016ffd117a7856d1707747dc6682"
+    },
+    {
+      "path": "runs/agentic-rl-step-focus-20261110-v4/completion.json",
+      "bytes": 22228,
+      "sha256": "5eb285591db2f14dd77c3053f0a1963b5275ea85e65990a3b69aaa9136ab9a53"
+    },
+    {
+      "path": "runs/agentic-rl-step-focus-20261110-v4/contract.json",
+      "bytes": 2399,
+      "sha256": "47ea6638036abd958c0ffe9acfb0273f82a7bec81a2c8375eb05c63f514aea13"
+    },
+    {
+      "path": "runs/agentic-rl-step-focus-20261110-v4/data/manifest.json",
+      "bytes": 1773,
+      "sha256": "2764192c81d3813f754d029d08a1734e833ea2f3036269164840aba9786e9343"
+    },
+    {
+      "path": "runs/agentic-rl-step-focus-20261110-v4/decision.json",
+      "bytes": 11102,
+      "sha256": "4584b847c9163052341948cbc0deab9a389fc555f80723a29fe2b06cb358071b"
+    },
+    {
+      "path": "runs/agentic-rl-step-focus-20261110-v4/frozen_sources/plan.md",
+      "bytes": 3222,
+      "sha256": "657cf2f816747901dfce7ecb8115e986c2f36dc675ceb07b194be687b90ca089"
+    },
+    {
+      "path": "runs/agentic-rl-step-focus-20261110-v4/readout.json",
+      "bytes": 16208,
+      "sha256": "3036b874df5486a4ebe4b2fad9526a49458d90094949ca1a826e0edfe63dde1b"
+    },
+    {
+      "path": "runs/agentic-rl-step-focus-20261110-v4/state.json",
+      "bytes": 22228,
+      "sha256": "5eb285591db2f14dd77c3053f0a1963b5275ea85e65990a3b69aaa9136ab9a53"
+    },
+    {
+      "path": "runs/agentic-rl-v5-dev-check-20261110/CONCLUSION.md",
+      "bytes": 1726,
+      "sha256": "f9db78784097c8cd38c3b77f18b1300a5979550c9e972daff2fddf6f5c0a6e95"
+    },
+    {
+      "path": "runs/agentic-rl-v5-dev-check-20261110/REPORT.md",
+      "bytes": 732,
+      "sha256": "d77a597f5943b5b03f74d213cdb1b143d29961cb2435086f25acac38bca34ddb"
+    },
+    {
+      "path": "runs/agentic-rl-v5-dev-check-20261110/completion.json",
+      "bytes": 2489,
+      "sha256": "18cb791f0d1c8bdb8b3b1b68f4ed157c95a48d982a2947e4be0032ac23dfe079"
+    },
+    {
+      "path": "runs/agentic-rl-v5-dev-check-20261110/contract.json",
+      "bytes": 1750,
+      "sha256": "aa88b8c229dea7251267ef71553b3d9a11090330dfc18997438f48fa5c59afe2"
+    },
+    {
+      "path": "runs/agentic-rl-v5-dev-check-20261110/decision.json",
+      "bytes": 619,
+      "sha256": "c87a2a84695345841d3ce42bac8cabdcc478eaedbff28314095dc49d74302483"
+    },
+    {
+      "path": "runs/agentic-rl-v5-dev-check-20261110/readout.json",
+      "bytes": 817,
+      "sha256": "61c934397ce2cdd889238ddc73033e745e492f795dec1e158defde31a9659d34"
+    },
+    {
+      "path": "runs/agentic-rl-v5-dev-check-20261110/state.json",
+      "bytes": 2489,
+      "sha256": "18cb791f0d1c8bdb8b3b1b68f4ed157c95a48d982a2947e4be0032ac23dfe079"
+    }
+  ],
+  "omitted": [
+    {
+      "path": "runs/agentic-rl-v5-dev-check-20261110/eval/v5_dev/summary.json",
+      "reason": "larger than 1 MiB; remains local"
+    }
+  ],
+  "verification": {
+    "targeted_cpu_tests": "22 passed",
+    "history_and_worktree_credential_scan": {
+      "history_objects": 1894,
+      "scanned_payloads": 2642,
+      "archives_opened": 19,
+      "findings": []
+    },
+    "selected_results_credential_scan": "no matches"
+  }
+}

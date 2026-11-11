@@ -1,0 +1,396 @@
+{
+  "status": "COMPLETE",
+  "comparison": {
+    "planned_trajectories": 64,
+    "report_clusters": 16,
+    "comparisons": {
+      "sft": {
+        "wide_minus_reference_successes": -2,
+        "wide_minus_reference_success_rate": -0.03125,
+        "reports": {
+          "MKTX/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "UPS/2015": {
+            "wide_successes": 3,
+            "reference_successes": 3,
+            "samples": 4
+          },
+          "MSI/2012": {
+            "wide_successes": 2,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "AAL/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "ETR/2004": {
+            "wide_successes": 0,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "AAL/2018": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "AWK/2017": {
+            "wide_successes": 2,
+            "reference_successes": 2,
+            "samples": 4
+          },
+          "AMT/2007": {
+            "wide_successes": 0,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "RL/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "UAA/2016": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "MSI/2007": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "PNC/2014": {
+            "wide_successes": 0,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "GPN/2010": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "PNC/2008": {
+            "wide_successes": 0,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "SNA/2012": {
+            "wide_successes": 3,
+            "reference_successes": 2,
+            "samples": 4
+          },
+          "MRO/2014": {
+            "wide_successes": 3,
+            "reference_successes": 4,
+            "samples": 4
+          }
+        },
+        "matched_sample_label_changes": [
+          {
+            "task_id": "financial-credit-10038-v0",
+            "replicate_index": 1,
+            "wide_success": true,
+            "reference_success": false
+          },
+          {
+            "task_id": "financial-credit-10038-v1",
+            "replicate_index": 0,
+            "wide_success": true,
+            "reference_success": false
+          },
+          {
+            "task_id": "financial-credit-10114-v0",
+            "replicate_index": 0,
+            "wide_success": false,
+            "reference_success": true
+          },
+          {
+            "task_id": "financial-credit-10114-v0",
+            "replicate_index": 1,
+            "wide_success": false,
+            "reference_success": true
+          },
+          {
+            "task_id": "financial-credit-10114-v1",
+            "replicate_index": 0,
+            "wide_success": false,
+            "reference_success": true
+          },
+          {
+            "task_id": "financial-credit-10114-v1",
+            "replicate_index": 1,
+            "wide_success": false,
+            "reference_success": true
+          },
+          {
+            "task_id": "financial-credit-10118-v1",
+            "replicate_index": 1,
+            "wide_success": true,
+            "reference_success": false
+          },
+          {
+            "task_id": "financial-credit-10123-v0",
+            "replicate_index": 1,
+            "wide_success": false,
+            "reference_success": true
+          }
+        ],
+        "sample_label_changes_are_not_causal_fixes": true
+      },
+      "narrow_rloo": {
+        "wide_minus_reference_successes": -1,
+        "wide_minus_reference_success_rate": -0.015625,
+        "reports": {
+          "MKTX/2014": {
+            "wide_successes": 4,
+            "reference_successes": 3,
+            "samples": 4
+          },
+          "UPS/2015": {
+            "wide_successes": 3,
+            "reference_successes": 3,
+            "samples": 4
+          },
+          "MSI/2012": {
+            "wide_successes": 2,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "AAL/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "ETR/2004": {
+            "wide_successes": 0,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "AAL/2018": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "AWK/2017": {
+            "wide_successes": 2,
+            "reference_successes": 2,
+            "samples": 4
+          },
+          "AMT/2007": {
+            "wide_successes": 0,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "RL/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "UAA/2016": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "MSI/2007": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "PNC/2014": {
+            "wide_successes": 0,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "GPN/2010": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "PNC/2008": {
+            "wide_successes": 0,
+            "reference_successes": 3,
+            "samples": 4
+          },
+          "SNA/2012": {
+            "wide_successes": 3,
+            "reference_successes": 3,
+            "samples": 4
+          },
+          "MRO/2014": {
+            "wide_successes": 3,
+            "reference_successes": 4,
+            "samples": 4
+          }
+        },
+        "matched_sample_label_changes": [
+          {
+            "task_id": "financial-credit-10027-v1",
+            "replicate_index": 1,
+            "wide_success": true,
+            "reference_success": false
+          },
+          {
+            "task_id": "financial-credit-10038-v0",
+            "replicate_index": 1,
+            "wide_success": true,
+            "reference_success": false
+          },
+          {
+            "task_id": "financial-credit-10038-v1",
+            "replicate_index": 0,
+            "wide_success": true,
+            "reference_success": false
+          },
+          {
+            "task_id": "financial-credit-10114-v0",
+            "replicate_index": 0,
+            "wide_success": false,
+            "reference_success": true
+          },
+          {
+            "task_id": "financial-credit-10114-v1",
+            "replicate_index": 0,
+            "wide_success": false,
+            "reference_success": true
+          },
+          {
+            "task_id": "financial-credit-10114-v1",
+            "replicate_index": 1,
+            "wide_success": false,
+            "reference_success": true
+          },
+          {
+            "task_id": "financial-credit-10123-v0",
+            "replicate_index": 1,
+            "wide_success": false,
+            "reference_success": true
+          }
+        ],
+        "sample_label_changes_are_not_causal_fixes": true
+      },
+      "all_steps_wide": {
+        "wide_minus_reference_successes": -1,
+        "wide_minus_reference_success_rate": -0.015625,
+        "reports": {
+          "MKTX/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "UPS/2015": {
+            "wide_successes": 3,
+            "reference_successes": 3,
+            "samples": 4
+          },
+          "MSI/2012": {
+            "wide_successes": 2,
+            "reference_successes": 1,
+            "samples": 4
+          },
+          "AAL/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "ETR/2004": {
+            "wide_successes": 0,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "AAL/2018": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "AWK/2017": {
+            "wide_successes": 2,
+            "reference_successes": 2,
+            "samples": 4
+          },
+          "AMT/2007": {
+            "wide_successes": 0,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "RL/2014": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "UAA/2016": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "MSI/2007": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "PNC/2014": {
+            "wide_successes": 0,
+            "reference_successes": 0,
+            "samples": 4
+          },
+          "GPN/2010": {
+            "wide_successes": 4,
+            "reference_successes": 4,
+            "samples": 4
+          },
+          "PNC/2008": {
+            "wide_successes": 0,
+            "reference_successes": 1,
+            "samples": 4
+          },
+          "SNA/2012": {
+            "wide_successes": 3,
+            "reference_successes": 3,
+            "samples": 4
+          },
+          "MRO/2014": {
+            "wide_successes": 3,
+            "reference_successes": 4,
+            "samples": 4
+          }
+        },
+        "matched_sample_label_changes": [
+          {
+            "task_id": "financial-credit-10038-v1",
+            "replicate_index": 0,
+            "wide_success": true,
+            "reference_success": false
+          },
+          {
+            "task_id": "financial-credit-10114-v0",
+            "replicate_index": 0,
+            "wide_success": false,
+            "reference_success": true
+          },
+          {
+            "task_id": "financial-credit-10123-v0",
+            "replicate_index": 1,
+            "wide_success": false,
+            "reference_success": true
+          }
+        ],
+        "sample_label_changes_are_not_causal_fixes": true
+      }
+    },
+    "direction_screen_only": true,
+    "coverage_is_not_the_only_difference": true
+  },
+  "costs": {
+    "training_generation_tokens": 4131051,
+    "evaluation_generation_tokens": 1736436,
+    "total_new_generation_tokens": 5867487,
+    "gpu_stage_seconds": 802.4988216869533,
+    "reused_reference_new_tokens": 0,
+    "failed_requests_included": true
+  },
+  "next_action": "REVIEW_DIRECTION_FROM_FIXED_ENDPOINT",
+  "additional_sampling_automatic": false
+}

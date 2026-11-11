@@ -1,6 +1,8 @@
 # Agentic RL三步计划 v3（精简版）：先看扩覆盖有没有值得继续的迁移线索
 
-日期：2026-11-05（UTC+8）。**状态：RUNNING，用户已同意精简版，20:36启动首批采样。** 根据用户“方向证据够用就推进”的要求精简。原双臂草案未执行，已[封存](archive/pre_2026-11-05_v3_simplification.zip)；长期方向仍见[Research Brief](../RESEARCH_BRIEF.md)。[实际状态](../runs/agentic-rl-coverage-20261105-v3/state.json) · [冻结合同](../runs/agentic-rl-coverage-20261105-v3/contract.json)。
+日期：2026-11-05（UTC+8）；回顾：2026-11-10。**状态：COMPLETE，11月5日21:08完整结束。** 6批/192父轨迹、24次更新和64条终点评估均完成；宽覆盖42/64、旧窄覆盖42/64、SFT43/64，按“暂无线索”出口收尾。实际新增664.3万token、GPU阶段32.3分钟，无追加实验。[结果与回顾](../runs/agentic-rl-coverage-20261105-v3/CONCLUSION.md)。下文保留执行安排；原双臂草案未执行，已[封存](archive/pre_2026-11-05_v3_simplification.zip)，长期方向仍见[Research Brief](../RESEARCH_BRIEF.md)。[实际状态](../runs/agentic-rl-coverage-20261105-v3/state.json) · [冻结合同](../runs/agentic-rl-coverage-20261105-v3/contract.json)。
+
+**计划层级说明（11月10日补记）：本页第三步就是V3自身的终点评估，已完成，结果42/64。V4、V5是随后独立批准的两次小试，不属于本页第三步。** [本轮方向回顾](../runs/agentic-rl-invalid-feedback-20261110-v5/CONCLUSION.md)。
 
 **本轮目标：只新增一条宽覆盖短训，判断扩大训练覆盖是否值得继续投入。** 复用已有窄覆盖模型和SFT读数，不重新训练对照，不重新采起点。接受近似比较的剩余疑点，把资源留给下一项试验；证据足以决定下一步就推进。
 

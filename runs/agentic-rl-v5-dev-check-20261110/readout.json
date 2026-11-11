@@ -1,0 +1,34 @@
+{
+  "status": "COMPLETE",
+  "current_stage": null,
+  "reference_successes": 82,
+  "costs": {
+    "total_new_generation_tokens": 2559474,
+    "gpu_stage_seconds": 197.47878769785166,
+    "combined_v5_and_check_generation_tokens": 8332602,
+    "failed_requests_included": true,
+    "training_generation_tokens": 0
+  },
+  "comparison": {
+    "success_difference": -2,
+    "success_increased_tasks": [
+      "financial-0400-v0"
+    ],
+    "success_decreased_tasks": [
+      "financial-0411-v0",
+      "financial-0414-v1",
+      "financial-0438-v1"
+    ],
+    "development_readout_only": true
+  },
+  "evaluation": {
+    "successes": 80,
+    "complete": 100,
+    "planned": 100,
+    "metric_correct": 81,
+    "portfolio_correct": 96,
+    "condition_correct": 92,
+    "tokens": 2559474,
+    "evaluation_reused": false
+  }
+}

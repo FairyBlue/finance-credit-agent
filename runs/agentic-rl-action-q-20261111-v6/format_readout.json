@@ -1,0 +1,22 @@
+{
+  "sft": {
+    "invalid_output_requests": 1,
+    "no_submission": 0
+  },
+  "narrow_rloo": {
+    "invalid_output_requests": 1,
+    "no_submission": 0
+  },
+  "all_steps_wide": {
+    "invalid_output_requests": 15,
+    "no_submission": 2
+  },
+  "v5_feedback": {
+    "invalid_output_requests": 0,
+    "no_submission": 0
+  },
+  "v6_action_q": {
+    "invalid_output_requests": 21,
+    "no_submission": 3
+  }
+}

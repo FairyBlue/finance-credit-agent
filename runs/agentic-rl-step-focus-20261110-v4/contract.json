@@ -1,0 +1,56 @@
+{
+  "profile": "financial_calculation_focus_v4",
+  "actor_update_scope": "calculate_only",
+  "initial_adapter": "/home/tianming/projects/finance-credit-agent/runs/m3-financial-evidence-20261030-v2/teacher_sft/adapter",
+  "initial_adapter_sha256": "8c49dd2442077eeef62d903945c7f820f920f3d01231e2f0a923c9040fa8f796",
+  "data_manifest_sha256": "2764192c81d3813f754d029d08a1734e833ea2f3036269164840aba9786e9343",
+  "references": {
+    "sft": {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-transfer-probe-20261105-v1/eval/sft/sample",
+      "successes": 43,
+      "metric_correct": 43,
+      "outcomes_sha256": "c9acead3599757fc640f67e6125d687dfb535c876af557db34bb8eaa7e417c15"
+    },
+    "narrow_rloo": {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-transfer-probe-20261105-v1/eval/rloo_high/sample",
+      "successes": 42,
+      "metric_correct": 42,
+      "outcomes_sha256": "a9e042b960cee8a0389156f783985b5ef4371a6420aaa4ae68d659b011b9ae44"
+    },
+    "all_steps_wide": {
+      "path": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-coverage-20261105-v3/eval/wide/sample",
+      "successes": 42,
+      "metric_correct": 42,
+      "outcomes_sha256": "19c671cd14d9d4f38c3e1417ec09c9e822e1d5b75c44da7205e95264d43f734a"
+    }
+  },
+  "evaluation": {
+    "data_sha256": "d14c142cc64b59dc3e071f355094ac4911ae86ba97599e160bb2f162d80bdc5f",
+    "seed": 145,
+    "temperature": 1,
+    "max_context_tokens": 16384,
+    "max_response_tokens": 512,
+    "environment": "financial_evidence",
+    "decode_mode": "native"
+  },
+  "batches": 6,
+  "parent_trajectories": 192,
+  "new_parent_trajectories": 160,
+  "reused_first_collection": "/home/tianming/projects/finance-credit-agent/runs/agentic-rl-coverage-20261105-v3/training/wide/round_000/collect",
+  "reused_parent_tokens": 839867,
+  "reused_requests_sha256": "3ab6b84e38998989109ff7f71f5cbc00c53c0b62efb9f660efde12393d882aa9",
+  "reused_outcomes_sha256": "9ebc1be50146fa4bce9c73bea610273b6b8d2d606f8bbbcd050918d847fb5da1",
+  "learning_rate": 1e-05,
+  "optimizer_seed": 42,
+  "original_request_denominators": true,
+  "generation_caps": {
+    "training": 6000000,
+    "evaluation": 2200000,
+    "recovery": 800000,
+    "total": 9000000
+  },
+  "gpu_stage_seconds_cap": 7200,
+  "reserved_test_read": false,
+  "no_intermediate_evaluation": true,
+  "additional_sampling_automatic": false
+}

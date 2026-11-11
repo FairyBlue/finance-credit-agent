@@ -1,0 +1,244 @@
+{
+  "profile": "financial_action_q_v6_cpu_signal_review_v1",
+  "review_date": "2026-11-11",
+  "zero_tolerance": 1e-12,
+  "totals": {
+    "groups": 48,
+    "replaced_targets": 192,
+    "auxiliary_tokens": 2230323,
+    "optimizer_updates": 24,
+    "parent_successes": 136,
+    "parent_trajectories": 192,
+    "auxiliary_returns_different": 4,
+    "changed_raw_targets": 16,
+    "old_raw_nonzero": 80,
+    "new_raw_nonzero": 84,
+    "meaningful_sign_flips": 0,
+    "reported_strict_sign_changes": 3,
+    "all_success_groups": 24,
+    "parent_reward_varied_groups": 20,
+    "q_varied_groups": 21,
+    "mixed_success_groups": 15,
+    "all_failed_groups": 9
+  },
+  "distinct_actual_action_texts_per_k4": {
+    "1": 25,
+    "2": 13,
+    "3": 8,
+    "4": 2
+  },
+  "auxiliary_return_differences": [
+    {
+      "round": "round_001",
+      "task_id": "financial-credit-10077-v1",
+      "trajectory_key": "financial-credit-10077-v1/rep1",
+      "parent_return": 0.98,
+      "auxiliary_return": -0.025,
+      "q_mean": 0.4775,
+      "action": {
+        "arguments": {
+          "expression": "((HD:2011_high) - HD:2011_low)"
+        },
+        "name": "calculate"
+      }
+    },
+    {
+      "round": "round_002",
+      "task_id": "financial-credit-10035-v0",
+      "trajectory_key": "financial-credit-10035-v0/rep2",
+      "parent_return": 0.9835002751162536,
+      "auxiliary_return": -0.015000000000000003,
+      "q_mean": 0.4842501375581268,
+      "action": {
+        "arguments": {
+          "expression": "(200.0 / 400.0)"
+        },
+        "name": "calculate"
+      }
+    },
+    {
+      "round": "round_004",
+      "task_id": "financial-credit-10026-v0",
+      "trajectory_key": "financial-credit-10026-v0/rep3",
+      "parent_return": 0.9835002751162538,
+      "auxiliary_return": -0.025,
+      "q_mean": 0.4792501375581269,
+      "action": {
+        "arguments": {
+          "expression": "((493000.0 - 425000.0) / 425000.0)"
+        },
+        "name": "calculate"
+      }
+    },
+    {
+      "round": "round_005",
+      "task_id": "financial-credit-10040-v0",
+      "trajectory_key": "financial-credit-10040-v0/rep3",
+      "parent_return": -0.016499724883746267,
+      "auxiliary_return": -0.015000000000000003,
+      "q_mean": -0.015749862441873135,
+      "action": {
+        "arguments": {
+          "expression": "(40.0 - 88.0)"
+        },
+        "name": "calculate"
+      }
+    }
+  ],
+  "rounds": [
+    {
+      "round": "round_000",
+      "groups": 8,
+      "replaced_targets": 32,
+      "auxiliary_tokens": 371323,
+      "optimizer_updates": 4,
+      "parent_successes": 29,
+      "parent_trajectories": 32,
+      "auxiliary_returns_different": 0,
+      "changed_raw_targets": 0,
+      "old_raw_nonzero": 12,
+      "new_raw_nonzero": 12,
+      "meaningful_sign_flips": 0,
+      "reported_strict_sign_changes": 0,
+      "all_success_groups": 5,
+      "parent_reward_varied_groups": 3,
+      "q_varied_groups": 3,
+      "mixed_success_groups": 3,
+      "source_sha256": {
+        "training/action_q/round_000/action_q/action_q_values.jsonl": "ecd407014def3507b06ac9f3357f07338e02c1bca3ae6e14d0579d9e3d6f28de",
+        "training/action_q/round_000/action_q/started.json": "b389341fdb205689535780467e194f225a68fc46dd8865a8ed74f94f1cb5dfed",
+        "training/action_q/round_000/train/summary.json": "8f63aa2c4d80738496444c6ad933e7cb93e673c694a84cb057ea01cb5f84a8b6"
+      }
+    },
+    {
+      "round": "round_001",
+      "groups": 8,
+      "replaced_targets": 32,
+      "auxiliary_tokens": 389640,
+      "optimizer_updates": 4,
+      "parent_successes": 23,
+      "parent_trajectories": 32,
+      "auxiliary_returns_different": 1,
+      "changed_raw_targets": 4,
+      "old_raw_nonzero": 8,
+      "new_raw_nonzero": 8,
+      "meaningful_sign_flips": 0,
+      "reported_strict_sign_changes": 0,
+      "all_success_groups": 5,
+      "parent_reward_varied_groups": 2,
+      "q_varied_groups": 2,
+      "all_failed_groups": 2,
+      "mixed_success_groups": 1,
+      "source_sha256": {
+        "training/action_q/round_001/action_q/action_q_values.jsonl": "440e49c96da048ca3b5f9ecf6e3ed0804924387733663abb180e65f98ae80fa0",
+        "training/action_q/round_001/action_q/started.json": "04fd4c5df09d2b4352806ea3c88da2fd021f9343ce7922ffee971e8d91720755",
+        "training/action_q/round_001/train/summary.json": "ddf64d1e9e09e08ce803b0bb521335d302d88fe2b8b0afa11464983b630a1840"
+      }
+    },
+    {
+      "round": "round_002",
+      "groups": 8,
+      "replaced_targets": 32,
+      "auxiliary_tokens": 365139,
+      "optimizer_updates": 4,
+      "parent_successes": 19,
+      "parent_trajectories": 32,
+      "auxiliary_returns_different": 1,
+      "changed_raw_targets": 4,
+      "old_raw_nonzero": 24,
+      "new_raw_nonzero": 24,
+      "meaningful_sign_flips": 0,
+      "reported_strict_sign_changes": 0,
+      "all_success_groups": 2,
+      "parent_reward_varied_groups": 6,
+      "q_varied_groups": 6,
+      "mixed_success_groups": 5,
+      "all_failed_groups": 1,
+      "source_sha256": {
+        "training/action_q/round_002/action_q/action_q_values.jsonl": "e5d12c333c36c88fb706a97433867ba77915ae01fdd0a0cedd44807949d6c2e3",
+        "training/action_q/round_002/action_q/started.json": "9cd461816f6db047b9ff6ad8c9233ecea72ced5e94cff2b6183f5885d781cc16",
+        "training/action_q/round_002/train/summary.json": "94ffc0fc0def4399230ed2d8ab8dec35d9c5c46324c789321755e7498fc972aa"
+      }
+    },
+    {
+      "round": "round_003",
+      "groups": 8,
+      "replaced_targets": 32,
+      "auxiliary_tokens": 364363,
+      "optimizer_updates": 4,
+      "parent_successes": 21,
+      "parent_trajectories": 32,
+      "auxiliary_returns_different": 0,
+      "changed_raw_targets": 0,
+      "old_raw_nonzero": 8,
+      "new_raw_nonzero": 8,
+      "meaningful_sign_flips": 0,
+      "reported_strict_sign_changes": 0,
+      "all_success_groups": 4,
+      "parent_reward_varied_groups": 2,
+      "q_varied_groups": 2,
+      "all_failed_groups": 2,
+      "mixed_success_groups": 2,
+      "source_sha256": {
+        "training/action_q/round_003/action_q/action_q_values.jsonl": "925fc84cf979f0e62b38b45faa43c479990276929d3e35dc495c1f5dacb41b93",
+        "training/action_q/round_003/action_q/started.json": "603288c273ba0320ae31fd8df4afb51dbdad43446f8982c887d238b0fc25ad32",
+        "training/action_q/round_003/train/summary.json": "dd1027c35813015b5079dd63c3e7be444dbf76f64f2b2b7a976840853477e693"
+      }
+    },
+    {
+      "round": "round_004",
+      "groups": 8,
+      "replaced_targets": 32,
+      "auxiliary_tokens": 368679,
+      "optimizer_updates": 4,
+      "parent_successes": 29,
+      "parent_trajectories": 32,
+      "auxiliary_returns_different": 1,
+      "changed_raw_targets": 4,
+      "old_raw_nonzero": 12,
+      "new_raw_nonzero": 16,
+      "meaningful_sign_flips": 0,
+      "reported_strict_sign_changes": 3,
+      "all_success_groups": 5,
+      "parent_reward_varied_groups": 3,
+      "q_varied_groups": 4,
+      "mixed_success_groups": 3,
+      "source_sha256": {
+        "training/action_q/round_004/action_q/action_q_values.jsonl": "1e374d6b2b5eaf7bc6e11df62ed99791c4b56b080dd2d270f9bd18b12e2a1c4d",
+        "training/action_q/round_004/action_q/started.json": "234b1aa2ae0b0a25562bf1f25cf2099cc4075ba085779456112e0176875200db",
+        "training/action_q/round_004/train/summary.json": "cef66c5acd90e485ea34292ea790b9131764e7345e04a38784318423c62df88d"
+      }
+    },
+    {
+      "round": "round_005",
+      "groups": 8,
+      "replaced_targets": 32,
+      "auxiliary_tokens": 371179,
+      "optimizer_updates": 4,
+      "parent_successes": 15,
+      "parent_trajectories": 32,
+      "auxiliary_returns_different": 1,
+      "changed_raw_targets": 4,
+      "old_raw_nonzero": 16,
+      "new_raw_nonzero": 16,
+      "meaningful_sign_flips": 0,
+      "reported_strict_sign_changes": 0,
+      "all_success_groups": 3,
+      "parent_reward_varied_groups": 4,
+      "q_varied_groups": 4,
+      "mixed_success_groups": 1,
+      "all_failed_groups": 4,
+      "source_sha256": {
+        "training/action_q/round_005/action_q/action_q_values.jsonl": "f6c5d8e0667c886eaa17e44659fa107a25b98970c5041cb3ccf3911517b792a9",
+        "training/action_q/round_005/action_q/started.json": "614b6ed24f15af80484a3374aa8d559abca28cbbaa0ee8297ee37bfacca66d22",
+        "training/action_q/round_005/train/summary.json": "bcc356cac26ba693318b3a69dd6f95943d0d16cd232cf4dec4cfc72b56416019"
+      }
+    }
+  ],
+  "notes": [
+    "Counts rebuilt from raw Q records and CPU trainer build_batch; no generation or parameter updates in this review.",
+    "Strict sign changes include floating-point values near zero; meaningful_sign_flips applies the stated tolerance.",
+    "Different action text does not guarantee semantically different actions.",
+    "The active launch controller is the archived attempt1 snapshot; later workspace differences were report-only and are recorded under frozen_sources/."
+  ]
+}

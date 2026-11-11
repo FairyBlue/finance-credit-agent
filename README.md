@@ -1,41 +1,72 @@
 # finance-credit-agent
 
-Start with the [unified research plan](RESEARCH_BRIEF.md) and
-[current status](docs/CURRENT_STATUS.md), then use the
-[document index](docs/README.md) for results and background. Completed plans and detailed
-reports are consolidated by topic; exact historical originals are in the [archive](docs/archive/README.md).
+An open research log and working implementation for training multi-step tool agents on
+financial evidence, verification, and recovery tasks. The research question is whether better
+step-level advantages and training-sample allocation can improve actual learning under a limited
+interaction budget.
 
-The long-term question is how to estimate useful step-level advantages and allocate limited
-training samples for multi-step tool agents in an Agent-R1-style RL setting. Financial evidence,
-verification and recovery provide the current task environment. The October 30 financial
-workflow SFT reached 82/100 Dev and 72/100 held-out tasks. A subsequent paired probe found some
-local information effects but did not pass its preset training gate; no four-arm training followed.
-The [completed first MC cycle](docs/2026-10-30_AGENTIC_RL_THREE_STEP_PLAN.md) connected independent
-MC state baselines to real updates and compared ordinary RLOO, uniform MC and one allocation
-candidate from the same strong SFT. Dev success was 82/100 for SFT,
-80/100 for RLOO, 82/100 for uniform MC and 81/100 for priority MC. The preset gate stopped
-further confirmation; the new Test was not evaluated. See the [research review](runs/agentic-rl-mc-20261030-v1/RESEARCH_REVIEW.md).
-Step-credit learning benefits remain unproven; the historical market Final OOS remains unopened.
+This repository includes the implementation, dated experiment plans, working demonstrations,
+cost accounting, and results through **November 11, 2026**. The current experiments have not
+established a reliable learning or transfer advantage from the tested credit methods.
 
-The [three-step plan v2](docs/2026-10-30_AGENTIC_RL_THREE_STEP_PLAN_V2.md) is complete. High-LR
-RLOO improved the selected Train panel from 41/64 to 59/64, with report holdout still 22/32
-and Dev 80/100 versus SFT 82/100. The final targeted MC comparison scored 40/64 against
-ordinary RLOO 42/64; both used 96 parent trajectories and 12 updates, with 14 MC baselines.
-A [supplementary holdout sampling check](docs/2026-11-05_HELDOUT_SAMPLING_PROBE.md) also completed:
-high-LR RLOO 42/64 against SFT 43/64. These limited results establish local learning responsiveness,
-but no transfer or MC learning gain. The [complete report](runs/agentic-rl-learning-20261030-v2/REPORT.md)
-and [research review](runs/agentic-rl-learning-20261030-v2/RESEARCH_REVIEW.md) preserve scope and costs.
-The combined generation cost was 40,053,793 tokens and GPU-stage wall time about 2.91 hours,
-inside the original 44M/12-hour total allowance. New Test and historical market Final OOS remain unopened.
+## What is implemented
 
-The Brief holds long-term goals; dated plans in `docs/` hold rolling tasks and budgets. Review
-progress against the Brief after each completed three-step cycle or when key evidence changes.
+- Financial-report tool environments with retrieval, calculation, evidence checks, conditional
+  decisions, and recovery from invalid requests; historical trading environments also include
+  point-in-time observations and a shared execution ledger.
+- A Qwen3-4B supervised baseline and real RL rollout/update pipelines, including RLOO,
+  step-focused updates, invalid-output feedback, MC state baselines, and action-Q continuations.
+- Frozen run contracts, model/source identity receipts, paired comparisons, token and GPU-time
+  accounting, and CPU tests for the implemented mechanisms.
+- Concrete execution examples, including [paired financial-report decisions](runs/m3-financial-evidence-20261030-v2/examples/paired_demo.md),
+  plus [historical mechanism investigations](docs/history/CREDIT_ORACLE_DIAGNOSTICS.md).
 
-Installation is in [SETUP.md](SETUP.md); repository maintenance is described in
-[COLLABORATION.md](docs/COLLABORATION.md). The private repository is
-[FairyBlue/finance-credit-agent](https://github.com/FairyBlue/finance-credit-agent).
-Selected key reports and result receipts are included in the
-[November 5 migration snapshot](docs/results/2026-11-05-backup/README.md).
+## Results and current status
+
+The full financial-workflow SFT reached **82/100 Dev and 72/100 on its original held-out tasks**.
+These are financial-report tool tasks, not evidence of market trading profits. See the
+[task, baselines, and limitations](runs/m3-financial-evidence-20261030-v2/CONCLUSION.md).
+
+The later development-time sampling panel contains 32 tasks from 16 reports, with two samples
+per task. Its results are separate from the original 100-task evaluation above:
+
+| Configuration | Complete success / 64 | Evidence |
+|---|---:|---|
+| Original strong SFT | 43 | [Reference sampling probe](runs/agentic-rl-transfer-probe-20261105-v1/REPORT.md) |
+| Narrow-coverage RLOO | 42 | [Reference sampling probe](runs/agentic-rl-transfer-probe-20261105-v1/REPORT.md) |
+| V3: wider training coverage | 42 | [Report and conclusion](runs/agentic-rl-coverage-20261105-v3/CONCLUSION.md) |
+| V4: calculate-response updates | 41 | [Report and conclusion](runs/agentic-rl-step-focus-20261110-v4/CONCLUSION.md) |
+| V5: include invalid-output feedback | 44 | [Report and conclusion](runs/agentic-rl-invalid-feedback-20261110-v5/CONCLUSION.md) |
+| V6: action-Q with an extra continuation | 42 | [Report and conclusion](runs/agentic-rl-action-q-20261111-v6/CONCLUSION.md) |
+
+These are limited development comparisons with reused controls and different generation costs,
+not independent confirmation or a strict equal-compute benchmark. The V5 follow-up scored
+80/100 on Dev against SFT 82/100, so the original SFT remains the base model.
+In V6, all six batches, 192 parent exposures, 24 updates, and 64 evaluations completed;
+188 of 192 extra same-action continuations returned the same reward as the original successor,
+and only 16 target raw advantages changed. The tested configuration is closed without a gain;
+this does not establish that RL or credit assignment is ineffective in general.
+
+Earlier [MC learning comparisons](runs/agentic-rl-mc-20261030-v1/REPORT.md) and the
+[V2 learning study](runs/agentic-rl-learning-20261030-v2/REPORT.md) also retain their actual
+results and costs, including training-panel improvement without established report transfer.
+The new financial Test and historical market Final OOS remain unopened in the current series.
+
+## Where to start
+
+- [Current status](docs/CURRENT_STATUS.md): completed experiments, decisions, and evidence links.
+- [Financial research brief](RESEARCH_BRIEF.md): the current research direction and evidence boundaries.
+- [Research Brief 2.0](RESEARCH_BRIEF2.0.md): a future RAGEN-based alternative; no experiments have started.
+  Financial exploration remains the current priority.
+- [Document index](docs/README.md): plans, historical summaries, and archived originals.
+- [Latest result snapshot](docs/results/2026-11-11-public-update/README.md): the selected V3–V6 reports,
+  summaries, and receipts included in this update.
+- [Setup](SETUP.md) and [maintenance](docs/COLLABORATION.md): installation and repository workflow.
+
+The repository is [FairyBlue/finance-credit-agent](https://github.com/FairyBlue/finance-credit-agent).
+Selected small result artifacts are tracked at their original `runs/` paths. Model weights,
+optimizer states, raw datasets, and full rollout collections stay outside the source checkout;
+this repository alone does not restore a complete training run.
 
 ## Historical trading-credit design and implemented mechanism
 
@@ -151,4 +182,4 @@ For any resumption of the historical trading-credit experiment, freeze the selec
 M2−M1 superiority statistic under the existing protocol. Beating A1/A2 without beating M1 cannot
 establish a credit-assignment contribution. M3 requires its own preregistration and schedule-matched
 sham control. Current work instead follows the [long-term RL Brief](RESEARCH_BRIEF.md) and the
-separate [rolling three-step plan v2](docs/2026-10-30_AGENTIC_RL_THREE_STEP_PLAN_V2.md).
+[current status and experiment decisions](docs/CURRENT_STATUS.md).

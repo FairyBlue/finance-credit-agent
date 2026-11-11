@@ -1,0 +1,3615 @@
+{
+  "profile": "historical_k4_shared_target_prefix_inventory_v1",
+  "generated_at_utc": "2026-11-10T15:42:08.838869+00:00",
+  "selection_rule": "first recorded pre-action request whose public history has target_report_reads > 0 and calculation_returns == 0; no next action or terminal result used",
+  "history_hash_rule": "sha256 of UTF-8 canonical JSON(messages): sorted keys, ensure_ascii=False, compact separators",
+  "feature_source": {
+    "path": "src/agents/financial_mc_selection.py",
+    "sha256": "81f74c566e0da485c4a24067c3151f84ce23a1773ee09a9c361f8a061ca0091e"
+  },
+  "gpu_or_new_sampling": false,
+  "runs": {
+    "agentic-rl-coverage-20261105-v3": {
+      "groups": [
+        {
+          "batch": 0,
+          "task_id": "financial-credit-10126-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10126-v0/rep0",
+              "request_key": "financial-credit-10126-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "8ed25876fe25936a2ff72648abf4a1991f8ca2bf15c5eb7128f8365936790388"
+            },
+            {
+              "trajectory_key": "financial-credit-10126-v0/rep1",
+              "request_key": "financial-credit-10126-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "8ed25876fe25936a2ff72648abf4a1991f8ca2bf15c5eb7128f8365936790388"
+            },
+            {
+              "trajectory_key": "financial-credit-10126-v0/rep2",
+              "request_key": "financial-credit-10126-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "8ed25876fe25936a2ff72648abf4a1991f8ca2bf15c5eb7128f8365936790388"
+            },
+            {
+              "trajectory_key": "financial-credit-10126-v0/rep3",
+              "request_key": "financial-credit-10126-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "8ed25876fe25936a2ff72648abf4a1991f8ca2bf15c5eb7128f8365936790388"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "8ed25876fe25936a2ff72648abf4a1991f8ca2bf15c5eb7128f8365936790388"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 0,
+          "task_id": "financial-credit-10126-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10126-v1/rep0",
+              "request_key": "financial-credit-10126-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "f08be7326eb76ba9f143b4fbc7357de389eb851c5d3db3444fa8e814a4f0ba50"
+            },
+            {
+              "trajectory_key": "financial-credit-10126-v1/rep1",
+              "request_key": "financial-credit-10126-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "f08be7326eb76ba9f143b4fbc7357de389eb851c5d3db3444fa8e814a4f0ba50"
+            },
+            {
+              "trajectory_key": "financial-credit-10126-v1/rep2",
+              "request_key": "financial-credit-10126-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "f08be7326eb76ba9f143b4fbc7357de389eb851c5d3db3444fa8e814a4f0ba50"
+            },
+            {
+              "trajectory_key": "financial-credit-10126-v1/rep3",
+              "request_key": "financial-credit-10126-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "f08be7326eb76ba9f143b4fbc7357de389eb851c5d3db3444fa8e814a4f0ba50"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "f08be7326eb76ba9f143b4fbc7357de389eb851c5d3db3444fa8e814a4f0ba50"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 0,
+          "task_id": "financial-credit-10119-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10119-v0/rep0",
+              "request_key": "financial-credit-10119-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "c1a29919eb7292ad9a794928c5746706b6a9badd510426842b60a49b21ab2c0f"
+            },
+            {
+              "trajectory_key": "financial-credit-10119-v0/rep1",
+              "request_key": "financial-credit-10119-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "c1a29919eb7292ad9a794928c5746706b6a9badd510426842b60a49b21ab2c0f"
+            },
+            {
+              "trajectory_key": "financial-credit-10119-v0/rep2",
+              "request_key": "financial-credit-10119-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "c1a29919eb7292ad9a794928c5746706b6a9badd510426842b60a49b21ab2c0f"
+            },
+            {
+              "trajectory_key": "financial-credit-10119-v0/rep3",
+              "request_key": "financial-credit-10119-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "c1a29919eb7292ad9a794928c5746706b6a9badd510426842b60a49b21ab2c0f"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "c1a29919eb7292ad9a794928c5746706b6a9badd510426842b60a49b21ab2c0f"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 0,
+          "task_id": "financial-credit-10119-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10119-v1/rep0",
+              "request_key": "financial-credit-10119-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "413ad55410b8db5a0b7436f786d2a8fe6bc883a018047441c6b305781a875fb8"
+            },
+            {
+              "trajectory_key": "financial-credit-10119-v1/rep1",
+              "request_key": "financial-credit-10119-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "413ad55410b8db5a0b7436f786d2a8fe6bc883a018047441c6b305781a875fb8"
+            },
+            {
+              "trajectory_key": "financial-credit-10119-v1/rep2",
+              "request_key": "financial-credit-10119-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "413ad55410b8db5a0b7436f786d2a8fe6bc883a018047441c6b305781a875fb8"
+            },
+            {
+              "trajectory_key": "financial-credit-10119-v1/rep3",
+              "request_key": "financial-credit-10119-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "413ad55410b8db5a0b7436f786d2a8fe6bc883a018047441c6b305781a875fb8"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "413ad55410b8db5a0b7436f786d2a8fe6bc883a018047441c6b305781a875fb8"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 0,
+          "task_id": "financial-credit-10052-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10052-v0/rep0",
+              "request_key": "financial-credit-10052-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "20f91dfe122594ae03b450905c207f61221b73f9fd77fb65dff0471da996f4a0"
+            },
+            {
+              "trajectory_key": "financial-credit-10052-v0/rep1",
+              "request_key": "financial-credit-10052-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "20f91dfe122594ae03b450905c207f61221b73f9fd77fb65dff0471da996f4a0"
+            },
+            {
+              "trajectory_key": "financial-credit-10052-v0/rep2",
+              "request_key": "financial-credit-10052-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "20f91dfe122594ae03b450905c207f61221b73f9fd77fb65dff0471da996f4a0"
+            },
+            {
+              "trajectory_key": "financial-credit-10052-v0/rep3",
+              "request_key": "financial-credit-10052-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "20f91dfe122594ae03b450905c207f61221b73f9fd77fb65dff0471da996f4a0"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "20f91dfe122594ae03b450905c207f61221b73f9fd77fb65dff0471da996f4a0"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 0,
+          "task_id": "financial-credit-10052-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10052-v1/rep0",
+              "request_key": "financial-credit-10052-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "ace92f6af8fc772334cf7ec0829207b83b62299f09f5b3973d3e917e73c871dc"
+            },
+            {
+              "trajectory_key": "financial-credit-10052-v1/rep1",
+              "request_key": "financial-credit-10052-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "ace92f6af8fc772334cf7ec0829207b83b62299f09f5b3973d3e917e73c871dc"
+            },
+            {
+              "trajectory_key": "financial-credit-10052-v1/rep2",
+              "request_key": "financial-credit-10052-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "ace92f6af8fc772334cf7ec0829207b83b62299f09f5b3973d3e917e73c871dc"
+            },
+            {
+              "trajectory_key": "financial-credit-10052-v1/rep3",
+              "request_key": "financial-credit-10052-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "ace92f6af8fc772334cf7ec0829207b83b62299f09f5b3973d3e917e73c871dc"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "ace92f6af8fc772334cf7ec0829207b83b62299f09f5b3973d3e917e73c871dc"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 0,
+          "task_id": "financial-credit-10090-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10090-v0/rep0",
+              "request_key": "financial-credit-10090-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "c52d90632a3f76d84c8520abf1004308dcc428b4e01224afac116f776c6a4c4e"
+            },
+            {
+              "trajectory_key": "financial-credit-10090-v0/rep1",
+              "request_key": "financial-credit-10090-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "c52d90632a3f76d84c8520abf1004308dcc428b4e01224afac116f776c6a4c4e"
+            },
+            {
+              "trajectory_key": "financial-credit-10090-v0/rep2",
+              "request_key": "financial-credit-10090-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "c52d90632a3f76d84c8520abf1004308dcc428b4e01224afac116f776c6a4c4e"
+            },
+            {
+              "trajectory_key": "financial-credit-10090-v0/rep3",
+              "request_key": "financial-credit-10090-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "c52d90632a3f76d84c8520abf1004308dcc428b4e01224afac116f776c6a4c4e"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "c52d90632a3f76d84c8520abf1004308dcc428b4e01224afac116f776c6a4c4e"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 0,
+          "task_id": "financial-credit-10090-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10090-v1/rep0",
+              "request_key": "financial-credit-10090-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "405edfbd31ed2f8607251490fec19673cb7aaf99876766fce4030fbf9b808a95"
+            },
+            {
+              "trajectory_key": "financial-credit-10090-v1/rep1",
+              "request_key": "financial-credit-10090-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "405edfbd31ed2f8607251490fec19673cb7aaf99876766fce4030fbf9b808a95"
+            },
+            {
+              "trajectory_key": "financial-credit-10090-v1/rep2",
+              "request_key": "financial-credit-10090-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "405edfbd31ed2f8607251490fec19673cb7aaf99876766fce4030fbf9b808a95"
+            },
+            {
+              "trajectory_key": "financial-credit-10090-v1/rep3",
+              "request_key": "financial-credit-10090-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "405edfbd31ed2f8607251490fec19673cb7aaf99876766fce4030fbf9b808a95"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "405edfbd31ed2f8607251490fec19673cb7aaf99876766fce4030fbf9b808a95"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 1,
+          "task_id": "financial-credit-10024-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10024-v0/rep0",
+              "request_key": "financial-credit-10024-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "96ed7ea9223f71dae8c0ef729ac7394aa554786ce368224f9b632f7e0f6e9b5f"
+            },
+            {
+              "trajectory_key": "financial-credit-10024-v0/rep1",
+              "request_key": "financial-credit-10024-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "96ed7ea9223f71dae8c0ef729ac7394aa554786ce368224f9b632f7e0f6e9b5f"
+            },
+            {
+              "trajectory_key": "financial-credit-10024-v0/rep2",
+              "request_key": "financial-credit-10024-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "96ed7ea9223f71dae8c0ef729ac7394aa554786ce368224f9b632f7e0f6e9b5f"
+            },
+            {
+              "trajectory_key": "financial-credit-10024-v0/rep3",
+              "request_key": "financial-credit-10024-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "96ed7ea9223f71dae8c0ef729ac7394aa554786ce368224f9b632f7e0f6e9b5f"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "96ed7ea9223f71dae8c0ef729ac7394aa554786ce368224f9b632f7e0f6e9b5f"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 1,
+          "task_id": "financial-credit-10024-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10024-v1/rep0",
+              "request_key": "financial-credit-10024-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "42109656bc20435bd49f6d6c70493cb2d5648551ace0e516a6b3bce7627dc1fc"
+            },
+            {
+              "trajectory_key": "financial-credit-10024-v1/rep1",
+              "request_key": "financial-credit-10024-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "42109656bc20435bd49f6d6c70493cb2d5648551ace0e516a6b3bce7627dc1fc"
+            },
+            {
+              "trajectory_key": "financial-credit-10024-v1/rep2",
+              "request_key": "financial-credit-10024-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "42109656bc20435bd49f6d6c70493cb2d5648551ace0e516a6b3bce7627dc1fc"
+            },
+            {
+              "trajectory_key": "financial-credit-10024-v1/rep3",
+              "request_key": "financial-credit-10024-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "42109656bc20435bd49f6d6c70493cb2d5648551ace0e516a6b3bce7627dc1fc"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "42109656bc20435bd49f6d6c70493cb2d5648551ace0e516a6b3bce7627dc1fc"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 1,
+          "task_id": "financial-credit-10077-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10077-v0/rep0",
+              "request_key": "financial-credit-10077-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "efd9c87b026162e70d95f2dedd5c9ac67b1fb6aa25f20553eedf3b6bf8d32aa3"
+            },
+            {
+              "trajectory_key": "financial-credit-10077-v0/rep1",
+              "request_key": "financial-credit-10077-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "efd9c87b026162e70d95f2dedd5c9ac67b1fb6aa25f20553eedf3b6bf8d32aa3"
+            },
+            {
+              "trajectory_key": "financial-credit-10077-v0/rep2",
+              "request_key": "financial-credit-10077-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "efd9c87b026162e70d95f2dedd5c9ac67b1fb6aa25f20553eedf3b6bf8d32aa3"
+            },
+            {
+              "trajectory_key": "financial-credit-10077-v0/rep3",
+              "request_key": "financial-credit-10077-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "efd9c87b026162e70d95f2dedd5c9ac67b1fb6aa25f20553eedf3b6bf8d32aa3"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "efd9c87b026162e70d95f2dedd5c9ac67b1fb6aa25f20553eedf3b6bf8d32aa3"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 1,
+          "task_id": "financial-credit-10077-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10077-v1/rep0",
+              "request_key": "financial-credit-10077-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "96ae15dc901414d33b8219f80389e749f6c38dd35d5652505ae7b8fd4448d686"
+            },
+            {
+              "trajectory_key": "financial-credit-10077-v1/rep1",
+              "request_key": "financial-credit-10077-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "96ae15dc901414d33b8219f80389e749f6c38dd35d5652505ae7b8fd4448d686"
+            },
+            {
+              "trajectory_key": "financial-credit-10077-v1/rep2",
+              "request_key": "financial-credit-10077-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "96ae15dc901414d33b8219f80389e749f6c38dd35d5652505ae7b8fd4448d686"
+            },
+            {
+              "trajectory_key": "financial-credit-10077-v1/rep3",
+              "request_key": "financial-credit-10077-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "96ae15dc901414d33b8219f80389e749f6c38dd35d5652505ae7b8fd4448d686"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "96ae15dc901414d33b8219f80389e749f6c38dd35d5652505ae7b8fd4448d686"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 1,
+          "task_id": "financial-credit-10023-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10023-v0/rep0",
+              "request_key": "financial-credit-10023-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "0c6d28583e6d826e90816aa9e6e00f85fd0ff6d6539033bd5b057c8f02fa9e2f"
+            },
+            {
+              "trajectory_key": "financial-credit-10023-v0/rep1",
+              "request_key": "financial-credit-10023-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "0c6d28583e6d826e90816aa9e6e00f85fd0ff6d6539033bd5b057c8f02fa9e2f"
+            },
+            {
+              "trajectory_key": "financial-credit-10023-v0/rep2",
+              "request_key": "financial-credit-10023-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "0c6d28583e6d826e90816aa9e6e00f85fd0ff6d6539033bd5b057c8f02fa9e2f"
+            },
+            {
+              "trajectory_key": "financial-credit-10023-v0/rep3",
+              "request_key": "financial-credit-10023-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "0c6d28583e6d826e90816aa9e6e00f85fd0ff6d6539033bd5b057c8f02fa9e2f"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "0c6d28583e6d826e90816aa9e6e00f85fd0ff6d6539033bd5b057c8f02fa9e2f"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 1,
+          "task_id": "financial-credit-10023-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10023-v1/rep0",
+              "request_key": "financial-credit-10023-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "2de9aa439df809f3835a62d9a6e56594bafc0b8f2c64911f25530ca15258e584"
+            },
+            {
+              "trajectory_key": "financial-credit-10023-v1/rep1",
+              "request_key": "financial-credit-10023-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "2de9aa439df809f3835a62d9a6e56594bafc0b8f2c64911f25530ca15258e584"
+            },
+            {
+              "trajectory_key": "financial-credit-10023-v1/rep2",
+              "request_key": "financial-credit-10023-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "2de9aa439df809f3835a62d9a6e56594bafc0b8f2c64911f25530ca15258e584"
+            },
+            {
+              "trajectory_key": "financial-credit-10023-v1/rep3",
+              "request_key": "financial-credit-10023-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "2de9aa439df809f3835a62d9a6e56594bafc0b8f2c64911f25530ca15258e584"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "2de9aa439df809f3835a62d9a6e56594bafc0b8f2c64911f25530ca15258e584"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 1,
+          "task_id": "financial-credit-10061-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10061-v0/rep0",
+              "request_key": "financial-credit-10061-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "b14859d8739dced035990f2d5f57e4a90cbfac658650264e540bc2e5efb2eadb"
+            },
+            {
+              "trajectory_key": "financial-credit-10061-v0/rep1",
+              "request_key": "financial-credit-10061-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "b14859d8739dced035990f2d5f57e4a90cbfac658650264e540bc2e5efb2eadb"
+            },
+            {
+              "trajectory_key": "financial-credit-10061-v0/rep2",
+              "request_key": "financial-credit-10061-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "b14859d8739dced035990f2d5f57e4a90cbfac658650264e540bc2e5efb2eadb"
+            },
+            {
+              "trajectory_key": "financial-credit-10061-v0/rep3",
+              "request_key": "financial-credit-10061-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "b14859d8739dced035990f2d5f57e4a90cbfac658650264e540bc2e5efb2eadb"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "b14859d8739dced035990f2d5f57e4a90cbfac658650264e540bc2e5efb2eadb"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 1,
+          "task_id": "financial-credit-10061-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10061-v1/rep0",
+              "request_key": "financial-credit-10061-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "75557ebd76e2526e8259230cacf44ee2b77d89327749ad01a3cbe0ceed2e19d0"
+            },
+            {
+              "trajectory_key": "financial-credit-10061-v1/rep1",
+              "request_key": "financial-credit-10061-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "75557ebd76e2526e8259230cacf44ee2b77d89327749ad01a3cbe0ceed2e19d0"
+            },
+            {
+              "trajectory_key": "financial-credit-10061-v1/rep2",
+              "request_key": "financial-credit-10061-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "75557ebd76e2526e8259230cacf44ee2b77d89327749ad01a3cbe0ceed2e19d0"
+            },
+            {
+              "trajectory_key": "financial-credit-10061-v1/rep3",
+              "request_key": "financial-credit-10061-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "75557ebd76e2526e8259230cacf44ee2b77d89327749ad01a3cbe0ceed2e19d0"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "75557ebd76e2526e8259230cacf44ee2b77d89327749ad01a3cbe0ceed2e19d0"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 2,
+          "task_id": "financial-credit-10096-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10096-v0/rep0",
+              "request_key": "financial-credit-10096-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "b19c4b6a6a75774d4a0de31aa2d3010fd990eff17020f89fc4dac7e0d85feb59"
+            },
+            {
+              "trajectory_key": "financial-credit-10096-v0/rep1",
+              "request_key": "financial-credit-10096-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "b19c4b6a6a75774d4a0de31aa2d3010fd990eff17020f89fc4dac7e0d85feb59"
+            },
+            {
+              "trajectory_key": "financial-credit-10096-v0/rep2",
+              "request_key": "financial-credit-10096-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "b19c4b6a6a75774d4a0de31aa2d3010fd990eff17020f89fc4dac7e0d85feb59"
+            },
+            {
+              "trajectory_key": "financial-credit-10096-v0/rep3",
+              "request_key": "financial-credit-10096-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "b19c4b6a6a75774d4a0de31aa2d3010fd990eff17020f89fc4dac7e0d85feb59"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "b19c4b6a6a75774d4a0de31aa2d3010fd990eff17020f89fc4dac7e0d85feb59"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 2,
+          "task_id": "financial-credit-10096-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10096-v1/rep0",
+              "request_key": "financial-credit-10096-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "242a9c9eb80668a3f50161fc9365d9252b10acf2bc90deb14c37ad13b387df88"
+            },
+            {
+              "trajectory_key": "financial-credit-10096-v1/rep1",
+              "request_key": "financial-credit-10096-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "242a9c9eb80668a3f50161fc9365d9252b10acf2bc90deb14c37ad13b387df88"
+            },
+            {
+              "trajectory_key": "financial-credit-10096-v1/rep2",
+              "request_key": "financial-credit-10096-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "242a9c9eb80668a3f50161fc9365d9252b10acf2bc90deb14c37ad13b387df88"
+            },
+            {
+              "trajectory_key": "financial-credit-10096-v1/rep3",
+              "request_key": "financial-credit-10096-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "242a9c9eb80668a3f50161fc9365d9252b10acf2bc90deb14c37ad13b387df88"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "242a9c9eb80668a3f50161fc9365d9252b10acf2bc90deb14c37ad13b387df88"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 2,
+          "task_id": "financial-credit-10018-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10018-v0/rep0",
+              "request_key": "financial-credit-10018-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "0c0c38c4e4146849aca3e335af5547a72f12e3b5684b7d3f6e3756eb890280d2"
+            },
+            {
+              "trajectory_key": "financial-credit-10018-v0/rep1",
+              "request_key": "financial-credit-10018-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "0c0c38c4e4146849aca3e335af5547a72f12e3b5684b7d3f6e3756eb890280d2"
+            },
+            {
+              "trajectory_key": "financial-credit-10018-v0/rep2",
+              "request_key": "financial-credit-10018-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "0c0c38c4e4146849aca3e335af5547a72f12e3b5684b7d3f6e3756eb890280d2"
+            },
+            {
+              "trajectory_key": "financial-credit-10018-v0/rep3",
+              "request_key": "financial-credit-10018-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "0c0c38c4e4146849aca3e335af5547a72f12e3b5684b7d3f6e3756eb890280d2"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "0c0c38c4e4146849aca3e335af5547a72f12e3b5684b7d3f6e3756eb890280d2"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 2,
+          "task_id": "financial-credit-10018-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10018-v1/rep0",
+              "request_key": "financial-credit-10018-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "c0ef029524277c728020e0cfcbc042dc07beb894b4140395712e9bb9627bbb8d"
+            },
+            {
+              "trajectory_key": "financial-credit-10018-v1/rep1",
+              "request_key": "financial-credit-10018-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "c0ef029524277c728020e0cfcbc042dc07beb894b4140395712e9bb9627bbb8d"
+            },
+            {
+              "trajectory_key": "financial-credit-10018-v1/rep2",
+              "request_key": "financial-credit-10018-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "c0ef029524277c728020e0cfcbc042dc07beb894b4140395712e9bb9627bbb8d"
+            },
+            {
+              "trajectory_key": "financial-credit-10018-v1/rep3",
+              "request_key": "financial-credit-10018-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "c0ef029524277c728020e0cfcbc042dc07beb894b4140395712e9bb9627bbb8d"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "c0ef029524277c728020e0cfcbc042dc07beb894b4140395712e9bb9627bbb8d"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 2,
+          "task_id": "financial-credit-10069-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10069-v0/rep0",
+              "request_key": "financial-credit-10069-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "0342c9f7cf7b109e7610d659030fb21201dbb2aff9c92ce85d512354d0ee30bb"
+            },
+            {
+              "trajectory_key": "financial-credit-10069-v0/rep1",
+              "request_key": "financial-credit-10069-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "0342c9f7cf7b109e7610d659030fb21201dbb2aff9c92ce85d512354d0ee30bb"
+            },
+            {
+              "trajectory_key": "financial-credit-10069-v0/rep2",
+              "request_key": "financial-credit-10069-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "0342c9f7cf7b109e7610d659030fb21201dbb2aff9c92ce85d512354d0ee30bb"
+            },
+            {
+              "trajectory_key": "financial-credit-10069-v0/rep3",
+              "request_key": "financial-credit-10069-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "0342c9f7cf7b109e7610d659030fb21201dbb2aff9c92ce85d512354d0ee30bb"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "0342c9f7cf7b109e7610d659030fb21201dbb2aff9c92ce85d512354d0ee30bb"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 2,
+          "task_id": "financial-credit-10069-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10069-v1/rep0",
+              "request_key": "financial-credit-10069-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "575470e869684e36cbc55327338d4c51d9014844d4f80feae78cb4ef77e9c3d7"
+            },
+            {
+              "trajectory_key": "financial-credit-10069-v1/rep1",
+              "request_key": "financial-credit-10069-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "575470e869684e36cbc55327338d4c51d9014844d4f80feae78cb4ef77e9c3d7"
+            },
+            {
+              "trajectory_key": "financial-credit-10069-v1/rep2",
+              "request_key": "financial-credit-10069-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "575470e869684e36cbc55327338d4c51d9014844d4f80feae78cb4ef77e9c3d7"
+            },
+            {
+              "trajectory_key": "financial-credit-10069-v1/rep3",
+              "request_key": "financial-credit-10069-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "575470e869684e36cbc55327338d4c51d9014844d4f80feae78cb4ef77e9c3d7"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "575470e869684e36cbc55327338d4c51d9014844d4f80feae78cb4ef77e9c3d7"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 2,
+          "task_id": "financial-credit-10035-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10035-v0/rep0",
+              "request_key": "financial-credit-10035-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "3bb952f996fc5b132ed3e5f5dba4b0b4906228f5a677442de9a4f59d441624d2"
+            },
+            {
+              "trajectory_key": "financial-credit-10035-v0/rep1",
+              "request_key": "financial-credit-10035-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "3bb952f996fc5b132ed3e5f5dba4b0b4906228f5a677442de9a4f59d441624d2"
+            },
+            {
+              "trajectory_key": "financial-credit-10035-v0/rep2",
+              "request_key": "financial-credit-10035-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "3bb952f996fc5b132ed3e5f5dba4b0b4906228f5a677442de9a4f59d441624d2"
+            },
+            {
+              "trajectory_key": "financial-credit-10035-v0/rep3",
+              "request_key": "financial-credit-10035-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "3bb952f996fc5b132ed3e5f5dba4b0b4906228f5a677442de9a4f59d441624d2"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "3bb952f996fc5b132ed3e5f5dba4b0b4906228f5a677442de9a4f59d441624d2"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 2,
+          "task_id": "financial-credit-10035-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10035-v1/rep0",
+              "request_key": "financial-credit-10035-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "f68cb2d7387e1fb18e8385fb4162f1f866b76feb41432a9a03f0f173d3e71b13"
+            },
+            {
+              "trajectory_key": "financial-credit-10035-v1/rep1",
+              "request_key": "financial-credit-10035-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "f68cb2d7387e1fb18e8385fb4162f1f866b76feb41432a9a03f0f173d3e71b13"
+            },
+            {
+              "trajectory_key": "financial-credit-10035-v1/rep2",
+              "request_key": "financial-credit-10035-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "f68cb2d7387e1fb18e8385fb4162f1f866b76feb41432a9a03f0f173d3e71b13"
+            },
+            {
+              "trajectory_key": "financial-credit-10035-v1/rep3",
+              "request_key": "financial-credit-10035-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "f68cb2d7387e1fb18e8385fb4162f1f866b76feb41432a9a03f0f173d3e71b13"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "f68cb2d7387e1fb18e8385fb4162f1f866b76feb41432a9a03f0f173d3e71b13"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 3,
+          "task_id": "financial-credit-10066-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10066-v0/rep0",
+              "request_key": "financial-credit-10066-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "2fe06fbd830ac9b5883389a71efba20d776ea2cdb7239489e31e08abc1ae1d48"
+            },
+            {
+              "trajectory_key": "financial-credit-10066-v0/rep1",
+              "request_key": "financial-credit-10066-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "2fe06fbd830ac9b5883389a71efba20d776ea2cdb7239489e31e08abc1ae1d48"
+            },
+            {
+              "trajectory_key": "financial-credit-10066-v0/rep2",
+              "request_key": "financial-credit-10066-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "2fe06fbd830ac9b5883389a71efba20d776ea2cdb7239489e31e08abc1ae1d48"
+            },
+            {
+              "trajectory_key": "financial-credit-10066-v0/rep3",
+              "request_key": "financial-credit-10066-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "2fe06fbd830ac9b5883389a71efba20d776ea2cdb7239489e31e08abc1ae1d48"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "2fe06fbd830ac9b5883389a71efba20d776ea2cdb7239489e31e08abc1ae1d48"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 3,
+          "task_id": "financial-credit-10066-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10066-v1/rep0",
+              "request_key": "financial-credit-10066-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "2a8fd654fa776a0c008e0fd07582872817f44148409ef5c8ac7eee9af27c73bd"
+            },
+            {
+              "trajectory_key": "financial-credit-10066-v1/rep1",
+              "request_key": "financial-credit-10066-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "2a8fd654fa776a0c008e0fd07582872817f44148409ef5c8ac7eee9af27c73bd"
+            },
+            {
+              "trajectory_key": "financial-credit-10066-v1/rep2",
+              "request_key": "financial-credit-10066-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "2a8fd654fa776a0c008e0fd07582872817f44148409ef5c8ac7eee9af27c73bd"
+            },
+            {
+              "trajectory_key": "financial-credit-10066-v1/rep3",
+              "request_key": "financial-credit-10066-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "2a8fd654fa776a0c008e0fd07582872817f44148409ef5c8ac7eee9af27c73bd"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "2a8fd654fa776a0c008e0fd07582872817f44148409ef5c8ac7eee9af27c73bd"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 3,
+          "task_id": "financial-credit-10005-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10005-v0/rep0",
+              "request_key": "financial-credit-10005-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "37ec9dc09fb1b6cf08b42494d4d1d0f00acb250ebecca9dbfcdb6bf15c16206c"
+            },
+            {
+              "trajectory_key": "financial-credit-10005-v0/rep1",
+              "request_key": "financial-credit-10005-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "37ec9dc09fb1b6cf08b42494d4d1d0f00acb250ebecca9dbfcdb6bf15c16206c"
+            },
+            {
+              "trajectory_key": "financial-credit-10005-v0/rep2",
+              "request_key": "financial-credit-10005-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "37ec9dc09fb1b6cf08b42494d4d1d0f00acb250ebecca9dbfcdb6bf15c16206c"
+            },
+            {
+              "trajectory_key": "financial-credit-10005-v0/rep3",
+              "request_key": "financial-credit-10005-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "37ec9dc09fb1b6cf08b42494d4d1d0f00acb250ebecca9dbfcdb6bf15c16206c"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "37ec9dc09fb1b6cf08b42494d4d1d0f00acb250ebecca9dbfcdb6bf15c16206c"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 3,
+          "task_id": "financial-credit-10005-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10005-v1/rep0",
+              "request_key": "financial-credit-10005-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "206ce9ec914d1ea58d62b19b1a870acb54974ae1dd14837db7aebbaeead14820"
+            },
+            {
+              "trajectory_key": "financial-credit-10005-v1/rep1",
+              "request_key": "financial-credit-10005-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "206ce9ec914d1ea58d62b19b1a870acb54974ae1dd14837db7aebbaeead14820"
+            },
+            {
+              "trajectory_key": "financial-credit-10005-v1/rep2",
+              "request_key": "financial-credit-10005-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "206ce9ec914d1ea58d62b19b1a870acb54974ae1dd14837db7aebbaeead14820"
+            },
+            {
+              "trajectory_key": "financial-credit-10005-v1/rep3",
+              "request_key": "financial-credit-10005-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "206ce9ec914d1ea58d62b19b1a870acb54974ae1dd14837db7aebbaeead14820"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "206ce9ec914d1ea58d62b19b1a870acb54974ae1dd14837db7aebbaeead14820"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 3,
+          "task_id": "financial-credit-10012-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10012-v0/rep0",
+              "request_key": "financial-credit-10012-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "a116f97da63780b103c1749fb1788f696709770b7fb76096d6cac7d9a6d639a4"
+            },
+            {
+              "trajectory_key": "financial-credit-10012-v0/rep1",
+              "request_key": "financial-credit-10012-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "a116f97da63780b103c1749fb1788f696709770b7fb76096d6cac7d9a6d639a4"
+            },
+            {
+              "trajectory_key": "financial-credit-10012-v0/rep2",
+              "request_key": "financial-credit-10012-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "a116f97da63780b103c1749fb1788f696709770b7fb76096d6cac7d9a6d639a4"
+            },
+            {
+              "trajectory_key": "financial-credit-10012-v0/rep3",
+              "request_key": "financial-credit-10012-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "a116f97da63780b103c1749fb1788f696709770b7fb76096d6cac7d9a6d639a4"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "a116f97da63780b103c1749fb1788f696709770b7fb76096d6cac7d9a6d639a4"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 3,
+          "task_id": "financial-credit-10012-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10012-v1/rep0",
+              "request_key": "financial-credit-10012-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "4b018d6dfa31007a247d065f7999053e91abf68f1dcef753e1c611401e6eae9f"
+            },
+            {
+              "trajectory_key": "financial-credit-10012-v1/rep1",
+              "request_key": "financial-credit-10012-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "4b018d6dfa31007a247d065f7999053e91abf68f1dcef753e1c611401e6eae9f"
+            },
+            {
+              "trajectory_key": "financial-credit-10012-v1/rep2",
+              "request_key": "financial-credit-10012-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "4b018d6dfa31007a247d065f7999053e91abf68f1dcef753e1c611401e6eae9f"
+            },
+            {
+              "trajectory_key": "financial-credit-10012-v1/rep3",
+              "request_key": "financial-credit-10012-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "4b018d6dfa31007a247d065f7999053e91abf68f1dcef753e1c611401e6eae9f"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "4b018d6dfa31007a247d065f7999053e91abf68f1dcef753e1c611401e6eae9f"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 3,
+          "task_id": "financial-credit-10041-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10041-v0/rep0",
+              "request_key": "financial-credit-10041-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "882d3505aa37b5d0362d35d4f310f8d877358b727a666305355a9d34fa04b22c"
+            },
+            {
+              "trajectory_key": "financial-credit-10041-v0/rep1",
+              "request_key": "financial-credit-10041-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "882d3505aa37b5d0362d35d4f310f8d877358b727a666305355a9d34fa04b22c"
+            },
+            {
+              "trajectory_key": "financial-credit-10041-v0/rep2",
+              "request_key": "financial-credit-10041-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "882d3505aa37b5d0362d35d4f310f8d877358b727a666305355a9d34fa04b22c"
+            },
+            {
+              "trajectory_key": "financial-credit-10041-v0/rep3",
+              "request_key": "financial-credit-10041-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "882d3505aa37b5d0362d35d4f310f8d877358b727a666305355a9d34fa04b22c"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "882d3505aa37b5d0362d35d4f310f8d877358b727a666305355a9d34fa04b22c"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 3,
+          "task_id": "financial-credit-10041-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10041-v1/rep0",
+              "request_key": "financial-credit-10041-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "69f773c51e45335ca9a791e9f960ffb1c50f15b9c188b388e99553f758ec9e7d"
+            },
+            {
+              "trajectory_key": "financial-credit-10041-v1/rep1",
+              "request_key": "financial-credit-10041-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "69f773c51e45335ca9a791e9f960ffb1c50f15b9c188b388e99553f758ec9e7d"
+            },
+            {
+              "trajectory_key": "financial-credit-10041-v1/rep2",
+              "request_key": "financial-credit-10041-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "69f773c51e45335ca9a791e9f960ffb1c50f15b9c188b388e99553f758ec9e7d"
+            },
+            {
+              "trajectory_key": "financial-credit-10041-v1/rep3",
+              "request_key": "financial-credit-10041-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "69f773c51e45335ca9a791e9f960ffb1c50f15b9c188b388e99553f758ec9e7d"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "69f773c51e45335ca9a791e9f960ffb1c50f15b9c188b388e99553f758ec9e7d"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 4,
+          "task_id": "financial-credit-10032-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10032-v0/rep0",
+              "request_key": "financial-credit-10032-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "c680fdd23ddcf12acfd216ef90d9577b99b1411e7469f4fd6a443e0e86b429c5"
+            },
+            {
+              "trajectory_key": "financial-credit-10032-v0/rep1",
+              "request_key": "financial-credit-10032-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "c680fdd23ddcf12acfd216ef90d9577b99b1411e7469f4fd6a443e0e86b429c5"
+            },
+            {
+              "trajectory_key": "financial-credit-10032-v0/rep2",
+              "request_key": "financial-credit-10032-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "c680fdd23ddcf12acfd216ef90d9577b99b1411e7469f4fd6a443e0e86b429c5"
+            },
+            {
+              "trajectory_key": "financial-credit-10032-v0/rep3",
+              "request_key": "financial-credit-10032-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "c680fdd23ddcf12acfd216ef90d9577b99b1411e7469f4fd6a443e0e86b429c5"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "c680fdd23ddcf12acfd216ef90d9577b99b1411e7469f4fd6a443e0e86b429c5"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 4,
+          "task_id": "financial-credit-10032-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10032-v1/rep0",
+              "request_key": "financial-credit-10032-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "f85700d131eaf824e4d0c245b431932dc7e46431ca5a1fc1506da2b55cafd954"
+            },
+            {
+              "trajectory_key": "financial-credit-10032-v1/rep1",
+              "request_key": "financial-credit-10032-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "f85700d131eaf824e4d0c245b431932dc7e46431ca5a1fc1506da2b55cafd954"
+            },
+            {
+              "trajectory_key": "financial-credit-10032-v1/rep2",
+              "request_key": "financial-credit-10032-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "f85700d131eaf824e4d0c245b431932dc7e46431ca5a1fc1506da2b55cafd954"
+            },
+            {
+              "trajectory_key": "financial-credit-10032-v1/rep3",
+              "request_key": "financial-credit-10032-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "f85700d131eaf824e4d0c245b431932dc7e46431ca5a1fc1506da2b55cafd954"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "f85700d131eaf824e4d0c245b431932dc7e46431ca5a1fc1506da2b55cafd954"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 4,
+          "task_id": "financial-credit-10026-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10026-v0/rep0",
+              "request_key": "financial-credit-10026-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "f851ceee8c9d0d557636d43ffe6ed523aec412a88d004008800c40775c908133"
+            },
+            {
+              "trajectory_key": "financial-credit-10026-v0/rep1",
+              "request_key": "financial-credit-10026-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "f851ceee8c9d0d557636d43ffe6ed523aec412a88d004008800c40775c908133"
+            },
+            {
+              "trajectory_key": "financial-credit-10026-v0/rep2",
+              "request_key": "financial-credit-10026-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "f851ceee8c9d0d557636d43ffe6ed523aec412a88d004008800c40775c908133"
+            },
+            {
+              "trajectory_key": "financial-credit-10026-v0/rep3",
+              "request_key": "financial-credit-10026-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "f851ceee8c9d0d557636d43ffe6ed523aec412a88d004008800c40775c908133"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "f851ceee8c9d0d557636d43ffe6ed523aec412a88d004008800c40775c908133"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 4,
+          "task_id": "financial-credit-10026-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10026-v1/rep0",
+              "request_key": "financial-credit-10026-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "949ddd3c08a3582092e2436bd9b3c8a05bc9ee97cc912dbb2807f8302059aff5"
+            },
+            {
+              "trajectory_key": "financial-credit-10026-v1/rep1",
+              "request_key": "financial-credit-10026-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "949ddd3c08a3582092e2436bd9b3c8a05bc9ee97cc912dbb2807f8302059aff5"
+            },
+            {
+              "trajectory_key": "financial-credit-10026-v1/rep2",
+              "request_key": "financial-credit-10026-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "949ddd3c08a3582092e2436bd9b3c8a05bc9ee97cc912dbb2807f8302059aff5"
+            },
+            {
+              "trajectory_key": "financial-credit-10026-v1/rep3",
+              "request_key": "financial-credit-10026-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "949ddd3c08a3582092e2436bd9b3c8a05bc9ee97cc912dbb2807f8302059aff5"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "949ddd3c08a3582092e2436bd9b3c8a05bc9ee97cc912dbb2807f8302059aff5"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 4,
+          "task_id": "financial-credit-10034-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10034-v0/rep0",
+              "request_key": "financial-credit-10034-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "f760b831c59f8cf5ec1606373d2f926f3b0765728d498c8efa6dd8f529f81cf6"
+            },
+            {
+              "trajectory_key": "financial-credit-10034-v0/rep1",
+              "request_key": "financial-credit-10034-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "f760b831c59f8cf5ec1606373d2f926f3b0765728d498c8efa6dd8f529f81cf6"
+            },
+            {
+              "trajectory_key": "financial-credit-10034-v0/rep2",
+              "request_key": "financial-credit-10034-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "f760b831c59f8cf5ec1606373d2f926f3b0765728d498c8efa6dd8f529f81cf6"
+            },
+            {
+              "trajectory_key": "financial-credit-10034-v0/rep3",
+              "request_key": "financial-credit-10034-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "f760b831c59f8cf5ec1606373d2f926f3b0765728d498c8efa6dd8f529f81cf6"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "f760b831c59f8cf5ec1606373d2f926f3b0765728d498c8efa6dd8f529f81cf6"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 4,
+          "task_id": "financial-credit-10034-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10034-v1/rep0",
+              "request_key": "financial-credit-10034-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "55786cb6ad428e8c4af70eda17463ac833426442bc336c37ec90be316fcf1329"
+            },
+            {
+              "trajectory_key": "financial-credit-10034-v1/rep1",
+              "request_key": "financial-credit-10034-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "55786cb6ad428e8c4af70eda17463ac833426442bc336c37ec90be316fcf1329"
+            },
+            {
+              "trajectory_key": "financial-credit-10034-v1/rep2",
+              "request_key": "financial-credit-10034-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "55786cb6ad428e8c4af70eda17463ac833426442bc336c37ec90be316fcf1329"
+            },
+            {
+              "trajectory_key": "financial-credit-10034-v1/rep3",
+              "request_key": "financial-credit-10034-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "55786cb6ad428e8c4af70eda17463ac833426442bc336c37ec90be316fcf1329"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "55786cb6ad428e8c4af70eda17463ac833426442bc336c37ec90be316fcf1329"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 4,
+          "task_id": "financial-credit-10037-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10037-v0/rep0",
+              "request_key": "financial-credit-10037-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "fd42101cc72e68f4c6923c75fd2dccfd3216d9a6c6eb1f7938dafd224b3157fb"
+            },
+            {
+              "trajectory_key": "financial-credit-10037-v0/rep1",
+              "request_key": "financial-credit-10037-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "fd42101cc72e68f4c6923c75fd2dccfd3216d9a6c6eb1f7938dafd224b3157fb"
+            },
+            {
+              "trajectory_key": "financial-credit-10037-v0/rep2",
+              "request_key": "financial-credit-10037-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "fd42101cc72e68f4c6923c75fd2dccfd3216d9a6c6eb1f7938dafd224b3157fb"
+            },
+            {
+              "trajectory_key": "financial-credit-10037-v0/rep3",
+              "request_key": "financial-credit-10037-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "fd42101cc72e68f4c6923c75fd2dccfd3216d9a6c6eb1f7938dafd224b3157fb"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "fd42101cc72e68f4c6923c75fd2dccfd3216d9a6c6eb1f7938dafd224b3157fb"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 4,
+          "task_id": "financial-credit-10037-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10037-v1/rep0",
+              "request_key": "financial-credit-10037-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "33c8480280fc583584496f44ab6d17329034ba5ddca3fc7ca65578078fbc3c2c"
+            },
+            {
+              "trajectory_key": "financial-credit-10037-v1/rep1",
+              "request_key": "financial-credit-10037-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "33c8480280fc583584496f44ab6d17329034ba5ddca3fc7ca65578078fbc3c2c"
+            },
+            {
+              "trajectory_key": "financial-credit-10037-v1/rep2",
+              "request_key": "financial-credit-10037-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "33c8480280fc583584496f44ab6d17329034ba5ddca3fc7ca65578078fbc3c2c"
+            },
+            {
+              "trajectory_key": "financial-credit-10037-v1/rep3",
+              "request_key": "financial-credit-10037-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "33c8480280fc583584496f44ab6d17329034ba5ddca3fc7ca65578078fbc3c2c"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "33c8480280fc583584496f44ab6d17329034ba5ddca3fc7ca65578078fbc3c2c"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 5,
+          "task_id": "financial-credit-10103-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10103-v0/rep0",
+              "request_key": "financial-credit-10103-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "23549f120aab79e2160dd9af35f499c028e45956ac2c9896da416ff1c8c11f44"
+            },
+            {
+              "trajectory_key": "financial-credit-10103-v0/rep1",
+              "request_key": "financial-credit-10103-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "23549f120aab79e2160dd9af35f499c028e45956ac2c9896da416ff1c8c11f44"
+            },
+            {
+              "trajectory_key": "financial-credit-10103-v0/rep2",
+              "request_key": "financial-credit-10103-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "23549f120aab79e2160dd9af35f499c028e45956ac2c9896da416ff1c8c11f44"
+            },
+            {
+              "trajectory_key": "financial-credit-10103-v0/rep3",
+              "request_key": "financial-credit-10103-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "23549f120aab79e2160dd9af35f499c028e45956ac2c9896da416ff1c8c11f44"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "23549f120aab79e2160dd9af35f499c028e45956ac2c9896da416ff1c8c11f44"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 5,
+          "task_id": "financial-credit-10103-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10103-v1/rep0",
+              "request_key": "financial-credit-10103-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "b23e205a2bd8cfdfb9988cc722956a36e97ad054a8fa87ff7c7d118f1f4380ec"
+            },
+            {
+              "trajectory_key": "financial-credit-10103-v1/rep1",
+              "request_key": "financial-credit-10103-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "b23e205a2bd8cfdfb9988cc722956a36e97ad054a8fa87ff7c7d118f1f4380ec"
+            },
+            {
+              "trajectory_key": "financial-credit-10103-v1/rep2",
+              "request_key": "financial-credit-10103-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "b23e205a2bd8cfdfb9988cc722956a36e97ad054a8fa87ff7c7d118f1f4380ec"
+            },
+            {
+              "trajectory_key": "financial-credit-10103-v1/rep3",
+              "request_key": "financial-credit-10103-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "b23e205a2bd8cfdfb9988cc722956a36e97ad054a8fa87ff7c7d118f1f4380ec"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "b23e205a2bd8cfdfb9988cc722956a36e97ad054a8fa87ff7c7d118f1f4380ec"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 5,
+          "task_id": "financial-credit-10007-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10007-v0/rep0",
+              "request_key": "financial-credit-10007-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "2722c09f7a521613413050dc4affecac6e5b7e2aacea1d243bcb7afba2993914"
+            },
+            {
+              "trajectory_key": "financial-credit-10007-v0/rep1",
+              "request_key": "financial-credit-10007-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "2722c09f7a521613413050dc4affecac6e5b7e2aacea1d243bcb7afba2993914"
+            },
+            {
+              "trajectory_key": "financial-credit-10007-v0/rep2",
+              "request_key": "financial-credit-10007-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "2722c09f7a521613413050dc4affecac6e5b7e2aacea1d243bcb7afba2993914"
+            },
+            {
+              "trajectory_key": "financial-credit-10007-v0/rep3",
+              "request_key": "financial-credit-10007-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "2722c09f7a521613413050dc4affecac6e5b7e2aacea1d243bcb7afba2993914"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "2722c09f7a521613413050dc4affecac6e5b7e2aacea1d243bcb7afba2993914"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 5,
+          "task_id": "financial-credit-10007-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10007-v1/rep0",
+              "request_key": "financial-credit-10007-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "6e62d816a24bff0d42c98373c0643872c4b5ae5ede8415ce8c012e086eb62f4b"
+            },
+            {
+              "trajectory_key": "financial-credit-10007-v1/rep1",
+              "request_key": "financial-credit-10007-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "6e62d816a24bff0d42c98373c0643872c4b5ae5ede8415ce8c012e086eb62f4b"
+            },
+            {
+              "trajectory_key": "financial-credit-10007-v1/rep2",
+              "request_key": "financial-credit-10007-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "6e62d816a24bff0d42c98373c0643872c4b5ae5ede8415ce8c012e086eb62f4b"
+            },
+            {
+              "trajectory_key": "financial-credit-10007-v1/rep3",
+              "request_key": "financial-credit-10007-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "6e62d816a24bff0d42c98373c0643872c4b5ae5ede8415ce8c012e086eb62f4b"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "6e62d816a24bff0d42c98373c0643872c4b5ae5ede8415ce8c012e086eb62f4b"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 5,
+          "task_id": "financial-credit-10040-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10040-v0/rep0",
+              "request_key": "financial-credit-10040-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "4d6faffe303fa22ba57f156652070307873ade8e0056dd7c0e27801f039ef189"
+            },
+            {
+              "trajectory_key": "financial-credit-10040-v0/rep1",
+              "request_key": "financial-credit-10040-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "4d6faffe303fa22ba57f156652070307873ade8e0056dd7c0e27801f039ef189"
+            },
+            {
+              "trajectory_key": "financial-credit-10040-v0/rep2",
+              "request_key": "financial-credit-10040-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "4d6faffe303fa22ba57f156652070307873ade8e0056dd7c0e27801f039ef189"
+            },
+            {
+              "trajectory_key": "financial-credit-10040-v0/rep3",
+              "request_key": "financial-credit-10040-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "4d6faffe303fa22ba57f156652070307873ade8e0056dd7c0e27801f039ef189"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "4d6faffe303fa22ba57f156652070307873ade8e0056dd7c0e27801f039ef189"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 5,
+          "task_id": "financial-credit-10040-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10040-v1/rep0",
+              "request_key": "financial-credit-10040-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "63867d831d00882262e12fb312790b41e4b1ac7fb3087af3587d8254bc079379"
+            },
+            {
+              "trajectory_key": "financial-credit-10040-v1/rep1",
+              "request_key": "financial-credit-10040-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "63867d831d00882262e12fb312790b41e4b1ac7fb3087af3587d8254bc079379"
+            },
+            {
+              "trajectory_key": "financial-credit-10040-v1/rep2",
+              "request_key": "financial-credit-10040-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "63867d831d00882262e12fb312790b41e4b1ac7fb3087af3587d8254bc079379"
+            },
+            {
+              "trajectory_key": "financial-credit-10040-v1/rep3",
+              "request_key": "financial-credit-10040-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "63867d831d00882262e12fb312790b41e4b1ac7fb3087af3587d8254bc079379"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "63867d831d00882262e12fb312790b41e4b1ac7fb3087af3587d8254bc079379"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 5,
+          "task_id": "financial-credit-10050-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10050-v0/rep0",
+              "request_key": "financial-credit-10050-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "6689b1217ceba9ffe8b4b935b36125ab9431cc2e564ae8e7cc0698203237db07"
+            },
+            {
+              "trajectory_key": "financial-credit-10050-v0/rep1",
+              "request_key": "financial-credit-10050-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "6689b1217ceba9ffe8b4b935b36125ab9431cc2e564ae8e7cc0698203237db07"
+            },
+            {
+              "trajectory_key": "financial-credit-10050-v0/rep2",
+              "request_key": "financial-credit-10050-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "6689b1217ceba9ffe8b4b935b36125ab9431cc2e564ae8e7cc0698203237db07"
+            },
+            {
+              "trajectory_key": "financial-credit-10050-v0/rep3",
+              "request_key": "financial-credit-10050-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "6689b1217ceba9ffe8b4b935b36125ab9431cc2e564ae8e7cc0698203237db07"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "6689b1217ceba9ffe8b4b935b36125ab9431cc2e564ae8e7cc0698203237db07"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 5,
+          "task_id": "financial-credit-10050-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10050-v1/rep0",
+              "request_key": "financial-credit-10050-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "969ef6e9fdfbdfbb7b56769b7148f16a199ceaa3e8845e4977a835806346fef7"
+            },
+            {
+              "trajectory_key": "financial-credit-10050-v1/rep1",
+              "request_key": "financial-credit-10050-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "969ef6e9fdfbdfbb7b56769b7148f16a199ceaa3e8845e4977a835806346fef7"
+            },
+            {
+              "trajectory_key": "financial-credit-10050-v1/rep2",
+              "request_key": "financial-credit-10050-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "969ef6e9fdfbdfbb7b56769b7148f16a199ceaa3e8845e4977a835806346fef7"
+            },
+            {
+              "trajectory_key": "financial-credit-10050-v1/rep3",
+              "request_key": "financial-credit-10050-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "969ef6e9fdfbdfbb7b56769b7148f16a199ceaa3e8845e4977a835806346fef7"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "969ef6e9fdfbdfbb7b56769b7148f16a199ceaa3e8845e4977a835806346fef7"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        }
+      ],
+      "planned_k4_groups": 48,
+      "complete_k4_groups": 48,
+      "all_four_histories_identical_groups": 48,
+      "missing_prefixes": 0,
+      "unique_history_count_distribution": {
+        "1": 48
+      },
+      "source_sha256": {
+        "runs/agentic-rl-coverage-20261105-v3/training/wide/round_000/collect/requests.jsonl": "3ab6b84e38998989109ff7f71f5cbc00c53c0b62efb9f660efde12393d882aa9",
+        "runs/agentic-rl-coverage-20261105-v3/data/batch_round000.jsonl": "01c8cdebb11c57beeece3619a61e3b1ae247225ec99ddd15df7ce94b8c35a45d",
+        "runs/agentic-rl-coverage-20261105-v3/training/wide/round_001/collect/requests.jsonl": "356955c86b0c317cdffee21f1096ece6e4f4ba6b03e6d8f7adc89d4052c48660",
+        "runs/agentic-rl-coverage-20261105-v3/data/batch_round001.jsonl": "237187cd0095fee3724458ee11662b98b81449c6665417d4b85399e5e39012f6",
+        "runs/agentic-rl-coverage-20261105-v3/training/wide/round_002/collect/requests.jsonl": "4e9389ac9c4da4a24c38dadf422b459c817a0cf075d71816e5da1d8080d98552",
+        "runs/agentic-rl-coverage-20261105-v3/data/batch_round002.jsonl": "ae9f069f44e0892bb8ed5610923feb523dd42dc97edb57bcb9263b79247a2a34",
+        "runs/agentic-rl-coverage-20261105-v3/training/wide/round_003/collect/requests.jsonl": "02f1d2094ea171aff50df302d592cd64be20dba4e9e4b1bc44ffed6fb689434a",
+        "runs/agentic-rl-coverage-20261105-v3/data/batch_round003.jsonl": "2fdd8312cdcb3eb0284ad99e21b877dbd8a2c1d4a20855ecbca6cab59e939907",
+        "runs/agentic-rl-coverage-20261105-v3/training/wide/round_004/collect/requests.jsonl": "cbb065fe5ec205849010a64d1e93479e9d45d4d5a5ee50110c32e0066bfd9133",
+        "runs/agentic-rl-coverage-20261105-v3/data/batch_round004.jsonl": "2402a36c66104d8b9a6d37fd06aae79210372cbf3c57ee34cfeb054e9ce768e3",
+        "runs/agentic-rl-coverage-20261105-v3/training/wide/round_005/collect/requests.jsonl": "0acc158ce05cb55d7ea6c5e55140608e913707dc47362209f276d45a30e520b1",
+        "runs/agentic-rl-coverage-20261105-v3/data/batch_round005.jsonl": "2a1772ace335cecb704a99863121d04618fbe2aa108bd2d3e2f734bed063503b"
+      }
+    },
+    "agentic-rl-invalid-feedback-20261110-v5": {
+      "groups": [
+        {
+          "batch": 0,
+          "task_id": "financial-credit-10126-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10126-v0/rep0",
+              "request_key": "financial-credit-10126-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "8ed25876fe25936a2ff72648abf4a1991f8ca2bf15c5eb7128f8365936790388"
+            },
+            {
+              "trajectory_key": "financial-credit-10126-v0/rep1",
+              "request_key": "financial-credit-10126-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "8ed25876fe25936a2ff72648abf4a1991f8ca2bf15c5eb7128f8365936790388"
+            },
+            {
+              "trajectory_key": "financial-credit-10126-v0/rep2",
+              "request_key": "financial-credit-10126-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "8ed25876fe25936a2ff72648abf4a1991f8ca2bf15c5eb7128f8365936790388"
+            },
+            {
+              "trajectory_key": "financial-credit-10126-v0/rep3",
+              "request_key": "financial-credit-10126-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "8ed25876fe25936a2ff72648abf4a1991f8ca2bf15c5eb7128f8365936790388"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "8ed25876fe25936a2ff72648abf4a1991f8ca2bf15c5eb7128f8365936790388"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 0,
+          "task_id": "financial-credit-10126-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10126-v1/rep0",
+              "request_key": "financial-credit-10126-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "f08be7326eb76ba9f143b4fbc7357de389eb851c5d3db3444fa8e814a4f0ba50"
+            },
+            {
+              "trajectory_key": "financial-credit-10126-v1/rep1",
+              "request_key": "financial-credit-10126-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "f08be7326eb76ba9f143b4fbc7357de389eb851c5d3db3444fa8e814a4f0ba50"
+            },
+            {
+              "trajectory_key": "financial-credit-10126-v1/rep2",
+              "request_key": "financial-credit-10126-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "f08be7326eb76ba9f143b4fbc7357de389eb851c5d3db3444fa8e814a4f0ba50"
+            },
+            {
+              "trajectory_key": "financial-credit-10126-v1/rep3",
+              "request_key": "financial-credit-10126-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "f08be7326eb76ba9f143b4fbc7357de389eb851c5d3db3444fa8e814a4f0ba50"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "f08be7326eb76ba9f143b4fbc7357de389eb851c5d3db3444fa8e814a4f0ba50"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 0,
+          "task_id": "financial-credit-10119-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10119-v0/rep0",
+              "request_key": "financial-credit-10119-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "c1a29919eb7292ad9a794928c5746706b6a9badd510426842b60a49b21ab2c0f"
+            },
+            {
+              "trajectory_key": "financial-credit-10119-v0/rep1",
+              "request_key": "financial-credit-10119-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "c1a29919eb7292ad9a794928c5746706b6a9badd510426842b60a49b21ab2c0f"
+            },
+            {
+              "trajectory_key": "financial-credit-10119-v0/rep2",
+              "request_key": "financial-credit-10119-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "c1a29919eb7292ad9a794928c5746706b6a9badd510426842b60a49b21ab2c0f"
+            },
+            {
+              "trajectory_key": "financial-credit-10119-v0/rep3",
+              "request_key": "financial-credit-10119-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "c1a29919eb7292ad9a794928c5746706b6a9badd510426842b60a49b21ab2c0f"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "c1a29919eb7292ad9a794928c5746706b6a9badd510426842b60a49b21ab2c0f"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 0,
+          "task_id": "financial-credit-10119-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10119-v1/rep0",
+              "request_key": "financial-credit-10119-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "413ad55410b8db5a0b7436f786d2a8fe6bc883a018047441c6b305781a875fb8"
+            },
+            {
+              "trajectory_key": "financial-credit-10119-v1/rep1",
+              "request_key": "financial-credit-10119-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "413ad55410b8db5a0b7436f786d2a8fe6bc883a018047441c6b305781a875fb8"
+            },
+            {
+              "trajectory_key": "financial-credit-10119-v1/rep2",
+              "request_key": "financial-credit-10119-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "413ad55410b8db5a0b7436f786d2a8fe6bc883a018047441c6b305781a875fb8"
+            },
+            {
+              "trajectory_key": "financial-credit-10119-v1/rep3",
+              "request_key": "financial-credit-10119-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "413ad55410b8db5a0b7436f786d2a8fe6bc883a018047441c6b305781a875fb8"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "413ad55410b8db5a0b7436f786d2a8fe6bc883a018047441c6b305781a875fb8"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 0,
+          "task_id": "financial-credit-10052-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10052-v0/rep0",
+              "request_key": "financial-credit-10052-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "20f91dfe122594ae03b450905c207f61221b73f9fd77fb65dff0471da996f4a0"
+            },
+            {
+              "trajectory_key": "financial-credit-10052-v0/rep1",
+              "request_key": "financial-credit-10052-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "20f91dfe122594ae03b450905c207f61221b73f9fd77fb65dff0471da996f4a0"
+            },
+            {
+              "trajectory_key": "financial-credit-10052-v0/rep2",
+              "request_key": "financial-credit-10052-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "20f91dfe122594ae03b450905c207f61221b73f9fd77fb65dff0471da996f4a0"
+            },
+            {
+              "trajectory_key": "financial-credit-10052-v0/rep3",
+              "request_key": "financial-credit-10052-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "20f91dfe122594ae03b450905c207f61221b73f9fd77fb65dff0471da996f4a0"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "20f91dfe122594ae03b450905c207f61221b73f9fd77fb65dff0471da996f4a0"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 0,
+          "task_id": "financial-credit-10052-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10052-v1/rep0",
+              "request_key": "financial-credit-10052-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "ace92f6af8fc772334cf7ec0829207b83b62299f09f5b3973d3e917e73c871dc"
+            },
+            {
+              "trajectory_key": "financial-credit-10052-v1/rep1",
+              "request_key": "financial-credit-10052-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "ace92f6af8fc772334cf7ec0829207b83b62299f09f5b3973d3e917e73c871dc"
+            },
+            {
+              "trajectory_key": "financial-credit-10052-v1/rep2",
+              "request_key": "financial-credit-10052-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "ace92f6af8fc772334cf7ec0829207b83b62299f09f5b3973d3e917e73c871dc"
+            },
+            {
+              "trajectory_key": "financial-credit-10052-v1/rep3",
+              "request_key": "financial-credit-10052-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "ace92f6af8fc772334cf7ec0829207b83b62299f09f5b3973d3e917e73c871dc"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "ace92f6af8fc772334cf7ec0829207b83b62299f09f5b3973d3e917e73c871dc"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 0,
+          "task_id": "financial-credit-10090-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10090-v0/rep0",
+              "request_key": "financial-credit-10090-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "c52d90632a3f76d84c8520abf1004308dcc428b4e01224afac116f776c6a4c4e"
+            },
+            {
+              "trajectory_key": "financial-credit-10090-v0/rep1",
+              "request_key": "financial-credit-10090-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "c52d90632a3f76d84c8520abf1004308dcc428b4e01224afac116f776c6a4c4e"
+            },
+            {
+              "trajectory_key": "financial-credit-10090-v0/rep2",
+              "request_key": "financial-credit-10090-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "c52d90632a3f76d84c8520abf1004308dcc428b4e01224afac116f776c6a4c4e"
+            },
+            {
+              "trajectory_key": "financial-credit-10090-v0/rep3",
+              "request_key": "financial-credit-10090-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "c52d90632a3f76d84c8520abf1004308dcc428b4e01224afac116f776c6a4c4e"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "c52d90632a3f76d84c8520abf1004308dcc428b4e01224afac116f776c6a4c4e"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 0,
+          "task_id": "financial-credit-10090-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10090-v1/rep0",
+              "request_key": "financial-credit-10090-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "405edfbd31ed2f8607251490fec19673cb7aaf99876766fce4030fbf9b808a95"
+            },
+            {
+              "trajectory_key": "financial-credit-10090-v1/rep1",
+              "request_key": "financial-credit-10090-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "405edfbd31ed2f8607251490fec19673cb7aaf99876766fce4030fbf9b808a95"
+            },
+            {
+              "trajectory_key": "financial-credit-10090-v1/rep2",
+              "request_key": "financial-credit-10090-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "405edfbd31ed2f8607251490fec19673cb7aaf99876766fce4030fbf9b808a95"
+            },
+            {
+              "trajectory_key": "financial-credit-10090-v1/rep3",
+              "request_key": "financial-credit-10090-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "405edfbd31ed2f8607251490fec19673cb7aaf99876766fce4030fbf9b808a95"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "405edfbd31ed2f8607251490fec19673cb7aaf99876766fce4030fbf9b808a95"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 1,
+          "task_id": "financial-credit-10024-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10024-v0/rep0",
+              "request_key": "financial-credit-10024-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "96ed7ea9223f71dae8c0ef729ac7394aa554786ce368224f9b632f7e0f6e9b5f"
+            },
+            {
+              "trajectory_key": "financial-credit-10024-v0/rep1",
+              "request_key": "financial-credit-10024-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "96ed7ea9223f71dae8c0ef729ac7394aa554786ce368224f9b632f7e0f6e9b5f"
+            },
+            {
+              "trajectory_key": "financial-credit-10024-v0/rep2",
+              "request_key": "financial-credit-10024-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "96ed7ea9223f71dae8c0ef729ac7394aa554786ce368224f9b632f7e0f6e9b5f"
+            },
+            {
+              "trajectory_key": "financial-credit-10024-v0/rep3",
+              "request_key": "financial-credit-10024-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "96ed7ea9223f71dae8c0ef729ac7394aa554786ce368224f9b632f7e0f6e9b5f"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "96ed7ea9223f71dae8c0ef729ac7394aa554786ce368224f9b632f7e0f6e9b5f"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 1,
+          "task_id": "financial-credit-10024-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10024-v1/rep0",
+              "request_key": "financial-credit-10024-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "42109656bc20435bd49f6d6c70493cb2d5648551ace0e516a6b3bce7627dc1fc"
+            },
+            {
+              "trajectory_key": "financial-credit-10024-v1/rep1",
+              "request_key": "financial-credit-10024-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "42109656bc20435bd49f6d6c70493cb2d5648551ace0e516a6b3bce7627dc1fc"
+            },
+            {
+              "trajectory_key": "financial-credit-10024-v1/rep2",
+              "request_key": "financial-credit-10024-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "42109656bc20435bd49f6d6c70493cb2d5648551ace0e516a6b3bce7627dc1fc"
+            },
+            {
+              "trajectory_key": "financial-credit-10024-v1/rep3",
+              "request_key": "financial-credit-10024-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "42109656bc20435bd49f6d6c70493cb2d5648551ace0e516a6b3bce7627dc1fc"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "42109656bc20435bd49f6d6c70493cb2d5648551ace0e516a6b3bce7627dc1fc"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 1,
+          "task_id": "financial-credit-10077-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10077-v0/rep0",
+              "request_key": "financial-credit-10077-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "efd9c87b026162e70d95f2dedd5c9ac67b1fb6aa25f20553eedf3b6bf8d32aa3"
+            },
+            {
+              "trajectory_key": "financial-credit-10077-v0/rep1",
+              "request_key": "financial-credit-10077-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "efd9c87b026162e70d95f2dedd5c9ac67b1fb6aa25f20553eedf3b6bf8d32aa3"
+            },
+            {
+              "trajectory_key": "financial-credit-10077-v0/rep2",
+              "request_key": "financial-credit-10077-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "efd9c87b026162e70d95f2dedd5c9ac67b1fb6aa25f20553eedf3b6bf8d32aa3"
+            },
+            {
+              "trajectory_key": "financial-credit-10077-v0/rep3",
+              "request_key": "financial-credit-10077-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "efd9c87b026162e70d95f2dedd5c9ac67b1fb6aa25f20553eedf3b6bf8d32aa3"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "efd9c87b026162e70d95f2dedd5c9ac67b1fb6aa25f20553eedf3b6bf8d32aa3"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 1,
+          "task_id": "financial-credit-10077-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10077-v1/rep0",
+              "request_key": "financial-credit-10077-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "96ae15dc901414d33b8219f80389e749f6c38dd35d5652505ae7b8fd4448d686"
+            },
+            {
+              "trajectory_key": "financial-credit-10077-v1/rep1",
+              "request_key": "financial-credit-10077-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "96ae15dc901414d33b8219f80389e749f6c38dd35d5652505ae7b8fd4448d686"
+            },
+            {
+              "trajectory_key": "financial-credit-10077-v1/rep2",
+              "request_key": "financial-credit-10077-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "96ae15dc901414d33b8219f80389e749f6c38dd35d5652505ae7b8fd4448d686"
+            },
+            {
+              "trajectory_key": "financial-credit-10077-v1/rep3",
+              "request_key": "financial-credit-10077-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "96ae15dc901414d33b8219f80389e749f6c38dd35d5652505ae7b8fd4448d686"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "96ae15dc901414d33b8219f80389e749f6c38dd35d5652505ae7b8fd4448d686"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 1,
+          "task_id": "financial-credit-10023-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10023-v0/rep0",
+              "request_key": "financial-credit-10023-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "0c6d28583e6d826e90816aa9e6e00f85fd0ff6d6539033bd5b057c8f02fa9e2f"
+            },
+            {
+              "trajectory_key": "financial-credit-10023-v0/rep1",
+              "request_key": "financial-credit-10023-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "0c6d28583e6d826e90816aa9e6e00f85fd0ff6d6539033bd5b057c8f02fa9e2f"
+            },
+            {
+              "trajectory_key": "financial-credit-10023-v0/rep2",
+              "request_key": "financial-credit-10023-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "0c6d28583e6d826e90816aa9e6e00f85fd0ff6d6539033bd5b057c8f02fa9e2f"
+            },
+            {
+              "trajectory_key": "financial-credit-10023-v0/rep3",
+              "request_key": "financial-credit-10023-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "0c6d28583e6d826e90816aa9e6e00f85fd0ff6d6539033bd5b057c8f02fa9e2f"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "0c6d28583e6d826e90816aa9e6e00f85fd0ff6d6539033bd5b057c8f02fa9e2f"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 1,
+          "task_id": "financial-credit-10023-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10023-v1/rep0",
+              "request_key": "financial-credit-10023-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "2de9aa439df809f3835a62d9a6e56594bafc0b8f2c64911f25530ca15258e584"
+            },
+            {
+              "trajectory_key": "financial-credit-10023-v1/rep1",
+              "request_key": "financial-credit-10023-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "2de9aa439df809f3835a62d9a6e56594bafc0b8f2c64911f25530ca15258e584"
+            },
+            {
+              "trajectory_key": "financial-credit-10023-v1/rep2",
+              "request_key": "financial-credit-10023-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "2de9aa439df809f3835a62d9a6e56594bafc0b8f2c64911f25530ca15258e584"
+            },
+            {
+              "trajectory_key": "financial-credit-10023-v1/rep3",
+              "request_key": "financial-credit-10023-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "2de9aa439df809f3835a62d9a6e56594bafc0b8f2c64911f25530ca15258e584"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "2de9aa439df809f3835a62d9a6e56594bafc0b8f2c64911f25530ca15258e584"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 1,
+          "task_id": "financial-credit-10061-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10061-v0/rep0",
+              "request_key": "financial-credit-10061-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "b14859d8739dced035990f2d5f57e4a90cbfac658650264e540bc2e5efb2eadb"
+            },
+            {
+              "trajectory_key": "financial-credit-10061-v0/rep1",
+              "request_key": "financial-credit-10061-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "b14859d8739dced035990f2d5f57e4a90cbfac658650264e540bc2e5efb2eadb"
+            },
+            {
+              "trajectory_key": "financial-credit-10061-v0/rep2",
+              "request_key": "financial-credit-10061-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "b14859d8739dced035990f2d5f57e4a90cbfac658650264e540bc2e5efb2eadb"
+            },
+            {
+              "trajectory_key": "financial-credit-10061-v0/rep3",
+              "request_key": "financial-credit-10061-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "b14859d8739dced035990f2d5f57e4a90cbfac658650264e540bc2e5efb2eadb"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "b14859d8739dced035990f2d5f57e4a90cbfac658650264e540bc2e5efb2eadb"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 1,
+          "task_id": "financial-credit-10061-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10061-v1/rep0",
+              "request_key": "financial-credit-10061-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "75557ebd76e2526e8259230cacf44ee2b77d89327749ad01a3cbe0ceed2e19d0"
+            },
+            {
+              "trajectory_key": "financial-credit-10061-v1/rep1",
+              "request_key": "financial-credit-10061-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "75557ebd76e2526e8259230cacf44ee2b77d89327749ad01a3cbe0ceed2e19d0"
+            },
+            {
+              "trajectory_key": "financial-credit-10061-v1/rep2",
+              "request_key": "financial-credit-10061-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "75557ebd76e2526e8259230cacf44ee2b77d89327749ad01a3cbe0ceed2e19d0"
+            },
+            {
+              "trajectory_key": "financial-credit-10061-v1/rep3",
+              "request_key": "financial-credit-10061-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "75557ebd76e2526e8259230cacf44ee2b77d89327749ad01a3cbe0ceed2e19d0"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "75557ebd76e2526e8259230cacf44ee2b77d89327749ad01a3cbe0ceed2e19d0"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 2,
+          "task_id": "financial-credit-10096-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10096-v0/rep0",
+              "request_key": "financial-credit-10096-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "b19c4b6a6a75774d4a0de31aa2d3010fd990eff17020f89fc4dac7e0d85feb59"
+            },
+            {
+              "trajectory_key": "financial-credit-10096-v0/rep1",
+              "request_key": "financial-credit-10096-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "b19c4b6a6a75774d4a0de31aa2d3010fd990eff17020f89fc4dac7e0d85feb59"
+            },
+            {
+              "trajectory_key": "financial-credit-10096-v0/rep2",
+              "request_key": "financial-credit-10096-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "b19c4b6a6a75774d4a0de31aa2d3010fd990eff17020f89fc4dac7e0d85feb59"
+            },
+            {
+              "trajectory_key": "financial-credit-10096-v0/rep3",
+              "request_key": "financial-credit-10096-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "b19c4b6a6a75774d4a0de31aa2d3010fd990eff17020f89fc4dac7e0d85feb59"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "b19c4b6a6a75774d4a0de31aa2d3010fd990eff17020f89fc4dac7e0d85feb59"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 2,
+          "task_id": "financial-credit-10096-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10096-v1/rep0",
+              "request_key": "financial-credit-10096-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "242a9c9eb80668a3f50161fc9365d9252b10acf2bc90deb14c37ad13b387df88"
+            },
+            {
+              "trajectory_key": "financial-credit-10096-v1/rep1",
+              "request_key": "financial-credit-10096-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "242a9c9eb80668a3f50161fc9365d9252b10acf2bc90deb14c37ad13b387df88"
+            },
+            {
+              "trajectory_key": "financial-credit-10096-v1/rep2",
+              "request_key": "financial-credit-10096-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "242a9c9eb80668a3f50161fc9365d9252b10acf2bc90deb14c37ad13b387df88"
+            },
+            {
+              "trajectory_key": "financial-credit-10096-v1/rep3",
+              "request_key": "financial-credit-10096-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "242a9c9eb80668a3f50161fc9365d9252b10acf2bc90deb14c37ad13b387df88"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "242a9c9eb80668a3f50161fc9365d9252b10acf2bc90deb14c37ad13b387df88"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 2,
+          "task_id": "financial-credit-10018-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10018-v0/rep0",
+              "request_key": "financial-credit-10018-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "0c0c38c4e4146849aca3e335af5547a72f12e3b5684b7d3f6e3756eb890280d2"
+            },
+            {
+              "trajectory_key": "financial-credit-10018-v0/rep1",
+              "request_key": "financial-credit-10018-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "0c0c38c4e4146849aca3e335af5547a72f12e3b5684b7d3f6e3756eb890280d2"
+            },
+            {
+              "trajectory_key": "financial-credit-10018-v0/rep2",
+              "request_key": "financial-credit-10018-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "0c0c38c4e4146849aca3e335af5547a72f12e3b5684b7d3f6e3756eb890280d2"
+            },
+            {
+              "trajectory_key": "financial-credit-10018-v0/rep3",
+              "request_key": "financial-credit-10018-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "0c0c38c4e4146849aca3e335af5547a72f12e3b5684b7d3f6e3756eb890280d2"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "0c0c38c4e4146849aca3e335af5547a72f12e3b5684b7d3f6e3756eb890280d2"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 2,
+          "task_id": "financial-credit-10018-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10018-v1/rep0",
+              "request_key": "financial-credit-10018-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "c0ef029524277c728020e0cfcbc042dc07beb894b4140395712e9bb9627bbb8d"
+            },
+            {
+              "trajectory_key": "financial-credit-10018-v1/rep1",
+              "request_key": "financial-credit-10018-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "c0ef029524277c728020e0cfcbc042dc07beb894b4140395712e9bb9627bbb8d"
+            },
+            {
+              "trajectory_key": "financial-credit-10018-v1/rep2",
+              "request_key": "financial-credit-10018-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "c0ef029524277c728020e0cfcbc042dc07beb894b4140395712e9bb9627bbb8d"
+            },
+            {
+              "trajectory_key": "financial-credit-10018-v1/rep3",
+              "request_key": "financial-credit-10018-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "c0ef029524277c728020e0cfcbc042dc07beb894b4140395712e9bb9627bbb8d"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "c0ef029524277c728020e0cfcbc042dc07beb894b4140395712e9bb9627bbb8d"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 2,
+          "task_id": "financial-credit-10069-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10069-v0/rep0",
+              "request_key": "financial-credit-10069-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "0342c9f7cf7b109e7610d659030fb21201dbb2aff9c92ce85d512354d0ee30bb"
+            },
+            {
+              "trajectory_key": "financial-credit-10069-v0/rep1",
+              "request_key": "financial-credit-10069-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "0342c9f7cf7b109e7610d659030fb21201dbb2aff9c92ce85d512354d0ee30bb"
+            },
+            {
+              "trajectory_key": "financial-credit-10069-v0/rep2",
+              "request_key": "financial-credit-10069-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "0342c9f7cf7b109e7610d659030fb21201dbb2aff9c92ce85d512354d0ee30bb"
+            },
+            {
+              "trajectory_key": "financial-credit-10069-v0/rep3",
+              "request_key": "financial-credit-10069-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "0342c9f7cf7b109e7610d659030fb21201dbb2aff9c92ce85d512354d0ee30bb"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "0342c9f7cf7b109e7610d659030fb21201dbb2aff9c92ce85d512354d0ee30bb"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 2,
+          "task_id": "financial-credit-10069-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10069-v1/rep0",
+              "request_key": "financial-credit-10069-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "575470e869684e36cbc55327338d4c51d9014844d4f80feae78cb4ef77e9c3d7"
+            },
+            {
+              "trajectory_key": "financial-credit-10069-v1/rep1",
+              "request_key": "financial-credit-10069-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "575470e869684e36cbc55327338d4c51d9014844d4f80feae78cb4ef77e9c3d7"
+            },
+            {
+              "trajectory_key": "financial-credit-10069-v1/rep2",
+              "request_key": "financial-credit-10069-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "575470e869684e36cbc55327338d4c51d9014844d4f80feae78cb4ef77e9c3d7"
+            },
+            {
+              "trajectory_key": "financial-credit-10069-v1/rep3",
+              "request_key": "financial-credit-10069-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "575470e869684e36cbc55327338d4c51d9014844d4f80feae78cb4ef77e9c3d7"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "575470e869684e36cbc55327338d4c51d9014844d4f80feae78cb4ef77e9c3d7"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 2,
+          "task_id": "financial-credit-10035-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10035-v0/rep0",
+              "request_key": "financial-credit-10035-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "3bb952f996fc5b132ed3e5f5dba4b0b4906228f5a677442de9a4f59d441624d2"
+            },
+            {
+              "trajectory_key": "financial-credit-10035-v0/rep1",
+              "request_key": "financial-credit-10035-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "3bb952f996fc5b132ed3e5f5dba4b0b4906228f5a677442de9a4f59d441624d2"
+            },
+            {
+              "trajectory_key": "financial-credit-10035-v0/rep2",
+              "request_key": "financial-credit-10035-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "3bb952f996fc5b132ed3e5f5dba4b0b4906228f5a677442de9a4f59d441624d2"
+            },
+            {
+              "trajectory_key": "financial-credit-10035-v0/rep3",
+              "request_key": "financial-credit-10035-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "3bb952f996fc5b132ed3e5f5dba4b0b4906228f5a677442de9a4f59d441624d2"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "3bb952f996fc5b132ed3e5f5dba4b0b4906228f5a677442de9a4f59d441624d2"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 2,
+          "task_id": "financial-credit-10035-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10035-v1/rep0",
+              "request_key": "financial-credit-10035-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "f68cb2d7387e1fb18e8385fb4162f1f866b76feb41432a9a03f0f173d3e71b13"
+            },
+            {
+              "trajectory_key": "financial-credit-10035-v1/rep1",
+              "request_key": "financial-credit-10035-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "f68cb2d7387e1fb18e8385fb4162f1f866b76feb41432a9a03f0f173d3e71b13"
+            },
+            {
+              "trajectory_key": "financial-credit-10035-v1/rep2",
+              "request_key": "financial-credit-10035-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "f68cb2d7387e1fb18e8385fb4162f1f866b76feb41432a9a03f0f173d3e71b13"
+            },
+            {
+              "trajectory_key": "financial-credit-10035-v1/rep3",
+              "request_key": "financial-credit-10035-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "f68cb2d7387e1fb18e8385fb4162f1f866b76feb41432a9a03f0f173d3e71b13"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "f68cb2d7387e1fb18e8385fb4162f1f866b76feb41432a9a03f0f173d3e71b13"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 3,
+          "task_id": "financial-credit-10066-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10066-v0/rep0",
+              "request_key": "financial-credit-10066-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "2fe06fbd830ac9b5883389a71efba20d776ea2cdb7239489e31e08abc1ae1d48"
+            },
+            {
+              "trajectory_key": "financial-credit-10066-v0/rep1",
+              "request_key": "financial-credit-10066-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "2fe06fbd830ac9b5883389a71efba20d776ea2cdb7239489e31e08abc1ae1d48"
+            },
+            {
+              "trajectory_key": "financial-credit-10066-v0/rep2",
+              "request_key": "financial-credit-10066-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "2fe06fbd830ac9b5883389a71efba20d776ea2cdb7239489e31e08abc1ae1d48"
+            },
+            {
+              "trajectory_key": "financial-credit-10066-v0/rep3",
+              "request_key": "financial-credit-10066-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "2fe06fbd830ac9b5883389a71efba20d776ea2cdb7239489e31e08abc1ae1d48"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "2fe06fbd830ac9b5883389a71efba20d776ea2cdb7239489e31e08abc1ae1d48"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 3,
+          "task_id": "financial-credit-10066-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10066-v1/rep0",
+              "request_key": "financial-credit-10066-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "2a8fd654fa776a0c008e0fd07582872817f44148409ef5c8ac7eee9af27c73bd"
+            },
+            {
+              "trajectory_key": "financial-credit-10066-v1/rep1",
+              "request_key": "financial-credit-10066-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "2a8fd654fa776a0c008e0fd07582872817f44148409ef5c8ac7eee9af27c73bd"
+            },
+            {
+              "trajectory_key": "financial-credit-10066-v1/rep2",
+              "request_key": "financial-credit-10066-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "2a8fd654fa776a0c008e0fd07582872817f44148409ef5c8ac7eee9af27c73bd"
+            },
+            {
+              "trajectory_key": "financial-credit-10066-v1/rep3",
+              "request_key": "financial-credit-10066-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "2a8fd654fa776a0c008e0fd07582872817f44148409ef5c8ac7eee9af27c73bd"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "2a8fd654fa776a0c008e0fd07582872817f44148409ef5c8ac7eee9af27c73bd"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 3,
+          "task_id": "financial-credit-10005-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10005-v0/rep0",
+              "request_key": "financial-credit-10005-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "37ec9dc09fb1b6cf08b42494d4d1d0f00acb250ebecca9dbfcdb6bf15c16206c"
+            },
+            {
+              "trajectory_key": "financial-credit-10005-v0/rep1",
+              "request_key": "financial-credit-10005-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "37ec9dc09fb1b6cf08b42494d4d1d0f00acb250ebecca9dbfcdb6bf15c16206c"
+            },
+            {
+              "trajectory_key": "financial-credit-10005-v0/rep2",
+              "request_key": "financial-credit-10005-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "37ec9dc09fb1b6cf08b42494d4d1d0f00acb250ebecca9dbfcdb6bf15c16206c"
+            },
+            {
+              "trajectory_key": "financial-credit-10005-v0/rep3",
+              "request_key": "financial-credit-10005-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "37ec9dc09fb1b6cf08b42494d4d1d0f00acb250ebecca9dbfcdb6bf15c16206c"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "37ec9dc09fb1b6cf08b42494d4d1d0f00acb250ebecca9dbfcdb6bf15c16206c"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 3,
+          "task_id": "financial-credit-10005-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10005-v1/rep0",
+              "request_key": "financial-credit-10005-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "206ce9ec914d1ea58d62b19b1a870acb54974ae1dd14837db7aebbaeead14820"
+            },
+            {
+              "trajectory_key": "financial-credit-10005-v1/rep1",
+              "request_key": "financial-credit-10005-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "206ce9ec914d1ea58d62b19b1a870acb54974ae1dd14837db7aebbaeead14820"
+            },
+            {
+              "trajectory_key": "financial-credit-10005-v1/rep2",
+              "request_key": "financial-credit-10005-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "206ce9ec914d1ea58d62b19b1a870acb54974ae1dd14837db7aebbaeead14820"
+            },
+            {
+              "trajectory_key": "financial-credit-10005-v1/rep3",
+              "request_key": "financial-credit-10005-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "206ce9ec914d1ea58d62b19b1a870acb54974ae1dd14837db7aebbaeead14820"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "206ce9ec914d1ea58d62b19b1a870acb54974ae1dd14837db7aebbaeead14820"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 3,
+          "task_id": "financial-credit-10012-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10012-v0/rep0",
+              "request_key": "financial-credit-10012-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "a116f97da63780b103c1749fb1788f696709770b7fb76096d6cac7d9a6d639a4"
+            },
+            {
+              "trajectory_key": "financial-credit-10012-v0/rep1",
+              "request_key": "financial-credit-10012-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "a116f97da63780b103c1749fb1788f696709770b7fb76096d6cac7d9a6d639a4"
+            },
+            {
+              "trajectory_key": "financial-credit-10012-v0/rep2",
+              "request_key": "financial-credit-10012-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "a116f97da63780b103c1749fb1788f696709770b7fb76096d6cac7d9a6d639a4"
+            },
+            {
+              "trajectory_key": "financial-credit-10012-v0/rep3",
+              "request_key": "financial-credit-10012-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "a116f97da63780b103c1749fb1788f696709770b7fb76096d6cac7d9a6d639a4"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "a116f97da63780b103c1749fb1788f696709770b7fb76096d6cac7d9a6d639a4"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 3,
+          "task_id": "financial-credit-10012-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10012-v1/rep0",
+              "request_key": "financial-credit-10012-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "4b018d6dfa31007a247d065f7999053e91abf68f1dcef753e1c611401e6eae9f"
+            },
+            {
+              "trajectory_key": "financial-credit-10012-v1/rep1",
+              "request_key": "financial-credit-10012-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "4b018d6dfa31007a247d065f7999053e91abf68f1dcef753e1c611401e6eae9f"
+            },
+            {
+              "trajectory_key": "financial-credit-10012-v1/rep2",
+              "request_key": "financial-credit-10012-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "4b018d6dfa31007a247d065f7999053e91abf68f1dcef753e1c611401e6eae9f"
+            },
+            {
+              "trajectory_key": "financial-credit-10012-v1/rep3",
+              "request_key": "financial-credit-10012-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "4b018d6dfa31007a247d065f7999053e91abf68f1dcef753e1c611401e6eae9f"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "4b018d6dfa31007a247d065f7999053e91abf68f1dcef753e1c611401e6eae9f"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 3,
+          "task_id": "financial-credit-10041-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10041-v0/rep0",
+              "request_key": "financial-credit-10041-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "882d3505aa37b5d0362d35d4f310f8d877358b727a666305355a9d34fa04b22c"
+            },
+            {
+              "trajectory_key": "financial-credit-10041-v0/rep1",
+              "request_key": "financial-credit-10041-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "882d3505aa37b5d0362d35d4f310f8d877358b727a666305355a9d34fa04b22c"
+            },
+            {
+              "trajectory_key": "financial-credit-10041-v0/rep2",
+              "request_key": "financial-credit-10041-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "882d3505aa37b5d0362d35d4f310f8d877358b727a666305355a9d34fa04b22c"
+            },
+            {
+              "trajectory_key": "financial-credit-10041-v0/rep3",
+              "request_key": "financial-credit-10041-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "882d3505aa37b5d0362d35d4f310f8d877358b727a666305355a9d34fa04b22c"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "882d3505aa37b5d0362d35d4f310f8d877358b727a666305355a9d34fa04b22c"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 3,
+          "task_id": "financial-credit-10041-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10041-v1/rep0",
+              "request_key": "financial-credit-10041-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "69f773c51e45335ca9a791e9f960ffb1c50f15b9c188b388e99553f758ec9e7d"
+            },
+            {
+              "trajectory_key": "financial-credit-10041-v1/rep1",
+              "request_key": "financial-credit-10041-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "69f773c51e45335ca9a791e9f960ffb1c50f15b9c188b388e99553f758ec9e7d"
+            },
+            {
+              "trajectory_key": "financial-credit-10041-v1/rep2",
+              "request_key": "financial-credit-10041-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "69f773c51e45335ca9a791e9f960ffb1c50f15b9c188b388e99553f758ec9e7d"
+            },
+            {
+              "trajectory_key": "financial-credit-10041-v1/rep3",
+              "request_key": "financial-credit-10041-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "69f773c51e45335ca9a791e9f960ffb1c50f15b9c188b388e99553f758ec9e7d"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "69f773c51e45335ca9a791e9f960ffb1c50f15b9c188b388e99553f758ec9e7d"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 4,
+          "task_id": "financial-credit-10032-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10032-v0/rep0",
+              "request_key": "financial-credit-10032-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "c680fdd23ddcf12acfd216ef90d9577b99b1411e7469f4fd6a443e0e86b429c5"
+            },
+            {
+              "trajectory_key": "financial-credit-10032-v0/rep1",
+              "request_key": "financial-credit-10032-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "c680fdd23ddcf12acfd216ef90d9577b99b1411e7469f4fd6a443e0e86b429c5"
+            },
+            {
+              "trajectory_key": "financial-credit-10032-v0/rep2",
+              "request_key": "financial-credit-10032-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "c680fdd23ddcf12acfd216ef90d9577b99b1411e7469f4fd6a443e0e86b429c5"
+            },
+            {
+              "trajectory_key": "financial-credit-10032-v0/rep3",
+              "request_key": "financial-credit-10032-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "c680fdd23ddcf12acfd216ef90d9577b99b1411e7469f4fd6a443e0e86b429c5"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "c680fdd23ddcf12acfd216ef90d9577b99b1411e7469f4fd6a443e0e86b429c5"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 4,
+          "task_id": "financial-credit-10032-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10032-v1/rep0",
+              "request_key": "financial-credit-10032-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "f85700d131eaf824e4d0c245b431932dc7e46431ca5a1fc1506da2b55cafd954"
+            },
+            {
+              "trajectory_key": "financial-credit-10032-v1/rep1",
+              "request_key": "financial-credit-10032-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "f85700d131eaf824e4d0c245b431932dc7e46431ca5a1fc1506da2b55cafd954"
+            },
+            {
+              "trajectory_key": "financial-credit-10032-v1/rep2",
+              "request_key": "financial-credit-10032-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "f85700d131eaf824e4d0c245b431932dc7e46431ca5a1fc1506da2b55cafd954"
+            },
+            {
+              "trajectory_key": "financial-credit-10032-v1/rep3",
+              "request_key": "financial-credit-10032-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "f85700d131eaf824e4d0c245b431932dc7e46431ca5a1fc1506da2b55cafd954"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "f85700d131eaf824e4d0c245b431932dc7e46431ca5a1fc1506da2b55cafd954"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 4,
+          "task_id": "financial-credit-10026-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10026-v0/rep0",
+              "request_key": "financial-credit-10026-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "f851ceee8c9d0d557636d43ffe6ed523aec412a88d004008800c40775c908133"
+            },
+            {
+              "trajectory_key": "financial-credit-10026-v0/rep1",
+              "request_key": "financial-credit-10026-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "f851ceee8c9d0d557636d43ffe6ed523aec412a88d004008800c40775c908133"
+            },
+            {
+              "trajectory_key": "financial-credit-10026-v0/rep2",
+              "request_key": "financial-credit-10026-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "f851ceee8c9d0d557636d43ffe6ed523aec412a88d004008800c40775c908133"
+            },
+            {
+              "trajectory_key": "financial-credit-10026-v0/rep3",
+              "request_key": "financial-credit-10026-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "f851ceee8c9d0d557636d43ffe6ed523aec412a88d004008800c40775c908133"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "f851ceee8c9d0d557636d43ffe6ed523aec412a88d004008800c40775c908133"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 4,
+          "task_id": "financial-credit-10026-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10026-v1/rep0",
+              "request_key": "financial-credit-10026-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "949ddd3c08a3582092e2436bd9b3c8a05bc9ee97cc912dbb2807f8302059aff5"
+            },
+            {
+              "trajectory_key": "financial-credit-10026-v1/rep1",
+              "request_key": "financial-credit-10026-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "949ddd3c08a3582092e2436bd9b3c8a05bc9ee97cc912dbb2807f8302059aff5"
+            },
+            {
+              "trajectory_key": "financial-credit-10026-v1/rep2",
+              "request_key": "financial-credit-10026-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "949ddd3c08a3582092e2436bd9b3c8a05bc9ee97cc912dbb2807f8302059aff5"
+            },
+            {
+              "trajectory_key": "financial-credit-10026-v1/rep3",
+              "request_key": "financial-credit-10026-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "949ddd3c08a3582092e2436bd9b3c8a05bc9ee97cc912dbb2807f8302059aff5"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "949ddd3c08a3582092e2436bd9b3c8a05bc9ee97cc912dbb2807f8302059aff5"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 4,
+          "task_id": "financial-credit-10034-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10034-v0/rep0",
+              "request_key": "financial-credit-10034-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "f760b831c59f8cf5ec1606373d2f926f3b0765728d498c8efa6dd8f529f81cf6"
+            },
+            {
+              "trajectory_key": "financial-credit-10034-v0/rep1",
+              "request_key": "financial-credit-10034-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "f760b831c59f8cf5ec1606373d2f926f3b0765728d498c8efa6dd8f529f81cf6"
+            },
+            {
+              "trajectory_key": "financial-credit-10034-v0/rep2",
+              "request_key": "financial-credit-10034-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "f760b831c59f8cf5ec1606373d2f926f3b0765728d498c8efa6dd8f529f81cf6"
+            },
+            {
+              "trajectory_key": "financial-credit-10034-v0/rep3",
+              "request_key": "financial-credit-10034-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "f760b831c59f8cf5ec1606373d2f926f3b0765728d498c8efa6dd8f529f81cf6"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "f760b831c59f8cf5ec1606373d2f926f3b0765728d498c8efa6dd8f529f81cf6"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 4,
+          "task_id": "financial-credit-10034-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10034-v1/rep0",
+              "request_key": "financial-credit-10034-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "55786cb6ad428e8c4af70eda17463ac833426442bc336c37ec90be316fcf1329"
+            },
+            {
+              "trajectory_key": "financial-credit-10034-v1/rep1",
+              "request_key": "financial-credit-10034-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "55786cb6ad428e8c4af70eda17463ac833426442bc336c37ec90be316fcf1329"
+            },
+            {
+              "trajectory_key": "financial-credit-10034-v1/rep2",
+              "request_key": "financial-credit-10034-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "55786cb6ad428e8c4af70eda17463ac833426442bc336c37ec90be316fcf1329"
+            },
+            {
+              "trajectory_key": "financial-credit-10034-v1/rep3",
+              "request_key": "financial-credit-10034-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "55786cb6ad428e8c4af70eda17463ac833426442bc336c37ec90be316fcf1329"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "55786cb6ad428e8c4af70eda17463ac833426442bc336c37ec90be316fcf1329"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 4,
+          "task_id": "financial-credit-10037-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10037-v0/rep0",
+              "request_key": "financial-credit-10037-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "fd42101cc72e68f4c6923c75fd2dccfd3216d9a6c6eb1f7938dafd224b3157fb"
+            },
+            {
+              "trajectory_key": "financial-credit-10037-v0/rep1",
+              "request_key": "financial-credit-10037-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "fd42101cc72e68f4c6923c75fd2dccfd3216d9a6c6eb1f7938dafd224b3157fb"
+            },
+            {
+              "trajectory_key": "financial-credit-10037-v0/rep2",
+              "request_key": "financial-credit-10037-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "fd42101cc72e68f4c6923c75fd2dccfd3216d9a6c6eb1f7938dafd224b3157fb"
+            },
+            {
+              "trajectory_key": "financial-credit-10037-v0/rep3",
+              "request_key": "financial-credit-10037-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "fd42101cc72e68f4c6923c75fd2dccfd3216d9a6c6eb1f7938dafd224b3157fb"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "fd42101cc72e68f4c6923c75fd2dccfd3216d9a6c6eb1f7938dafd224b3157fb"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 4,
+          "task_id": "financial-credit-10037-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10037-v1/rep0",
+              "request_key": "financial-credit-10037-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "33c8480280fc583584496f44ab6d17329034ba5ddca3fc7ca65578078fbc3c2c"
+            },
+            {
+              "trajectory_key": "financial-credit-10037-v1/rep1",
+              "request_key": "financial-credit-10037-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "33c8480280fc583584496f44ab6d17329034ba5ddca3fc7ca65578078fbc3c2c"
+            },
+            {
+              "trajectory_key": "financial-credit-10037-v1/rep2",
+              "request_key": "financial-credit-10037-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "33c8480280fc583584496f44ab6d17329034ba5ddca3fc7ca65578078fbc3c2c"
+            },
+            {
+              "trajectory_key": "financial-credit-10037-v1/rep3",
+              "request_key": "financial-credit-10037-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "33c8480280fc583584496f44ab6d17329034ba5ddca3fc7ca65578078fbc3c2c"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "33c8480280fc583584496f44ab6d17329034ba5ddca3fc7ca65578078fbc3c2c"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 5,
+          "task_id": "financial-credit-10103-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10103-v0/rep0",
+              "request_key": "financial-credit-10103-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "23549f120aab79e2160dd9af35f499c028e45956ac2c9896da416ff1c8c11f44"
+            },
+            {
+              "trajectory_key": "financial-credit-10103-v0/rep1",
+              "request_key": "financial-credit-10103-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "23549f120aab79e2160dd9af35f499c028e45956ac2c9896da416ff1c8c11f44"
+            },
+            {
+              "trajectory_key": "financial-credit-10103-v0/rep2",
+              "request_key": "financial-credit-10103-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "23549f120aab79e2160dd9af35f499c028e45956ac2c9896da416ff1c8c11f44"
+            },
+            {
+              "trajectory_key": "financial-credit-10103-v0/rep3",
+              "request_key": "financial-credit-10103-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "23549f120aab79e2160dd9af35f499c028e45956ac2c9896da416ff1c8c11f44"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "23549f120aab79e2160dd9af35f499c028e45956ac2c9896da416ff1c8c11f44"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 5,
+          "task_id": "financial-credit-10103-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10103-v1/rep0",
+              "request_key": "financial-credit-10103-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "b23e205a2bd8cfdfb9988cc722956a36e97ad054a8fa87ff7c7d118f1f4380ec"
+            },
+            {
+              "trajectory_key": "financial-credit-10103-v1/rep1",
+              "request_key": "financial-credit-10103-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "b23e205a2bd8cfdfb9988cc722956a36e97ad054a8fa87ff7c7d118f1f4380ec"
+            },
+            {
+              "trajectory_key": "financial-credit-10103-v1/rep2",
+              "request_key": "financial-credit-10103-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "b23e205a2bd8cfdfb9988cc722956a36e97ad054a8fa87ff7c7d118f1f4380ec"
+            },
+            {
+              "trajectory_key": "financial-credit-10103-v1/rep3",
+              "request_key": "financial-credit-10103-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "b23e205a2bd8cfdfb9988cc722956a36e97ad054a8fa87ff7c7d118f1f4380ec"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "b23e205a2bd8cfdfb9988cc722956a36e97ad054a8fa87ff7c7d118f1f4380ec"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 5,
+          "task_id": "financial-credit-10007-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10007-v0/rep0",
+              "request_key": "financial-credit-10007-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "2722c09f7a521613413050dc4affecac6e5b7e2aacea1d243bcb7afba2993914"
+            },
+            {
+              "trajectory_key": "financial-credit-10007-v0/rep1",
+              "request_key": "financial-credit-10007-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "2722c09f7a521613413050dc4affecac6e5b7e2aacea1d243bcb7afba2993914"
+            },
+            {
+              "trajectory_key": "financial-credit-10007-v0/rep2",
+              "request_key": "financial-credit-10007-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "2722c09f7a521613413050dc4affecac6e5b7e2aacea1d243bcb7afba2993914"
+            },
+            {
+              "trajectory_key": "financial-credit-10007-v0/rep3",
+              "request_key": "financial-credit-10007-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "2722c09f7a521613413050dc4affecac6e5b7e2aacea1d243bcb7afba2993914"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "2722c09f7a521613413050dc4affecac6e5b7e2aacea1d243bcb7afba2993914"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 5,
+          "task_id": "financial-credit-10007-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10007-v1/rep0",
+              "request_key": "financial-credit-10007-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "6e62d816a24bff0d42c98373c0643872c4b5ae5ede8415ce8c012e086eb62f4b"
+            },
+            {
+              "trajectory_key": "financial-credit-10007-v1/rep1",
+              "request_key": "financial-credit-10007-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "6e62d816a24bff0d42c98373c0643872c4b5ae5ede8415ce8c012e086eb62f4b"
+            },
+            {
+              "trajectory_key": "financial-credit-10007-v1/rep2",
+              "request_key": "financial-credit-10007-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "6e62d816a24bff0d42c98373c0643872c4b5ae5ede8415ce8c012e086eb62f4b"
+            },
+            {
+              "trajectory_key": "financial-credit-10007-v1/rep3",
+              "request_key": "financial-credit-10007-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "6e62d816a24bff0d42c98373c0643872c4b5ae5ede8415ce8c012e086eb62f4b"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "6e62d816a24bff0d42c98373c0643872c4b5ae5ede8415ce8c012e086eb62f4b"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 5,
+          "task_id": "financial-credit-10040-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10040-v0/rep0",
+              "request_key": "financial-credit-10040-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "4d6faffe303fa22ba57f156652070307873ade8e0056dd7c0e27801f039ef189"
+            },
+            {
+              "trajectory_key": "financial-credit-10040-v0/rep1",
+              "request_key": "financial-credit-10040-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "4d6faffe303fa22ba57f156652070307873ade8e0056dd7c0e27801f039ef189"
+            },
+            {
+              "trajectory_key": "financial-credit-10040-v0/rep2",
+              "request_key": "financial-credit-10040-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "4d6faffe303fa22ba57f156652070307873ade8e0056dd7c0e27801f039ef189"
+            },
+            {
+              "trajectory_key": "financial-credit-10040-v0/rep3",
+              "request_key": "financial-credit-10040-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "4d6faffe303fa22ba57f156652070307873ade8e0056dd7c0e27801f039ef189"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "4d6faffe303fa22ba57f156652070307873ade8e0056dd7c0e27801f039ef189"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 5,
+          "task_id": "financial-credit-10040-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10040-v1/rep0",
+              "request_key": "financial-credit-10040-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "63867d831d00882262e12fb312790b41e4b1ac7fb3087af3587d8254bc079379"
+            },
+            {
+              "trajectory_key": "financial-credit-10040-v1/rep1",
+              "request_key": "financial-credit-10040-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "63867d831d00882262e12fb312790b41e4b1ac7fb3087af3587d8254bc079379"
+            },
+            {
+              "trajectory_key": "financial-credit-10040-v1/rep2",
+              "request_key": "financial-credit-10040-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "63867d831d00882262e12fb312790b41e4b1ac7fb3087af3587d8254bc079379"
+            },
+            {
+              "trajectory_key": "financial-credit-10040-v1/rep3",
+              "request_key": "financial-credit-10040-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "63867d831d00882262e12fb312790b41e4b1ac7fb3087af3587d8254bc079379"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "63867d831d00882262e12fb312790b41e4b1ac7fb3087af3587d8254bc079379"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 5,
+          "task_id": "financial-credit-10050-v0",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10050-v0/rep0",
+              "request_key": "financial-credit-10050-v0/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "6689b1217ceba9ffe8b4b935b36125ab9431cc2e564ae8e7cc0698203237db07"
+            },
+            {
+              "trajectory_key": "financial-credit-10050-v0/rep1",
+              "request_key": "financial-credit-10050-v0/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "6689b1217ceba9ffe8b4b935b36125ab9431cc2e564ae8e7cc0698203237db07"
+            },
+            {
+              "trajectory_key": "financial-credit-10050-v0/rep2",
+              "request_key": "financial-credit-10050-v0/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "6689b1217ceba9ffe8b4b935b36125ab9431cc2e564ae8e7cc0698203237db07"
+            },
+            {
+              "trajectory_key": "financial-credit-10050-v0/rep3",
+              "request_key": "financial-credit-10050-v0/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "6689b1217ceba9ffe8b4b935b36125ab9431cc2e564ae8e7cc0698203237db07"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "6689b1217ceba9ffe8b4b935b36125ab9431cc2e564ae8e7cc0698203237db07"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        },
+        {
+          "batch": 5,
+          "task_id": "financial-credit-10050-v1",
+          "expected_replicas": 4,
+          "selected_prefixes": [
+            {
+              "trajectory_key": "financial-credit-10050-v1/rep0",
+              "request_key": "financial-credit-10050-v1/rep0/call3",
+              "calls_used": 3,
+              "history_sha256": "969ef6e9fdfbdfbb7b56769b7148f16a199ceaa3e8845e4977a835806346fef7"
+            },
+            {
+              "trajectory_key": "financial-credit-10050-v1/rep1",
+              "request_key": "financial-credit-10050-v1/rep1/call3",
+              "calls_used": 3,
+              "history_sha256": "969ef6e9fdfbdfbb7b56769b7148f16a199ceaa3e8845e4977a835806346fef7"
+            },
+            {
+              "trajectory_key": "financial-credit-10050-v1/rep2",
+              "request_key": "financial-credit-10050-v1/rep2/call3",
+              "calls_used": 3,
+              "history_sha256": "969ef6e9fdfbdfbb7b56769b7148f16a199ceaa3e8845e4977a835806346fef7"
+            },
+            {
+              "trajectory_key": "financial-credit-10050-v1/rep3",
+              "request_key": "financial-credit-10050-v1/rep3/call3",
+              "calls_used": 3,
+              "history_sha256": "969ef6e9fdfbdfbb7b56769b7148f16a199ceaa3e8845e4977a835806346fef7"
+            }
+          ],
+          "missing_trajectory_keys": [],
+          "unique_history_hashes": [
+            "969ef6e9fdfbdfbb7b56769b7148f16a199ceaa3e8845e4977a835806346fef7"
+          ],
+          "unique_history_count": 1,
+          "all_four_histories_identical": true
+        }
+      ],
+      "planned_k4_groups": 48,
+      "complete_k4_groups": 48,
+      "all_four_histories_identical_groups": 48,
+      "missing_prefixes": 0,
+      "unique_history_count_distribution": {
+        "1": 48
+      },
+      "source_sha256": {
+        "runs/agentic-rl-coverage-20261105-v3/training/wide/round_000/collect/requests.jsonl": "3ab6b84e38998989109ff7f71f5cbc00c53c0b62efb9f660efde12393d882aa9",
+        "runs/agentic-rl-invalid-feedback-20261110-v5/data/batch_round000.jsonl": "01c8cdebb11c57beeece3619a61e3b1ae247225ec99ddd15df7ce94b8c35a45d",
+        "runs/agentic-rl-invalid-feedback-20261110-v5/training/calculate_and_parse_failures/round_001/collect/requests.jsonl": "c517f4e98484674a3fbfafce6c856d69c8deff47cdb68aa6c2271d74fa73465b",
+        "runs/agentic-rl-invalid-feedback-20261110-v5/data/batch_round001.jsonl": "237187cd0095fee3724458ee11662b98b81449c6665417d4b85399e5e39012f6",
+        "runs/agentic-rl-invalid-feedback-20261110-v5/training/calculate_and_parse_failures/round_002/collect/requests.jsonl": "14ff62f6d0bdf6243a78784c7de02f6d572c3bb60988d937c3b6edf55662f0ac",
+        "runs/agentic-rl-invalid-feedback-20261110-v5/data/batch_round002.jsonl": "ae9f069f44e0892bb8ed5610923feb523dd42dc97edb57bcb9263b79247a2a34",
+        "runs/agentic-rl-invalid-feedback-20261110-v5/training/calculate_and_parse_failures/round_003/collect/requests.jsonl": "0329dfcd4eb9c89e63b4e689377a852295039c19fa190171754a6d177e229040",
+        "runs/agentic-rl-invalid-feedback-20261110-v5/data/batch_round003.jsonl": "2fdd8312cdcb3eb0284ad99e21b877dbd8a2c1d4a20855ecbca6cab59e939907",
+        "runs/agentic-rl-invalid-feedback-20261110-v5/training/calculate_and_parse_failures/round_004/collect/requests.jsonl": "d18ad41d1223a9a4d30b9ad2deb497f07281ebbf1cc1548a0917ccaa21ae6ceb",
+        "runs/agentic-rl-invalid-feedback-20261110-v5/data/batch_round004.jsonl": "2402a36c66104d8b9a6d37fd06aae79210372cbf3c57ee34cfeb054e9ce768e3",
+        "runs/agentic-rl-invalid-feedback-20261110-v5/training/calculate_and_parse_failures/round_005/collect/requests.jsonl": "473af8936e10e53cfb65d4e58d18f81684b2b9bef9b80f3ff5188a5c9023df5a",
+        "runs/agentic-rl-invalid-feedback-20261110-v5/data/batch_round005.jsonl": "2a1772ace335cecb704a99863121d04618fbe2aa108bd2d3e2f734bed063503b"
+      }
+    }
+  }
+}

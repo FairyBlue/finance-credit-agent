@@ -1,0 +1,1427 @@
+{
+  "scope": "V3 six historical Train collections only; no GPU/new sampling, no reserved Test or OOS",
+  "definition": "request loss coefficient mass = abs(whitened advantage)/(8 * parent request count); sums response-token mean coefficients, not actual gradient norm",
+  "aggregates": {
+    "task_groups": 48,
+    "mixed_metric_groups": 16,
+    "mixed_success_groups": 16,
+    "metric_correct_raw_zero": 96,
+    "parents": 192,
+    "successes": 138,
+    "metric_correct_raw_positive": 42,
+    "metric_incorrect_raw_negative": 26,
+    "requests": 1153,
+    "calculate_requests": 193,
+    "actor_nonzero_requests_exact": 1153,
+    "raw_zero_actor_nonzero_exact": 696,
+    "metric_incorrect_raw_zero": 20,
+    "metric_incorrect_raw_positive": 8,
+    "raw_nonzero_parents_abs_gt_1e_minus12": 76,
+    "actor_nonzero_requests_abs_gt_1e_minus6": 625,
+    "raw_zero_actor_nonzero_abs_gt_1e_minus6": 168
+  },
+  "weighted_abs_advantage_mass": {
+    "zero_raw_actor_weighted_abs_adv": 0.08400268812903124,
+    "total_weighted_abs_adv": 11.925636295045829,
+    "search_docs_weighted_abs_adv": 1.9738913245818102,
+    "read_document_weighted_abs_adv": 3.9477826491636234,
+    "calculate_weighted_abs_adv": 2.0561796721367793,
+    "solve_weighted_abs_adv": 1.9738913245818102,
+    "submit_weighted_abs_adv": 1.9738913245818102
+  },
+  "calculate_weighted_abs_advantage_share": 0.17241676848647158,
+  "raw_zero_weighted_abs_advantage_share": 0.007043874729261012,
+  "rounds": [
+    {
+      "round": "round_000",
+      "parent_successes": 29,
+      "request_counts": {
+        "search_docs": 32,
+        "read_document": 64,
+        "calculate": 32,
+        "solve": 32,
+        "submit": 32
+      },
+      "request_weighted_mean": -3.469446951953614e-17,
+      "request_weighted_std": 0.3531999904925483,
+      "weighted_abs_adv_by_action": {
+        "search_docs": 0.35355330206043434,
+        "read_document": 0.707106604120869,
+        "calculate": 0.35355330206043434,
+        "solve": 0.35355330206043434,
+        "submit": 0.35355330206043434
+      },
+      "sum_abs_success_advantage": 6.0,
+      "sum_abs_nuisance_advantage": 0.005998899534986557,
+      "max_abs_nuisance_advantage": 0.0014997248837462784
+    },
+    {
+      "round": "round_001",
+      "parent_successes": 23,
+      "request_counts": {
+        "search_docs": 32,
+        "read_document": 64,
+        "calculate": 33,
+        "solve": 32,
+        "submit": 32
+      },
+      "request_weighted_mean": -0.005202071113387313,
+      "request_weighted_std": 0.21674602685200467,
+      "weighted_abs_adv_by_action": {
+        "search_docs": 0.1942919317270102,
+        "read_document": 0.3885838634540205,
+        "calculate": 0.2765802792819792,
+        "solve": 0.1942919317270102,
+        "submit": 0.1942919317270102
+      },
+      "sum_abs_success_advantage": 2.0,
+      "sum_abs_nuisance_advantage": 0.007999449767493227,
+      "max_abs_nuisance_advantage": 0.003999724883746225
+    },
+    {
+      "round": "round_002",
+      "parent_successes": 20,
+      "request_counts": {
+        "search_docs": 32,
+        "read_document": 64,
+        "calculate": 32,
+        "solve": 32,
+        "submit": 32
+      },
+      "request_weighted_mean": -8.348356728138384e-18,
+      "request_weighted_std": 0.4713165711855648,
+      "weighted_abs_adv_by_action": {
+        "search_docs": 0.47158087543512633,
+        "read_document": 0.9431617508702534,
+        "calculate": 0.47158087543512633,
+        "solve": 0.47158087543512633,
+        "submit": 0.47158087543512633
+      },
+      "sum_abs_success_advantage": 10.666666666666668,
+      "sum_abs_nuisance_advantage": 0.01299761565913524,
+      "max_abs_nuisance_advantage": 0.0014997248837463895
+    },
+    {
+      "round": "round_003",
+      "parent_successes": 21,
+      "request_counts": {
+        "search_docs": 32,
+        "read_document": 64,
+        "calculate": 32,
+        "solve": 32,
+        "submit": 32
+      },
+      "request_weighted_mean": 3.469446951953614e-18,
+      "request_weighted_std": 0.3118047822311618,
+      "weighted_abs_adv_by_action": {
+        "search_docs": 0.3118047822311618,
+        "read_document": 0.6236095644623237,
+        "calculate": 0.3118047822311618,
+        "solve": 0.3118047822311618,
+        "submit": 0.3118047822311618
+      },
+      "sum_abs_success_advantage": 4.666666666666667,
+      "sum_abs_nuisance_advantage": 2.220446049250313e-16,
+      "max_abs_nuisance_advantage": 2.220446049250313e-16
+    },
+    {
+      "round": "round_004",
+      "parent_successes": 29,
+      "request_counts": {
+        "search_docs": 32,
+        "read_document": 64,
+        "calculate": 32,
+        "solve": 32,
+        "submit": 32
+      },
+      "request_weighted_mean": -4.163336342344337e-17,
+      "request_weighted_std": 0.3539069674060095,
+      "weighted_abs_adv_by_action": {
+        "search_docs": 0.3535533024137937,
+        "read_document": 0.7071066048275875,
+        "calculate": 0.3535533024137937,
+        "solve": 0.3535533024137937,
+        "submit": 0.3535533024137937
+      },
+      "sum_abs_success_advantage": 6.0,
+      "sum_abs_nuisance_advantage": 0.005998899534985891,
+      "max_abs_nuisance_advantage": 0.0014997248837462784
+    },
+    {
+      "round": "round_005",
+      "parent_successes": 16,
+      "request_counts": {
+        "search_docs": 32,
+        "read_document": 64,
+        "calculate": 32,
+        "solve": 32,
+        "submit": 32
+      },
+      "request_weighted_mean": -1.8431436932253575e-17,
+      "request_weighted_std": 0.28896426127461133,
+      "weighted_abs_adv_by_action": {
+        "search_docs": 0.28910713071428495,
+        "read_document": 0.5782142614285701,
+        "calculate": 0.28910713071428495,
+        "solve": 0.28910713071428495,
+        "submit": 0.28910713071428495
+      },
+      "sum_abs_success_advantage": 4.0,
+      "sum_abs_nuisance_advantage": 0.01199779906997038,
+      "max_abs_nuisance_advantage": 0.0014997248837463045
+    }
+  ],
+  "metric_incorrect_positive_raw_advantage_parents": [
+    {
+      "round": "round_002",
+      "trajectory_key": "financial-credit-10035-v1/rep1",
+      "raw_advantage": 0.0009998165891642284,
+      "success_advantage": 0.0,
+      "reward": -0.015000000000000003,
+      "success": false,
+      "group_mixed_metric": false,
+      "group_mixed_success": false
+    },
+    {
+      "round": "round_002",
+      "trajectory_key": "financial-credit-10035-v1/rep2",
+      "raw_advantage": 0.0009998165891642284,
+      "success_advantage": 0.0,
+      "reward": -0.015000000000000003,
+      "success": false,
+      "group_mixed_metric": false,
+      "group_mixed_success": false
+    },
+    {
+      "round": "round_005",
+      "trajectory_key": "financial-credit-10040-v0/rep1",
+      "raw_advantage": 0.0004999082945820899,
+      "success_advantage": 0.0,
+      "reward": -0.015000000000000003,
+      "success": false,
+      "group_mixed_metric": false,
+      "group_mixed_success": false
+    },
+    {
+      "round": "round_005",
+      "trajectory_key": "financial-credit-10040-v0/rep2",
+      "raw_advantage": 0.0004999082945820899,
+      "success_advantage": 0.0,
+      "reward": -0.015000000000000003,
+      "success": false,
+      "group_mixed_metric": false,
+      "group_mixed_success": false
+    },
+    {
+      "round": "round_005",
+      "trajectory_key": "financial-credit-10040-v0/rep3",
+      "raw_advantage": 0.0004999082945820899,
+      "success_advantage": 0.0,
+      "reward": -0.015000000000000003,
+      "success": false,
+      "group_mixed_metric": false,
+      "group_mixed_success": false
+    },
+    {
+      "round": "round_005",
+      "trajectory_key": "financial-credit-10050-v0/rep0",
+      "raw_advantage": 0.0004999082945821038,
+      "success_advantage": 0.0,
+      "reward": -0.015000000000000003,
+      "success": false,
+      "group_mixed_metric": false,
+      "group_mixed_success": false
+    },
+    {
+      "round": "round_005",
+      "trajectory_key": "financial-credit-10050-v0/rep1",
+      "raw_advantage": 0.0004999082945821038,
+      "success_advantage": 0.0,
+      "reward": -0.015000000000000003,
+      "success": false,
+      "group_mixed_metric": false,
+      "group_mixed_success": false
+    },
+    {
+      "round": "round_005",
+      "trajectory_key": "financial-credit-10050-v0/rep2",
+      "raw_advantage": 0.0004999082945821038,
+      "success_advantage": 0.0,
+      "reward": -0.015000000000000003,
+      "success": false,
+      "group_mixed_metric": false,
+      "group_mixed_success": false
+    }
+  ],
+  "task_groups": [
+    {
+      "round": "round_000",
+      "task_id": "financial-credit-10126-v0",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.9835002751162538,
+        0.9835002751162538,
+        0.9835002751162538,
+        0.9835002751162538
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_000",
+      "task_id": "financial-credit-10126-v1",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.985,
+        0.985,
+        0.985,
+        0.985
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_000",
+      "task_id": "financial-credit-10119-v0",
+      "mixed_metric": true,
+      "mixed_success": true,
+      "rewards": [
+        0.9835002751162537,
+        0.9835002751162537,
+        -0.015000000000000003,
+        0.9835002751162537
+      ],
+      "metric_correct": [
+        true,
+        true,
+        false,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        false,
+        true
+      ]
+    },
+    {
+      "round": "round_000",
+      "task_id": "financial-credit-10119-v1",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.985,
+        0.985,
+        0.985,
+        0.985
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_000",
+      "task_id": "financial-credit-10052-v0",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.9835002751162538,
+        0.9835002751162538,
+        0.9835002751162538,
+        0.9835002751162538
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_000",
+      "task_id": "financial-credit-10052-v1",
+      "mixed_metric": true,
+      "mixed_success": true,
+      "rewards": [
+        0.985,
+        0.985,
+        0.985,
+        -0.015000000000000003
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        false
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        false
+      ]
+    },
+    {
+      "round": "round_000",
+      "task_id": "financial-credit-10090-v0",
+      "mixed_metric": true,
+      "mixed_success": true,
+      "rewards": [
+        -0.015000000000000003,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537
+      ],
+      "metric_correct": [
+        false,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_000",
+      "task_id": "financial-credit-10090-v1",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.985,
+        0.985,
+        0.985,
+        0.985
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_001",
+      "task_id": "financial-credit-10024-v0",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.9835002751162538,
+        0.9835002751162538,
+        0.9835002751162538,
+        0.9835002751162538
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_001",
+      "task_id": "financial-credit-10024-v1",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.985,
+        0.985,
+        0.985,
+        0.985
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_001",
+      "task_id": "financial-credit-10077-v0",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.9835002751162538,
+        0.9835002751162538,
+        0.9835002751162538,
+        0.9835002751162538
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_001",
+      "task_id": "financial-credit-10077-v1",
+      "mixed_metric": true,
+      "mixed_success": true,
+      "rewards": [
+        0.985,
+        -0.018999724883746204,
+        0.985,
+        0.985
+      ],
+      "metric_correct": [
+        true,
+        false,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_001",
+      "task_id": "financial-credit-10023-v0",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        -0.016499724883746167,
+        -0.016499724883746167,
+        -0.016499724883746167,
+        -0.016499724883746167
+      ],
+      "metric_correct": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "success": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "round": "round_001",
+      "task_id": "financial-credit-10023-v1",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        -0.016499724883746167,
+        -0.016499724883746167,
+        -0.016499724883746167,
+        -0.016499724883746167
+      ],
+      "metric_correct": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "success": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "round": "round_001",
+      "task_id": "financial-credit-10061-v0",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_001",
+      "task_id": "financial-credit-10061-v1",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.985,
+        0.985,
+        0.985,
+        0.985
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_002",
+      "task_id": "financial-credit-10096-v0",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_002",
+      "task_id": "financial-credit-10096-v1",
+      "mixed_metric": true,
+      "mixed_success": true,
+      "rewards": [
+        0.985,
+        -0.016499724883746323,
+        0.985,
+        0.985
+      ],
+      "metric_correct": [
+        true,
+        false,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_002",
+      "task_id": "financial-credit-10018-v0",
+      "mixed_metric": true,
+      "mixed_success": true,
+      "rewards": [
+        0.9835002751162537,
+        -0.01649972488374633,
+        0.9835002751162537,
+        0.9835002751162537
+      ],
+      "metric_correct": [
+        true,
+        false,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_002",
+      "task_id": "financial-credit-10018-v1",
+      "mixed_metric": true,
+      "mixed_success": true,
+      "rewards": [
+        -0.015000000000000003,
+        -0.015000000000000003,
+        0.985,
+        -0.015000000000000003
+      ],
+      "metric_correct": [
+        false,
+        false,
+        true,
+        false
+      ],
+      "success": [
+        false,
+        false,
+        true,
+        false
+      ]
+    },
+    {
+      "round": "round_002",
+      "task_id": "financial-credit-10069-v0",
+      "mixed_metric": true,
+      "mixed_success": true,
+      "rewards": [
+        -0.015000000000000003,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537
+      ],
+      "metric_correct": [
+        false,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_002",
+      "task_id": "financial-credit-10069-v1",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.985,
+        0.985,
+        0.985,
+        0.985
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_002",
+      "task_id": "financial-credit-10035-v0",
+      "mixed_metric": true,
+      "mixed_success": true,
+      "rewards": [
+        0.9835002751162536,
+        -0.015000000000000003,
+        0.9835002751162536,
+        -0.01649972488374634
+      ],
+      "metric_correct": [
+        true,
+        false,
+        true,
+        false
+      ],
+      "success": [
+        true,
+        false,
+        true,
+        false
+      ]
+    },
+    {
+      "round": "round_002",
+      "task_id": "financial-credit-10035-v1",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        -0.01649972488374634,
+        -0.015000000000000003,
+        -0.015000000000000003,
+        -0.01649972488374634
+      ],
+      "metric_correct": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "success": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "round": "round_003",
+      "task_id": "financial-credit-10066-v0",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_003",
+      "task_id": "financial-credit-10066-v1",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.985,
+        0.985,
+        0.985,
+        0.985
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_003",
+      "task_id": "financial-credit-10005-v0",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        -0.016499724883746323,
+        -0.016499724883746323,
+        -0.016499724883746323,
+        -0.016499724883746323
+      ],
+      "metric_correct": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "success": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "round": "round_003",
+      "task_id": "financial-credit-10005-v1",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        -0.016499724883746323,
+        -0.016499724883746323,
+        -0.016499724883746323,
+        -0.016499724883746323
+      ],
+      "metric_correct": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "success": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "round": "round_003",
+      "task_id": "financial-credit-10012-v0",
+      "mixed_metric": true,
+      "mixed_success": true,
+      "rewards": [
+        -0.016499724883746205,
+        0.9835002751162538,
+        0.9835002751162538,
+        0.9835002751162538
+      ],
+      "metric_correct": [
+        false,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_003",
+      "task_id": "financial-credit-10012-v1",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.985,
+        0.985,
+        0.985,
+        0.985
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_003",
+      "task_id": "financial-credit-10041-v0",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_003",
+      "task_id": "financial-credit-10041-v1",
+      "mixed_metric": true,
+      "mixed_success": true,
+      "rewards": [
+        -0.015000000000000003,
+        0.985,
+        -0.015000000000000003,
+        0.985
+      ],
+      "metric_correct": [
+        false,
+        true,
+        false,
+        true
+      ],
+      "success": [
+        false,
+        true,
+        false,
+        true
+      ]
+    },
+    {
+      "round": "round_004",
+      "task_id": "financial-credit-10032-v0",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_004",
+      "task_id": "financial-credit-10032-v1",
+      "mixed_metric": true,
+      "mixed_success": true,
+      "rewards": [
+        0.985,
+        0.985,
+        0.985,
+        -0.016499724883746236
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        false
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        false
+      ]
+    },
+    {
+      "round": "round_004",
+      "task_id": "financial-credit-10026-v0",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.9835002751162538,
+        0.9835002751162538,
+        0.9835002751162538,
+        0.9835002751162538
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_004",
+      "task_id": "financial-credit-10026-v1",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.985,
+        0.985,
+        0.985,
+        0.985
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_004",
+      "task_id": "financial-credit-10034-v0",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537,
+        0.9835002751162537
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_004",
+      "task_id": "financial-credit-10034-v1",
+      "mixed_metric": true,
+      "mixed_success": true,
+      "rewards": [
+        0.985,
+        -0.016499724883746333,
+        0.985,
+        0.985
+      ],
+      "metric_correct": [
+        true,
+        false,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_004",
+      "task_id": "financial-credit-10037-v0",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.9835002751162538,
+        0.9835002751162538,
+        0.9835002751162538,
+        0.9835002751162538
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_004",
+      "task_id": "financial-credit-10037-v1",
+      "mixed_metric": true,
+      "mixed_success": true,
+      "rewards": [
+        0.985,
+        -0.015000000000000003,
+        0.985,
+        0.985
+      ],
+      "metric_correct": [
+        true,
+        false,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_005",
+      "task_id": "financial-credit-10103-v0",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.9835002751162538,
+        0.9835002751162538,
+        0.9835002751162538,
+        0.9835002751162538
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_005",
+      "task_id": "financial-credit-10103-v1",
+      "mixed_metric": true,
+      "mixed_success": true,
+      "rewards": [
+        -0.016499724883746222,
+        0.985,
+        0.985,
+        0.985
+      ],
+      "metric_correct": [
+        false,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_005",
+      "task_id": "financial-credit-10007-v0",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.9835002751162536,
+        0.9835002751162536,
+        0.9835002751162536,
+        0.9835002751162536
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_005",
+      "task_id": "financial-credit-10007-v1",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        0.985,
+        0.985,
+        0.985,
+        0.985
+      ],
+      "metric_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "success": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "round": "round_005",
+      "task_id": "financial-credit-10040-v0",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        -0.016499724883746267,
+        -0.015000000000000003,
+        -0.015000000000000003,
+        -0.015000000000000003
+      ],
+      "metric_correct": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "success": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "round": "round_005",
+      "task_id": "financial-credit-10040-v1",
+      "mixed_metric": true,
+      "mixed_success": true,
+      "rewards": [
+        -0.016499724883746267,
+        -0.015000000000000003,
+        0.985,
+        -0.015000000000000003
+      ],
+      "metric_correct": [
+        false,
+        false,
+        true,
+        false
+      ],
+      "success": [
+        false,
+        false,
+        true,
+        false
+      ]
+    },
+    {
+      "round": "round_005",
+      "task_id": "financial-credit-10050-v0",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        -0.015000000000000003,
+        -0.015000000000000003,
+        -0.015000000000000003,
+        -0.01649972488374631
+      ],
+      "metric_correct": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "success": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "round": "round_005",
+      "task_id": "financial-credit-10050-v1",
+      "mixed_metric": false,
+      "mixed_success": false,
+      "rewards": [
+        -0.015000000000000003,
+        -0.015000000000000003,
+        -0.015000000000000003,
+        -0.015000000000000003
+      ],
+      "metric_correct": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "success": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  ],
+  "reward_formula": "success - 0.025*calls_used/10 - 0.025*min(transaction_cost/initial_equity/0.005,1)",
+  "reward_nuisance_bound": 0.05,
+  "not_actual_gradient_attribution": true,
+  "interpretation": {
+    "success_mixed_parent_trajectories": 64,
+    "success_mixed_parent_trajectory_fraction": 0.3333333333333333,
+    "nuisance_only_nonzero_parent_trajectories": 12,
+    "cost_does_not_reverse_any_success_vs_failure_group_ordering": true,
+    "metric_correct_raw_negative_parent_trajectories": 0,
+    "metric_incorrect_positive_raw_advantage_all_in_all_failure_groups": true,
+    "raw_zero_actor_nonzero_absolute_threshold": 1e-06,
+    "raw_zero_threshold": 1e-12,
+    "recommended_next_single_factor": "calculation-request actor-loss focus; preserve reward/RLOO/whitening; explicitly freeze mask normalization; this is an optimization diagnostic, not a new unbiased credit estimator"
+  },
+  "sum_abs_success_advantage": 33.333333333333336,
+  "sum_abs_nuisance_advantage": 0.044992663566571514,
+  "nuisance_to_success_absolute_advantage_ratio": 0.0013497799069971453
+}

@@ -1,6 +1,8 @@
 # 文档入口
 
-更新：2026-11-05。**先读[当前状态](CURRENT_STATUS.md)**；长期方向读[Research Brief v0.6](../RESEARCH_BRIEF.md)。V2三步及补充采样均已完成：训练正控可改善，报告迁移与新增MC收益均未建立；目标阶段MC40/64对普通RL42/64，原留出采样高LR42/64对SFT43/64。[完整结果](../runs/agentic-rl-learning-20261030-v2/REPORT.md) · [目标回顾](../runs/agentic-rl-learning-20261030-v2/RESEARCH_REVIEW.md)。
+更新：2026-11-11。**先读[当前状态](CURRENT_STATUS.md)**；长期方向读[Research Brief v0.8](../RESEARCH_BRIEF.md)。[V6直接训练已结束](../runs/agentic-rl-action-q-20261111-v6/CONCLUSION.md)：42/64，对SFT43、V5 44；188/192辅助后继回报不变，停止当前配置、保留原SFT。按用户最新决定继续金融探索，尚未启动新实验。
+
+用户已确认**继续优先探索金融场景**；原Brief保留。[Research Brief 2.0](../RESEARCH_BRIEF2.0.md)单独保存RAGEN上的未来研究目标与候选贡献，尚未启动，不替代当前金融方向。
 
 ## 按问题读，一类只保留一份总结
 
@@ -15,13 +17,23 @@
 
 ## 接手、安装与协作
 
-长期研究目标：[Research Brief v0.6](../RESEARCH_BRIEF.md)，只维护研究问题、候选贡献、证据与重要方向调整；滚动三步另存`docs/`，每轮结束回顾Brief。旧交易实验边界：[评测协议](../EVAL_PROTOCOL.md) · [M2历史规格](../M2_V1_PREREGISTRATION.md)。安装复现：[SETUP](../SETUP.md) · [H100版本合同](H100_COMPATIBILITY.md)。协作方式：[COLLABORATION](COLLABORATION.md)。
+长期研究目标：[Research Brief v0.8](../RESEARCH_BRIEF.md)，只维护研究问题、候选贡献、证据与重要方向调整；滚动三步另存`docs/`，每轮结束回顾Brief。旧交易实验边界：[评测协议](../EVAL_PROTOCOL.md) · [M2历史规格](../M2_V1_PREREGISTRATION.md)。安装复现：[SETUP](../SETUP.md) · [H100版本合同](H100_COMPATIBILITY.md)。协作方式：[COLLABORATION](COLLABORATION.md)。
 
 接手时先读当前状态，再按需要选择主题；具体执行核对该次收据、冻结源码和输入，不从旧容量或旧命令推定当前资源。`runs/`、行情和模型主要在服务器，不随源码完整同步。[9/17](results/2026-09-17-backup/README.md)和 [10/04](results/2026-10-04-backup/README.md)备份只代表当时快照。
 
+公开代码与最近结果的文件清单见[11月11日快照](results/2026-11-11-public-update/README.md)。
+
 ## 最新结果与计划
 
-[Agentic RL三步v3精简版](2026-11-05_AGENTIC_RL_THREE_STEP_PLAN_V3.md)：**已于20:36启动首批采样**。复用旧SFT/窄覆盖对照，只新增24报告宽覆盖短训（6批/192父轨迹）和64条留出评估，上限900万token、2小时GPU阶段。足以选方向就推进；[实时状态](../runs/agentic-rl-coverage-20261105-v3/state.json)。
+[V6动作Q直接训练](2026-11-11_AGENTIC_RL_ACTION_Q_TRAINING.md)：00:47完整结束，六批、192父、24次更新、64条评估齐全。42/64低于SFT43与V5 44；仅16个目标raw优势真正变化，额外同动作续写边际信息很少。新增806.98万token、GPU阶段24.2分钟，当前配置收尾。[结论与下一项建议](../runs/agentic-rl-action-q-20261111-v6/CONCLUSION.md)。
+
+[V5固定Dev100检查](../runs/agentic-rl-v5-dev-check-20261110/CONCLUSION.md)：80/100对SFT82/100，不替换底座；无训练，新增255.9万token、GPU阶段3.3分钟。随后旧[Q估值pilot草案](2026-11-10_AGENTIC_RL_ACTION_Q_EXPERIMENT.md)被用户要求的V6直接训练替代。
+
+[V5保留解析失败反馈](2026-11-10_AGENTIC_RL_INVALID_FEEDBACK_V5.md)：19:22完整结束，44/64、无效输出0、未提交0；新增577.3万token、GPU阶段13.0分钟。保留为工程修正候选，不将对SFT多1条当作方法收益。[本轮方向回顾](../runs/agentic-rl-invalid-feedback-20261110-v5/CONCLUSION.md)。
+
+[V4仅计算响应更新](2026-11-10_AGENTIC_RL_STEP_FOCUS_V4.md)：16:55完整结束，6批/24次更新后41/64，未超过全步骤宽覆盖42/64或SFT43/64。实际586.7万token、GPU阶段13.4分钟，停止当前配置。坏JSON响应被mask排除是后续候选机制，未启动新实验。[结果与回顾](../runs/agentic-rl-step-focus-20261110-v4/CONCLUSION.md)。
+
+[Agentic RL三步v3精简版](2026-11-05_AGENTIC_RL_THREE_STEP_PLAN_V3.md)：**11月5日21:08完整结束**。24报告、192父轨迹、24次实际更新，宽覆盖42/64未超过旧窄覆盖42/64或SFT43/64。实际664.3万token、GPU阶段32.3分钟；按平坦出口收尾，不追加复验。[结果与回顾](../runs/agentic-rl-coverage-20261105-v3/CONCLUSION.md)。
 
 [Agentic RL三步v2](2026-10-30_AGENTIC_RL_THREE_STEP_PLAN_V2.md)：已完整收尾。高LR改善训练正控但未带来报告留出/Dev净收益；目标阶段MC14个baseline实际进入更新，40/64未超过普通RL42/64。[补充留出采样](2026-11-05_HELDOUT_SAMPLING_PROBE.md)亦完整完成，无正向频率差异；合计4005.4万生成token、GPU阶段约2.91小时。后续聚焦训练覆盖与迁移，旧模型和收据保留。
 
